@@ -46,7 +46,7 @@ import org.softeg.slartus.forpdaplus.repositories.NotesRepository
 import org.softeg.slartus.forpdaplus.styles.CssStyle
 import org.softeg.slartus.forpdaplus.styles.StyleInfoActivity
 import org.softeg.slartus.hosthelper.HostHelper
-import ru.slartus.forpda.feature_preferences.Preferences
+import org.softeg.slartus.forpdaplus.feature_preferences.Preferences
 import ru.slartus.http.PersistentCookieStore.Companion.getInstance
 import java.io.BufferedReader
 import java.io.File

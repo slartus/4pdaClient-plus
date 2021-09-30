@@ -102,7 +102,7 @@ public class App extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-        ru.slartus.forpda.feature_preferences.App.INSTANCE.init(this);
+        org.softeg.slartus.forpdaplus.feature_preferences.App.INSTANCE.init(this);
         //TooLargeTool.startLogging(this);//логирование saveinstancestate
         org.softeg.slartus.forpdacommon.FACTORY.init(this);
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();

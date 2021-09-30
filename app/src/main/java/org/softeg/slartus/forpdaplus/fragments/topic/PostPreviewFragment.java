@@ -21,7 +21,7 @@ import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.AdvWebView;
 import org.softeg.slartus.forpdaplus.classes.HtmlBuilder;
 import org.softeg.slartus.forpdaplus.fragments.WebViewFragment;
-import ru.slartus.forpda.feature_preferences.Preferences;
+import org.softeg.slartus.forpdaplus.feature_preferences.Preferences;
 import org.softeg.slartus.forpdaplus.tabs.TabsManager;
 
 import java.util.ArrayList;

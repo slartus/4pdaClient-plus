@@ -16,7 +16,7 @@ import android.webkit.WebView;
 
 import org.softeg.slartus.forpdaplus.AppTheme;
 import org.softeg.slartus.forpdaplus.common.AppLog;
-import ru.slartus.forpda.feature_preferences.Preferences;
+import org.softeg.slartus.forpdaplus.feature_preferences.Preferences;
 
 import java.util.Calendar;
 

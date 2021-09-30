@@ -39,7 +39,7 @@ import org.softeg.slartus.forpdaplus.classes.WebViewExternals
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl
 import org.softeg.slartus.forpdaplus.common.AppLog
 import org.softeg.slartus.forpdaplus.fragments.WebViewFragment
-import ru.slartus.forpda.feature_preferences.Preferences
+import org.softeg.slartus.forpdaplus.feature_preferences.Preferences
 import org.softeg.slartus.forpdaplus.repositories.InternetConnection
 import org.softeg.slartus.hosthelper.HostHelper
 import java.util.*

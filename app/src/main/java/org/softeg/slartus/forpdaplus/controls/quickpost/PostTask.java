@@ -12,7 +12,7 @@ import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.TopicBodyBuilder;
 import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
-import ru.slartus.forpda.feature_preferences.Preferences;
+import org.softeg.slartus.forpdaplus.feature_preferences.Preferences;
 
 import ru.slartus.http.AppResponse;
 

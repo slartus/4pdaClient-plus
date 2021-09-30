@@ -21,7 +21,7 @@ import org.softeg.slartus.forpdaplus.BuildConfig
 import org.softeg.slartus.forpdaplus.R
 import org.softeg.slartus.forpdaplus.common.AppLog
 import org.softeg.slartus.forpdaplus.download.DownloadsService
-import ru.slartus.forpda.feature_preferences.Preferences
+import org.softeg.slartus.forpdaplus.feature_preferences.Preferences
 import ru.slartus.http.Http
 import kotlin.math.max
 

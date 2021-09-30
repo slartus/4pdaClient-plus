@@ -23,7 +23,7 @@ import org.softeg.slartus.forpdaplus.R
 import org.softeg.slartus.forpdaplus.controls.ListViewLoadMoreFooter
 import org.softeg.slartus.forpdaplus.fragments.GeneralFragment
 import org.softeg.slartus.forpdaplus.listfragments.adapters.ListAdapter
-import ru.slartus.forpda.feature_preferences.Preferences
+import org.softeg.slartus.forpdaplus.feature_preferences.Preferences
 import org.softeg.slartus.forpdaplus.repositories.UserInfoRepository
 import java.util.*
 import kotlin.math.max

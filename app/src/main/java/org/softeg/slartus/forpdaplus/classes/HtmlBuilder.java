@@ -4,7 +4,7 @@ import android.text.TextUtils;
 
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.AppTheme;
-import ru.slartus.forpda.feature_preferences.Preferences;
+import org.softeg.slartus.forpdaplus.feature_preferences.Preferences;
 
 /**
  * Created by slinkin on 25.12.13.

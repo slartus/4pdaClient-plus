@@ -12,7 +12,7 @@ import com.nostra13.universalimageloader.core.assist.FailReason
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener
 import org.softeg.slartus.forpdaapi.Forum
 import org.softeg.slartus.forpdaplus.R
-import ru.slartus.forpda.feature_preferences.Preferences
+import org.softeg.slartus.forpdaplus.feature_preferences.Preferences
 
 /*
  * Created by slinkin on 04.02.2019.

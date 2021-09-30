@@ -26,7 +26,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import ru.slartus.forpda.feature_preferences.ClientPreferences;
+import org.softeg.slartus.forpdaplus.feature_preferences.ClientPreferences;
 
 /*
  * Created by slartus on 05.06.13.

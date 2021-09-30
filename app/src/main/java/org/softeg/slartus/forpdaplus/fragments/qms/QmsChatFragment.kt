@@ -43,7 +43,7 @@ import org.softeg.slartus.forpdaplus.fragments.WebViewFragment
 import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment
 import org.softeg.slartus.forpdaplus.fragments.qms.tasks.*
 import org.softeg.slartus.forpdaplus.prefs.HtmlPreferences
-import ru.slartus.forpda.feature_preferences.Preferences
+import org.softeg.slartus.forpdaplus.feature_preferences.Preferences
 import java.io.IOException
 import java.util.*
 import java.util.regex.Pattern

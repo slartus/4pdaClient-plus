@@ -11,7 +11,7 @@ import org.softeg.slartus.forpdaplus.Client
 import org.softeg.slartus.forpdaplus.common.AppLog
 import org.softeg.slartus.forpdaplus.db.NotesTable
 import org.softeg.slartus.forpdaplus.notes.Note
-import ru.slartus.forpda.feature_preferences.Preferences
+import org.softeg.slartus.forpdaplus.feature_preferences.Preferences
 import java.util.*
 
 class NotesRepository private constructor() {

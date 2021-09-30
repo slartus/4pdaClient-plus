@@ -5,59 +5,59 @@
 
     <PreferenceScreen
         android:key="common"
-        android:title="Внешний вид">
-        <PreferenceCategory android:title="Общее">
+        android:title="@string/appearance">
+        <PreferenceCategory android:title="@string/overall">
             <Preference
                 android:key="appstyle"
-                android:summary="Выберите стиль программы"
-                android:title="Стиль" />
+                android:summary="@string/choose_the_theme"
+                android:title="@string/theme" />
             <Preference
                 android:key="accentColor"
-                android:summary="Цвет кнопки в теме и новостях"
-                android:title="Цвет кнопки с карандашом" />
+                android:summary="@string/pick_side_color"
+                android:title="@string/pick_color_with_pencil" />
             <Preference
                 android:key="mainAccentColor"
                 android:title="@string/pick_accent_color" />
             <Preference
                 android:key="webViewFont"
-                android:summary="Шрифт в новостях, поиске, теме, профиле, QMS"
-                android:title="Шрифт WebView" />
+                android:summary="@string/font_in_many"
+                android:title="@string/webview_font" />
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="titleMarquee"
-                android:summary="Требуется перезапуск приложения"
-                android:title="Прокрутка длинного текста в тулбаре" />
+                android:summary="@string/requires_application_restart"
+                android:title="@string/toolbar_text_scrolling" />
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="isSquareAvarars"
-                android:summary="Требуется перезапуск приложения"
-                android:title="Квадратные аватарки" />
+                android:summary="@string/requires_application_restart"
+                android:title="@string/square_avatars" />
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="statusbarFake"
-                android:summary="Подходит для прошивок MIUI, Flyme и т.п на Android 4.4"
-                android:title="Status Bar как в Android 5+" />
+                android:summary="@string/statusbar_fake_summary"
+                android:title="@string/statusbar_fake_title" />
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="oldIndicator"
-                android:summary="Требуется перезапуск приложения"
-                android:title="Полоса у новых сообщений" />
+                android:summary="@string/requires_application_restart"
+                android:title="@string/old_indicator_title" />
             <CheckBoxPreference
                 android:defaultValue="true"
                 android:key="coloredNavBar"
-                android:summary="Для Android 5 и выше. Требуется перезапуск приложения"
-                android:title="Красить Navigation Bar" />
+                android:summary="@string/colored_nav_bar_summary"
+                android:title="@string/colored_nav_bar_title" />
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="pancilInActionBar"
-                android:title="Карандаш в экшнбаре" />
+                android:title="@string/pencil_in_actionbar" />
         </PreferenceCategory>
 
-        <PreferenceCategory android:title="Боковая панель">
+        <PreferenceCategory android:title="@string/side_panel">
             <Preference
                 android:key="userBackground"
-                android:summary="Требуется перезапуск приложения"
-                android:title="Изображение в боковом меню" />
+                android:summary="@string/requires_application_restart"
+                android:title="@string/user_background_title" />
             <!--<CheckBoxPreference-->
             <!--android:defaultValue="false"-->
             <!--android:key="categoryLast"-->
@@ -65,51 +65,51 @@
             <!--android:summary="Меню 'Последние' в выезжающем меню"/>-->
             <Preference
                 android:key="visibleMenuItems"
-                android:title="Пункты меню в боковой панели" />
+                android:title="@string/visible_menu_items_title" />
             <CheckBoxPreference
                 android:defaultValue="true"
                 android:key="isShowShortUserInfo"
-                android:summary="Отображать информацию о пользователе в боковом меню. Требуется перезапуск приложения"
-                android:title="Информация о пользователе" />
+                android:summary="@string/show_user_info_summary"
+                android:title="@string/show_user_info_title" />
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="tabsBottom"
-                android:title="Список вкладок внизу" />
+                android:title="@string/tabs_bottom_title" />
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="isMarginBottomNav"
-                android:summary="Включить, если не видно последнего пункта. Требуется перезапуск приложения"
-                android:title="Нижний отступ в боковом меню" />
+                android:summary="@string/margin_bottom_nav_summary"
+                android:title="@string/margin_bottom_nav_title" />
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="openTabDrawerButton"
-                android:title="Отображать кнопку открытия панели вкладок" />
+                android:title="@string/show_tab_drawer_button" />
         </PreferenceCategory>
 
-        <ru.slartus.forpda.feature_preferences.views.SummaryValueListPreference
+        <org.softeg.slartus.forpdaplus.feature_preferences.views.SummaryValueListPreference
             android:defaultValue="-1"
             android:entries="@array/screenOrienationArray"
             android:entryValues="@array/screenOrienationValues"
             android:key="theme.ScreenOrientation"
-            android:title="Ориентация экрана" />
+            android:title="@string/screen_orientation" />
 
     </PreferenceScreen>
 
     <PreferenceScreen
         android:key="topic_view"
-        android:title="Просмотр темы">
+        android:title="@string/topic_view">
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="theme.SpoilFirstPost"
-            android:summary="Прятать первый пост страницы в спойлер"
-            android:title="Прятать первый пост" />
+            android:summary="@string/spoil_first_post_summary"
+            android:title="@string/spoil_first_post_title" />
 
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="theme.ConfirmSend"
             android:summary="Подтверждать отправку сообщения"
             android:title="Подтверждать отправку" />
-        <ru.slartus.forpda.feature_preferences.views.SummaryValueListPreference
+        <org.softeg.slartus.forpdaplus.feature_preferences.views.SummaryValueListPreference
             android:defaultValue="1"
             android:entries="@array/ConnectTypeArray"
             android:entryValues="@array/ConnectTypeValues"
@@ -174,7 +174,7 @@
             android:key="news.ConfirmSend"
             android:summary="Подтверждать отправку сообщения"
             android:title="Подтверждать отправку" />
-        <ru.slartus.forpda.feature_preferences.views.SummaryValueListPreference
+        <org.softeg.slartus.forpdaplus.feature_preferences.views.SummaryValueListPreference
             android:defaultValue="1"
             android:entries="@array/ConnectTypeArray"
             android:entryValues="@array/ConnectTypeValues"
@@ -223,7 +223,7 @@
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="showSubMain"
-                android:summary="Требуется перезапуск приложения"
+                android:summary="@string/requires_application_restart"
                 android:title="Скрыть описание в пункте списка" />
         </PreferenceCategory>
 
@@ -243,14 +243,14 @@
         </PreferenceCategory>
 
         <PreferenceCategory android:title="Новости">
-            <ru.slartus.forpda.feature_preferences.views.SummaryValueListPreference
+            <org.softeg.slartus.forpdaplus.feature_preferences.views.SummaryValueListPreference
                 android:defaultValue="1"
                 android:entries="@array/ConnectTypeArray"
                 android:entryValues="@array/ConnectTypeValues"
                 android:key="news.list.loadimages"
                 android:title="Загружать изображения" />
 
-            <ru.slartus.forpda.feature_preferences.views.SummaryValueListPreference
+            <org.softeg.slartus.forpdaplus.feature_preferences.views.SummaryValueListPreference
                 android:defaultValue="full"
                 android:entries="@array/NewsListViewTitles"
                 android:entryValues="@array/NewsListViewValues"
@@ -320,22 +320,22 @@
         <PreferenceScreen
             android:key="buttons_screen"
             android:title="Настройка клавиш">
-            <ru.slartus.forpda.feature_preferences.views.KeyEventEditPreference
+            <org.softeg.slartus.forpdaplus.feature_preferences.views.KeyEventEditPreference
                 android:defaultValue="158"
                 android:key="keys.prevPage"
                 android:summary="Можно указать несколько через запятую"
                 android:title="Код кнопки для перехода на предыдущую страницу" />
-            <ru.slartus.forpda.feature_preferences.views.KeyEventEditPreference
+            <org.softeg.slartus.forpdaplus.feature_preferences.views.KeyEventEditPreference
                 android:defaultValue="407"
                 android:key="keys.nextPage"
                 android:summary="Можно указать несколько через запятую"
                 android:title="Код кнопки для перехода на следующую страницу" />
-            <ru.slartus.forpda.feature_preferences.views.KeyEventEditPreference
+            <org.softeg.slartus.forpdaplus.feature_preferences.views.KeyEventEditPreference
                 android:defaultValue="24"
                 android:key="keys.scrollUp"
                 android:summary="Можно указать несколько через запятую"
                 android:title="Код кнопки для прокрутки вверх" />
-            <ru.slartus.forpda.feature_preferences.views.KeyEventEditPreference
+            <org.softeg.slartus.forpdaplus.feature_preferences.views.KeyEventEditPreference
                 android:defaultValue="25"
                 android:key="keys.scrollDown"
                 android:summary="Можно указать несколько через запятую"
@@ -412,7 +412,7 @@
                 android:summary="Сервис проверки новых сообщений"
                 android:text="Сервис проверки новых сообщений"
                 android:title="Использовать сервис" />
-            <ru.slartus.forpda.feature_preferences.views.ExtEditTextPreference
+            <org.softeg.slartus.forpdaplus.feature_preferences.views.ExtEditTextPreference
                 android:inputType="numberDecimal"
                 android:key="qms.service.timeout"
                 android:summary="Таймаут проверки новых сообщений, (%s) мин"
@@ -436,7 +436,7 @@
                 android:key="FavoritesNotifier.service.pinned_only"
                 android:summary="Уведомлять о новых сообщениях только в важных темах"
                 android:title="Только важные" />
-            <ru.slartus.forpda.feature_preferences.views.ExtEditTextPreference
+            <org.softeg.slartus.forpdaplus.feature_preferences.views.ExtEditTextPreference
                 android:inputType="numberDecimal"
                 android:key="FavoritesNotifier.service.timeout"
                 android:summary="Таймаут проверки новых постов,  (%s) мин"
@@ -483,7 +483,7 @@
         android:key="notes"
         android:title="Заметки">
 
-        <ru.slartus.forpda.feature_preferences.views.SummaryValueListPreference
+        <org.softeg.slartus.forpdaplus.feature_preferences.views.SummaryValueListPreference
             android:defaultValue="local"
             android:entries="@array/NotesStoragePlacements"
             android:entryValues="@array/NotesStoragePlacementValues"

@@ -2,7 +2,7 @@ package org.softeg.slartus.forpdaplus.classes
 
 import org.softeg.slartus.forpdaplus.emotic.Smiles
 import org.softeg.slartus.forpdaplus.prefs.HtmlPreferences
-import ru.slartus.forpda.feature_preferences.Preferences
+import org.softeg.slartus.forpdaplus.feature_preferences.Preferences
 
 class QmsHtmlBuilder : HtmlBuilder() {
     override fun addScripts() {

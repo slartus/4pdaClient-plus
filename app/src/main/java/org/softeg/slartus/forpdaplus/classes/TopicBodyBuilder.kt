@@ -8,7 +8,7 @@ import org.softeg.slartus.forpdaplus.Client
 import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic
 import org.softeg.slartus.forpdaplus.emotic.Smiles
 import org.softeg.slartus.forpdaplus.prefs.HtmlPreferences
-import ru.slartus.forpda.feature_preferences.Preferences
+import org.softeg.slartus.forpdaplus.feature_preferences.Preferences
 import org.softeg.slartus.forpdaplus.repositories.UserInfoRepository.Companion.instance
 import org.softeg.slartus.hosthelper.HostHelper
 import java.util.*

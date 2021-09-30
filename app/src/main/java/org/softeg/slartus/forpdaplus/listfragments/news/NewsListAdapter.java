@@ -14,7 +14,7 @@ import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
 import org.softeg.slartus.forpdaapi.News;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
-import ru.slartus.forpda.feature_preferences.Preferences;
+import org.softeg.slartus.forpdaplus.feature_preferences.Preferences;
 
 import java.util.ArrayList;
 

@@ -44,7 +44,7 @@ import org.softeg.slartus.forpdaplus.fragments.GeneralFragment
 import org.softeg.slartus.forpdaplus.fragments.topic.PostPreviewFragment
 import org.softeg.slartus.forpdaplus.fragments.topic.ThemeFragment
 import org.softeg.slartus.forpdaplus.fragments.topic.editpost.tasks.*
-import ru.slartus.forpda.feature_preferences.Preferences
+import org.softeg.slartus.forpdaplus.feature_preferences.Preferences
 import org.softeg.slartus.forpdaplus.tabs.TabsManager
 import org.softeg.slartus.hosthelper.HostHelper
 import java.util.*

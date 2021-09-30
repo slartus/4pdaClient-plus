@@ -30,7 +30,7 @@ import org.softeg.slartus.forpdaplus.classes.common.StringUtils
 import org.softeg.slartus.forpdaplus.common.AppLog
 import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment
 import org.softeg.slartus.forpdaplus.listtemplates.QmsContactsBrickInfo
-import ru.slartus.forpda.feature_preferences.Preferences
+import org.softeg.slartus.forpdaplus.feature_preferences.Preferences
 import org.softeg.slartus.forpdaplus.repositories.UserInfo
 import org.softeg.slartus.forpdaplus.repositories.UserInfoRepository
 import org.softeg.slartus.hosthelper.HostHelper
