@@ -173,63 +173,11 @@
         android:title="Новости"
         app:fragment="org.softeg.slartus.forpdaplus.feature_preferences.fragments.NewsPreferencesFragment"/>
 
-    <PreferenceScreen
+    <Preference
         android:key="lists_screen"
-        android:title="Списки">
-        <PreferenceCategory android:title="Общее">
-            <CheckBoxPreference
-                android:defaultValue="false"
-                android:key="lists.scroll_by_buttons"
-                android:summary="Использовать кнопки для скролла списка"
-                android:title="Скролл кнопками" />
-            <CheckBoxPreference
-                android:defaultValue="true"
-                android:key="lists.refresh"
-                android:summary="Обновлять при первом открытии"
-                android:title="Обновлять список" />
-            <CheckBoxPreference
-                android:defaultValue="false"
-                android:key="lists.refresh_on_tab"
-                android:summary="Обновлять при выборе вкладки"
-                android:title="Обновлять списки из вкладок" />
-            <CheckBoxPreference
-                android:defaultValue="false"
-                android:key="showSubMain"
-                android:summary="@string/requires_application_restart"
-                android:title="Скрыть описание в пункте списка" />
-        </PreferenceCategory>
+        android:title="Списки"
+        app:fragment="org.softeg.slartus.forpdaplus.feature_preferences.fragments.ListsPreferencesFragment"/>
 
-        <PreferenceCategory android:title="Избранное">
-            <CheckBoxPreference
-                android:defaultValue="false"
-                android:key="lists.favorites.load_all"
-                android:summary="Загружать сразу все страницы"
-                android:title="Загружать все" />
-        </PreferenceCategory>
-
-        <PreferenceCategory android:title="Форум">
-            <CheckBoxPreference
-                android:defaultValue="true"
-                android:key="forum.list.show_images"
-                android:title="Отображать картинки" />
-        </PreferenceCategory>
-
-        <PreferenceCategory android:title="Новости">
-            <org.softeg.slartus.forpdaplus.feature_preferences.views.SummaryValueListPreference
-                android:defaultValue="1"
-                android:entries="@array/ConnectTypeArray"
-                android:entryValues="@array/ConnectTypeValues"
-                android:key="news.list.loadimages"
-                android:title="Загружать изображения" />
-
-            <org.softeg.slartus.forpdaplus.feature_preferences.views.SummaryValueListPreference
-                android:defaultValue="full"
-                android:entries="@array/NewsListViewTitles"
-                android:entryValues="@array/NewsListViewValues"
-                android:key="news.list.view"
-                android:title="Вид списка" />
-        </PreferenceCategory>
-    </PreferenceScreen>
 
     <PreferenceScreen
         android:key="system_screen"
