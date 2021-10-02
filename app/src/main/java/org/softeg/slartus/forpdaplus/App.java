@@ -32,6 +32,7 @@ import org.softeg.slartus.forpdanotifyservice.qms.QmsNotifier;
 import org.softeg.slartus.forpdaplus.acra.ACRAReportSenderFactory;
 import org.softeg.slartus.forpdaplus.db.DbHelper;
 import org.softeg.slartus.forpdaplus.feature_preferences.Preferences;
+import org.softeg.slartus.forpdaplus.log.AppTimberTree;
 import org.softeg.slartus.forpdaplus.prefs.PreferencesActivity;
 import org.softeg.slartus.forpdaplus.repositories.ForumsRepository;
 import org.softeg.slartus.forpdaplus.repositories.InternetConnection;
@@ -46,6 +47,7 @@ import io.paperdb.Paper;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import ru.slartus.http.Http;
+import timber.log.Timber;
 
 /**
  * User: slinkin
@@ -103,6 +105,7 @@ public class App extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+        initTimber();
         org.softeg.slartus.forpdaplus.feature_preferences.App.INSTANCE.init(this);
         //TooLargeTool.startLogging(this);//логирование saveinstancestate
         org.softeg.slartus.forpdacommon.FACTORY.init(this);
@@ -139,6 +142,13 @@ public class App extends MultiDexApplication {
         Client.getInstance().checkLoginByCookies();
         InternetConnection.getInstance().subscribeInternetState();
         ForumsRepository.getInstance();
+    }
+
+    private void initTimber(){
+        if (BuildConfig.DEBUG) {
+            Timber.plant(new Timber.DebugTree());
+        }
+        Timber.plant(new AppTimberTree());
     }
 
     @Override

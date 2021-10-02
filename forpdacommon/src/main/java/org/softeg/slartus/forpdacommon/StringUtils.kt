@@ -5,6 +5,9 @@ package org.softeg.slartus.forpdacommon
  */
 
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.os.Build
 import android.text.Html
 import android.text.Spanned
@@ -25,6 +28,13 @@ object StringUtils {
             @Suppress("DEPRECATION")
             return Html.fromHtml(html)
         }
+    }
+
+    @JvmStatic
+    fun copyToClipboard(context: Context, link: String?) {
+        val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val clip = ClipData.newPlainText("url", link)
+        clipboard.setPrimaryClip(clip)
     }
 }
 

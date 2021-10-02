@@ -1,5 +1,7 @@
 package org.softeg.slartus.forpdaplus.classes.common;
 
+import static org.softeg.slartus.forpdacommon.StringUtils.copyToClipboard;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -75,7 +77,7 @@ public class ExtUrl {
 
     public static void copyLinkToClipboard(Context context, String link) {
         link = link.replaceAll("^\\/\\/4pda", "https://4pda");
-        StringUtils.copyToClipboard(context, link);
+        copyToClipboard(context, link);
         Toast.makeText(context, R.string.link_copied_to_buffer, Toast.LENGTH_SHORT).show();
     }
 

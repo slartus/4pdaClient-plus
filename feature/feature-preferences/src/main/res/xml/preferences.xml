@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:project="http://schemas.android.com/apk/res-auto">
+    xmlns:project="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceScreen
         android:key="common"
@@ -538,81 +539,10 @@
             android:title="Альтернативный клиент от Radiation15" />
     </PreferenceScreen>
 
-    <PreferenceScreen
+    <Preference
         android:key="donate_screen"
-        android:title="Помочь проекту">
-        <Preference
-            android:key="Qiwi"
-            android:summary="Перейти на форму выставления счета"
-            android:title="QIWI" />
+        android:title="Помочь проекту"
+        app:fragment="org.softeg.slartus.forpdaplus.feature_preferences.fragments.DonatePreferencesFragment"
+        />
 
-        <Preference
-            android:key="Yandex.money"
-            android:summary="Скопировать в буфер: 41001491859942"
-            android:title="Яндекс-кошелёк" />
-
-        <Preference
-            android:key="WebMoney.moneyZ"
-            android:summary="Скопировать в буфер: Z188582160272"
-            android:title="WebMoney Z" />
-
-        <Preference
-            android:key="WebMoney.moneyR"
-            android:summary="Скопировать в буфер: R391199896701"
-            android:title="WebMoney R" />
-
-        <Preference
-            android:key="WebMoney.moneyU"
-            android:summary="Скопировать в буфер: U177333629317"
-            android:title="WebMoney U" />
-
-        <Preference
-            android:key="Paypal.money"
-            android:summary="Перейти на форму выставления счета"
-            android:title="Paypal" />
-
-        <!--<Preference-->
-        <!--android:key="GooglePlay"-->
-        <!--android:summary="Донейт через google play"-->
-        <!--android:title="Google play" />-->
-
-        <!--<Preference-->
-        <!--android:key="donate.other"-->
-        <!--android:summary="Другие способы"-->
-        <!--android:title="Перейти на страницу помощи проекту" />-->
-        <PreferenceScreen
-            android:key="thnx_4styles_screen"
-            android:summary="Спасибо за стили"
-            android:title="Благодарности Морфию">
-            <Preference
-                android:key="Morfiy.WebMoney.moneyB"
-                android:summary="Скопировать в буфер: B266066430353"
-                android:title="WebMoney B" />
-
-            <Preference
-                android:key="Morfiy.WebMoney.moneyU"
-                android:summary="Скопировать в буфер: U376942372846"
-                android:title="WebMoney U" />
-
-            <Preference
-                android:key="Morfiy.WebMoney.moneyE"
-                android:summary="Скопировать в буфер: E300106725068"
-                android:title="WebMoney E" />
-
-            <Preference
-                android:key="Morfiy.WebMoney.moneyR"
-                android:summary="Скопировать в буфер: R343791846131"
-                android:title="WebMoney R" />
-
-            <Preference
-                android:key="Morfiy.WebMoney.moneyZ"
-                android:summary="Скопировать в буфер: Z349073483817"
-                android:title="WebMoney Z" />
-        </PreferenceScreen>
-        <Preference
-            android:key="Radiation.Yandex.money"
-            android:summary="Скопировать в буфер: 410012865124764"
-            android:title="Яндекс-кошелёк Radiation15" />
-
-    </PreferenceScreen>
 </PreferenceScreen>

@@ -1,5 +1,7 @@
 package org.softeg.slartus.forpdaplus.fragments;
 
+import static org.softeg.slartus.forpdacommon.StringUtils.copyToClipboard;
+
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -226,7 +228,7 @@ public class ForumRulesFragment extends WebViewFragment {
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
-                        StringUtils.copyToClipboard(getContext(), url);
+                        copyToClipboard(getContext(), url);
                         Toast.makeText(getActivity(), R.string.link_copied_to_buffer, Toast.LENGTH_SHORT).show();
                         return true;
                     }

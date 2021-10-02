@@ -20,11 +20,12 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import org.softeg.slartus.forpdaapi.TopicApi;
 import org.softeg.slartus.forpdaapi.devdb.NewDevDbApi;
 import org.softeg.slartus.forpdaapi.search.SearchSettings;
+import org.softeg.slartus.forpdacommon.IntentUtilsKt;
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdacommon.PatternExtensions;
+import org.softeg.slartus.forpdacommon.StringUtils;
 import org.softeg.slartus.forpdacommon.UrlExtensions;
 import org.softeg.slartus.forpdaplus.classes.ForumUser;
-import org.softeg.slartus.forpdaplus.classes.common.StringUtils;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.controls.imageview.ImgViewer;
 import org.softeg.slartus.forpdaplus.devdb.ParentFragment;
@@ -680,12 +681,8 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
                     Uri.parse(url));
             if (is4pdaUrl(url))
                 context.startActivity(Intent.createChooser(intent, context.getString(R.string.open_in)));
-            else if (intent.resolveActivity(context.getPackageManager()) != null) {
-                context.startActivity(intent);
-            } else {
-                StringUtils.copyToClipboard(context, url);
-                Toast.makeText(context, context.getString(R.string.link_copied_to_buffer), Toast.LENGTH_SHORT).show();
-                throw new ActivityNotFoundException();
+            else {
+                IntentUtilsKt.openUrl(context, url);
             }
         } catch (ActivityNotFoundException ex) {
             AppLog.e(context, new NotReportException(context.getString(R.string.no_app_for_link) + ": " + url));

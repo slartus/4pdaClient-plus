@@ -34,6 +34,8 @@ android {
 dependencies {
     api project(':http')
     api project(':hosthelper')
+    implementation project(':core-ui')
+    implementation 'com.jakewharton.timber:timber:5.0.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }

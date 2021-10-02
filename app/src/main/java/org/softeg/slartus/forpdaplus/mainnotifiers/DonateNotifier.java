@@ -8,7 +8,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.common.AppLog;
-import org.softeg.slartus.forpdaplus.prefs.DonateActivity;
+import org.softeg.slartus.forpdaplus.feature_preferences.DonateActivity;
 
 /*
  * Created by slartus on 03.06.2014.

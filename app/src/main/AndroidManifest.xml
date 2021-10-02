@@ -216,7 +216,7 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="Настройки списка" />
         <activity
-            android:name=".prefs.DonateActivity"
+            android:name=".feature_preferences.DonateActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="Помощь проекту"
             android:launchMode="singleTop" />
