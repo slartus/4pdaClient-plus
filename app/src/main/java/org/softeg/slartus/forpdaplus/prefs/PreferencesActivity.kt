@@ -569,8 +569,8 @@ class PreferencesActivity : BasePreferencesActivity(),
                 MaterialDialog.Builder(requireContext())
                     .title(R.string.pick_accent_color)
                     .items(
-                        App.getContext().getString(R.string.blue),
                         App.getContext().getString(R.string.pink),
+                        App.getContext().getString(R.string.blue),
                         App.getContext().getString(R.string.gray)
                     )
                     .itemsCallbackSingleChoice(position) { _: MaterialDialog?, _: View?, which: Int, _: CharSequence? ->

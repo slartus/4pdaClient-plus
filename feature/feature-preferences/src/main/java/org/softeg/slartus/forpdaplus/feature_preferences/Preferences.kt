@@ -1,7 +1,6 @@
 package org.softeg.slartus.forpdaplus.feature_preferences
 
 import android.net.Uri
-import android.text.TextUtils
 import org.softeg.slartus.forpdacommon.Connectivity.isConnectedWifi
 import org.softeg.slartus.forpdacommon.ExtPreferences
 import org.softeg.slartus.forpdaplus.feature_preferences.App.getInstance
@@ -15,6 +14,9 @@ import java.io.File
 import java.util.*
 
 object Preferences {
+    private const val DEFAULT_FONT_SIZE = 16
+    private const val MAX_FONT_SIZE = 72
+
     private val isLoadImages: Boolean
         get() {
             val loadImagesType =
@@ -32,8 +34,8 @@ object Preferences {
 
     @JvmStatic
     fun getFontSize(prefix: String): Int {
-        val res = ExtPreferences.parseInt(getPreferences(), "$prefix.FontSize", 16)
-        return res.coerceIn(1, 72)
+        val res = ExtPreferences.parseInt(getPreferences(), "$prefix.FontSize", DEFAULT_FONT_SIZE)
+        return res.coerceIn(1, MAX_FONT_SIZE)
     }
 
     @JvmStatic
@@ -43,6 +45,9 @@ object Preferences {
     }
 
     object Lists {
+
+        private const val MAX_LAST_ACTIONS_COUNT = 5
+
         @JvmStatic
         val scrollByButtons: Boolean by appPreference("lists.scroll_by_buttons", false)
 
@@ -51,25 +56,22 @@ object Preferences {
 
         @JvmStatic
         fun addLastAction(name: String) {
-            val lastActions = getPreferences()!!
-                .getString("lists.last_actions", "")!!.split("\\|").toTypedArray()
-            val newValue = StringBuilder("$name|")
-            var max = 5
-            for (nm in lastActions) {
-                if (TextUtils.isEmpty(nm)) continue
-                if (nm == name) continue
-                newValue.append(nm).append("|")
-                max--
-                if (max == 0) break
-            }
-            getPreferences()!!
-                .edit().putString("lists.last_actions", newValue.toString()).apply()
+            val lastActions =
+                listOf(name) +
+                        (getPreferences()
+                            ?.getString("lists.last_actions", "")
+                            ?.split("|")
+                            ?.filter { it != name }
+                            ?.take(MAX_LAST_ACTIONS_COUNT - 1) ?: emptyList())
+
+            getPreferences()?.edit()?.putString("lists.last_actions", lastActions.joinToString("|"))
+                ?.apply()
         }
 
         @JvmStatic
         val lastActions: Array<String>
             get() = getPreferences()!!
-                .getString("lists.last_actions", "")!!.split("\\|").toTypedArray()
+                .getString("lists.last_actions", "")!!.split("|").toTypedArray()
 
         @JvmStatic
         val isRefresh: Boolean by appPreference("lists.refresh", true)
@@ -79,6 +81,8 @@ object Preferences {
     }
 
     object List {
+        private const val DEFAULT_LIST_SORT = "sortorder.asc"
+
         @JvmStatic
         fun setListSort(listName: String, value: String?) {
             getPreferences()!!
@@ -87,7 +91,7 @@ object Preferences {
 
         @JvmStatic
         fun defaultListSort(): String {
-            return "sortorder.asc"
+            return DEFAULT_LIST_SORT
         }
 
         @JvmStatic
@@ -116,6 +120,8 @@ object Preferences {
     }
 
     object Topic {
+        private const val DEFAULT_HISTORY_LIMIT = 5
+
         @JvmStatic
         val readersAndWriters: Boolean by appPreference("theme.ShowReadersAndWriters", false)
 
@@ -142,9 +148,11 @@ object Preferences {
             get() = getFontSize("theme")
 
         @JvmStatic
-        val historyLimit: Int by appPreference("topic.history_limit", 5)
+        val historyLimit: Int by appPreference("topic.history_limit", DEFAULT_HISTORY_LIMIT)
 
         object Post {
+            private const val MAX_FAV_EMOTICS = 9
+
             @JvmStatic
             var enableEmotics: Boolean by appPreference("topic.post.enableemotics", true)
 
@@ -153,22 +161,20 @@ object Preferences {
 
             @JvmStatic
             fun addEmoticToFavorites(name1: String) {
-                var name = name1
-                name = name.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
-                    .replace("]", "&#93;").replace("[", "&#91;")
-                val favoritesEmotics = emoticFavorites
-                val newlist = HashSet<String>()
-                newlist.add(name)
-                var max = 9
-                for (nm in favoritesEmotics!!) {
-                    if (TextUtils.isEmpty(nm)) continue
-                    if (nm == name) continue
-                    newlist.add(nm)
-                    max--
-                    if (max == 0) break
-                }
+                val name = name1
+                    .replace("&", "&amp;")
+                    .replace("<", "&lt;")
+                    .replace(">", "&gt;")
+                    .replace("]", "&#93;")
+                    .replace("[", "&#91;")
+
+                val favoritesEmotics =
+                    listOf(name) +
+                            (emoticFavorites
+                                ?.filter { it != name }
+                                ?.take(MAX_FAV_EMOTICS - 1) ?: emptyList())
                 getPreferences()!!
-                    .edit().putStringSet("topic.post.emotics_favorites", newlist).apply()
+                    .edit().putStringSet("topic.post.emotics_favorites", favoritesEmotics.toHashSet()).apply()
             }
 
             @JvmStatic
