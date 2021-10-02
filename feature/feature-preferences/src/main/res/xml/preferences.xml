@@ -459,7 +459,7 @@
             <Preference
                 android:enabled="false"
                 android:key="notifiers.service.sound"
-                android:title="Выбор мелодии" />
+                android:title="@string/sound_choose" />
         </PreferenceScreen>
 
         <PreferenceScreen

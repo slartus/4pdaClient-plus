@@ -479,4 +479,5 @@
     <string name="topic_view">View topic</string>
     <string name="spoil_first_post_summary">Hide first post pages spoiler</string>
     <string name="spoil_first_post_title">Hide the first post</string>
+    <string name="sound_choose">Select ringtone</string>
 </resources>
