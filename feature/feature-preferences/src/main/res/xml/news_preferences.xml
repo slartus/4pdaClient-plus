@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="Новости"
+    >
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="news.ConfirmSend"
+        android:summary="Подтверждать отправку сообщения"
+        android:title="Подтверждать отправку" />
+    <org.softeg.slartus.forpdaplus.feature_preferences.views.SummaryValueListPreference
+        android:defaultValue="1"
+        android:entries="@array/ConnectTypeArray"
+        android:entryValues="@array/ConnectTypeValues"
+        android:key="news.LoadsImages"
+        android:title="Загружать картинки" />
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="news.UseVolumesScroll"
+        android:summary="Скроллить страницу кнопками громкости"
+        android:title="Скролл громкостью" />
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="news.KeepScreenOn"
+        android:title="Не выключать экран" />
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="news.FullScreen"
+        android:summary="Просмотр новости во весь экран"
+        android:title="Во весь экран" />
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="loadNewsComment"
+        android:summary="Ускорит отображение страницы"
+        android:title="Не загружать комментарии" />
+</PreferenceScreen>

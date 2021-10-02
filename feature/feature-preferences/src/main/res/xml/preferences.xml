@@ -168,40 +168,10 @@
         <!--android:title="Fullscreen" />-->
     </PreferenceScreen>
 
-    <PreferenceScreen
+    <Preference
         android:key="news_screen"
-        android:title="Новости">
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="news.ConfirmSend"
-            android:summary="Подтверждать отправку сообщения"
-            android:title="Подтверждать отправку" />
-        <org.softeg.slartus.forpdaplus.feature_preferences.views.SummaryValueListPreference
-            android:defaultValue="1"
-            android:entries="@array/ConnectTypeArray"
-            android:entryValues="@array/ConnectTypeValues"
-            android:key="news.LoadsImages"
-            android:title="Загружать картинки" />
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="news.UseVolumesScroll"
-            android:summary="Скроллить страницу кнопками громкости"
-            android:title="Скролл громкостью" />
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="news.KeepScreenOn"
-            android:title="Не выключать экран" />
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="news.FullScreen"
-            android:summary="Просмотр новости во весь экран"
-            android:title="Во весь экран" />
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="loadNewsComment"
-            android:summary="Ускорит отображение страницы"
-            android:title="Не загружать комментарии" />
-    </PreferenceScreen>
+        android:title="Новости"
+        app:fragment="org.softeg.slartus.forpdaplus.feature_preferences.fragments.NewsPreferencesFragment"/>
 
     <PreferenceScreen
         android:key="lists_screen"
