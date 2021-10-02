@@ -2,7 +2,6 @@ package org.softeg.slartus.forpdaplus.prefs
 
 import android.app.Activity
 import android.app.TimePickerDialog
-import android.content.ActivityNotFoundException
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
@@ -222,13 +221,13 @@ class PrefsFragment : PreferenceFragmentCompat() {
     private fun setLoading(progress: Boolean) {
         if (!isAdded) return
 
-        val PROGRESS_TAG = "PROGRESS_TAG"
-        val fragment = childFragmentManager.findFragmentByTag(PROGRESS_TAG)
+        val progressTag = "PROGRESS_TAG"
+        val fragment = childFragmentManager.findFragmentByTag(progressTag)
         if (fragment != null && !progress) {
             (fragment as ProgressDialog).dismissAllowingStateLoss()
             childFragmentManager.executePendingTransactions()
         } else if (fragment == null && progress) {
-            ProgressDialog().show(childFragmentManager, PROGRESS_TAG)
+            ProgressDialog().show(childFragmentManager, progressTag)
             childFragmentManager.executePendingTransactions()
         }
     }
@@ -412,6 +411,23 @@ class PrefsFragment : PreferenceFragmentCompat() {
             .show()
     }
 
+    private val takePicture =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val selectedImageUri = result?.data?.data
+                val selectedImagePath = FilePath.getPath(App.getContext(), selectedImageUri)
+                if (selectedImagePath != null) App.getInstance().preferences
+                    .edit()
+                    .putString("userInfoBg", selectedImagePath)
+                    .putBoolean("isUserBackground", true)
+                    .apply() else Toast.makeText(
+                    activity,
+                    "Не могу прикрепить файл",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+
     private fun pickUserBackground() {
         MaterialDialog.Builder(requireContext())
             .content(R.string.pick_image)
@@ -419,19 +435,10 @@ class PrefsFragment : PreferenceFragmentCompat() {
             .negativeText(R.string.cancel)
             .neutralText(R.string.reset)
             .onPositive { _: MaterialDialog?, _: DialogAction? ->
-                try {
-                    val intent = Intent(Intent.ACTION_GET_CONTENT)
-                    intent.type = "image/*"
-                    startActivityForResult(intent, MY_INTENT_CLICK)
-                } catch (ex: ActivityNotFoundException) {
-                    Toast.makeText(
-                        activity,
-                        R.string.no_app_for_get_image_file,
-                        Toast.LENGTH_LONG
-                    ).show()
-                } catch (ex: Exception) {
-                    AppLog.e(activity, ex)
+                val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
+                    type = "image/*"
                 }
+                takePicture.launch(intent)
             }
             .onNeutral { _: MaterialDialog?, _: DialogAction? ->
                 App.getInstance().preferences
@@ -774,34 +781,6 @@ class PrefsFragment : PreferenceFragmentCompat() {
         }
     }
 
-    /*private int PICK_IMAGE_REQUEST = 1;
-    private void pickUserBackground() {
-
-        try {
-            Intent intent = new Intent();
-// Show only images, no videos or anything else
-            intent.setType("image/ *");
-            intent.setAction(Intent.ACTION_GET_CONTENT);
-// Always show the chooser (if there are multiple options available)
-            startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
-
-
-        } catch (Exception ex) {
-            AppLog.e(getActivity(), ex);
-        }
-
-    }
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            Uri uri = data.getData();
-            App.getInstance().getPreferences()
-                    .edit()
-                    .putString("userBackground", uri.toString())
-                    .commit();
-        }
-    }*/
     private fun showStylesDialog() {
         try {
             val currentValue = AppTheme.currentTheme
@@ -964,7 +943,7 @@ class PrefsFragment : PreferenceFragmentCompat() {
             .negativeText(getString(R.string.no))
             .onPositive { _: MaterialDialog?, _: DialogAction? ->
                 try {
-                    val cookieFilePath=Preferences.cookieFilePath
+                    val cookieFilePath = Preferences.cookieFilePath
                     val f = File(cookieFilePath)
                     if (!f.exists()) {
                         Toast.makeText(

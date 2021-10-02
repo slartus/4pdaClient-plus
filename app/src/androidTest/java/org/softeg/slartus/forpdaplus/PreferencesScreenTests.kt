@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.annotation.StringRes
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.Espresso.pressBack
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItem
 import androidx.test.espresso.matcher.ViewMatchers.*
@@ -12,11 +13,38 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import org.junit.Assert.assertEquals
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.softeg.slartus.forpdaplus.feature_preferences.preferences
 import org.softeg.slartus.forpdaplus.prefs.PreferencesActivity
+import android.app.Activity
+import android.app.Instrumentation
+
+import androidx.test.espresso.intent.Intents.intending
+
+import android.content.Intent
+import android.net.Uri
+import android.os.Bundle
+import android.speech.RecognizerIntent
+import androidx.test.espresso.intent.Intents.intended
+import androidx.test.espresso.intent.matcher.IntentMatchers.*
+import org.hamcrest.CoreMatchers.*
+import java.io.File
+import androidx.test.espresso.intent.matcher.IntentMatchers.isInternal
+
+import androidx.test.espresso.intent.Intents.intending
+import androidx.test.espresso.intent.matcher.IntentMatchers
+import android.provider.MediaStore
+import androidx.test.espresso.intent.Intents
+
+import androidx.test.espresso.intent.Intents.intending
+
+import android.graphics.BitmapFactory
+import androidx.test.platform.app.InstrumentationRegistry
+import org.junit.After
+import ru.slartus.http.toMediaType
 
 @RunWith(AndroidJUnit4::class)
 @LargeTest
@@ -30,11 +58,8 @@ class PreferencesScreenTests {
     }
 
     @Test
-    fun test() {
-
-        // val scenario = launchFragmentInContainer<PreferencesActivity.PrefsFragment>()
+    fun overallTest() {
         appearanceClick(R.string.appearance)
-
         chooseThemeTests()
 
         appearanceClick(R.string.pick_color_with_pencil)
@@ -48,6 +73,14 @@ class PreferencesScreenTests {
 
         appearanceClick(R.string.user_background_title)
         onView(withText(R.string.reset)).perform(click())
+        pressBack()
+    }
+
+    @Test
+    fun sidePanelTest() {
+        appearanceClick(R.string.appearance)
+
+        userBackgroundTest()
     }
 
     private fun appearanceClick(@StringRes title: Int) {
@@ -104,5 +137,34 @@ class PreferencesScreenTests {
                 accentColorTest(it)
             }
         accentColorTest(names[0])
+    }
+
+    @Before
+    fun stubCameraIntent() {
+        // https://github.com/android/testing-samples/blob/main/ui/espresso/IntentsAdvancedSample/app/src/androidTest/java/com/example/android/testing/espresso/intents/AdvancedSample/ImageViewerActivityTest.java
+        Intents.init()
+        val result = createImageCaptureActivityResultStub()
+
+        intending(allOf(hasAction(Intent.ACTION_GET_CONTENT))).respondWith(result)
+    }
+
+    @After
+    fun tearDown() {
+        Intents.release()
+    }
+
+    private fun userBackgroundTest() {
+        appearanceClick(R.string.user_background_title)
+        onView(withText(R.string.choose)).perform(click())
+
+    }
+
+    private fun createImageCaptureActivityResultStub(): Instrumentation.ActivityResult {
+        val resultData = Intent()
+        resultData.data =
+            Uri.fromFile(File("/storage/emulated/0/save/current_avatar-1001673458.png"))
+
+        // Create the ActivityResult with the Intent.
+        return Instrumentation.ActivityResult(Activity.RESULT_OK, resultData)
     }
 }

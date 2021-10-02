@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.text.TextUtils
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceScreen
 import org.softeg.slartus.forpdaplus.App
@@ -59,12 +58,11 @@ class PreferencesActivity : BasePreferencesActivity(),
 
     companion object {
 
-
         @JvmStatic
         fun getStylesList(
             context: Context,
             newStyleNames: ArrayList<CharSequence>,
-            newstyleValues: ArrayList<CharSequence>
+            newStyleValues: ArrayList<CharSequence>
         ) {
             var xmlPath: String
             var cssStyle: CssStyle
@@ -78,10 +76,10 @@ class PreferencesActivity : BasePreferencesActivity(),
                 cssStyle = CssStyle.parseStyleFromAssets(context, xmlPath)
                 if (cssStyle.ExistsInfo) styleName = cssStyle.Title
                 newStyleNames.add(styleName)
-                newstyleValues.add(styleValue)
+                newStyleValues.add(styleValue)
             }
             val file = File(Preferences.System.systemDir + "styles/")
-            getStylesList(newStyleNames, newstyleValues, file)
+            getStylesList(newStyleNames, newStyleValues, file)
         }
 
         private fun getStylesList(
