@@ -31,6 +31,7 @@ import org.softeg.slartus.forpdanotifyservice.favorites.FavoritesNotifier;
 import org.softeg.slartus.forpdanotifyservice.qms.QmsNotifier;
 import org.softeg.slartus.forpdaplus.acra.ACRAReportSenderFactory;
 import org.softeg.slartus.forpdaplus.db.DbHelper;
+import org.softeg.slartus.forpdaplus.feature_preferences.Preferences;
 import org.softeg.slartus.forpdaplus.prefs.PreferencesActivity;
 import org.softeg.slartus.forpdaplus.repositories.ForumsRepository;
 import org.softeg.slartus.forpdaplus.repositories.InternetConnection;
@@ -207,7 +208,7 @@ public class App extends MultiDexApplication {
             float timeout = Math.max(ExtPreferences.parseFloat(App.getInstance().getPreferences(),
                     QmsNotifier.TIME_OUT_KEY, 5), 1);
 
-            QmsNotifier.restartTask(INSTANCE, PreferencesActivity.getCookieFilePath(), timeout);
+            QmsNotifier.restartTask(INSTANCE, Preferences.getCookieFilePath(), timeout);
         } catch (Throwable e) {
             e.printStackTrace();
         }
@@ -272,7 +273,7 @@ public class App extends MultiDexApplication {
             float timeout = Math.max(ExtPreferences.parseFloat(App.getInstance().getPreferences(),
                     FavoritesNotifier.TIME_OUT_KEY, 5), 1);
 
-            FavoritesNotifier.restartTask(INSTANCE, PreferencesActivity.getCookieFilePath(), timeout);
+            FavoritesNotifier.restartTask(INSTANCE, Preferences.getCookieFilePath(), timeout);
         } catch (Throwable e) {
             e.printStackTrace();
         }

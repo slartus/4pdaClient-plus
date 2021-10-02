@@ -238,7 +238,7 @@ class PrefsFragment : PreferenceFragmentCompat() {
             (activity?.getSystemService(AppCompatActivity.LAYOUT_INFLATER_SERVICE) as LayoutInflater)
         val view = inflater.inflate(R.layout.input_notes_remote_url_layout, null as ViewGroup?)
         val editText = view.findViewById<EditText>(R.id.edit_text)
-        editText.setText(Preferences.Notes.remoteUrl ?: "")
+        editText.setText(Preferences.Notes.remoteUrl)
         MaterialDialog.Builder(requireContext())
             .title(R.string.notes_remote_url)
             .customView(view, true)
@@ -964,19 +964,20 @@ class PrefsFragment : PreferenceFragmentCompat() {
             .negativeText(getString(R.string.no))
             .onPositive { _: MaterialDialog?, _: DialogAction? ->
                 try {
-                    val f = File(PreferencesActivity.cookieFilePath)
+                    val cookieFilePath=Preferences.cookieFilePath
+                    val f = File(cookieFilePath)
                     if (!f.exists()) {
                         Toast.makeText(
                             activity, getString(R.string.CookiesFileNotFound) +
-                                    ": " + PreferencesActivity.cookieFilePath, Toast.LENGTH_LONG
+                                    ": " + cookieFilePath, Toast.LENGTH_LONG
                         ).show()
                     }
                     if (f.delete()) Toast.makeText(
                         activity, getString(R.string.CookiesFileDeleted) +
-                                ": " + PreferencesActivity.cookieFilePath, Toast.LENGTH_LONG
+                                ": " + cookieFilePath, Toast.LENGTH_LONG
                     ).show() else Toast.makeText(
                         activity, getString(R.string.FailedDeleteCookies) +
-                                ": " + PreferencesActivity.cookieFilePath, Toast.LENGTH_LONG
+                                ": " + cookieFilePath, Toast.LENGTH_LONG
                     ).show()
                 } catch (ex: Exception) {
                     AppLog.e(activity, ex)

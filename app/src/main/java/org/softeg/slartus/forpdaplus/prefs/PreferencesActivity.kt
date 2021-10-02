@@ -1,11 +1,8 @@
 package org.softeg.slartus.forpdaplus.prefs
 
 import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
-import android.media.RingtoneManager
-import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
 import androidx.preference.PreferenceFragmentCompat
@@ -61,16 +58,7 @@ class PreferencesActivity : BasePreferencesActivity(),
     }
 
     companion object {
-        private val appCookiesPath: String
-            get() = Preferences.System.systemDir + "4pda_cookies"
 
-        @JvmStatic
-        val cookieFilePath: String
-            get() {
-                var res = App.getInstance().preferences.getString("cookies.path", "") ?: ""
-                if (TextUtils.isEmpty(res)) res = appCookiesPath
-                return res.replace("/", File.separator)
-            }
 
         @JvmStatic
         fun getStylesList(
@@ -98,26 +86,27 @@ class PreferencesActivity : BasePreferencesActivity(),
 
         private fun getStylesList(
             newStyleNames: ArrayList<CharSequence>,
-            newstyleValues: ArrayList<CharSequence>, file: File
+            newStyleValues: ArrayList<CharSequence>, file: File
         ) {
             var cssPath: String
             var xmlPath: String
             var cssStyle: CssStyle
             if (file.exists()) {
-                val cssFiles = file.listFiles() ?: return
-                for (cssFile in cssFiles) {
-                    if (cssFile.isDirectory) {
-                        getStylesList(newStyleNames, newstyleValues, cssFile)
-                        continue
+                file.listFiles()
+                    ?.forEach { cssFile ->
+                        if (cssFile.isDirectory) {
+                            getStylesList(newStyleNames, newStyleValues, cssFile)
+                        } else {
+                            cssPath = cssFile.path
+                            if (cssPath.lowercase(Locale.getDefault()).endsWith(".css")) {
+                                xmlPath = cssPath.replace(".css", ".xml")
+                                cssStyle = CssStyle.parseStyleFromFile(xmlPath)
+                                val title = cssStyle.Title
+                                newStyleNames.add(title)
+                                newStyleValues.add(cssPath)
+                            }
+                        }
                     }
-                    cssPath = cssFile.path
-                    if (!cssPath.lowercase(Locale.getDefault()).endsWith(".css")) continue
-                    xmlPath = cssPath.replace(".css", ".xml")
-                    cssStyle = CssStyle.parseStyleFromFile(xmlPath)
-                    val title = cssStyle.Title
-                    newStyleNames.add(title)
-                    newstyleValues.add(cssPath)
-                }
             }
         }
 

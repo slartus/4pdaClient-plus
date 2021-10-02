@@ -1,6 +1,7 @@
 package org.softeg.slartus.forpdaplus.feature_preferences
 
 import android.net.Uri
+import android.text.TextUtils
 import org.softeg.slartus.forpdacommon.Connectivity.isConnectedWifi
 import org.softeg.slartus.forpdacommon.ExtPreferences
 import org.softeg.slartus.forpdaplus.feature_preferences.App.getInstance
@@ -24,6 +25,17 @@ object Preferences {
             return if (loadImagesType == 2) {
                 isConnectedWifi(getInstance())
             } else loadImagesType == 1
+        }
+
+    private val appCookiesPath: String
+        get() = System.systemDir + "4pda_cookies"
+
+    @JvmStatic
+    val cookieFilePath: String
+        get() {
+            var res = getPreferences()?.getString("cookies.path", "") ?: ""
+            if (TextUtils.isEmpty(res)) res = appCookiesPath
+            return res.replace("/", File.separator)
         }
 
     @JvmStatic
