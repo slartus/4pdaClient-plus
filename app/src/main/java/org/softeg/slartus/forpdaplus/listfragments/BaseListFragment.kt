@@ -24,6 +24,7 @@ import org.softeg.slartus.forpdaplus.controls.ListViewLoadMoreFooter
 import org.softeg.slartus.forpdaplus.fragments.GeneralFragment
 import org.softeg.slartus.forpdaplus.listfragments.adapters.ListAdapter
 import org.softeg.slartus.forpdaplus.feature_preferences.Preferences
+import org.softeg.slartus.forpdaplus.feature_preferences.Preferences.List.showSubMain
 import org.softeg.slartus.forpdaplus.repositories.UserInfoRepository
 import java.util.*
 import kotlin.math.max
@@ -169,7 +170,7 @@ abstract class BaseListFragment : BaseBrickFragment(), AdapterView.OnItemClickLi
     }
 
     protected open fun createAdapter(): BaseAdapter {
-        return ListAdapter(activity!!, mData, GeneralFragment.getPreferences().getBoolean("showSubMain", false))
+        return ListAdapter(requireActivity(), mData, showSubMain)
     }
 
     protected fun setLoading(loading: Boolean?) {

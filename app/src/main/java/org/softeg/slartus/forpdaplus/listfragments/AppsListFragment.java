@@ -28,6 +28,7 @@ import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.db.ApplicationRelationsTable;
 import org.softeg.slartus.forpdaplus.db.ApplicationsDbHelper;
 import org.softeg.slartus.forpdaplus.db.DbHelper;
+import org.softeg.slartus.forpdaplus.feature_preferences.Preferences;
 import org.softeg.slartus.forpdaplus.listfragments.adapters.ListAdapter;
 import org.softeg.slartus.hosthelper.HostHelper;
 
@@ -46,7 +47,7 @@ public class AppsListFragment extends TopicsListFragment {
 
     @Override
     protected BaseAdapter createAdapter() {
-        return new ListAdapter(getActivity(), getMData(), getPreferences().getBoolean("showSubMain", false));
+        return new ListAdapter(getActivity(), getMData(), Preferences.List.getShowSubMain());
     }
 
     @Override

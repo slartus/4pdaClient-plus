@@ -36,6 +36,7 @@ import org.softeg.slartus.forpdaplus.listfragments.next.forum.ForumFragment.Comp
 import org.softeg.slartus.forpdaplus.listtemplates.FavoritesBrickInfo
 import org.softeg.slartus.forpdaplus.listtemplates.NotesBrickInfo
 import org.softeg.slartus.forpdaplus.feature_preferences.Preferences
+import org.softeg.slartus.forpdaplus.feature_preferences.Preferences.List.showSubMain
 import org.softeg.slartus.forpdaplus.prefs.TopicsListPreferencesActivity
 import org.softeg.slartus.forpdaplus.prefs.TopicsPreferenceFragment
 import org.softeg.slartus.forpdaplus.repositories.InternetConnection
@@ -307,7 +308,7 @@ abstract class TopicsListFragment : BaseTaskListFragment() {
     }
 
     override fun createAdapter(): BaseAdapter {
-        return SortedListAdapter(activity, mData, getPreferences().getBoolean("showSubMain", false))
+        return SortedListAdapter(activity, mData, showSubMain)
     }
 
     private val comparator: Comparator<in IListItem>

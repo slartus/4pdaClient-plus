@@ -113,6 +113,8 @@ object Preferences {
         }
 
         val startForumId: String? by appPreference("Forum.start_forum_id", null)
+        @JvmStatic
+        val showSubMain: Boolean by appPreference("showSubMain", false)
 
         fun setStartForum(id: String?, title: String?) {
             getPreferences()?.edit()
