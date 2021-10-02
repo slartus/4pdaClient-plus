@@ -43,13 +43,10 @@ class ForumFragment : GeneralFragment() {
     private var data = createListData()
     private var mSearchSetting = SearchSettingsDialogFragment.createForumSearchSettings()
 
-
     private var mAdapter: ForumsAdapter? = null
     private var mForumId: String? = null
 
-    private var lastImageDownload =
-        MainActivity.getPreferences().getBoolean("forum.list.show_images", true)
-
+    private var lastImageDownload = Preferences.Forums.isShowImages
 
     private var mTitle: String? = null
     private var mName: String? = null
@@ -165,13 +162,11 @@ class ForumFragment : GeneralFragment() {
         removeArrow()
         MainActivity.searchSettings = mSearchSetting
 
-        if (lastImageDownload == MainActivity.getPreferences()
-                .getBoolean("forum.list.show_images", true)
+        if (lastImageDownload == Preferences.Forums.isShowImages
         ) {
             mAdapter?.notifyDataSetChangedWithLayout()
             listView?.refreshDrawableState()
-            lastImageDownload =
-                MainActivity.getPreferences().getBoolean("forum.list.show_images", true)
+            lastImageDownload =Preferences.Forums.isShowImages
         }
     }
 
@@ -213,7 +208,6 @@ class ForumFragment : GeneralFragment() {
                         } catch (ex1: Exception) {
                             AppLog.e(activity, ex1)
                         }
-
 
                     }
                 }.start()
@@ -274,11 +268,9 @@ class ForumFragment : GeneralFragment() {
 
     }
 
-
     private fun setLoading(@Suppress("UNUSED_PARAMETER") loading: Boolean?) {
         try {
             if (activity == null) return
-
 
             //            if (loading) {
             //                setEmptyText("Загрузка..");
@@ -350,7 +342,6 @@ class ForumFragment : GeneralFragment() {
                 ForumTopicsListFragment.showForumTopicsList(forum.id, forum.title)
             }
 
-
         }, object : ForumsAdapter.OnLongClickListener {
             private fun show(id: String?) {
                 ExtUrl.showSelectActionDialog(
@@ -407,7 +398,6 @@ class ForumFragment : GeneralFragment() {
         return false
     }
 
-
     class ForumBranch : Serializable {
         var error: Throwable? = null
 
@@ -442,7 +432,6 @@ class ForumFragment : GeneralFragment() {
         private const val SCROLL_POSITION_KEY = "SCROLL_POSITION_KEY"
         const val FORUM_ID_KEY = "FORUM_ID_KEY"
         const val FORUM_TITLE_KEY = "FORUM_TITLE_KEY"
-
 
         const val NAME_KEY = "NAME_KEY"
         const val TITLE_KEY = "TITLE_KEY"

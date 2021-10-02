@@ -46,7 +46,7 @@ public class NewsListAdapter extends BaseAdapter {
     }
 
     public static int getNewsListViewId() {
-        if ("medium".equals(App.getInstance().getPreferences().getString("news.list.view", "full"))) {
+        if ("medium".equals(Preferences.News.List.getListView())) {
             return R.layout.item_news_medium;
         }
         return R.layout.item_news;

@@ -113,6 +113,7 @@ object Preferences {
         }
 
         val startForumId: String? by appPreference("Forum.start_forum_id", null)
+
         @JvmStatic
         val showSubMain: Boolean by appPreference("showSubMain", false)
 
@@ -130,6 +131,7 @@ object Preferences {
     }
 
     object Forums {
+        @JvmStatic
         val isShowImages: Boolean by appPreference("forum.list.show_images", true)
     }
 
@@ -188,7 +190,9 @@ object Preferences {
                                 ?.filter { it != name }
                                 ?.take(MAX_FAV_EMOTICS - 1) ?: emptyList())
                 getPreferences()!!
-                    .edit().putStringSet("topic.post.emotics_favorites", favoritesEmotics.toHashSet()).apply()
+                    .edit()
+                    .putStringSet("topic.post.emotics_favorites", favoritesEmotics.toHashSet())
+                    .apply()
             }
 
             @JvmStatic
@@ -283,6 +287,9 @@ object Preferences {
             @JvmStatic
             val isLoadImages: Boolean
                 get() = Preferences.isLoadImages
+
+            @JvmStatic
+            val listView: String by appPreference("news.list.view", "full")
         }
     }
 
