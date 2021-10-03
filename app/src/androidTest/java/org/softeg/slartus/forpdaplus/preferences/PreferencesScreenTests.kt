@@ -59,6 +59,48 @@ class PreferencesScreenTests {
 
         webViewFontTest()
 
+        checkBoxPreferenceTest(
+            context,
+            R.string.toolbar_text_scrolling,
+            "titleMarquee",
+            false
+        )
+
+        checkBoxPreferenceTest(
+            context,
+            R.string.square_avatars,
+            "isSquareAvarars",
+            false
+        )
+
+        checkBoxPreferenceTest(
+            context,
+            R.string.statusbar_fake_title,
+            "statusbarFake",
+            false
+        )
+
+        checkBoxPreferenceTest(
+            context,
+            R.string.old_indicator_title,
+            "oldIndicator",
+            false
+        )
+
+        checkBoxPreferenceTest(
+            context,
+            R.string.colored_nav_bar_title,
+            "coloredNavBar",
+            true
+        )
+
+        checkBoxPreferenceTest(
+            context,
+            R.string.pencil_in_actionbar,
+            "pancilInActionBar",
+            false
+        )
+
         appearanceClick(R.string.user_background_title)
         onView(withText(R.string.reset)).perform(click())
         pressBack()

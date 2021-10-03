@@ -24,10 +24,10 @@ fun appearanceClick(@StringRes title: Int) {
 fun checkBoxPreferenceTest(context: Context, @StringRes title: Int, key: String, default: Boolean) {
     val initValue = context.preferences.getBoolean(key, default)
 
-    onView(withText(title)).perform(click())
+    appearanceClick(title)
     Assert.assertEquals(context.preferences.getBoolean(key, default), !initValue)
 
-    onView(withText(title)).perform(click())
+    appearanceClick(title)
     Assert.assertEquals(context.preferences.getBoolean(key, default), initValue)
 }
 
