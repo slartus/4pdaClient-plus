@@ -1,4 +1,4 @@
-package org.softeg.slartus.forpdaplus.styles;
+package org.softeg.slartus.forpdaplus.core_ui;
 
 /**
  * Created by slinkin on 17.06.13.

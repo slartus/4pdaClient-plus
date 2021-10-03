@@ -4,14 +4,12 @@ import android.app.Activity
 import android.app.TimePickerDialog
 import android.content.DialogInterface
 import android.content.Intent
-import android.graphics.Color
 import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.text.*
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
@@ -25,26 +23,19 @@ import org.softeg.slartus.forpdacommon.ExternalStorage
 import org.softeg.slartus.forpdacommon.FileUtils
 import org.softeg.slartus.forpdacommon.NotReportException
 import org.softeg.slartus.forpdaplus.App
-import org.softeg.slartus.forpdaplus.AppTheme
 import org.softeg.slartus.forpdaplus.IntentActivity
 import org.softeg.slartus.forpdaplus.R
-import org.softeg.slartus.forpdaplus.classes.FilePath
 import org.softeg.slartus.forpdaplus.common.AppLog
 import org.softeg.slartus.forpdaplus.controls.OpenFileDialog
-import org.softeg.slartus.forpdaplus.core_ui.AppColors
 import org.softeg.slartus.forpdaplus.db.NotesDbHelper
 import org.softeg.slartus.forpdaplus.db.NotesTable
 import org.softeg.slartus.forpdaplus.feature_preferences.Dialogs
 import org.softeg.slartus.forpdaplus.feature_preferences.Preferences
-import org.softeg.slartus.forpdaplus.feature_preferences.fragments.ColorPickerDialogFragment
 import org.softeg.slartus.forpdaplus.fragments.base.ProgressDialog
 import org.softeg.slartus.forpdaplus.fragments.topic.ThemeFragment
-import org.softeg.slartus.forpdaplus.listtemplates.ListCore
 import org.softeg.slartus.forpdaplus.mainnotifiers.ForPdaVersionNotifier
 import org.softeg.slartus.forpdaplus.mainnotifiers.NotifiersManager
 import org.softeg.slartus.forpdaplus.repositories.NotesRepository
-import org.softeg.slartus.forpdaplus.styles.CssStyle
-import org.softeg.slartus.forpdaplus.styles.StyleInfoActivity
 import org.softeg.slartus.hosthelper.HostHelper
 import java.io.BufferedReader
 import java.io.File
@@ -84,28 +75,13 @@ class PrefsFragment : PreferenceFragmentCompat() {
                 showTheme("271502")
                 return true
             }
-            "appstyle" -> {
-                showStylesDialog()
-                return true
-            }
-            "accentColor" -> {
-                showAccentColorDialog()
-                return true
-            }
+
             "mainAccentColor" -> {
                 Dialogs.showMainAccentColorDialog(requireContext())
                 return true
             }
             "webViewFont" -> {
                 Dialogs.webViewFontDialog(requireContext())
-                return true
-            }
-            "userBackground" -> {
-                pickUserBackground()
-                return true
-            }
-            "visibleMenuItems" -> {
-                setMenuItems()
                 return true
             }
             "notifiers.service.sound" -> {
@@ -374,173 +350,6 @@ class PrefsFragment : PreferenceFragmentCompat() {
         ForPdaVersionNotifier(notifiersManager, 0, true).start(requireContext())
     }
 
-    private fun setMenuItems() {
-        val preferences = preferenceManager.sharedPreferences
-        var items = (preferences.getString("selectedMenuItems", ListCore.DEFAULT_MENU_ITEMS)
-            ?: ListCore.DEFAULT_MENU_ITEMS).split(",".toRegex()).toTypedArray()
-        val allItems = ListCore.getAllMenuBricks()
-        if (ListCore.checkIndex(items, allItems.size)) {
-            items = ListCore.DEFAULT_MENU_ITEMS.split(",".toRegex()).toTypedArray()
-        }
-        val selectedItems = arrayOfNulls<Int>(items.size)
-        for (i in items.indices) selectedItems[i] = items[i].toInt()
-        val namesArray = ArrayList<String>()
-        for (item in allItems) namesArray.add(item.title)
-        val finalItems = Array<Array<Int?>?>(1) { arrayOfNulls(1) }
-        finalItems[0] = selectedItems
-        MaterialDialog.Builder(requireContext())
-            .title(R.string.select_items)
-            .items(*namesArray.toTypedArray<CharSequence>())
-            .itemsCallbackMultiChoice(selectedItems) { _: MaterialDialog?, integers: Array<Int?>?, _: Array<CharSequence?>? ->
-                finalItems[0] = integers
-                true
-            }
-            .alwaysCallMultiChoiceCallback()
-            .positiveText(R.string.accept)
-            .onPositive { _: MaterialDialog?, _: DialogAction? ->
-                if (finalItems.first()?.size ?: 0 == 0) return@onPositive
-                preferences.edit().putString(
-                    "selectedMenuItems",
-                    Arrays.toString(finalItems[0]).replace(" ", "").replace("[", "")
-                        .replace("]", "")
-                ).apply()
-            }
-            .neutralText(R.string.reset)
-            .onNeutral { _: MaterialDialog?, _: DialogAction? ->
-                preferences.edit().putString("selectedMenuItems", ListCore.DEFAULT_MENU_ITEMS)
-                    .apply()
-            }
-            .show()
-    }
-
-    private val takePicture =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                val selectedImageUri = result?.data?.data
-                val selectedImagePath = FilePath.getPath(App.getContext(), selectedImageUri)
-                if (selectedImagePath != null) App.getInstance().preferences
-                    .edit()
-                    .putString("userInfoBg", selectedImagePath)
-                    .putBoolean("isUserBackground", true)
-                    .apply() else Toast.makeText(
-                    activity,
-                    "Не могу прикрепить файл",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        }
-
-    private fun pickUserBackground() {
-        MaterialDialog.Builder(requireContext())
-            .content(R.string.pick_image)
-            .positiveText(R.string.choose)
-            .negativeText(R.string.cancel)
-            .neutralText(R.string.reset)
-            .onPositive { _: MaterialDialog?, _: DialogAction? ->
-                val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
-                    type = "image/*"
-                }
-                takePicture.launch(intent)
-            }
-            .onNeutral { _: MaterialDialog?, _: DialogAction? ->
-                App.getInstance().preferences
-                    .edit()
-                    .putString("userInfoBg", "")
-                    .putBoolean("isUserBackground", false)
-                    .apply()
-            }
-            .show()
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (resultCode == AppCompatActivity.RESULT_OK) {
-            if (requestCode == MY_INTENT_CLICK) {
-                val selectedImageUri = data?.data
-                val selectedImagePath = FilePath.getPath(App.getContext(), selectedImageUri)
-                if (selectedImagePath != null) App.getInstance().preferences
-                    .edit()
-                    .putString("userInfoBg", selectedImagePath)
-                    .putBoolean("isUserBackground", true)
-                    .apply() else Toast.makeText(
-                    activity,
-                    "Не могу прикрепить файл",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        }
-    }
-
-    private fun showAccentColorDialog() {
-        val newFragment = ColorPickerDialogFragment()
-        newFragment.show(childFragmentManager, "color_picker")
-    }
-
-    private fun showStylesDialog() {
-        try {
-            val currentValue = AppTheme.currentTheme
-            val newStyleNames = ArrayList<CharSequence>()
-            val newStyleValues = ArrayList<CharSequence>()
-            PreferencesActivity.getStylesList(requireContext(), newStyleNames, newStyleValues)
-            val selected = intArrayOf(newStyleValues.indexOf(currentValue))
-            MaterialDialog.Builder(requireContext())
-                .title(R.string.app_theme)
-                .cancelable(true)
-                .items(*newStyleNames.toTypedArray())
-                .itemsCallbackSingleChoice(newStyleValues.indexOf(currentValue)) { _: MaterialDialog?, _: View?, i: Int, _: CharSequence? ->
-                    selected[0] = i
-                    true // allow selection
-                }
-                .alwaysCallSingleChoiceCallback()
-                .positiveText(getString(R.string.AcceptStyle))
-                .neutralText(getString(R.string.Information))
-                .onPositive { _: MaterialDialog?, _: DialogAction? ->
-                    if (selected[0] == -1) {
-                        Toast.makeText(
-                            activity,
-                            getString(R.string.ChooseStyle),
-                            Toast.LENGTH_LONG
-                        ).show()
-                        return@onPositive
-                    }
-                    App.getInstance().preferences
-                        .edit()
-                        .putString("appstyle", newStyleValues[selected[0]].toString())
-                        .apply()
-                }
-                .onNeutral { _: MaterialDialog?, _: DialogAction? ->
-                    if (selected[0] == -1) {
-                        Toast.makeText(
-                            activity,
-                            getString(R.string.ChooseStyle),
-                            Toast.LENGTH_LONG
-                        ).show()
-                        return@onNeutral
-                    }
-                    var stylePath = newStyleValues[selected[0]].toString()
-                    stylePath = AppTheme.getThemeCssFileName(stylePath)
-                    val xmlPath = stylePath.replace(".css", ".xml")
-                    val cssStyle = CssStyle.parseStyle(activity, xmlPath)
-                    if (!cssStyle.ExistsInfo) {
-                        Toast.makeText(
-                            activity,
-                            getString(R.string.StyleDoesNotContainDesc),
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        return@onNeutral
-                    }
-
-                    //dialogInterface.dismiss();
-                    StyleInfoActivity.showStyleInfo(
-                        activity,
-                        newStyleValues[selected[0]].toString()
-                    )
-                }
-                .show()
-        } catch (ex: Exception) {
-            AppLog.e(activity, ex)
-        }
-    }
-
     private fun showAbout() {
         val text = """
                 <b>Неофициальный клиент для сайта <a href="https://www.4pda.ru">4pda.ru</a></b><br/><br/>
@@ -713,9 +522,5 @@ class PrefsFragment : PreferenceFragmentCompat() {
                 }
             }
             .show()
-    }
-
-    companion object {
-        private const val MY_INTENT_CLICK = 302
     }
 }

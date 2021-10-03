@@ -5,6 +5,7 @@ import android.net.Uri
 import android.text.TextUtils
 import org.softeg.slartus.forpdacommon.Connectivity.isConnectedWifi
 import org.softeg.slartus.forpdacommon.ExtPreferences
+import org.softeg.slartus.forpdaplus.core_ui.AppTheme
 import org.softeg.slartus.forpdaplus.feature_preferences.App.getInstance
 import org.softeg.slartus.forpdaplus.feature_preferences.App.getPreferences
 import org.softeg.slartus.forpdaplus.feature_preferences.ClientPreferences.Notifications.SilentMode.getStartTime
@@ -79,6 +80,8 @@ object Preferences {
             var webViewFont: Int by appPreference("webViewFont", 0)
             @JvmStatic
             var webViewFontName: String by appPreference("webViewFontName", "")
+            @JvmStatic
+            var appStyle: String by appPreference("appstyle", AppTheme.DEFAULT_APP_THEME.toString())
         }
     }
 

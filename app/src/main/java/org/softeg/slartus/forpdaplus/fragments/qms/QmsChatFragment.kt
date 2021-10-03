@@ -33,6 +33,7 @@ import kotlinx.android.synthetic.main.qms_chat.*
 import org.softeg.slartus.forpdaapi.post.EditAttach
 import org.softeg.slartus.forpdaapi.qms.QmsApi
 import org.softeg.slartus.forpdacommon.ExtPreferences
+import org.softeg.slartus.forpdacommon.FilePath
 import org.softeg.slartus.forpdanotifyservice.qms.QmsNotifier
 import org.softeg.slartus.forpdaplus.*
 import org.softeg.slartus.forpdaplus.classes.*

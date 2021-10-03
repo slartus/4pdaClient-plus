@@ -32,11 +32,11 @@ import kotlinx.android.synthetic.main.edit_post_plus.*
 import org.softeg.slartus.forpdaapi.post.EditAttach
 import org.softeg.slartus.forpdaapi.post.EditPost
 import org.softeg.slartus.forpdaapi.post.PostApi
+import org.softeg.slartus.forpdacommon.FilePath
 import org.softeg.slartus.forpdacommon.FileUtils
 import org.softeg.slartus.forpdaplus.App
 import org.softeg.slartus.forpdaplus.MainActivity
 import org.softeg.slartus.forpdaplus.R
-import org.softeg.slartus.forpdaplus.classes.FilePath
 import org.softeg.slartus.forpdaplus.common.AppLog
 import org.softeg.slartus.forpdaplus.common.TrueQueue
 import org.softeg.slartus.forpdaplus.controls.quickpost.PopupPanelView
@@ -181,7 +181,7 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
 
 
         try {
-            val args = arguments!!
+            val args = requireArguments()
             val forumId = args.getString("forumId")!!
             val topicId = args.getString("themeId")!!
             val postId = args.getString("postId")!!
@@ -247,7 +247,7 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
     private fun confirmSendMail(): Single<Boolean> {
         val result = SingleSubject.create<Boolean>()
         if (Preferences.Topic.confirmSend) {
-            val dialog = MaterialDialog.Builder(context!!)
+            val dialog = MaterialDialog.Builder(requireContext())
                     .title(R.string.is_sure)
                     .content(R.string.confirm_sending)
                     .positiveText(R.string.ok)
@@ -415,7 +415,7 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
                     }
                     val items = listItems.toTypedArray<CharSequence>()
                     val str = StringBuilder()
-                    MaterialDialog.Builder(context!!)
+                    MaterialDialog.Builder(requireContext())
                             .title(R.string.add_in_spoiler)
                             .positiveText(R.string.add)
                             .negativeText(R.string.cancel)
@@ -449,12 +449,12 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
     }
 
     private fun startAddAttachment() {
-        if (ContextCompat.checkSelfPermission(activity!!, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(activity, R.string.no_permission, Toast.LENGTH_SHORT).show()
             return
         }
         val items = arrayOf<CharSequence>(getString(R.string.file), getString(R.string.image))
-        MaterialDialog.Builder(context!!)
+        MaterialDialog.Builder(requireContext())
                 .items(*items)
                 .itemsCallback { _, _, i, _ ->
                     when (i) {

@@ -1,4 +1,5 @@
-package org.softeg.slartus.forpdaplus.classes;
+package org.softeg.slartus.forpdacommon;
+
 
 import android.annotation.TargetApi;
 import android.content.ContentUris;
@@ -11,11 +12,12 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
-import androidx.annotation.NonNull;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+
 import org.jetbrains.annotations.Nullable;
-import org.softeg.slartus.forpdaplus.BuildConfig;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -162,6 +164,7 @@ public class FilePath {
         return isMiui;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private static String getPathForMiui(final Context context, final Uri uri) {
         if (isGooglePhotosUri(uri))
             return uri.getLastPathSegment();
@@ -178,6 +181,7 @@ public class FilePath {
      * @param selectionArgs (Optional) Selection arguments used in the query.
      * @return The value of the _data column, which is typically a file path.
      */
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private static String getDataColumn(Context context, Uri uri, String selection,
                                         String[] selectionArgs) {
 

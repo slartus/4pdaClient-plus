@@ -10,6 +10,7 @@ import java.lang.ref.WeakReference
 
 object AppTheme {
     private const val THEME_LIGHT = 0
+    const val DEFAULT_APP_THEME = THEME_LIGHT
     private const val THEME_DARK = 1
     private const val THEME_BLACK = 6
     private const val THEME_MATERIAL_LIGHT = 2
@@ -22,6 +23,7 @@ object AppTheme {
     private const val THEME_TYPE_BLACK = 3
     private val LIGHT_THEMES = arrayOf(THEME_LIGHT, THEME_LIGHT_OLD_HD, THEME_MATERIAL_LIGHT)
     private val DARK_THEMES = arrayOf(THEME_MATERIAL_DARK, THEME_DARK)
+
     @JvmStatic
     val webViewFont: String?
         get() = preferences.getString("webViewFontName", "")
@@ -117,9 +119,15 @@ object AppTheme {
             val themeStr = currentTheme
             if (themeStr.length < 3) {
                 val theme = themeStr.toInt()
-                themeType = if (LIGHT_THEMES.indexOf(theme) != -1) THEME_TYPE_LIGHT else if (DARK_THEMES.indexOf(theme) != -1) THEME_TYPE_DARK else THEME_TYPE_BLACK
+                themeType =
+                    if (LIGHT_THEMES.indexOf(theme) != -1) THEME_TYPE_LIGHT else if (DARK_THEMES.indexOf(
+                            theme
+                        ) != -1
+                    ) THEME_TYPE_DARK else THEME_TYPE_BLACK
             } else {
-                if (themeStr.contains("/dark/")) themeType = THEME_TYPE_DARK else if (themeStr.contains("/black/")) themeType = THEME_TYPE_BLACK
+                if (themeStr.contains("/dark/")) themeType =
+                    THEME_TYPE_DARK else if (themeStr.contains("/black/")) themeType =
+                    THEME_TYPE_BLACK
             }
             return themeType
         }
@@ -158,11 +166,14 @@ object AppTheme {
             val themeType = themeType
             return if (themeType == THEME_TYPE_LIGHT) R.color.drawer_menu_text_light else if (themeType == THEME_TYPE_DARK) R.color.drawer_menu_text_dark else R.color.drawer_menu_text_dark
         }
+
     @JvmStatic
     val themeStyleWebViewBackground: Int
         get() {
             val themeType = themeType
-            return if (themeType == THEME_TYPE_LIGHT) Color.parseColor("#eeeeee") else if (themeType == THEME_TYPE_DARK) Color.parseColor("#1a1a1a") else Color.parseColor("#000000")
+            return if (themeType == THEME_TYPE_LIGHT) Color.parseColor("#eeeeee") else if (themeType == THEME_TYPE_DARK) Color.parseColor(
+                "#1a1a1a"
+            ) else Color.parseColor("#000000")
         }
 
     @JvmStatic
@@ -174,7 +185,7 @@ object AppTheme {
 
     @JvmStatic
     val currentTheme: String
-        get() = preferences.getString("appstyle", THEME_LIGHT.toString())?:THEME_LIGHT.toString()
+        get() = preferences.getString("appstyle", DEFAULT_APP_THEME.toString()) ?: DEFAULT_APP_THEME.toString()
 
     @JvmStatic
     val currentThemeName: String
@@ -196,6 +207,7 @@ object AppTheme {
     private fun defaultCssTheme(): String {
         return "/android_asset/forum/css/4pda_light_blue.css"
     }
+
     @JvmStatic
     val themeCssFileName: String
         get() {
@@ -237,9 +249,11 @@ object AppTheme {
     }
 
     private var contextRef: WeakReference<Context>? = null
+    @JvmStatic
     fun init(context: Context) {
         contextRef = WeakReference(context)
     }
+
     val preferences: SharedPreferences
         get() = PreferenceManager.getDefaultSharedPreferences(contextRef?.get())
 }

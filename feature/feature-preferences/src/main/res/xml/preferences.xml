@@ -5,97 +5,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     project:iconSpaceReserved="false">
 
-    <PreferenceScreen
+    <Preference
         android:key="common"
-        android:title="@string/appearance">
-        <PreferenceCategory android:title="@string/overall">
-            <Preference
-                android:key="appstyle"
-                android:summary="@string/choose_the_theme"
-                android:title="@string/theme" />
-            <Preference
-                android:key="accentColor"
-                android:summary="@string/pick_side_color"
-                android:title="@string/pick_color_with_pencil" />
-            <Preference
-                android:key="mainAccentColor"
-                android:title="@string/pick_accent_color" />
-            <Preference
-                android:key="webViewFont"
-                android:summary="@string/font_in_many"
-                android:title="@string/webview_font" />
-            <CheckBoxPreference
-                android:defaultValue="false"
-                android:key="titleMarquee"
-                android:summary="@string/requires_application_restart"
-                android:title="@string/toolbar_text_scrolling" />
-            <CheckBoxPreference
-                android:defaultValue="false"
-                android:key="isSquareAvarars"
-                android:summary="@string/requires_application_restart"
-                android:title="@string/square_avatars" />
-            <CheckBoxPreference
-                android:defaultValue="false"
-                android:key="statusbarFake"
-                android:summary="@string/statusbar_fake_summary"
-                android:title="@string/statusbar_fake_title" />
-            <CheckBoxPreference
-                android:defaultValue="false"
-                android:key="oldIndicator"
-                android:summary="@string/requires_application_restart"
-                android:title="@string/old_indicator_title" />
-            <CheckBoxPreference
-                android:defaultValue="true"
-                android:key="coloredNavBar"
-                android:summary="@string/colored_nav_bar_summary"
-                android:title="@string/colored_nav_bar_title" />
-            <CheckBoxPreference
-                android:defaultValue="false"
-                android:key="pancilInActionBar"
-                android:title="@string/pencil_in_actionbar" />
-        </PreferenceCategory>
-
-        <PreferenceCategory android:title="@string/side_panel">
-            <Preference
-                android:key="userBackground"
-                android:summary="@string/requires_application_restart"
-                android:title="@string/user_background_title" />
-            <!--<CheckBoxPreference-->
-            <!--android:defaultValue="false"-->
-            <!--android:key="categoryLast"-->
-            <!--android:title="Отображать 'Последние'"-->
-            <!--android:summary="Меню 'Последние' в выезжающем меню"/>-->
-            <Preference
-                android:key="visibleMenuItems"
-                android:title="@string/visible_menu_items_title" />
-            <CheckBoxPreference
-                android:defaultValue="true"
-                android:key="isShowShortUserInfo"
-                android:summary="@string/show_user_info_summary"
-                android:title="@string/show_user_info_title" />
-            <CheckBoxPreference
-                android:defaultValue="false"
-                android:key="tabsBottom"
-                android:title="@string/tabs_bottom_title" />
-            <CheckBoxPreference
-                android:defaultValue="false"
-                android:key="isMarginBottomNav"
-                android:summary="@string/margin_bottom_nav_summary"
-                android:title="@string/margin_bottom_nav_title" />
-            <CheckBoxPreference
-                android:defaultValue="false"
-                android:key="openTabDrawerButton"
-                android:title="@string/show_tab_drawer_button" />
-        </PreferenceCategory>
-
-        <org.softeg.slartus.forpdaplus.feature_preferences.views.SummaryValueListPreference
-            android:defaultValue="-1"
-            android:entries="@array/screenOrienationArray"
-            android:entryValues="@array/screenOrienationValues"
-            android:key="theme.ScreenOrientation"
-            android:title="@string/screen_orientation" />
-
-    </PreferenceScreen>
+        android:title="@string/appearance"
+        app:fragment="org.softeg.slartus.forpdaplus.feature_preferences.fragments.CommonPreferencesFragment"/>
 
     <Preference
         android:key="topic_view"

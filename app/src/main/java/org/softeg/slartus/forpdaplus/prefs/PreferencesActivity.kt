@@ -1,21 +1,15 @@
 package org.softeg.slartus.forpdaplus.prefs
 
-import android.content.Context
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceScreen
 import org.softeg.slartus.forpdaplus.App
-import org.softeg.slartus.forpdaplus.AppTheme.getThemeCssFileName
 import org.softeg.slartus.forpdaplus.R
 import org.softeg.slartus.forpdaplus.common.AppLog
-import org.softeg.slartus.forpdaplus.feature_preferences.Preferences
 import org.softeg.slartus.forpdaplus.feature_preferences.fragments.TopicViewPreferences
-import org.softeg.slartus.forpdaplus.styles.CssStyle
 import ru.slartus.http.PersistentCookieStore.Companion.getInstance
-import java.io.File
-import java.util.*
 
 /**
  * User: slinkin
@@ -68,55 +62,7 @@ class PreferencesActivity : BasePreferencesActivity(),
 
     companion object {
 
-        @JvmStatic
-        fun getStylesList(
-            context: Context,
-            newStyleNames: ArrayList<CharSequence>,
-            newStyleValues: ArrayList<CharSequence>
-        ) {
-            var xmlPath: String
-            var cssStyle: CssStyle
-            val styleNames = context.resources.getStringArray(R.array.appthemesArray)
-            val styleValues = context.resources.getStringArray(R.array.appthemesValues)
-            for (i in styleNames.indices) {
-                var styleName: CharSequence = styleNames[i]
-                val styleValue: CharSequence = styleValues[i]
-                xmlPath = getThemeCssFileName(styleValue.toString()).replace(".css", ".xml")
-                    .replace("/android_asset/", "")
-                cssStyle = CssStyle.parseStyleFromAssets(context, xmlPath)
-                if (cssStyle.ExistsInfo) styleName = cssStyle.Title
-                newStyleNames.add(styleName)
-                newStyleValues.add(styleValue)
-            }
-            val file = File(Preferences.System.systemDir + "styles/")
-            getStylesList(newStyleNames, newStyleValues, file)
-        }
 
-        private fun getStylesList(
-            newStyleNames: ArrayList<CharSequence>,
-            newStyleValues: ArrayList<CharSequence>, file: File
-        ) {
-            var cssPath: String
-            var xmlPath: String
-            var cssStyle: CssStyle
-            if (file.exists()) {
-                file.listFiles()
-                    ?.forEach { cssFile ->
-                        if (cssFile.isDirectory) {
-                            getStylesList(newStyleNames, newStyleValues, cssFile)
-                        } else {
-                            cssPath = cssFile.path
-                            if (cssPath.lowercase(Locale.getDefault()).endsWith(".css")) {
-                                xmlPath = cssPath.replace(".css", ".xml")
-                                cssStyle = CssStyle.parseStyleFromFile(xmlPath)
-                                val title = cssStyle.Title
-                                newStyleNames.add(title)
-                                newStyleValues.add(cssPath)
-                            }
-                        }
-                    }
-            }
-        }
 
         @JvmStatic
         val packageInfo: PackageInfo

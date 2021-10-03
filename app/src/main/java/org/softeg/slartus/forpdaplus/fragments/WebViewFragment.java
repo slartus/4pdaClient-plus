@@ -41,6 +41,7 @@ import org.softeg.slartus.forpdaplus.classes.SaveHtml;
 import org.softeg.slartus.forpdaplus.classes.WebViewExternals;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.common.AppLog;
+import org.softeg.slartus.forpdaplus.core_ui.CssStyles;
 import org.softeg.slartus.forpdaplus.feature_preferences.Preferences;
 import org.softeg.slartus.forpdaplus.prefs.PreferencesActivity;
 
@@ -335,7 +336,7 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
             ArrayList<CharSequence> newStyleNames = new ArrayList<>();
             final ArrayList<CharSequence> newStyleValues = new ArrayList<>();
 
-            PreferencesActivity.getStylesList(getMainActivity(), newStyleNames, newStyleValues);
+            CssStyles.getStylesList(getMainActivity(), Preferences.System.getSystemDir(),newStyleNames, newStyleValues);
             final int[] selected = {newStyleValues.indexOf(currentValue)};
             CharSequence[] styleNames = newStyleNames.toArray(new CharSequence[newStyleNames.size()]);
 

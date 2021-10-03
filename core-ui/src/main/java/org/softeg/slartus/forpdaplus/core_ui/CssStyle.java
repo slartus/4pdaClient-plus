@@ -1,4 +1,4 @@
-package org.softeg.slartus.forpdaplus.styles;
+package org.softeg.slartus.forpdaplus.core_ui;
 
 import android.content.Context;
 import android.util.Xml;
