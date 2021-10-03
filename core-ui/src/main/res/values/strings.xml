@@ -492,4 +492,14 @@
     <string name="spoil_first_post_summary">Прятать первый пост страницы в спойлер</string>
     <string name="spoil_first_post_title">Прятать первый пост</string>
     <string name="sound_choose">Выбор мелодии</string>
+    <string name="prefs_confirm_send">Подтверждать отправку</string>
+    <string name="prefs_use_volumes_scroll">Скролл громкостью</string>
+    <string name="prefs_keep_screen_on">Не выключать экран</string>
+    <string name="prefs_spoiler_by_button">Использовать кнопку для спойлеров</string>
+    <string name="prefs_show_readers_writers">Дополнительные информация</string>
+    <string name="prefs_full_topic_title">Полное название темы</string>
+    <string name="prefs_load_images">Загружать картинки</string>
+    <string name="prefs_files_downloading">Скачивание файлов</string>
+    <string name="prefs_confirm_download_file">Подтверждать загрузку файла</string>
+    <string name="prefs_download_managers">Скачивать файл при помощи...</string>
 </resources>

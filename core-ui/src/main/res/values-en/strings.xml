@@ -480,4 +480,14 @@
     <string name="spoil_first_post_summary">Hide first post pages spoiler</string>
     <string name="spoil_first_post_title">Hide the first post</string>
     <string name="sound_choose">Select ringtone</string>
+    <string name="prefs_confirm_send">Confirm sending</string>
+    <string name="prefs_use_volumes_scroll">Scroll volume</string>
+    <string name="prefs_keep_screen_on">Do not turn off the screen</string>
+    <string name="prefs_spoiler_by_button">Use the button for spoilers</string>
+    <string name="prefs_show_readers_writers">Additional info</string>
+    <string name="prefs_full_topic_title">Full title of the topic</string>
+    <string name="prefs_load_images">Load pictures</string>
+    <string name="prefs_files_downloading">Files downloading</string>
+    <string name="prefs_confirm_download_file">Confirm file download</string>
+    <string name="prefs_download_managers">Download a file using the...</string>
 </resources>

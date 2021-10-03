@@ -1,4 +1,4 @@
-package org.softeg.slartus.forpdaplus
+package org.softeg.slartus.forpdaplus.preferences
 
 import android.content.Context
 import androidx.annotation.StringRes
@@ -26,25 +26,14 @@ import androidx.test.espresso.intent.Intents.intending
 
 import android.content.Intent
 import android.net.Uri
-import android.os.Bundle
-import android.speech.RecognizerIntent
-import androidx.test.espresso.intent.Intents.intended
 import androidx.test.espresso.intent.matcher.IntentMatchers.*
 import org.hamcrest.CoreMatchers.*
 import java.io.File
-import androidx.test.espresso.intent.matcher.IntentMatchers.isInternal
 
-import androidx.test.espresso.intent.Intents.intending
-import androidx.test.espresso.intent.matcher.IntentMatchers
-import android.provider.MediaStore
 import androidx.test.espresso.intent.Intents
 
-import androidx.test.espresso.intent.Intents.intending
-
-import android.graphics.BitmapFactory
-import androidx.test.platform.app.InstrumentationRegistry
 import org.junit.After
-import ru.slartus.http.toMediaType
+import org.softeg.slartus.forpdaplus.R
 
 @RunWith(AndroidJUnit4::class)
 @LargeTest
@@ -81,15 +70,6 @@ class PreferencesScreenTests {
         appearanceClick(R.string.appearance)
 
         userBackgroundTest()
-    }
-
-    private fun appearanceClick(@StringRes title: Int) {
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(
-                actionOnItem<RecyclerView.ViewHolder>(
-                    hasDescendant(withText(title)), click()
-                )
-            )
     }
 
     private fun chooseThemeTests() {

@@ -12,35 +12,35 @@
         android:defaultValue="true"
         android:key="theme.ConfirmSend"
         android:summary="Подтверждать отправку сообщения"
-        android:title="Подтверждать отправку" />
+        android:title="@string/prefs_confirm_send" />
     <org.softeg.slartus.forpdaplus.feature_preferences.views.SummaryValueListPreference
         android:defaultValue="1"
         android:entries="@array/ConnectTypeArray"
         android:entryValues="@array/ConnectTypeValues"
         android:key="theme.LoadsImages"
-        android:title="Загружать картинки" />
+        android:title="@string/prefs_load_images" />
     <CheckBoxPreference
         android:defaultValue="false"
         android:key="theme.UseVolumesScroll"
         android:summary="Скроллить страницу кнопками громкости"
-        android:title="Скролл громкостью" />
+        android:title="@string/prefs_use_volumes_scroll" />
     <CheckBoxPreference
         android:defaultValue="false"
         android:key="theme.KeepScreenOn"
-        android:title="Не выключать экран" />
+        android:title="@string/prefs_keep_screen_on" />
 
 
     <CheckBoxPreference
         android:defaultValue="false"
         android:key="theme.SpoilerByButton"
         android:summary="Если не работают спойлеры"
-        android:title="Использовать кнопку для спойлеров" />
+        android:title="@string/prefs_spoiler_by_button" />
 
     <CheckBoxPreference
         android:defaultValue="false"
         android:key="theme.ShowReadersAndWriters"
         android:summary="Показывать на странице 'Кто читает тему' и 'Кто писал сообщения'"
-        android:title="Дополнительные кнопки" />
+        android:title="@string/prefs_show_readers_writers" />
 
     <PreferenceScreen
         android:key="download_files_screen"
@@ -49,20 +49,20 @@
             android:defaultValue="true"
             android:key="files.ConfirmDownload"
             android:summary="Подтверждение загрузки файла при выборе ссылки"
-            android:title="Подтверждать загрузку файла" />
+            android:title="@string/prefs_confirm_download_file" />
         <ListPreference
             android:entries="@array/downloaderManagersArray"
             android:entryValues="@array/downloaderManagersValues"
             android:key="file.downloaderManagers"
             android:summary="Использовать для скачивания файлов выбранный менеджер"
-            android:title="Скачивать файл при помощи..." />
+            android:title="@string/prefs_download_managers" />
     </PreferenceScreen>
 
     <CheckBoxPreference
         android:defaultValue="false"
         android:key="fullThemeTitle"
         android:summary="Вместе с названием отображать описание темы на странице"
-        android:title="Полное название темы" />
+        android:title="@string/prefs_full_topic_title" />
     <!--<CheckBoxPreference-->
     <!--android:defaultValue="false"-->
     <!--android:key="theme.Fullscreen"-->
