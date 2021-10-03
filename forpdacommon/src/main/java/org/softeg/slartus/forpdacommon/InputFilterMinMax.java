@@ -1,4 +1,4 @@
-package org.softeg.slartus.forpdaplus.classes;
+package org.softeg.slartus.forpdacommon;
 
 import android.text.InputFilter;
 import android.text.Spanned;

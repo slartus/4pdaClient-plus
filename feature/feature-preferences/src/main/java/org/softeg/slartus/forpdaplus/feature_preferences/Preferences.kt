@@ -1,5 +1,6 @@
 package org.softeg.slartus.forpdaplus.feature_preferences
 
+import android.graphics.Color
 import android.net.Uri
 import android.text.TextUtils
 import org.softeg.slartus.forpdacommon.Connectivity.isConnectedWifi
@@ -45,6 +46,16 @@ object Preferences {
     fun setFontSize(prefix: String, value: Int) {
         getPreferences()
             ?.edit()?.putString("$prefix.FontSize", value.toString())?.apply()
+    }
+
+    object Common {
+        object Overall {
+            private val DEFAULT_ACCENT_COLOR = Color.rgb(2, 119, 189).toString().toLong(10).toInt()
+
+            @JvmStatic
+            val accentColor: Int by appPreference("accentColor", DEFAULT_ACCENT_COLOR)
+
+        }
     }
 
     object Lists {
