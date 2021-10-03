@@ -31,6 +31,7 @@ import org.softeg.slartus.forpdaplus.R
 import org.softeg.slartus.forpdaplus.classes.FilePath
 import org.softeg.slartus.forpdaplus.common.AppLog
 import org.softeg.slartus.forpdaplus.controls.OpenFileDialog
+import org.softeg.slartus.forpdaplus.core_ui.AppColors
 import org.softeg.slartus.forpdaplus.db.NotesDbHelper
 import org.softeg.slartus.forpdaplus.db.NotesTable
 import org.softeg.slartus.forpdaplus.feature_preferences.Preferences
@@ -521,15 +522,10 @@ class PrefsFragment : PreferenceFragmentCompat() {
 
     private fun showMainAccentColorDialog() {
         try {
-            val prefs = App.getInstance().preferences
-            val string = prefs.getString("mainAccentColor", "pink")
-            var position = -1
-            when (string) {
-                "pink" -> position = 0
-                "blue" -> position = 1
-                "gray" -> position = 2
-            }
-            val selected = intArrayOf(0)
+            val string = Preferences.Common.Overall.mainAccentColor
+            val mainAccentColors = listOf(AppColors.pink, AppColors.blue, AppColors.gray)
+            val position = mainAccentColors.indexOfFirst { c -> c.name == string }
+            var selected = position
             MaterialDialog.Builder(requireContext())
                 .title(R.string.pick_accent_color)
                 .items(
@@ -538,41 +534,18 @@ class PrefsFragment : PreferenceFragmentCompat() {
                     App.getContext().getString(R.string.gray)
                 )
                 .itemsCallbackSingleChoice(position) { _: MaterialDialog?, _: View?, which: Int, _: CharSequence? ->
-                    selected[0] = which
+                    selected = which
                     true
                 }
                 .alwaysCallSingleChoiceCallback()
                 .positiveText(R.string.accept)
                 .negativeText(R.string.cancel)
                 .onPositive { _: MaterialDialog?, _: DialogAction? ->
-                    when (selected[0]) {
-                        0 -> {
-                            prefs.edit().putString("mainAccentColor", "pink").apply()
-                            if (!prefs.getBoolean("accentColorEdited", false)) {
-                                prefs.edit()
-                                    .putInt("accentColor", Color.rgb(2, 119, 189))
-                                    .putInt("accentColorPressed", Color.rgb(0, 89, 159))
-                                    .apply()
-                            }
-                        }
-                        1 -> {
-                            prefs.edit().putString("mainAccentColor", "blue").apply()
-                            if (!prefs.getBoolean("accentColorEdited", false)) {
-                                prefs.edit()
-                                    .putInt("accentColor", Color.rgb(233, 30, 99))
-                                    .putInt("accentColorPressed", Color.rgb(203, 0, 69))
-                                    .apply()
-                            }
-                        }
-                        2 -> {
-                            prefs.edit().putString("mainAccentColor", "gray").apply()
-                            if (!prefs.getBoolean("accentColorEdited", false)) {
-                                prefs.edit()
-                                    .putInt("accentColor", Color.rgb(117, 117, 117))
-                                    .putInt("accentColorPressed", Color.rgb(87, 87, 87))
-                                    .apply()
-                            }
-                        }
+                    val selectedColor = mainAccentColors[selected]
+                    Preferences.Common.Overall.mainAccentColor = selectedColor.name
+                    if (!Preferences.Common.Overall.accentColorEdited) {
+                        Preferences.Common.Overall.accentColor = selectedColor.color
+                        Preferences.Common.Overall.accentColorPressed = selectedColor.pressedColor
                     }
                 }
                 .show()
@@ -590,14 +563,14 @@ class PrefsFragment : PreferenceFragmentCompat() {
         try {
             val currentValue = AppTheme.currentTheme
             val newStyleNames = ArrayList<CharSequence>()
-            val newstyleValues = ArrayList<CharSequence>()
-            PreferencesActivity.getStylesList(requireContext(), newStyleNames, newstyleValues)
-            val selected = intArrayOf(newstyleValues.indexOf(currentValue))
+            val newStyleValues = ArrayList<CharSequence>()
+            PreferencesActivity.getStylesList(requireContext(), newStyleNames, newStyleValues)
+            val selected = intArrayOf(newStyleValues.indexOf(currentValue))
             MaterialDialog.Builder(requireContext())
                 .title(R.string.app_theme)
                 .cancelable(true)
                 .items(*newStyleNames.toTypedArray())
-                .itemsCallbackSingleChoice(newstyleValues.indexOf(currentValue)) { _: MaterialDialog?, _: View?, i: Int, _: CharSequence? ->
+                .itemsCallbackSingleChoice(newStyleValues.indexOf(currentValue)) { _: MaterialDialog?, _: View?, i: Int, _: CharSequence? ->
                     selected[0] = i
                     true // allow selection
                 }
@@ -615,7 +588,7 @@ class PrefsFragment : PreferenceFragmentCompat() {
                     }
                     App.getInstance().preferences
                         .edit()
-                        .putString("appstyle", newstyleValues[selected[0]].toString())
+                        .putString("appstyle", newStyleValues[selected[0]].toString())
                         .apply()
                 }
                 .onNeutral { _: MaterialDialog?, _: DialogAction? ->
@@ -627,7 +600,7 @@ class PrefsFragment : PreferenceFragmentCompat() {
                         ).show()
                         return@onNeutral
                     }
-                    var stylePath = newstyleValues[selected[0]].toString()
+                    var stylePath = newStyleValues[selected[0]].toString()
                     stylePath = AppTheme.getThemeCssFileName(stylePath)
                     val xmlPath = stylePath.replace(".css", ".xml")
                     val cssStyle = CssStyle.parseStyle(activity, xmlPath)
@@ -643,7 +616,7 @@ class PrefsFragment : PreferenceFragmentCompat() {
                     //dialogInterface.dismiss();
                     StyleInfoActivity.showStyleInfo(
                         activity,
-                        newstyleValues[selected[0]].toString()
+                        newStyleValues[selected[0]].toString()
                     )
                 }
                 .show()
