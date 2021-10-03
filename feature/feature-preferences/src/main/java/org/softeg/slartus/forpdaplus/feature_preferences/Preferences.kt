@@ -50,11 +50,22 @@ object Preferences {
 
     object Common {
         object Overall {
-            private val DEFAULT_ACCENT_COLOR = Color.rgb(2, 119, 189).toString().toLong(10).toInt()
+             val DEFAULT_ACCENT_COLOR = Color.rgb(2, 119, 189)
+             val DEFAULT_ACCENT_COLOR_PRESSED = Color.rgb(0, 89, 159)
+            @JvmStatic
+            var accentColor: Int by appPreference(
+                "accentColor",
+                DEFAULT_ACCENT_COLOR.toString().toLong(10).toInt()
+            )
 
             @JvmStatic
-            val accentColor: Int by appPreference("accentColor", DEFAULT_ACCENT_COLOR)
+            var accentColorPressed: Int by appPreference(
+                "accentColorPressed",
+                DEFAULT_ACCENT_COLOR_PRESSED.toString().toLong(10).toInt()
+            )
 
+            @JvmStatic
+            var accentColorEdited: Boolean by appPreference("accentColorEdited", false)
         }
     }
 

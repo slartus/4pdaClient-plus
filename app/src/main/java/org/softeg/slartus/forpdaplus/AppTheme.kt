@@ -4,6 +4,7 @@ import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Environment
 import org.softeg.slartus.forpdaplus.classes.common.ArrayUtils
+import org.softeg.slartus.forpdaplus.feature_preferences.Preferences
 import java.io.File
 
 object AppTheme {
@@ -28,8 +29,8 @@ object AppTheme {
     fun getColorAccent(type: String?): Int {
         var color = 0
         when (type) {
-            "Accent" -> color = preferences.getInt("accentColor", Color.rgb(2, 119, 189))
-            "Pressed" -> color = preferences.getInt("accentColorPressed", Color.rgb(0, 89, 159))
+            "Accent" -> color = Preferences.Common.Overall.accentColor
+            "Pressed" -> color = Preferences.Common.Overall.accentColorPressed
         }
         return color
     }

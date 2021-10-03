@@ -29,7 +29,6 @@ import org.softeg.slartus.forpdaplus.AppTheme
 import org.softeg.slartus.forpdaplus.IntentActivity
 import org.softeg.slartus.forpdaplus.R
 import org.softeg.slartus.forpdaplus.classes.FilePath
-import org.softeg.slartus.forpdacommon.InputFilterMinMax
 import org.softeg.slartus.forpdaplus.common.AppLog
 import org.softeg.slartus.forpdaplus.controls.OpenFileDialog
 import org.softeg.slartus.forpdaplus.db.NotesDbHelper

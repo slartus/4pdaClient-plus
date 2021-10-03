@@ -24,11 +24,13 @@ class ColorPickerDialogFragment : DialogFragment() {
             prefColor and 0xFF
         )
     }
+    private val selectedColor
+        get() = Color.rgb(colors[0], colors[1], colors[2])
+
     private var _binding: FragmentColorPickerBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-
         _binding = FragmentColorPickerBinding.inflate(layoutInflater, null, false)
         val view = binding.root
         initEditor(binding.redText, binding.red, 0)
@@ -42,37 +44,24 @@ class ColorPickerDialogFragment : DialogFragment() {
             .negativeText(R.string.cancel)
             .neutralText(R.string.reset)
             .onPositive { _: MaterialDialog?, _: DialogAction? ->
-//                val colorPressed =
-//                    intArrayOf(colors[0] - 30, colors[1] - 30, colors[2] - 30)
-//                if (colorPressed[0] < 0) colorPressed[0] = 0
-//                if (colorPressed[1] < 0) colorPressed[1] = 0
-//                if (colorPressed[2] < 0) colorPressed[2] = 0
-//                if (Color.rgb(
-//                        colors[0],
-//                        colors[1],
-//                        colors[2]
-//                    ) != prefs.getInt("accentColor", Color.rgb(2, 119, 189))
-//                ) {
-//                    prefs.edit().putBoolean("accentColorEdited", true).apply()
-//                }
-//                prefs.edit()
-//                    .putInt("accentColor", Color.rgb(colors[0], colors[1], colors[2]))
-//                    .putInt(
-//                        "accentColorPressed",
-//                        Color.rgb(colorPressed[0], colorPressed[1], colorPressed[2])
-//                    )
-//                    .apply()
+                val colorPressed =
+                    intArrayOf(colors[0] - 30, colors[1] - 30, colors[2] - 30)
+                if (colorPressed[0] < 0) colorPressed[0] = 0
+                if (colorPressed[1] < 0) colorPressed[1] = 0
+                if (colorPressed[2] < 0) colorPressed[2] = 0
+                if (selectedColor != Preferences.Common.Overall.accentColor) {
+                    Preferences.Common.Overall.accentColorEdited = true
+                }
+                Preferences.Common.Overall.accentColor = selectedColor
+                Preferences.Common.Overall.accentColorPressed =
+                    Color.rgb(colorPressed[0], colorPressed[1], colorPressed[2])
             }
             .onNeutral { _: MaterialDialog?, _: DialogAction? ->
-//                prefs.edit()
-//                    .putInt("accentColor", Color.rgb(2, 119, 189))
-//                    .putInt("accentColorPressed", Color.rgb(0, 89, 159))
-//                    .putBoolean(
-//                        "accentColorEdited",
-//                        false
-//                    ) //.putInt("accentColor", Color.rgb(96, 125, 139))
-//                    //.putInt("accentColorPressed", Color.rgb(76, 95, 109))
-//                    .apply()
+                Preferences.Common.Overall.accentColor =
+                    Preferences.Common.Overall.DEFAULT_ACCENT_COLOR
+                Preferences.Common.Overall.accentColorPressed =
+                    Preferences.Common.Overall.DEFAULT_ACCENT_COLOR_PRESSED
+                Preferences.Common.Overall.accentColorEdited = false
             }.build()
 
     }
@@ -100,11 +89,13 @@ class ColorPickerDialogFragment : DialogFragment() {
                 } else {
                     colors[colorIndex] = editText.text.toString().toInt()
                 }
-                binding.preview.setBackgroundColor(Color.rgb(colors[0], colors[1], colors[2]))
+                binding.preview.setBackgroundColor(selectedColor)
                 seekBar.progress = colors[colorIndex]
                 editText.setSelection(editText.text.length)
             }
         })
+        editText.setText(colors[colorIndex].toString())
+
         seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(
                 seekBar: SeekBar,
@@ -113,12 +104,13 @@ class ColorPickerDialogFragment : DialogFragment() {
             ) {
                 editText.setText(progress.toString())
                 colors[colorIndex] = seekBar.progress
-                binding.preview.setBackgroundColor(Color.rgb(colors[0], colors[1], colors[2]))
+                binding.preview.setBackgroundColor(selectedColor)
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar) {}
             override fun onStopTrackingTouch(seekBar: SeekBar) {}
         })
+        seekBar.progress = colors[colorIndex]
     }
 
     override fun onDestroyView() {
