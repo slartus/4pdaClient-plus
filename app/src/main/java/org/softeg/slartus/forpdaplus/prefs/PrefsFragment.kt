@@ -34,6 +34,7 @@ import org.softeg.slartus.forpdaplus.controls.OpenFileDialog
 import org.softeg.slartus.forpdaplus.core_ui.AppColors
 import org.softeg.slartus.forpdaplus.db.NotesDbHelper
 import org.softeg.slartus.forpdaplus.db.NotesTable
+import org.softeg.slartus.forpdaplus.feature_preferences.Dialogs
 import org.softeg.slartus.forpdaplus.feature_preferences.Preferences
 import org.softeg.slartus.forpdaplus.feature_preferences.fragments.ColorPickerDialogFragment
 import org.softeg.slartus.forpdaplus.fragments.base.ProgressDialog
@@ -92,11 +93,11 @@ class PrefsFragment : PreferenceFragmentCompat() {
                 return true
             }
             "mainAccentColor" -> {
-                showMainAccentColorDialog()
+                Dialogs.showMainAccentColorDialog(requireContext())
                 return true
             }
             "webViewFont" -> {
-                webViewFontDialog()
+                Dialogs.webViewFontDialog(requireContext())
                 return true
             }
             "userBackground" -> {
@@ -466,91 +467,6 @@ class PrefsFragment : PreferenceFragmentCompat() {
                     Toast.LENGTH_SHORT
                 ).show()
             }
-        }
-    }
-
-    private fun webViewFontDialog() {
-        try {
-            val prefs = App.getInstance().preferences
-            val selected = intArrayOf(prefs.getInt("webViewFont", 0))
-            val name = arrayOf<CharSequence>("")
-            val dialogShowed = booleanArrayOf(false)
-            MaterialDialog.Builder(requireContext())
-                .title(R.string.choose_font)
-                .items(
-                    App.getContext().getString(R.string.font_from_style),
-                    App.getContext().getString(R.string.system_font),
-                    App.getContext().getString(R.string.enter_font_name)
-                )
-                .itemsCallbackSingleChoice(selected[0]) { _: MaterialDialog?, _: View?, which: Int, _: CharSequence? ->
-                    selected[0] = which
-                    when (which) {
-                        0 -> name[0] = ""
-                        1 -> name[0] = "inherit"
-                        2 -> {
-                            if (dialogShowed[0]) return@itemsCallbackSingleChoice true
-                            dialogShowed[0] = true
-                            MaterialDialog.Builder(requireContext())
-                                .inputType(InputType.TYPE_CLASS_TEXT)
-                                .input(
-                                    App.getContext().getString(R.string.font_name),
-                                    prefs.getString("webViewFontName", "")
-                                ) { _: MaterialDialog?, input: CharSequence -> name[0] = input }
-                                .positiveText(R.string.ok)
-                                .onPositive { _: MaterialDialog?, _: DialogAction? ->
-                                    prefs.edit()
-                                        .putString("webViewFontName", name[0].toString())
-                                        .apply()
-                                }
-                                .show()
-                        }
-                    }
-                    true
-                }
-                .alwaysCallSingleChoiceCallback()
-                .positiveText(R.string.accept)
-                .negativeText(R.string.cancel)
-                .onPositive { _: MaterialDialog?, _: DialogAction? ->
-                    prefs.edit().putString("webViewFontName", name[0].toString())
-                        .putInt("webViewFont", selected[0]).apply()
-                }
-                .show()
-        } catch (ex: Exception) {
-            AppLog.e(activity, ex)
-        }
-    }
-
-    private fun showMainAccentColorDialog() {
-        try {
-            val string = Preferences.Common.Overall.mainAccentColor
-            val mainAccentColors = listOf(AppColors.pink, AppColors.blue, AppColors.gray)
-            val position = mainAccentColors.indexOfFirst { c -> c.name == string }
-            var selected = position
-            MaterialDialog.Builder(requireContext())
-                .title(R.string.pick_accent_color)
-                .items(
-                    App.getContext().getString(R.string.pink),
-                    App.getContext().getString(R.string.blue),
-                    App.getContext().getString(R.string.gray)
-                )
-                .itemsCallbackSingleChoice(position) { _: MaterialDialog?, _: View?, which: Int, _: CharSequence? ->
-                    selected = which
-                    true
-                }
-                .alwaysCallSingleChoiceCallback()
-                .positiveText(R.string.accept)
-                .negativeText(R.string.cancel)
-                .onPositive { _: MaterialDialog?, _: DialogAction? ->
-                    val selectedColor = mainAccentColors[selected]
-                    Preferences.Common.Overall.mainAccentColor = selectedColor.name
-                    if (!Preferences.Common.Overall.accentColorEdited) {
-                        Preferences.Common.Overall.accentColor = selectedColor.color
-                        Preferences.Common.Overall.accentColorPressed = selectedColor.pressedColor
-                    }
-                }
-                .show()
-        } catch (ex: Exception) {
-            AppLog.e(activity, ex)
         }
     }
 

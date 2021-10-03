@@ -52,9 +52,13 @@ object Preferences {
         object Overall {
             val DEFAULT_ACCENT_COLOR = Color.rgb(2, 119, 189)
             val DEFAULT_ACCENT_COLOR_PRESSED = Color.rgb(0, 89, 159)
-            val DEFAULT_MAIN_ACCENT_COLOR = "pink"
+            private const val DEFAULT_MAIN_ACCENT_COLOR = "pink"
+
             @JvmStatic
-            var mainAccentColor: String by appPreference("mainAccentColor", DEFAULT_MAIN_ACCENT_COLOR)
+            var mainAccentColor: String by appPreference(
+                "mainAccentColor",
+                DEFAULT_MAIN_ACCENT_COLOR
+            )
 
             @JvmStatic
             var accentColor: Int by appPreference(
@@ -70,6 +74,11 @@ object Preferences {
 
             @JvmStatic
             var accentColorEdited: Boolean by appPreference("accentColorEdited", false)
+
+            @JvmStatic
+            var webViewFont: Int by appPreference("webViewFont", 0)
+            @JvmStatic
+            var webViewFontName: String by appPreference("webViewFontName", "")
         }
     }
 

@@ -5,7 +5,6 @@ import androidx.annotation.StringRes
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.Espresso.pressBack
-import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItem
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
@@ -26,6 +25,7 @@ import androidx.test.espresso.intent.Intents.intending
 
 import android.content.Intent
 import android.net.Uri
+import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.intent.matcher.IntentMatchers.*
 import org.hamcrest.CoreMatchers.*
 import java.io.File
@@ -34,6 +34,7 @@ import androidx.test.espresso.intent.Intents
 
 import org.junit.After
 import org.softeg.slartus.forpdaplus.R
+import org.softeg.slartus.forpdaplus.feature_preferences.Preferences
 
 @RunWith(AndroidJUnit4::class)
 @LargeTest
@@ -56,9 +57,7 @@ class PreferencesScreenTests {
 
         accentColorTests()
 
-        appearanceClick(R.string.webview_font)
-        onView(withText(R.string.system_font)).perform(click())
-        onView(withText(R.string.accept)).perform(click())
+        webViewFontTest()
 
         appearanceClick(R.string.user_background_title)
         onView(withText(R.string.reset)).perform(click())
@@ -70,6 +69,38 @@ class PreferencesScreenTests {
         appearanceClick(R.string.appearance)
 
         userBackgroundTest()
+    }
+
+    private fun webViewFontTest() {
+        val initFont = Preferences.Common.Overall.webViewFont
+        val initFontName = Preferences.Common.Overall.webViewFontName
+        appearanceClick(R.string.webview_font)
+        onView(withText(R.string.font_from_style)).perform(click())
+        onView(withText(R.string.accept)).perform(click())
+        assertEquals(Preferences.Common.Overall.webViewFont, 0)
+        assertEquals(Preferences.Common.Overall.webViewFontName, "")
+
+        appearanceClick(R.string.webview_font)
+        onView(withText(R.string.system_font)).perform(click())
+        onView(withText(R.string.accept)).perform(click())
+        assertEquals(Preferences.Common.Overall.webViewFont, 1)
+        assertEquals(Preferences.Common.Overall.webViewFontName, "inherit")
+
+        appearanceClick(R.string.webview_font)
+        onView(withText(R.string.enter_font_name)).perform(click())
+        onView(withHint(R.string.font_name))
+            .perform(clearText())
+            .perform(typeTextIntoFocusedView("some_test_text"));
+        onView(withText(R.string.ok)).perform(click())
+        onView(withText(R.string.accept)).perform(click())
+        assertEquals(Preferences.Common.Overall.webViewFont, 2)
+        assertEquals(Preferences.Common.Overall.webViewFontName, "some_test_text")
+
+        Preferences.Common.Overall.webViewFont = initFont
+        Preferences.Common.Overall.webViewFontName = initFontName
+
+        assertEquals(Preferences.Common.Overall.webViewFont, initFont)
+        assertEquals(Preferences.Common.Overall.webViewFontName, initFontName)
     }
 
     private fun chooseThemeTests() {
