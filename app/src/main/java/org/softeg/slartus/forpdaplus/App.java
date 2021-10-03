@@ -33,7 +33,6 @@ import org.softeg.slartus.forpdaplus.acra.ACRAReportSenderFactory;
 import org.softeg.slartus.forpdaplus.db.DbHelper;
 import org.softeg.slartus.forpdaplus.feature_preferences.Preferences;
 import org.softeg.slartus.forpdaplus.log.AppTimberTree;
-import org.softeg.slartus.forpdaplus.prefs.PreferencesActivity;
 import org.softeg.slartus.forpdaplus.repositories.ForumsRepository;
 import org.softeg.slartus.forpdaplus.repositories.InternetConnection;
 import org.softeg.slartus.hosthelper.HostHelper;
@@ -113,8 +112,8 @@ public class App extends MultiDexApplication {
         StrictMode.setVmPolicy(builder.build());
 
         Configuration config = getResources().getConfiguration();
-        lang = getPreferences().getString("lang", "default");
-        if (lang.equals("default")) {
+        lang = Preferences.System.getLang();
+        if (lang.equals(Preferences.System.DEFAULT_LANG)) {
             lang = config.locale.getLanguage();
         }
         locale = new Locale(lang);
@@ -144,7 +143,7 @@ public class App extends MultiDexApplication {
         ForumsRepository.getInstance();
     }
 
-    private void initTimber(){
+    private void initTimber() {
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
         }

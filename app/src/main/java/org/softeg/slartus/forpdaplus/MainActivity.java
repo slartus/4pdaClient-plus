@@ -585,9 +585,9 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
     public void onResume() {
         super.onResume();
         if (lang == null) {
-            lang = getPreferences().getString("lang", "default");
+            lang = Preferences.System.getLang();
         }
-        if (!getPreferences().getString("lang", "default").equals(lang)) {
+        if (!Preferences.System.getLang().equals(lang)) {
             new AlertDialog.Builder(getContext())
                     .setMessage(R.string.lang_changed)
                     .setPositiveButton(R.string.yes, (dialog, which) -> {

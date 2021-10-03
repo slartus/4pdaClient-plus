@@ -18,15 +18,6 @@ object Preferences {
     private const val DEFAULT_FONT_SIZE = 16
     private const val MAX_FONT_SIZE = 72
 
-    private val isLoadImages: Boolean
-        get() {
-            val loadImagesType =
-                ExtPreferences.parseInt(getPreferences(), "news.list.loadimages", 1)
-            return if (loadImagesType == 2) {
-                isConnectedWifi(getInstance())
-            } else loadImagesType == 1
-        }
-
     private val appCookiesPath: String
         get() = System.systemDir + "4pda_cookies"
 
@@ -273,6 +264,11 @@ object Preferences {
         var isEvaluateJavascriptEnabled: Boolean by appPreference(
             "system.EvaluateJavascriptEnabled", true
         )
+
+        const val DEFAULT_LANG = "default"
+
+        @JvmStatic
+        val lang: String by appPreference("lang", DEFAULT_LANG)
     }
 
     object News {
@@ -286,14 +282,19 @@ object Preferences {
         object List {
             @JvmStatic
             val isLoadImages: Boolean
-                get() = Preferences.isLoadImages
+                get() {
+                    val loadImagesType =
+                        ExtPreferences.parseInt(getPreferences(), "news.list.loadimages", 1)
+                    return if (loadImagesType == 2) {
+                        isConnectedWifi(getInstance())
+                    } else loadImagesType == 1
+                }
 
             @JvmStatic
             val listView: String by appPreference("news.list.view", "full")
         }
     }
 
-    class Menu
     object Notice {
         fun setNoticed(id: String?) {
             getPreferences()
