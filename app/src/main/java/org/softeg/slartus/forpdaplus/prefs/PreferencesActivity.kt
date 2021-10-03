@@ -11,6 +11,7 @@ import org.softeg.slartus.forpdaplus.AppTheme.getThemeCssFileName
 import org.softeg.slartus.forpdaplus.R
 import org.softeg.slartus.forpdaplus.common.AppLog
 import org.softeg.slartus.forpdaplus.feature_preferences.Preferences
+import org.softeg.slartus.forpdaplus.feature_preferences.fragments.TopicViewPreferences
 import org.softeg.slartus.forpdaplus.styles.CssStyle
 import ru.slartus.http.PersistentCookieStore.Companion.getInstance
 import java.io.File
@@ -38,14 +39,23 @@ class PreferencesActivity : BasePreferencesActivity(),
         preferenceFragmentCompat: PreferenceFragmentCompat?,
         preferenceScreen: PreferenceScreen
     ): Boolean {
-        val ft = supportFragmentManager.beginTransaction()
-        val fragment = PrefsFragment()
-        val args = Bundle()
-        args.putString(PreferenceFragmentCompat.ARG_PREFERENCE_ROOT, preferenceScreen.key)
-        fragment.arguments = args
-        ft.replace(android.R.id.content, fragment, preferenceScreen.key)
-        ft.addToBackStack(preferenceScreen.key)
-        ft.commit()
+        val fragment =
+            when (preferenceScreen.key) {
+                "download_files_screen" -> {
+                    TopicViewPreferences()
+                }
+                else -> {
+                    PrefsFragment()
+                }
+            }
+
+        fragment.arguments = Bundle().apply {
+            putString(PreferenceFragmentCompat.ARG_PREFERENCE_ROOT, preferenceScreen.key)
+        }
+        supportFragmentManager.beginTransaction()
+            .replace(android.R.id.content, fragment, preferenceScreen.key)
+            .addToBackStack(preferenceScreen.key)
+            .commit()
         return true
     }
 

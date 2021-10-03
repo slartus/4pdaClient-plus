@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:title="@string/topic_view">
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="theme.SpoilFirstPost"
+        android:summary="@string/spoil_first_post_summary"
+        android:title="@string/spoil_first_post_title" />
+
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="theme.ConfirmSend"
+        android:summary="Подтверждать отправку сообщения"
+        android:title="Подтверждать отправку" />
+    <org.softeg.slartus.forpdaplus.feature_preferences.views.SummaryValueListPreference
+        android:defaultValue="1"
+        android:entries="@array/ConnectTypeArray"
+        android:entryValues="@array/ConnectTypeValues"
+        android:key="theme.LoadsImages"
+        android:title="Загружать картинки" />
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="theme.UseVolumesScroll"
+        android:summary="Скроллить страницу кнопками громкости"
+        android:title="Скролл громкостью" />
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="theme.KeepScreenOn"
+        android:title="Не выключать экран" />
+
+
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="theme.SpoilerByButton"
+        android:summary="Если не работают спойлеры"
+        android:title="Использовать кнопку для спойлеров" />
+
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="theme.ShowReadersAndWriters"
+        android:summary="Показывать на странице 'Кто читает тему' и 'Кто писал сообщения'"
+        android:title="Дополнительные кнопки" />
+
+    <PreferenceScreen
+        android:key="download_files_screen"
+        android:title="Скачивание файлов">
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="files.ConfirmDownload"
+            android:summary="Подтверждение загрузки файла при выборе ссылки"
+            android:title="Подтверждать загрузку файла" />
+        <ListPreference
+            android:entries="@array/downloaderManagersArray"
+            android:entryValues="@array/downloaderManagersValues"
+            android:key="file.downloaderManagers"
+            android:summary="Использовать для скачивания файлов выбранный менеджер"
+            android:title="Скачивать файл при помощи..." />
+    </PreferenceScreen>
+
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="fullThemeTitle"
+        android:summary="Вместе с названием отображать описание темы на странице"
+        android:title="Полное название темы" />
+    <!--<CheckBoxPreference-->
+    <!--android:defaultValue="false"-->
+    <!--android:key="theme.Fullscreen"-->
+    <!--android:summary="Если не работают спойлеры"-->
+    <!--android:title="Fullscreen" />-->
+</PreferenceScreen>
