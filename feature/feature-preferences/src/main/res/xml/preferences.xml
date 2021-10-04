@@ -42,14 +42,13 @@
                 android:summary="По умолчанию - пусто"
                 android:title="Путь к файлу cookies" />
 
-
             <Preference
                 android:key="cookies.delete"
                 android:summary="Удалить файл cookies по текущему пути"
                 android:title="Удалить файл cookies" />
 
-
         </PreferenceScreen>
+
         <ListPreference
             android:dialogTitle="@string/lang_pref_title"
             android:entries="@array/entries_lang"

@@ -29,7 +29,6 @@ import org.softeg.slartus.forpdaplus.common.AppLog
 import org.softeg.slartus.forpdaplus.controls.OpenFileDialog
 import org.softeg.slartus.forpdaplus.db.NotesDbHelper
 import org.softeg.slartus.forpdaplus.db.NotesTable
-import org.softeg.slartus.forpdaplus.feature_preferences.Dialogs
 import org.softeg.slartus.forpdaplus.feature_preferences.Preferences
 import org.softeg.slartus.forpdaplus.fragments.base.ProgressDialog
 import org.softeg.slartus.forpdaplus.fragments.topic.ThemeFragment
@@ -73,15 +72,6 @@ class PrefsFragment : PreferenceFragmentCompat() {
             }
             "About.ShowTheme" -> {
                 showTheme("271502")
-                return true
-            }
-
-            "mainAccentColor" -> {
-                Dialogs.showMainAccentColorDialog(requireContext())
-                return true
-            }
-            "webViewFont" -> {
-                Dialogs.webViewFontDialog(requireContext())
                 return true
             }
             "notifiers.service.sound" -> {
