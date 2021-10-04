@@ -1,21 +1,18 @@
 package org.softeg.slartus.forpdaplus
 
-import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
-import android.net.ConnectivityManager
 import android.os.AsyncTask
 import android.os.Handler
-import androidx.constraintlayout.widget.Group
 import android.text.InputType
 import android.text.TextUtils
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.constraintlayout.widget.Group
 import com.afollestad.materialdialogs.MaterialDialog
 import com.nostra13.universalimageloader.core.ImageLoader
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener
@@ -24,16 +21,18 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
+import org.softeg.slartus.forpdacommon.isInternetAvailable
 import org.softeg.slartus.forpdacommon.setAllOnClickListener
 import org.softeg.slartus.forpdaplus.classes.FastBlur
 import org.softeg.slartus.forpdaplus.classes.common.StringUtils
 import org.softeg.slartus.forpdaplus.common.AppLog
+import org.softeg.slartus.forpdaplus.feature_preferences.Preferences
 import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment
 import org.softeg.slartus.forpdaplus.listtemplates.QmsContactsBrickInfo
-import org.softeg.slartus.forpdaplus.feature_preferences.Preferences
 import org.softeg.slartus.forpdaplus.repositories.UserInfo
 import org.softeg.slartus.forpdaplus.repositories.UserInfoRepository
 import org.softeg.slartus.hosthelper.HostHelper
+import timber.log.Timber
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
@@ -42,10 +41,6 @@ import java.lang.ref.WeakReference
 import java.util.regex.Pattern
 
 class ShortUserInfo internal constructor(activity: MainActivity, private val view: View) {
-    companion object {
-        private const val TAG = "ShortUserInfo"
-    }
-
     var mActivity: WeakReference<MainActivity> = WeakReference(activity)
     var prefs: SharedPreferences = App.getInstance().preferences
     private val imgAvatar: CircleImageView
@@ -64,18 +59,6 @@ class ShortUserInfo internal constructor(activity: MainActivity, private val vie
     private var avatarUrl = ""
 
     private fun getContext() = mActivity.get()
-
-
-    private val isOnline: Boolean
-        get() {
-            val cm = App.getInstance()
-                .getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-            val netInfo = cm.activeNetworkInfo
-            return (netInfo != null && netInfo.isConnectedOrConnecting
-                    && cm.activeNetworkInfo.isAvailable
-                    && cm.activeNetworkInfo.isConnected)
-        }
-
 
     init {
         userNick = findViewById(R.id.userNick) as TextView
@@ -130,7 +113,7 @@ class ShortUserInfo internal constructor(activity: MainActivity, private val vie
                 .show()
         }
 
-        val imgFile = File(prefs.getString("userInfoBg", "")!!)
+        val imgFile = File(Preferences.Common.Overall.userInfoBg)
         if (imgFile.exists()) {
             ImageLoader.getInstance().displayImage("file://" + imgFile.path, userBackground)
         }
@@ -143,6 +126,7 @@ class ShortUserInfo internal constructor(activity: MainActivity, private val vie
         }
         loginButton.setOnClickListener { LoginDialog.showDialog(getContext()) }
 
+        val isOnline = isInternetAvailable(App.getContext())
         if (!isOnline) {
             loginButton.setText(R.string.check_connection)
         }
@@ -208,7 +192,6 @@ class ShortUserInfo internal constructor(activity: MainActivity, private val vie
                     }
                 }
 
-
             } catch (e: IOException) {
                 AppLog.e(getContext(), e)
             }
@@ -232,17 +215,17 @@ class ShortUserInfo internal constructor(activity: MainActivity, private val vie
                     )
 
                     refreshQms()
-                    if (prefs.getBoolean("isUserBackground", false)) {
-                        val imgFile = File(prefs.getString("userInfoBg", "")!!)
+                    if (Preferences.Common.Overall.isUserBackground) {
+                        val imgFile = File(Preferences.Common.Overall.userInfoBg)
                         if (imgFile.exists()) {
                             ImageLoader.getInstance()
                                 .displayImage("file:///" + imgFile.path, userBackground)
                         }
                     } else {
-                        if ((avatarUrl != prefs.getString("userAvatarUrl", "")) or (prefs.getString(
-                                "userInfoBg",
+                        if ((avatarUrl != prefs.getString(
+                                "userAvatarUrl",
                                 ""
-                            ) == "")
+                            )) or (Preferences.Common.Overall.userInfoBg == "")
                         ) {
                             ImageLoader.getInstance()
                                 .loadImage(avatarUrl, object : SimpleImageLoadingListener() {
@@ -262,7 +245,7 @@ class ShortUserInfo internal constructor(activity: MainActivity, private val vie
                                     }
                                 })
                         } else {
-                            val imgFile = File(prefs.getString("userInfoBg", "")!!)
+                            val imgFile = File(Preferences.Common.Overall.userInfoBg)
                             if (imgFile.exists()) {
                                 ImageLoader.getInstance()
                                     .displayImage("file:///" + imgFile.path, userBackground)
@@ -289,30 +272,31 @@ class ShortUserInfo internal constructor(activity: MainActivity, private val vie
 
     private fun blur(bkg: Bitmap?, view: ImageView, url: String) {
         try {
-            var bkg = bkg
-            bkg = Bitmap.createScaledBitmap(bkg!!, view.width, view.height, false)
+            bkg?.let {
+                val scaledBackground =
+                    Bitmap.createScaledBitmap(bkg, view.width, view.height, false)
 
-            val scaleFactor = 3f
-            val radius = 64
+                val scaleFactor = 3f
+                val radius = 64
 
-            var overlay: Bitmap? = Bitmap.createBitmap(
-                (view.width / scaleFactor).toInt(),
-                (view.height / scaleFactor).toInt(), Bitmap.Config.RGB_565
-            )
-            val canvas = Canvas(overlay!!)
-            canvas.translate(-view.left / scaleFactor, -view.top / scaleFactor)
-            canvas.scale(1 / scaleFactor, 1 / scaleFactor)
-            val paint = Paint()
-            paint.flags = Paint.FILTER_BITMAP_FLAG
-            canvas.drawBitmap(bkg!!, 0f, 0f, paint)
+                var overlay: Bitmap? = Bitmap.createBitmap(
+                    (view.width / scaleFactor).toInt(),
+                    (view.height / scaleFactor).toInt(), Bitmap.Config.RGB_565
+                )
+                val canvas = Canvas(overlay!!)
+                canvas.translate(-view.left / scaleFactor, -view.top / scaleFactor)
+                canvas.scale(1 / scaleFactor, 1 / scaleFactor)
+                val paint = Paint()
+                paint.flags = Paint.FILTER_BITMAP_FLAG
+                canvas.drawBitmap(scaledBackground, 0f, 0f, paint)
 
-            overlay = FastBlur.doBlur(overlay, radius, true)
-            view.setImageBitmap(overlay)
-            storeImage(overlay, url)
+                overlay = FastBlur.doBlur(overlay, radius, true)
+                view.setImageBitmap(overlay)
+                storeImage(overlay, url)
+            }
         } catch (ex: Throwable) {
             ex.printStackTrace()
         }
-
     }
 
     private fun storeImage(image: Bitmap?, url: String) {
@@ -322,9 +306,9 @@ class ShortUserInfo internal constructor(activity: MainActivity, private val vie
             image!!.compress(Bitmap.CompressFormat.PNG, 100, fos)
             fos.close()
         } catch (e: FileNotFoundException) {
-            Log.d(TAG, "File not found: " + e.message)
+            Timber.d("File not found: " + e.message)
         } catch (e: IOException) {
-            Log.d(TAG, "Error accessing file: " + e.message)
+            Timber.d("Error accessing file: " + e.message)
         }
 
     }
@@ -348,10 +332,10 @@ class ShortUserInfo internal constructor(activity: MainActivity, private val vie
         var name = tsLong.toString()
         val m = Pattern.compile("https://s.4pda.to/(.*?)\\.").matcher(url)
         if (m.find()) {
-            name = m.group(1)
+            name = m.group(1) ?: "unknown"
         }
         val file = mediaStorageDir.path + File.separator + name + ".png"
-        prefs.edit().putString("userInfoBg", file).apply()
+        Preferences.Common.Overall.userInfoBg = file
         return File(file)
     }
 
@@ -359,6 +343,5 @@ class ShortUserInfo internal constructor(activity: MainActivity, private val vie
         return Pattern.compile(HostHelper.host + "/([^/$?&]+)", Pattern.CASE_INSENSITIVE)
             .matcher(url).find()
     }
-
 
 }

@@ -10,10 +10,7 @@ import androidx.preference.PreferenceFragmentCompat
 import com.afollestad.materialdialogs.DialogAction
 import com.afollestad.materialdialogs.MaterialDialog
 import org.softeg.slartus.forpdacommon.FilePath
-import org.softeg.slartus.forpdaplus.feature_preferences.App
-import org.softeg.slartus.forpdaplus.feature_preferences.Dialogs
-import org.softeg.slartus.forpdaplus.feature_preferences.R
-import org.softeg.slartus.forpdaplus.feature_preferences.preferences
+import org.softeg.slartus.forpdaplus.feature_preferences.*
 
 @Suppress("unused")
 class CommonPreferencesFragment : PreferenceFragmentCompat() {
@@ -62,17 +59,17 @@ class CommonPreferencesFragment : PreferenceFragmentCompat() {
             if (result.resultCode == Activity.RESULT_OK) {
                 val selectedImageUri = result?.data?.data
                 val selectedImagePath = FilePath.getPath(App.getInstance(), selectedImageUri)
-                if (selectedImagePath != null) App.getInstance().preferences
-                    .edit()
-                    .putString("userInfoBg", selectedImagePath)
-                    .putBoolean("isUserBackground", true)
-                    .apply() else Toast.makeText(
+                if (selectedImagePath != null) {
+                    Preferences.Common.Overall.userInfoBg = selectedImagePath
+                    Preferences.Common.Overall.isUserBackground = true
+                } else Toast.makeText(
                     activity,
                     "Не могу прикрепить файл",
                     Toast.LENGTH_SHORT
                 ).show()
             }
         }
+
     private fun pickUserBackground() {
         MaterialDialog.Builder(requireContext())
             .content(R.string.pick_image)
@@ -86,11 +83,8 @@ class CommonPreferencesFragment : PreferenceFragmentCompat() {
                 takePicture.launch(intent)
             }
             .onNeutral { _: MaterialDialog?, _: DialogAction? ->
-                App.getInstance().preferences
-                    .edit()
-                    .putString("userInfoBg", "")
-                    .putBoolean("isUserBackground", false)
-                    .apply()
+                Preferences.Common.Overall.userInfoBg = ""
+                Preferences.Common.Overall.isUserBackground = false
             }
             .show()
     }

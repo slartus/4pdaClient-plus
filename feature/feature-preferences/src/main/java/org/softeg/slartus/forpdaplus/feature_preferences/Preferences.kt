@@ -78,10 +78,18 @@ object Preferences {
 
             @JvmStatic
             var webViewFont: Int by appPreference("webViewFont", 0)
+
             @JvmStatic
             var webViewFontName: String by appPreference("webViewFontName", "")
+
             @JvmStatic
             var appStyle: String by appPreference("appstyle", AppTheme.DEFAULT_APP_THEME.toString())
+
+            @JvmStatic
+            var userInfoBg: String by appPreference("userInfoBg", "")
+
+            @JvmStatic
+            var isUserBackground: Boolean by appPreference("isUserBackground", false)
         }
     }
 
@@ -240,13 +248,13 @@ object Preferences {
         val webviewCompatMode: Boolean by appPreference("webviewCompatMode", false)
 
         @JvmStatic
-        var systemDir: String?
+        var systemDir: String
             get() {
                 var dir = getInstance().filesDir
                 if (dir == null) dir = getInstance().getExternalFilesDir(null)
                 assert(dir != null)
-                var res = getPreferences()!!
-                    .getString("path.system_path", dir!!.path)
+                var res = getPreferences()
+                    ?.getString("path.system_path", dir?.path) ?: dir?.path
                 if (!res!!.endsWith(File.separator)) res += File.separator
                 return res
             }
