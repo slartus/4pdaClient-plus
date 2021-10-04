@@ -44,7 +44,7 @@
 
     <PreferenceScreen
         android:key="download_files_screen"
-        android:title="Скачивание файлов">
+        android:title="@string/prefs_files_downloading">
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="files.ConfirmDownload"

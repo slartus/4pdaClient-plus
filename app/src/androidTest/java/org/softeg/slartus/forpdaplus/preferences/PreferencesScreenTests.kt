@@ -24,8 +24,10 @@ import android.app.Instrumentation
 import androidx.test.espresso.intent.Intents.intending
 
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import androidx.test.espresso.action.ViewActions.*
+import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.intent.matcher.IntentMatchers.*
 import org.hamcrest.CoreMatchers.*
 import java.io.File
@@ -50,10 +52,10 @@ class PreferencesScreenTests {
     @Test
     fun overallTest() {
         appearanceClick(R.string.appearance)
+
         chooseThemeTests()
 
-        appearanceClick(R.string.pick_color_with_pencil)
-        onView(withText(R.string.accept)).perform(click())
+        pencilColorTest()
 
         accentColorTests()
 
@@ -113,6 +115,78 @@ class PreferencesScreenTests {
         userBackgroundTest()
     }
 
+    @Test
+    fun pencilColorTests() {
+        appearanceClick(R.string.appearance)
+        pencilColorTest()
+    }
+
+    private fun pencilColorTest() {
+        val initAccentColor = Preferences.Common.Overall.accentColor
+        val initAccentColorEdited = Preferences.Common.Overall.accentColorEdited
+        val initAccentColorPressed = Preferences.Common.Overall.accentColorPressed
+
+        appearanceClick(R.string.pick_color_with_pencil)
+
+        val editors = listOf(
+            Pair(R.id.red, R.id.redText),
+            Pair(R.id.green, R.id.greenText),
+            Pair(R.id.blue, R.id.blueText)
+        )
+
+        editors.forEach { (_, editText) ->
+            onView(withId(editText)).perform(replaceText("-1"))
+            onView(withId(editText)).check(matches(hasValueEqualTo("0")))
+
+            onView(withId(editText)).perform(replaceText("256"))
+            onView(withId(editText)).check(matches(hasValueEqualTo("0")))
+
+            onView(withId(editText)).perform(replaceText("asd"))
+            onView(withId(editText)).check(matches(hasValueEqualTo("0")))
+        }
+
+        val values = 0..255
+        values.forEach { v ->
+            editors.forEach { (seekBar, editText) ->
+                onView(withId(editText))
+                    .perform(replaceText(v.toString()))
+                onView(withId(seekBar)).check(matches(withProgress(v)))
+            }
+        }
+        values.forEach { v ->
+            editors.forEach { (seekBar, editText) ->
+                onView(withId(seekBar)).perform(setProgress(v))
+                onView(withId(editText)).check(matches(hasValueEqualTo(v.toString())))
+            }
+        }
+
+        val red = values.random()
+        val green = values.random()
+        val blue = values.random()
+        onView(withId(R.id.red)).perform(setProgress(red))
+        onView(withId(R.id.greenText)).perform(replaceText(green.toString()))
+        onView(withId(R.id.blueText)).perform(replaceText(blue.toString()))
+
+
+        onView(withText(R.string.accept)).perform(click())
+        assertEquals(Preferences.Common.Overall.accentColor, Color.rgb(red, green, blue))
+
+        appearanceClick(R.string.pick_color_with_pencil)
+        onView(withText(R.string.reset)).perform(click())
+        assertEquals(
+            Preferences.Common.Overall.accentColor,
+            Preferences.Common.Overall.DEFAULT_ACCENT_COLOR
+        )
+
+        Preferences.Common.Overall.accentColor = initAccentColor
+        Preferences.Common.Overall.accentColorEdited = initAccentColorEdited
+        Preferences.Common.Overall.accentColorPressed = initAccentColorPressed
+
+        assertEquals(Preferences.Common.Overall.accentColor, initAccentColor)
+        assertEquals(Preferences.Common.Overall.accentColorEdited, initAccentColorEdited)
+        assertEquals(Preferences.Common.Overall.accentColorPressed, initAccentColorPressed)
+    }
+
     private fun webViewFontTest() {
         val initFont = Preferences.Common.Overall.webViewFont
         val initFontName = Preferences.Common.Overall.webViewFontName
@@ -132,7 +206,7 @@ class PreferencesScreenTests {
         onView(withText(R.string.enter_font_name)).perform(click())
         onView(withHint(R.string.font_name))
             .perform(clearText())
-            .perform(typeTextIntoFocusedView("some_test_text"));
+            .perform(typeTextIntoFocusedView("some_test_text"))
         onView(withText(R.string.ok)).perform(click())
         onView(withText(R.string.accept)).perform(click())
         assertEquals(Preferences.Common.Overall.webViewFont, 2)

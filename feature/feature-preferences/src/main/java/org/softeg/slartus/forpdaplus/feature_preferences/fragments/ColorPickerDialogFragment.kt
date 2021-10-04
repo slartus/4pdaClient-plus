@@ -15,6 +15,7 @@ import org.softeg.slartus.forpdacommon.InputFilterMinMax
 import org.softeg.slartus.forpdaplus.feature_preferences.Preferences
 import org.softeg.slartus.forpdaplus.feature_preferences.R
 import org.softeg.slartus.forpdaplus.feature_preferences.databinding.FragmentColorPickerBinding
+import kotlin.math.abs
 
 class ColorPickerDialogFragment : DialogFragment() {
     private val colors = Preferences.Common.Overall.accentColor.let { prefColor ->
@@ -45,10 +46,7 @@ class ColorPickerDialogFragment : DialogFragment() {
             .neutralText(R.string.reset)
             .onPositive { _: MaterialDialog?, _: DialogAction? ->
                 val colorPressed =
-                    intArrayOf(colors[0] - 30, colors[1] - 30, colors[2] - 30)
-                if (colorPressed[0] < 0) colorPressed[0] = 0
-                if (colorPressed[1] < 0) colorPressed[1] = 0
-                if (colorPressed[2] < 0) colorPressed[2] = 0
+                    intArrayOf(abs(colors[0] - 30), abs(colors[1] - 30), abs(colors[2] - 30))
                 if (selectedColor != Preferences.Common.Overall.accentColor) {
                     Preferences.Common.Overall.accentColorEdited = true
                 }
@@ -87,7 +85,11 @@ class ColorPickerDialogFragment : DialogFragment() {
                 if (editText.text.toString() == "") {
                     colors[colorIndex] = 0
                 } else {
-                    colors[colorIndex] = editText.text.toString().toInt()
+                    colors[colorIndex] =
+                        (editText.text.toString().toIntOrNull() ?: 0).coerceIn(0, 255)
+                }
+                if(editText.text.toString()!=colors[colorIndex].toString()) {
+                    editText.setText(colors[colorIndex].toString())
                 }
                 binding.preview.setBackgroundColor(selectedColor)
                 seekBar.progress = colors[colorIndex]
