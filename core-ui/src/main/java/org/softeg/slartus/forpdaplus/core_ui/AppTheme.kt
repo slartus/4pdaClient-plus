@@ -2,7 +2,6 @@ package org.softeg.slartus.forpdaplus.core_ui
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.graphics.Color
 import android.os.Environment
 import android.preference.PreferenceManager
 import java.io.File
@@ -18,25 +17,11 @@ object AppTheme {
     private const val THEME_MATERIAL_BLACK = 5
     private const val THEME_LIGHT_OLD_HD = 4
     private const val THEME_CUSTOM_CSS = 99
-    const val THEME_TYPE_LIGHT = 0
-    const val THEME_TYPE_DARK = 2
+    private const val THEME_TYPE_LIGHT = 0
+    private const val THEME_TYPE_DARK = 2
     private const val THEME_TYPE_BLACK = 3
     private val LIGHT_THEMES = arrayOf(THEME_LIGHT, THEME_LIGHT_OLD_HD, THEME_MATERIAL_LIGHT)
     private val DARK_THEMES = arrayOf(THEME_MATERIAL_DARK, THEME_DARK)
-
-    @JvmStatic
-    val webViewFont: String?
-        get() = preferences.getString("webViewFontName", "")
-
-    @JvmStatic
-    fun getColorAccent(type: String?): Int {
-        var color = 0
-        when (type) {
-            "Accent" -> color = preferences.getInt("accentColor", Color.rgb(2, 119, 189))
-            "Pressed" -> color = preferences.getInt("accentColorPressed", Color.rgb(0, 89, 159))
-        }
-        return color
-    }
 
     @JvmStatic
     val mainAccentColor: Int
@@ -50,36 +35,6 @@ object AppTheme {
             return color
         }
 
-    @JvmStatic
-    val themeStyleResID: Int
-        get() {
-            var theme = R.style.ThemeLight
-            val color = preferences.getString("mainAccentColor", "pink")
-            when (themeType) {
-                THEME_TYPE_LIGHT -> {
-                    when (color) {
-                        "pink" -> theme = R.style.MainPinkLight
-                        "blue" -> theme = R.style.MainBlueLight
-                        "gray" -> theme = R.style.MainGrayLight
-                    }
-                }
-                THEME_TYPE_DARK -> {
-                    when (color) {
-                        "pink" -> theme = R.style.MainPinkDark
-                        "blue" -> theme = R.style.MainBlueDark
-                        "gray" -> theme = R.style.MainGrayDark
-                    }
-                }
-                else -> {
-                    when (color) {
-                        "pink" -> theme = R.style.MainPinkBlack
-                        "blue" -> theme = R.style.MainBlueBlack
-                        "gray" -> theme = R.style.MainGrayBlack
-                    }
-                }
-            }
-            return theme
-        }
 
     @JvmStatic
     val prefsThemeStyleResID: Int
@@ -133,66 +88,8 @@ object AppTheme {
         }
 
     @JvmStatic
-    val themeBackgroundColorRes: Int
-        get() {
-            val themeType = themeType
-            return if (themeType == THEME_TYPE_LIGHT) R.color.app_background_light else if (themeType == THEME_TYPE_DARK) R.color.app_background_dark else R.color.app_background_black
-        }
-
-    @JvmStatic
-    val themeTextColorRes: Int
-        get() {
-            val themeType = themeType
-            return if (themeType == THEME_TYPE_LIGHT) android.R.color.black else if (themeType == THEME_TYPE_DARK) android.R.color.white else android.R.color.white
-        }
-
-    @JvmStatic
-    val swipeRefreshBackground: Int
-        get() {
-            val themeType = themeType
-            return if (themeType == THEME_TYPE_LIGHT) R.color.swipe_background_light else if (themeType == THEME_TYPE_DARK) R.color.swipe_background_dark else R.color.swipe_background_black
-        }
-
-    @JvmStatic
-    val navBarColor: Int
-        get() {
-            val themeType = themeType
-            return if (themeType == THEME_TYPE_LIGHT) R.color.navBar_light else if (themeType == THEME_TYPE_DARK) R.color.navBar_dark else R.color.navBar_black
-        }
-
-    @JvmStatic
-    val drawerMenuText: Int
-        get() {
-            val themeType = themeType
-            return if (themeType == THEME_TYPE_LIGHT) R.color.drawer_menu_text_light else if (themeType == THEME_TYPE_DARK) R.color.drawer_menu_text_dark else R.color.drawer_menu_text_dark
-        }
-
-    @JvmStatic
-    val themeStyleWebViewBackground: Int
-        get() {
-            val themeType = themeType
-            return if (themeType == THEME_TYPE_LIGHT) Color.parseColor("#eeeeee") else if (themeType == THEME_TYPE_DARK) Color.parseColor(
-                "#1a1a1a"
-            ) else Color.parseColor("#000000")
-        }
-
-    @JvmStatic
-    val currentBackgroundColorHtml: String
-        get() {
-            val themeType = themeType
-            return if (themeType == THEME_TYPE_LIGHT) "#eeeeee" else if (themeType == THEME_TYPE_DARK) "#1a1a1a" else "#000000"
-        }
-
-    @JvmStatic
     val currentTheme: String
         get() = preferences.getString("appstyle", DEFAULT_APP_THEME.toString()) ?: DEFAULT_APP_THEME.toString()
-
-    @JvmStatic
-    val currentThemeName: String
-        get() {
-            val themeType = themeType
-            return if (themeType == THEME_TYPE_LIGHT) "white" else if (themeType == THEME_TYPE_DARK) "dark" else "black"
-        }
 
     private fun checkThemeFile(themePath: String): String {
         return try {

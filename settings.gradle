@@ -2,3 +2,4 @@ include ':app', ':forpdaapi', ':forpdacommon', ':forpdanotifyservice', ':sqlitea
 include ':hosthelper'
 include ':feature:feature-preferences'
 include ':core-ui'
+include ':core'
