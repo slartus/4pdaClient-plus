@@ -40,7 +40,7 @@ import org.softeg.slartus.forpdaplus.feature_preferences.Preferences
 
 @RunWith(AndroidJUnit4::class)
 @LargeTest
-class PreferencesScreenTests {
+class CommonPreferencesTests {
     @get:Rule
     var activityRule: ActivityScenarioRule<PreferencesActivity> =
         ActivityScenarioRule(PreferencesActivity::class.java)
@@ -52,14 +52,6 @@ class PreferencesScreenTests {
     @Test
     fun overallTest() {
         appearanceClick(R.string.appearance)
-
-        chooseThemeTests()
-
-        pencilColorTest()
-
-        accentColorTests()
-
-        webViewFontTest()
 
         checkBoxPreferenceTest(
             context,
@@ -116,12 +108,8 @@ class PreferencesScreenTests {
     }
 
     @Test
-    fun pencilColorTests() {
+    fun pencilColorTest() {
         appearanceClick(R.string.appearance)
-        pencilColorTest()
-    }
-
-    private fun pencilColorTest() {
         val initAccentColor = Preferences.Common.Overall.accentColor
         val initAccentColorEdited = Preferences.Common.Overall.accentColorEdited
         val initAccentColorPressed = Preferences.Common.Overall.accentColorPressed
@@ -187,7 +175,10 @@ class PreferencesScreenTests {
         assertEquals(Preferences.Common.Overall.accentColorPressed, initAccentColorPressed)
     }
 
-    private fun webViewFontTest() {
+    @Test
+    fun webViewFontTest() {
+        appearanceClick(R.string.appearance)
+
         val initFont = Preferences.Common.Overall.webViewFont
         val initFontName = Preferences.Common.Overall.webViewFontName
         appearanceClick(R.string.webview_font)
@@ -219,7 +210,9 @@ class PreferencesScreenTests {
         assertEquals(Preferences.Common.Overall.webViewFontName, initFontName)
     }
 
-    private fun chooseThemeTests() {
+    @Test
+    fun chooseThemeTests() {
+        appearanceClick(R.string.appearance)
         val names = context.resources
             .getStringArray(R.array.appthemesArray)
 
@@ -242,7 +235,9 @@ class PreferencesScreenTests {
         chooseThemeTest(names[0])
     }
 
-    private fun accentColorTests() {
+    @Test
+    fun accentColorTests() {
+        appearanceClick(R.string.appearance)
         val names = listOf(
             context.getString(R.string.pink),
             context.getString(R.string.blue),
