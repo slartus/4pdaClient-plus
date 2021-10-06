@@ -18,12 +18,15 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.afollestad.materialdialogs.DialogAction
 import com.afollestad.materialdialogs.MaterialDialog
+import dagger.hilt.android.AndroidEntryPoint
 import org.softeg.slartus.forpdacommon.NotReportException
 import org.softeg.slartus.forpdaplus.App
 import org.softeg.slartus.forpdaplus.IntentActivity
 import org.softeg.slartus.forpdaplus.R
 import org.softeg.slartus.forpdaplus.common.AppLog
 import org.softeg.slartus.forpdaplus.controls.OpenFileDialog
+import org.softeg.slartus.forpdaplus.core_ui.navigation.AppNavigator
+import org.softeg.slartus.forpdaplus.core_ui.navigation.AppScreen
 import org.softeg.slartus.forpdaplus.db.NotesDbHelper
 import org.softeg.slartus.forpdaplus.db.NotesTable
 import org.softeg.slartus.forpdaplus.feature_preferences.Dialogs.showAbout
@@ -33,14 +36,18 @@ import org.softeg.slartus.forpdaplus.feature_preferences.Dialogs.showSelectDirDi
 import org.softeg.slartus.forpdaplus.feature_preferences.Dialogs.showShareIt
 import org.softeg.slartus.forpdaplus.feature_preferences.Preferences
 import org.softeg.slartus.forpdaplus.fragments.base.ProgressDialog
-import org.softeg.slartus.forpdaplus.fragments.topic.ThemeFragment
 import org.softeg.slartus.forpdaplus.mainnotifiers.ForPdaVersionNotifier
 import org.softeg.slartus.forpdaplus.mainnotifiers.NotifiersManager
 import org.softeg.slartus.forpdaplus.repositories.NotesRepository
 import java.io.File
 import java.util.*
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class PrefsFragment : PreferenceFragmentCompat() {
+
+    @Inject
+    lateinit var appNavigator: AppNavigator
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences, rootKey)
@@ -315,8 +322,8 @@ class PrefsFragment : PreferenceFragmentCompat() {
     }
 
     private fun showTheme(themeId: String) {
+        appNavigator.navigateTo(AppScreen.Topic(themeId))
         activity?.finish()
-        ThemeFragment.showTopicById(themeId)
     }
 
     private fun showCookiesDeleteDialog() {

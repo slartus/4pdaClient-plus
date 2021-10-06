@@ -5,6 +5,7 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceScreen
+import dagger.hilt.android.AndroidEntryPoint
 import org.softeg.slartus.forpdacommon.appFullName
 import org.softeg.slartus.forpdacommon.packageInfo
 import org.softeg.slartus.forpdaplus.App
@@ -18,6 +19,7 @@ import ru.slartus.http.PersistentCookieStore.Companion.getInstance
  * Date: 03.10.11
  * Time: 10:47
  */
+@AndroidEntryPoint
 class PreferencesActivity : BasePreferencesActivity(),
     PreferenceFragmentCompat.OnPreferenceStartScreenCallback {
 
