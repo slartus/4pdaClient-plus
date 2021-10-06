@@ -45,8 +45,9 @@ data class AppPreferenceString(
         return value
     }
 
-    override val value = App.getPreferences()
-        ?.getString(key, defaultValue) ?: defaultValue
+    override val value
+        get() = App.getPreferences()
+            ?.getString(key, defaultValue) ?: defaultValue
 }
 
 data class AppPreferenceBoolean(
@@ -61,7 +62,8 @@ data class AppPreferenceBoolean(
         App.getPreferences()?.edit()?.putBoolean(key, value)?.apply()
     }
 
-    override val value = App.getPreferences()?.getBoolean(key, defaultValue) ?: defaultValue
+    override val value
+        get() = App.getPreferences()?.getBoolean(key, defaultValue) ?: defaultValue
 }
 
 data class AppPreferenceInt(
@@ -76,14 +78,15 @@ data class AppPreferenceInt(
         App.getPreferences()?.edit()?.putInt(key, value)?.apply()
     }
 
-    override val value = try {
-        App.getPreferences()?.getInt(key, defaultValue) ?: defaultValue
-    } catch (ex: java.lang.Exception) {
-        val strValue =
-            App.getPreferences()?.getString(key, defaultValue.toString())
-                ?: defaultValue.toString()
-        strValue.toIntOrNull() ?: defaultValue
-    }
+    override val value
+        get() = try {
+            App.getPreferences()?.getInt(key, defaultValue) ?: defaultValue
+        } catch (ex: java.lang.Exception) {
+            val strValue =
+                App.getPreferences()?.getString(key, defaultValue.toString())
+                    ?: defaultValue.toString()
+            strValue.toIntOrNull() ?: defaultValue
+        }
 }
 
 data class AppPreferenceFloat(
@@ -98,12 +101,13 @@ data class AppPreferenceFloat(
         App.getPreferences()?.edit()?.putFloat(key, value)?.apply()
     }
 
-    override val value = try {
-        App.getPreferences()?.getFloat(key, defaultValue) ?: defaultValue
-    } catch (ex: java.lang.Exception) {
-        val strValue =
-            App.getPreferences()?.getString(key, defaultValue.toString())
-                ?: defaultValue.toString()
-        strValue.toFloatOrNull() ?: defaultValue
-    }
+    override val value
+        get() = try {
+            App.getPreferences()?.getFloat(key, defaultValue) ?: defaultValue
+        } catch (ex: java.lang.Exception) {
+            val strValue =
+                App.getPreferences()?.getString(key, defaultValue.toString())
+                    ?: defaultValue.toString()
+            strValue.toFloatOrNull() ?: defaultValue
+        }
 }

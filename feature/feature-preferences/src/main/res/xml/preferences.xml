@@ -1,30 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:project="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:project="http://schemas.android.com/apk/res-auto"
     project:iconSpaceReserved="false">
 
     <Preference
         android:key="common"
         android:title="@string/appearance"
-        app:fragment="org.softeg.slartus.forpdaplus.feature_preferences.fragments.CommonPreferencesFragment"/>
+        app:fragment="org.softeg.slartus.forpdaplus.feature_preferences.fragments.CommonPreferencesFragment" />
 
     <Preference
         android:key="topic_view"
         android:title="@string/topic_view"
-        app:fragment="org.softeg.slartus.forpdaplus.feature_preferences.fragments.TopicViewPreferences"/>
+        app:fragment="org.softeg.slartus.forpdaplus.feature_preferences.fragments.TopicViewPreferences" />
 
     <Preference
         android:key="news_screen"
-        android:title="Новости"
-        app:fragment="org.softeg.slartus.forpdaplus.feature_preferences.fragments.NewsPreferencesFragment"/>
+        android:title="@string/news"
+        app:fragment="org.softeg.slartus.forpdaplus.feature_preferences.fragments.NewsPreferencesFragment" />
 
     <Preference
         android:key="lists_screen"
         android:title="Списки"
-        app:fragment="org.softeg.slartus.forpdaplus.feature_preferences.fragments.ListsPreferencesFragment"/>
-
+        app:fragment="org.softeg.slartus.forpdaplus.feature_preferences.fragments.ListsPreferencesFragment" />
 
     <PreferenceScreen
         android:key="system_screen"
@@ -73,7 +72,6 @@
             android:key="system.WebViewScroll"
             android:summary="Снимите галочку, если программа падает при вызове темы. Например, для Nook Simple Touch"
             android:title="Показывать скролл в браузере" />
-
 
         <ListPreference
             android:defaultValue="left"
@@ -307,7 +305,6 @@
     <Preference
         android:key="donate_screen"
         android:title="Помочь проекту"
-        app:fragment="org.softeg.slartus.forpdaplus.feature_preferences.fragments.DonatePreferencesFragment"
-        />
+        app:fragment="org.softeg.slartus.forpdaplus.feature_preferences.fragments.DonatePreferencesFragment" />
 
 </PreferenceScreen>

@@ -1,35 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    android:title="Новости"
-    >
+    android:title="Новости">
     <CheckBoxPreference
         android:defaultValue="true"
         android:key="news.ConfirmSend"
         android:summary="Подтверждать отправку сообщения"
-        android:title="Подтверждать отправку" />
+        android:title="@string/send_post_confirm_dialog_ask" />
     <org.softeg.slartus.forpdaplus.feature_preferences.views.SummaryValueListPreference
         android:defaultValue="1"
         android:entries="@array/ConnectTypeArray"
         android:entryValues="@array/ConnectTypeValues"
         android:key="news.LoadsImages"
-        android:title="Загружать картинки" />
+        android:title="@string/prefs_load_images" />
     <CheckBoxPreference
         android:defaultValue="false"
         android:key="news.UseVolumesScroll"
         android:summary="Скроллить страницу кнопками громкости"
-        android:title="Скролл громкостью" />
+        android:title="@string/prefs_use_volumes_scroll" />
     <CheckBoxPreference
         android:defaultValue="false"
         android:key="news.KeepScreenOn"
-        android:title="Не выключать экран" />
+        android:title="@string/prefs_keep_screen_on" />
     <CheckBoxPreference
         android:defaultValue="false"
         android:key="news.FullScreen"
         android:summary="Просмотр новости во весь экран"
-        android:title="Во весь экран" />
+        android:title="@string/full_screen" />
     <CheckBoxPreference
         android:defaultValue="false"
         android:key="loadNewsComment"
         android:summary="Ускорит отображение страницы"
-        android:title="Не загружать комментарии" />
+        android:title="@string/dont_load_comments" />
 </PreferenceScreen>

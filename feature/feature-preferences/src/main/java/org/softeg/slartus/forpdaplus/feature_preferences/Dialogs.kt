@@ -20,7 +20,6 @@ import org.softeg.slartus.forpdacommon.ExternalStorage
 import org.softeg.slartus.forpdacommon.FileUtils
 import org.softeg.slartus.forpdacommon.appFullName
 import org.softeg.slartus.forpdaplus.core_ui.AppColors
-import org.softeg.slartus.forpdaplus.core_ui.AppTheme
 import org.softeg.slartus.forpdaplus.core_ui.CssStyles
 import org.softeg.slartus.hosthelper.HostHelper
 import timber.log.Timber
@@ -118,7 +117,7 @@ object Dialogs {
 
     fun showStylesDialog(context: Context) {
         try {
-            val currentValue = AppTheme.currentTheme
+            val currentValue = Preferences.Common.Overall.appStyle
             val newStyleNames = ArrayList<CharSequence>()
             val newStyleValues = ArrayList<CharSequence>()
             CssStyles.getStylesList(
@@ -127,20 +126,20 @@ object Dialogs {
                 newStyleNames,
                 newStyleValues
             )
-            val selected = intArrayOf(newStyleValues.indexOf(currentValue))
+            var selected = newStyleValues.indexOf(currentValue)
             MaterialDialog.Builder(context)
                 .title(R.string.app_theme)
                 .cancelable(true)
                 .items(*newStyleNames.toTypedArray())
                 .itemsCallbackSingleChoice(newStyleValues.indexOf(currentValue)) { _: MaterialDialog?, _: View?, i: Int, _: CharSequence? ->
-                    selected[0] = i
+                    selected = i
                     true // allow selection
                 }
                 .alwaysCallSingleChoiceCallback()
                 .positiveText(context.getString(R.string.AcceptStyle))
                 //.neutralText(context.getString(R.string.Information))
                 .onPositive { _: MaterialDialog?, _: DialogAction? ->
-                    if (selected[0] == -1) {
+                    if (selected == -1) {
                         Toast.makeText(
                             context,
                             context.getString(R.string.ChooseStyle),
@@ -148,7 +147,7 @@ object Dialogs {
                         ).show()
                         return@onPositive
                     }
-                    Preferences.Common.Overall.appStyle = newStyleValues[selected[0]].toString()
+                    Preferences.Common.Overall.appStyle = newStyleValues[selected].toString()
                 }
 //                .onNeutral { _: MaterialDialog?, _: DialogAction? ->
 //                    if (selected[0] == -1) {

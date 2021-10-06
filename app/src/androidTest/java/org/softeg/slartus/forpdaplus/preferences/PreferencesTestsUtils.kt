@@ -2,28 +2,27 @@ package org.softeg.slartus.forpdaplus.preferences
 
 import android.content.Context
 import android.view.View
+import android.widget.EditText
+import android.widget.SeekBar
+import android.widget.TextView
 import androidx.annotation.ArrayRes
 import androidx.annotation.StringRes
 import androidx.preference.R
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItem
-import androidx.test.espresso.matcher.ViewMatchers.*
-import org.junit.Assert
-import org.softeg.slartus.forpdaplus.feature_preferences.preferences
-import android.widget.SeekBar
 import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
+import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItem
 import androidx.test.espresso.matcher.BoundedMatcher
-import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.espresso.matcher.ViewMatchers.*
 import org.hamcrest.Description
 import org.hamcrest.Matcher
-import android.widget.EditText
-
-import android.widget.TextView
 import org.hamcrest.TypeSafeMatcher
+import org.junit.Assert
+import org.softeg.slartus.forpdaplus.feature_preferences.preferences
 
+// https://android.github.io/android-test/downloads/espresso-cheat-sheet-2.1.0.pdf
 fun appearanceClick(@StringRes title: Int) {
     onView(withId(R.id.recycler_view))
         .perform(
@@ -73,7 +72,7 @@ fun listPreferenceTest(
     }
 }
 
-fun setProgress(progress: Int): ViewAction? {
+fun setProgress(progress: Int): ViewAction {
     return object : ViewAction {
         override fun getConstraints(): Matcher<View> {
             return isAssignableFrom(SeekBar::class.java)
@@ -103,7 +102,7 @@ fun withProgress(expectedProgress: Int): Matcher<View?> {
     }
 }
 
-fun hasValueEqualTo(content: String): Matcher<View?>? {
+fun hasValueEqualTo(content: String): Matcher<View?> {
     return object : TypeSafeMatcher<View?>() {
         override fun describeTo(description: Description) {
             description.appendText("Has EditText/TextView the value:  $content")

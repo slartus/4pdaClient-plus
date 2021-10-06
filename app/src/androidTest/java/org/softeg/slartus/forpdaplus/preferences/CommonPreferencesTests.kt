@@ -1,42 +1,35 @@
 package org.softeg.slartus.forpdaplus.preferences
 
+import android.app.Activity
+import android.app.Instrumentation
 import android.content.Context
-import androidx.annotation.StringRes
-import androidx.recyclerview.widget.RecyclerView
+import android.content.Intent
+import android.graphics.Color
+import android.net.Uri
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.Espresso.pressBack
-import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItem
+import androidx.test.espresso.action.ViewActions.*
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.intent.Intents
+import androidx.test.espresso.intent.Intents.intending
+import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
+import org.hamcrest.CoreMatchers.allOf
+import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.softeg.slartus.forpdaplus.feature_preferences.preferences
-import org.softeg.slartus.forpdaplus.prefs.PreferencesActivity
-import android.app.Activity
-import android.app.Instrumentation
-
-import androidx.test.espresso.intent.Intents.intending
-
-import android.content.Intent
-import android.graphics.Color
-import android.net.Uri
-import androidx.test.espresso.action.ViewActions.*
-import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.intent.matcher.IntentMatchers.*
-import org.hamcrest.CoreMatchers.*
-import java.io.File
-
-import androidx.test.espresso.intent.Intents
-
-import org.junit.After
 import org.softeg.slartus.forpdaplus.R
 import org.softeg.slartus.forpdaplus.feature_preferences.Preferences
+import org.softeg.slartus.forpdaplus.feature_preferences.preferences
+import org.softeg.slartus.forpdaplus.prefs.PreferencesActivity
+import java.io.File
 
 @RunWith(AndroidJUnit4::class)
 @LargeTest
@@ -219,12 +212,14 @@ class CommonPreferencesTests {
         val values = context.resources
             .getStringArray(R.array.appthemesValues)
 
+
         fun chooseThemeTest(themeName: String) {
             appearanceClick(R.string.theme)
+
             onView(withText(themeName)).perform(click())
             onView(withText(R.string.AcceptStyle)).perform(click())
             assertEquals(
-                context.preferences.getString("appstyle", null),
+                Preferences.Common.Overall.appStyle,
                 values[names.indexOf(themeName)].toString()
             )
         }

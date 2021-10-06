@@ -490,4 +490,6 @@
     <string name="prefs_files_downloading">Files downloading</string>
     <string name="prefs_confirm_download_file">Confirm file download</string>
     <string name="prefs_download_managers">Download a file using the...</string>
+    <string name="full_screen">Full screen</string>
+    <string name="dont_load_comments">Don\'t load comments</string>
 </resources>
