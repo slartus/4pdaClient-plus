@@ -456,7 +456,7 @@ class QmsChatFragment : WebViewFragment() {
         if (!QmsNotifier.isUse(context))
             return
 
-        App.reStartQmsService(true)
+        App.reStartQmsService()
     }
 
     override fun onPause() {

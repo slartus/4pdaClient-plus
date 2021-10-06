@@ -29,17 +29,17 @@ import org.softeg.slartus.forpdaplus.common.AppLog
 import org.softeg.slartus.forpdaplus.controls.OpenFileDialog
 import org.softeg.slartus.forpdaplus.db.NotesDbHelper
 import org.softeg.slartus.forpdaplus.db.NotesTable
+import org.softeg.slartus.forpdaplus.feature_preferences.Dialogs.showAbout
+import org.softeg.slartus.forpdaplus.feature_preferences.Dialogs.showAboutHistory
+import org.softeg.slartus.forpdaplus.feature_preferences.Dialogs.showSelectDirDialog
+import org.softeg.slartus.forpdaplus.feature_preferences.Dialogs.showShareIt
 import org.softeg.slartus.forpdaplus.feature_preferences.Preferences
 import org.softeg.slartus.forpdaplus.fragments.base.ProgressDialog
 import org.softeg.slartus.forpdaplus.fragments.topic.ThemeFragment
 import org.softeg.slartus.forpdaplus.mainnotifiers.ForPdaVersionNotifier
 import org.softeg.slartus.forpdaplus.mainnotifiers.NotifiersManager
 import org.softeg.slartus.forpdaplus.repositories.NotesRepository
-import org.softeg.slartus.hosthelper.HostHelper
-import java.io.BufferedReader
 import java.io.File
-import java.io.IOException
-import java.io.InputStreamReader
 import java.util.*
 
 class PrefsFragment : PreferenceFragmentCompat() {
@@ -51,11 +51,11 @@ class PrefsFragment : PreferenceFragmentCompat() {
     override fun onPreferenceTreeClick(preference: Preference?): Boolean {
         when (val key = preference?.key) {
             "path.system_path" -> {
-                showSelectDirDialog()
+                showSelectDirDialog(requireContext())
                 return true
             }
             "About.AppVersion" -> {
-                showAbout()
+                showAbout(requireContext())
                 return true
             }
             "cookies.delete" -> {
@@ -63,11 +63,11 @@ class PrefsFragment : PreferenceFragmentCompat() {
                 return true
             }
             "About.History" -> {
-                showAboutHistory()
+                showAboutHistory(requireContext())
                 return true
             }
             "About.ShareIt" -> {
-                showShareIt()
+                showShareIt(requireContext())
                 return true
             }
             "About.ShowTheme" -> {
@@ -340,34 +340,6 @@ class PrefsFragment : PreferenceFragmentCompat() {
         ForPdaVersionNotifier(notifiersManager, 0, true).start(requireContext())
     }
 
-    private fun showAbout() {
-        val text = """
-                <b>Неофициальный клиент для сайта <a href="https://www.4pda.ru">4pda.ru</a></b><br/><br/>
-                <b>Автор: </b> Артём Слинкин aka <a href="https://4pda.ru/forum/index.php?showuser=236113">slartus</a><br/>
-                <b>E-mail:</b> <a href="mailto:slartus+4pda@gmail.com">slartus+4pda@gmail.com</a><br/><br/>
-                <b>Разработчик(v3.x): </b> Евгений Низамиев aka <a href="https://4pda.ru/forum/index.php?showuser=2556269">Radiation15</a><br/>
-                <b>E-mail:</b> <a href="mailto:radiationx@yandex.ru">radiationx@yandex.ru</a><br/><br/>
-                <b>Разработчик(v3.x):</b> Александр Тайнюк aka <a href="https://4pda.ru/forum/index.php?showuser=1726458">iSanechek</a><br/>
-                <b>E-mail:</b> <a href="mailto:devuicore@gmail.com">devuicore@gmail.com</a><br/><br/>
-                <b>Помощник разработчиков: </b> Алексей Шолохов aka <a href="https://4pda.ru/forum/index.php?showuser=96664">Морфий</a>
-                <b>E-mail:</b> <a href="mailto:asolohov@gmail.com">asolohov@gmail.com</a><br/><br/>
-                <b>Благодарности: </b> <br/>
-                * <b><a href="https://4pda.ru/forum/index.php?showuser=1657987">__KoSyAk__</a></b> Иконка программы<br/>
-                * <b>Пользователям 4pda</b> (тестирование, идеи, поддержка)
-                <br/><br/>Copyright 2011-2016 Artem Slinkin <slartus@gmail.com>
-                """.trimIndent().replace("4pda.ru", HostHelper.host)
-        @Suppress("DEPRECATION")
-        MaterialDialog.Builder(requireContext())
-            .title(PreferencesActivity.programFullName)
-            .content(Html.fromHtml(text))
-            .positiveText(R.string.ok)
-            .show()
-        //TextView textView = (TextView) dialog.findViewById(android.R.id.message);
-        //textView.setTextSize(12);
-
-        //textView.setMovementMethod(LinkMovementMethod.getInstance());
-    }
-
     private val resultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
@@ -378,6 +350,7 @@ class PrefsFragment : PreferenceFragmentCompat() {
         }
 
     private fun pickRingtone(defaultSound: Uri?) {
+
         val intent = Intent(RingtoneManager.ACTION_RINGTONE_PICKER)
         intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION)
         intent.putExtra(
@@ -392,39 +365,6 @@ class PrefsFragment : PreferenceFragmentCompat() {
     private fun showTheme(themeId: String) {
         activity?.finish()
         ThemeFragment.showTopicById(themeId)
-    }
-
-    private fun showShareIt() {
-        val sendMailIntent = Intent(Intent.ACTION_SEND)
-        sendMailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.Recomend))
-        sendMailIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.RecommendText))
-        sendMailIntent.type = "text/plain"
-        startActivity(Intent.createChooser(sendMailIntent, getString(R.string.SendBy_)))
-    }
-
-    private fun showAboutHistory() {
-        val sb = StringBuilder()
-        try {
-            val br = BufferedReader(
-                InputStreamReader(
-                    App.getInstance().assets.open("history.txt"),
-                    "UTF-8"
-                )
-            )
-            var line: String?
-            while (br.readLine().also { line = it } != null) {
-                sb.append(line).append("\n")
-            }
-        } catch (e: IOException) {
-            AppLog.e(activity, e)
-        }
-        MaterialDialog.Builder(requireContext())
-            .title(getString(R.string.ChangesHistory))
-            .content(sb)
-            .positiveText(R.string.ok)
-            .show()
-        //TextView textView = (TextView) dialog.findViewById(android.R.id.message);
-        //textView.setTextSize(12);
     }
 
     private fun showCookiesDeleteDialog() {
@@ -458,59 +398,4 @@ class PrefsFragment : PreferenceFragmentCompat() {
             .show()
     }
 
-    private fun showSelectDirDialog() {
-        val inflater =
-            (activity?.getSystemService(AppCompatActivity.LAYOUT_INFLATER_SERVICE) as LayoutInflater)
-        val view = inflater.inflate(R.layout.dir_select_dialog, null as ViewGroup?)
-        val rbInternal = view.findViewById<RadioButton>(R.id.rbInternal)
-        val rbExternal = view.findViewById<RadioButton>(R.id.rbExternal)
-        val rbCustom = view.findViewById<RadioButton>(R.id.rbCustom)
-        val txtPath = view.findViewById<EditText>(R.id.txtPath)
-        txtPath.setText(Preferences.System.systemDir)
-        val checkedChangeListener =
-            CompoundButton.OnCheckedChangeListener { compoundButton: CompoundButton, b: Boolean ->
-                if (b) {
-                    when (compoundButton.id) {
-                        rbInternal.id -> {
-                            txtPath.setText(App.getInstance().filesDir.path)
-                            txtPath.isEnabled = false
-                        }
-                        rbExternal.id -> {
-                            try {
-                                txtPath.setText(
-                                    App.getInstance().getExternalFilesDir(null)?.path
-                                        ?: ""
-                                )
-                                txtPath.isEnabled = false
-                            } catch (ex: Throwable) {
-                                AppLog.e(activity, ex)
-                            }
-                        }
-                        rbCustom.id -> {
-                            txtPath.isEnabled = true
-                        }
-                    }
-                }
-            }
-        rbInternal.setOnCheckedChangeListener(checkedChangeListener)
-        rbExternal.setOnCheckedChangeListener(checkedChangeListener)
-        rbCustom.setOnCheckedChangeListener(checkedChangeListener)
-        MaterialDialog.Builder(requireContext())
-            .title(R.string.path_to_data)
-            .customView(view, true)
-            .cancelable(true)
-            .positiveText(R.string.ok)
-            .negativeText(R.string.cancel)
-            .onPositive { _: MaterialDialog?, _: DialogAction? ->
-                try {
-                    var dir = txtPath.text.toString()
-                    dir = dir.replace("/", File.separator)
-                    FileUtils.checkDirPath(dir)
-                    Preferences.System.systemDir = dir
-                } catch (ex: Throwable) {
-                    AppLog.e(activity, ex)
-                }
-            }
-            .show()
-    }
 }

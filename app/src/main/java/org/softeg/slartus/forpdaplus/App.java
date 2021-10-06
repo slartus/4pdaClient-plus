@@ -1,7 +1,5 @@
 package org.softeg.slartus.forpdaplus;
 
-import static org.softeg.slartus.forpdaplus.prefs.PreferencesActivity.getPackageInfo;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -11,6 +9,7 @@ import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.multidex.MultiDexApplication;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -26,6 +25,7 @@ import org.acra.ACRA;
 import org.acra.ReportField;
 import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
+import org.softeg.slartus.forpdacommon.ContextUtilsKt;
 import org.softeg.slartus.forpdacommon.ExtPreferences;
 import org.softeg.slartus.forpdanotifyservice.favorites.FavoritesNotifier;
 import org.softeg.slartus.forpdanotifyservice.qms.QmsNotifier;
@@ -144,7 +144,7 @@ public class App extends MultiDexApplication {
             e.printStackTrace();
         }
         resStartNotifierServices();
-        Http.Companion.init(this, getString(R.string.app_name), getPackageInfo().versionName);
+        Http.init(this, getString(R.string.app_name), ContextUtilsKt.getPackageInfo(this).versionName);
         Client.getInstance().checkLoginByCookies();
         InternetConnection.getInstance().subscribeInternetState();
         ForumsRepository.getInstance();
@@ -168,7 +168,7 @@ public class App extends MultiDexApplication {
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         Configuration config = getResources().getConfiguration();
         locale = new Locale(lang);
@@ -209,15 +209,11 @@ public class App extends MultiDexApplication {
     }
 
     public static void reStartQmsService() {
-        reStartQmsService(false);
-    }
-
-    public static void reStartQmsService(Boolean adaptive) {
         stopQmsService();
-        startQmsService(adaptive);
+        startQmsService();
     }
 
-    private static void startQmsService(Boolean adaptive) {
+    private static void startQmsService() {
         try {
             if (!QmsNotifier.isUse(getContext()))
                 return;

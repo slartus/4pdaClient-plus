@@ -1,38 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <RadioGroup
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
         <RadioButton
+            android:id="@+id/rbInternal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/dir_select_dialog_internal"
-            android:id="@+id/rbInternal" />
+            android:text="@string/dir_select_dialog_internal" />
 
         <RadioButton
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/dir_select_dialog_external"
             android:id="@+id/rbExternal"
-            android:checked="false" />
-
-        <RadioButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/dir_select_dialog_custom"
-            android:id="@+id/rbCustom" />
+            android:checked="false"
+            android:text="@string/dir_select_dialog_external" />
+
+        <RadioButton
+            android:id="@+id/rbCustom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/dir_select_dialog_custom" />
     </RadioGroup>
 
     <EditText
+        android:id="@+id/txtPath"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="18dp"
-        android:id="@+id/txtPath"
         android:inputType="text" />
 </LinearLayout>

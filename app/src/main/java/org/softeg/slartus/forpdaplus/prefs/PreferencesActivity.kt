@@ -5,6 +5,8 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceScreen
+import org.softeg.slartus.forpdacommon.appFullName
+import org.softeg.slartus.forpdacommon.packageInfo
 import org.softeg.slartus.forpdaplus.App
 import org.softeg.slartus.forpdaplus.R
 import org.softeg.slartus.forpdaplus.common.AppLog
@@ -60,33 +62,4 @@ class PreferencesActivity : BasePreferencesActivity(),
         getInstance(App.getInstance()).reload()
     }
 
-    companion object {
-
-
-
-        @JvmStatic
-        val packageInfo: PackageInfo
-            get() {
-                val packageName = App.getInstance().packageName
-                try {
-                    return App.getInstance().packageManager.getPackageInfo(
-                        packageName, PackageManager.GET_META_DATA
-                    )
-                } catch (e1: PackageManager.NameNotFoundException) {
-                    AppLog.e(App.getInstance(), e1)
-                }
-                val packageInfo = PackageInfo()
-                packageInfo.packageName = packageName
-                packageInfo.versionName = "unknown"
-                packageInfo.versionCode = 1
-                return packageInfo
-            }
-        val programFullName: String
-            get() {
-                var programName = App.getInstance().getString(R.string.app_name)
-                val pInfo = packageInfo
-                programName += " v" + pInfo.versionName + " c" + pInfo.versionCode
-                return programName
-            }
-    }
 }

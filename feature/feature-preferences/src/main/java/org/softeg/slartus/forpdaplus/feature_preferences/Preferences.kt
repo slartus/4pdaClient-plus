@@ -359,6 +359,7 @@ object Preferences {
     }
 
     object Notifications {
+
         var sound: Uri?
             get() = getSound()
             set(soundUri) {

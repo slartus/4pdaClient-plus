@@ -2,15 +2,29 @@ package org.softeg.slartus.forpdaplus.feature_preferences
 
 import android.content.Context
 import android.content.Intent
+import android.text.Html
 import android.text.InputType
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.widget.CompoundButton
+import android.widget.EditText
+import android.widget.RadioButton
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.afollestad.materialdialogs.DialogAction
 import com.afollestad.materialdialogs.MaterialDialog
+import org.softeg.slartus.forpdacommon.FileUtils
+import org.softeg.slartus.forpdacommon.appFullName
 import org.softeg.slartus.forpdaplus.core_ui.AppColors
 import org.softeg.slartus.forpdaplus.core_ui.AppTheme
 import org.softeg.slartus.forpdaplus.core_ui.CssStyles
+import org.softeg.slartus.hosthelper.HostHelper
 import timber.log.Timber
+import java.io.BufferedReader
+import java.io.File
+import java.io.IOException
+import java.io.InputStreamReader
 import java.util.*
 
 object Dialogs {
@@ -74,7 +88,9 @@ object Dialogs {
                                 .input(
                                     context.getString(R.string.font_name),
                                     Preferences.Common.Overall.webViewFontName
-                                ) { _: MaterialDialog?, input: CharSequence -> name = input.toString() }
+                                ) { _: MaterialDialog?, input: CharSequence ->
+                                    name = input.toString()
+                                }
                                 .positiveText(R.string.ok)
                                 .onPositive { _: MaterialDialog?, _: DialogAction? ->
                                     Preferences.Common.Overall.webViewFontName = name
@@ -203,4 +219,122 @@ object Dialogs {
 //            }
 //            .show()
 //    }
+
+    fun showSelectDirDialog(context: Context) {
+        val inflater =
+            (context.getSystemService(AppCompatActivity.LAYOUT_INFLATER_SERVICE) as LayoutInflater)
+        val view = inflater.inflate(R.layout.dir_select_dialog, null as ViewGroup?)
+        val rbInternal = view.findViewById<RadioButton>(R.id.rbInternal)
+        val rbExternal = view.findViewById<RadioButton>(R.id.rbExternal)
+        val rbCustom = view.findViewById<RadioButton>(R.id.rbCustom)
+        val txtPath = view.findViewById<EditText>(R.id.txtPath)
+        txtPath.setText(Preferences.System.systemDir)
+        val checkedChangeListener =
+            CompoundButton.OnCheckedChangeListener { compoundButton: CompoundButton, b: Boolean ->
+                if (b) {
+                    when (compoundButton.id) {
+                        rbInternal.id -> {
+                            txtPath.setText(App.getInstance().filesDir.path)
+                            txtPath.isEnabled = false
+                        }
+                        rbExternal.id -> {
+                            try {
+                                txtPath.setText(
+                                    App.getInstance().getExternalFilesDir(null)?.path
+                                        ?: ""
+                                )
+                                txtPath.isEnabled = false
+                            } catch (ex: Throwable) {
+                                Timber.e(ex, "showSelectDirDialog")
+                            }
+                        }
+                        rbCustom.id -> {
+                            txtPath.isEnabled = true
+                        }
+                    }
+                }
+            }
+        rbInternal.setOnCheckedChangeListener(checkedChangeListener)
+        rbExternal.setOnCheckedChangeListener(checkedChangeListener)
+        rbCustom.setOnCheckedChangeListener(checkedChangeListener)
+        MaterialDialog.Builder(context)
+            .title(R.string.path_to_data)
+            .customView(view, true)
+            .cancelable(true)
+            .positiveText(R.string.ok)
+            .negativeText(R.string.cancel)
+            .onPositive { _: MaterialDialog?, _: DialogAction? ->
+                try {
+                    var dir = txtPath.text.toString()
+                    dir = dir.replace("/", File.separator)
+                    FileUtils.checkDirPath(dir)
+                    Preferences.System.systemDir = dir
+                } catch (ex: Throwable) {
+                    Timber.e(ex)
+                }
+            }
+            .show()
+    }
+
+    fun showAbout(context: Context) {
+        val text = """
+                <b>Неофициальный клиент для сайта <a href="https://www.4pda.ru">4pda.ru</a></b><br/><br/>
+                <b>Автор: </b> Артём Слинкин aka <a href="https://4pda.ru/forum/index.php?showuser=236113">slartus</a><br/>
+                <b>E-mail:</b> <a href="mailto:slartus+4pda@gmail.com">slartus+4pda@gmail.com</a><br/><br/>
+                <b>Разработчик(v3.x): </b> Евгений Низамиев aka <a href="https://4pda.ru/forum/index.php?showuser=2556269">Radiation15</a><br/>
+                <b>E-mail:</b> <a href="mailto:radiationx@yandex.ru">radiationx@yandex.ru</a><br/><br/>
+                <b>Разработчик(v3.x):</b> Александр Тайнюк aka <a href="https://4pda.ru/forum/index.php?showuser=1726458">iSanechek</a><br/>
+                <b>E-mail:</b> <a href="mailto:devuicore@gmail.com">devuicore@gmail.com</a><br/><br/>
+                <b>Помощник разработчиков: </b> Алексей Шолохов aka <a href="https://4pda.ru/forum/index.php?showuser=96664">Морфий</a>
+                <b>E-mail:</b> <a href="mailto:asolohov@gmail.com">asolohov@gmail.com</a><br/><br/>
+                <b>Благодарности: </b> <br/>
+                * <b><a href="https://4pda.ru/forum/index.php?showuser=1657987">__KoSyAk__</a></b> Иконка программы<br/>
+                * <b>Пользователям 4pda</b> (тестирование, идеи, поддержка)
+                <br/><br/>Copyright 2011-2016 Artem Slinkin <slartus@gmail.com>
+                """.trimIndent().replace("4pda.ru", HostHelper.host)
+        @Suppress("DEPRECATION")
+        MaterialDialog.Builder(context)
+            .title(context.appFullName)
+            .content(Html.fromHtml(text))
+            .positiveText(R.string.ok)
+            .show()
+        //TextView textView = (TextView) dialog.findViewById(android.R.id.message);
+        //textView.setTextSize(12);
+
+        //textView.setMovementMethod(LinkMovementMethod.getInstance());
+    }
+
+    fun showAboutHistory(context: Context) {
+        val sb = StringBuilder()
+        try {
+            val br = BufferedReader(
+                InputStreamReader(
+                    App.getInstance().assets.open("history.txt"),
+                    "UTF-8"
+                )
+            )
+            var line: String?
+            while (br.readLine().also { line = it } != null) {
+                sb.append(line).append("\n")
+            }
+        } catch (e: IOException) {
+            Timber.e(e)
+        }
+        MaterialDialog.Builder(context)
+            .title(context.getString(R.string.ChangesHistory))
+            .content(sb)
+            .positiveText(R.string.ok)
+            .show()
+        //TextView textView = (TextView) dialog.findViewById(android.R.id.message);
+        //textView.setTextSize(12);
+    }
+
+
+    fun showShareIt(context: Context) {
+        val sendMailIntent = Intent(Intent.ACTION_SEND)
+        sendMailIntent.putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.Recomend))
+        sendMailIntent.putExtra(Intent.EXTRA_TEXT, context.getString(R.string.RecommendText))
+        sendMailIntent.type = "text/plain"
+        context.startActivity(Intent.createChooser(sendMailIntent, context.getString(R.string.SendBy_)))
+    }
 }
