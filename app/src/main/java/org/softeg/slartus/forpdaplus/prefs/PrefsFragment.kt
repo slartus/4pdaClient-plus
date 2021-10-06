@@ -7,7 +7,6 @@ import android.content.Intent
 import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.text.*
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -19,8 +18,6 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.afollestad.materialdialogs.DialogAction
 import com.afollestad.materialdialogs.MaterialDialog
-import org.softeg.slartus.forpdacommon.ExternalStorage
-import org.softeg.slartus.forpdacommon.FileUtils
 import org.softeg.slartus.forpdacommon.NotReportException
 import org.softeg.slartus.forpdaplus.App
 import org.softeg.slartus.forpdaplus.IntentActivity
@@ -31,6 +28,7 @@ import org.softeg.slartus.forpdaplus.db.NotesDbHelper
 import org.softeg.slartus.forpdaplus.db.NotesTable
 import org.softeg.slartus.forpdaplus.feature_preferences.Dialogs.showAbout
 import org.softeg.slartus.forpdaplus.feature_preferences.Dialogs.showAboutHistory
+import org.softeg.slartus.forpdaplus.feature_preferences.Dialogs.showBackupNotesBackupDialog
 import org.softeg.slartus.forpdaplus.feature_preferences.Dialogs.showSelectDirDialog
 import org.softeg.slartus.forpdaplus.feature_preferences.Dialogs.showShareIt
 import org.softeg.slartus.forpdaplus.feature_preferences.Preferences
@@ -105,7 +103,10 @@ class PrefsFragment : PreferenceFragmentCompat() {
                 return true
             }
             "notes.backup" -> {
-                showBackupNotesBackupDialog()
+                showBackupNotesBackupDialog(
+                    requireContext(),
+                    NotesDbHelper.DATABASE_DIR + "/" + NotesDbHelper.DATABASE_NAME
+                )
             }
             "notes.restore" -> {
                 restoreNotes()
@@ -242,55 +243,6 @@ class PrefsFragment : PreferenceFragmentCompat() {
                 }
             }
             .show()
-    }
-
-    private fun showBackupNotesBackupDialog() {
-        try {
-            val dbFile = File(NotesDbHelper.DATABASE_DIR + "/" + NotesDbHelper.DATABASE_NAME)
-            if (!dbFile.exists()) {
-                AlertDialog.Builder(requireContext())
-                    .setTitle("Ошибка")
-                    .setMessage("Файл базы заметок не найден. Возможно, вы ещё не создали ни одной заметки")
-                    .setPositiveButton("ОК", null)
-                    .create().show()
-                return
-            }
-            val externalDirPath: String
-            val externalLocations = ExternalStorage.getAllStorageLocations()
-            val sdCard = externalLocations[ExternalStorage.SD_CARD]
-            val externalSdCard = externalLocations[ExternalStorage.EXTERNAL_SD_CARD]
-            externalDirPath = externalSdCard?.toString()
-                ?: (sdCard?.toString()
-                    ?: Environment.getExternalStorageDirectory().toString())
-            val toPath = "$externalDirPath/forpda_notes.sqlite"
-            var newFile = File(toPath)
-            var i = 0
-            while (newFile.exists()) {
-                newFile = File(
-                    externalDirPath + String.format(
-                        Locale.getDefault(),
-                        "/forpda_notes_%d.sqlite",
-                        i++
-                    )
-                )
-            }
-            val b = newFile.createNewFile()
-            if (!b) {
-                AlertDialog.Builder(requireContext())
-                    .setTitle("Ошибка").setMessage("Не удалось создать файл: $toPath")
-                    .setPositiveButton("ОК", null)
-                    .create().show()
-                return
-            }
-            FileUtils.copy(dbFile, newFile)
-            AlertDialog.Builder(requireContext())
-                .setTitle("Успех!")
-                .setMessage("Резервная копия заметок сохранена в файл:\n$newFile")
-                .setPositiveButton("ОК", null)
-                .create().show()
-        } catch (ex: Throwable) {
-            AppLog.e(activity, ex)
-        }
     }
 
     private fun restoreNotes() {

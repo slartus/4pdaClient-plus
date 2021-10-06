@@ -2,6 +2,7 @@ package org.softeg.slartus.forpdaplus.feature_preferences
 
 import android.content.Context
 import android.content.Intent
+import android.os.Environment
 import android.text.Html
 import android.text.InputType
 import android.view.LayoutInflater
@@ -11,9 +12,11 @@ import android.widget.CompoundButton
 import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.afollestad.materialdialogs.DialogAction
 import com.afollestad.materialdialogs.MaterialDialog
+import org.softeg.slartus.forpdacommon.ExternalStorage
 import org.softeg.slartus.forpdacommon.FileUtils
 import org.softeg.slartus.forpdacommon.appFullName
 import org.softeg.slartus.forpdaplus.core_ui.AppColors
@@ -329,12 +332,65 @@ object Dialogs {
         //textView.setTextSize(12);
     }
 
-
     fun showShareIt(context: Context) {
         val sendMailIntent = Intent(Intent.ACTION_SEND)
         sendMailIntent.putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.Recomend))
         sendMailIntent.putExtra(Intent.EXTRA_TEXT, context.getString(R.string.RecommendText))
         sendMailIntent.type = "text/plain"
-        context.startActivity(Intent.createChooser(sendMailIntent, context.getString(R.string.SendBy_)))
+        context.startActivity(
+            Intent.createChooser(
+                sendMailIntent,
+                context.getString(R.string.SendBy_)
+            )
+        )
+    }
+
+    fun showBackupNotesBackupDialog(context: Context, dataBasePath: String) {
+        try {
+            val dbFile = File(dataBasePath)
+            if (!dbFile.exists()) {
+                AlertDialog.Builder(context)
+                    .setTitle("Ошибка")
+                    .setMessage("Файл базы заметок не найден. Возможно, вы ещё не создали ни одной заметки")
+                    .setPositiveButton("ОК", null)
+                    .create().show()
+                return
+            }
+            val externalDirPath: String
+            val externalLocations = ExternalStorage.getAllStorageLocations()
+            val sdCard = externalLocations[ExternalStorage.SD_CARD]
+            val externalSdCard = externalLocations[ExternalStorage.EXTERNAL_SD_CARD]
+            externalDirPath = externalSdCard?.toString()
+                ?: (sdCard?.toString()
+                    ?: Environment.getExternalStorageDirectory().toString())
+            val toPath = "$externalDirPath/forpda_notes.sqlite"
+            var newFile = File(toPath)
+            var i = 0
+            while (newFile.exists()) {
+                newFile = File(
+                    externalDirPath + String.format(
+                        Locale.getDefault(),
+                        "/forpda_notes_%d.sqlite",
+                        i++
+                    )
+                )
+            }
+            val b = newFile.createNewFile()
+            if (!b) {
+                AlertDialog.Builder(context)
+                    .setTitle("Ошибка").setMessage("Не удалось создать файл: $toPath")
+                    .setPositiveButton("ОК", null)
+                    .create().show()
+                return
+            }
+            FileUtils.copy(dbFile, newFile)
+            AlertDialog.Builder(context)
+                .setTitle("Успех!")
+                .setMessage("Резервная копия заметок сохранена в файл:\n$newFile")
+                .setPositiveButton("ОК", null)
+                .create().show()
+        } catch (ex: Throwable) {
+            Timber.e(ex)
+        }
     }
 }
