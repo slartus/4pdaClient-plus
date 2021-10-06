@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import org.softeg.slartus.forpdaplus.AppTheme;
+import org.softeg.slartus.forpdaplus.core_ui.AppTheme;
 import org.softeg.slartus.forpdaplus.emotic.Smiles;
 import org.softeg.slartus.forpdaplus.feature_preferences.Preferences;
 import org.softeg.slartus.hosthelper.HostHelper;

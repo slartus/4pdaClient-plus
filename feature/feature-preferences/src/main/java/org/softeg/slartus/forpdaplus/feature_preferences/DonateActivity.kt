@@ -1,8 +1,8 @@
 package org.softeg.slartus.forpdaplus.feature_preferences
 
-import org.softeg.slartus.forpdaplus.core_ui.AppTheme.prefsThemeStyleResID
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import org.softeg.slartus.forpdaplus.core_ui.AppTheme
 import org.softeg.slartus.forpdaplus.feature_preferences.fragments.DonatePreferencesFragment
 
 /**
@@ -14,7 +14,7 @@ import org.softeg.slartus.forpdaplus.feature_preferences.fragments.DonatePrefere
  */
 class DonateActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(prefsThemeStyleResID)
+        setTheme(AppTheme.prefsThemeStyleResID)
         super.onCreate(savedInstanceState)
         if (savedInstanceState == null) {
             supportFragmentManager

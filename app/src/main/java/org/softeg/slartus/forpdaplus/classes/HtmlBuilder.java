@@ -3,7 +3,7 @@ package org.softeg.slartus.forpdaplus.classes;
 import android.text.TextUtils;
 
 import org.softeg.slartus.forpdaplus.App;
-import org.softeg.slartus.forpdaplus.AppTheme;
+import org.softeg.slartus.forpdaplus.core_ui.AppTheme;
 import org.softeg.slartus.forpdaplus.feature_preferences.Preferences;
 
 /**

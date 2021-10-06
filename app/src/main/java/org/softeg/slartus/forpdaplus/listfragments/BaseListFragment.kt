@@ -18,10 +18,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import org.softeg.slartus.forpdaapi.IListItem
 import org.softeg.slartus.forpdaplus.App
-import org.softeg.slartus.forpdaplus.AppTheme
 import org.softeg.slartus.forpdaplus.R
 import org.softeg.slartus.forpdaplus.controls.ListViewLoadMoreFooter
-import org.softeg.slartus.forpdaplus.fragments.GeneralFragment
+import org.softeg.slartus.forpdaplus.core_ui.AppTheme
 import org.softeg.slartus.forpdaplus.listfragments.adapters.ListAdapter
 import org.softeg.slartus.forpdaplus.feature_preferences.Preferences
 import org.softeg.slartus.forpdaplus.feature_preferences.Preferences.List.showSubMain

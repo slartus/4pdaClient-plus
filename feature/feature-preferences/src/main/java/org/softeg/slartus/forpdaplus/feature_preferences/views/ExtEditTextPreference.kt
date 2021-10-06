@@ -5,11 +5,7 @@ import android.util.AttributeSet
 import android.widget.Toast
 import androidx.preference.EditTextPreference
 import org.softeg.slartus.forpdacommon.simplifyNumber
-import org.softeg.slartus.forpdaplus.feature_preferences.App
-import org.softeg.slartus.forpdaplus.feature_preferences.R
-
-import org.softeg.slartus.forpdaplus.feature_preferences.getAttr
-import org.softeg.slartus.forpdaplus.feature_preferences.preferences
+import org.softeg.slartus.forpdaplus.feature_preferences.*
 
 class ExtEditTextPreference @JvmOverloads constructor(
     context: Context?,
@@ -116,11 +112,11 @@ class ExtEditTextPreference @JvmOverloads constructor(
 
         private fun getTextValue(preference: ExtEditTextPreference?): CharSequence {
             return when (preference?.inputType) {
-                InputType.Number -> App.getInstance().preferences.getInt(
+                InputType.Number -> Preferences.getInt(
                     preference.key,
                     preference.defaultValue?.toInt() ?: 0
                 ).toString()
-                InputType.NumberDecimal -> App.getInstance().preferences.getFloat(
+                InputType.NumberDecimal -> Preferences.getFloat(
                     preference.key,
                     preference.defaultValue?.toFloat() ?: 0f
                 ).toString()

@@ -1,7 +1,7 @@
 package org.softeg.slartus.forpdaplus.core_ui
 
 import android.content.Context
-import org.softeg.slartus.forpdaplus.core_ui.AppTheme.getThemeCssFileName
+
 import java.io.File
 import java.util.*
 
@@ -20,7 +20,7 @@ object CssStyles {
         for (i in styleNames.indices) {
             var styleName: CharSequence = styleNames[i]
             val styleValue: CharSequence = styleValues[i]
-            xmlPath = getThemeCssFileName(styleValue.toString()).replace(".css", ".xml")
+            xmlPath = AppTheme.getThemeCssFileName(styleValue.toString()).replace(".css", ".xml")
                 .replace("/android_asset/", "")
             cssStyle = CssStyle.parseStyleFromAssets(context, xmlPath)
             if (cssStyle.ExistsInfo) styleName = cssStyle.Title

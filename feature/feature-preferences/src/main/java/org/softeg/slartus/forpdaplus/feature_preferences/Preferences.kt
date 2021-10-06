@@ -405,4 +405,9 @@ object Preferences {
 
         var remoteUrl by appPreference("notes.remote.url", "")
     }
+
+    fun getInt(key: String, defaultValue: Int): Int = appPreference(key, defaultValue).value
+    fun getFloat(key: String, defaultValue: Float): Float = appPreference(key, defaultValue).value
+    fun getString(key: String, defaultValue: String?): String? =
+        appPreference(key, defaultValue).value
 }

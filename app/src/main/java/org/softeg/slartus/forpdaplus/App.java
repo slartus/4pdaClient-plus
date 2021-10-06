@@ -30,6 +30,7 @@ import org.softeg.slartus.forpdacommon.ExtPreferences;
 import org.softeg.slartus.forpdanotifyservice.favorites.FavoritesNotifier;
 import org.softeg.slartus.forpdanotifyservice.qms.QmsNotifier;
 import org.softeg.slartus.forpdaplus.acra.ACRAReportSenderFactory;
+import org.softeg.slartus.forpdaplus.core_ui.AppTheme;
 import org.softeg.slartus.forpdaplus.db.DbHelper;
 import org.softeg.slartus.forpdaplus.feature_preferences.Preferences;
 import org.softeg.slartus.forpdaplus.log.AppTimberTree;
@@ -42,6 +43,9 @@ import java.io.InputStream;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.HiltAndroidApp;
 import io.paperdb.Paper;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -69,6 +73,7 @@ import timber.log.Timber;
         resDialogTitle = R.string.crash_dialog_title, resDialogCommentPrompt = R.string.crash_dialog_comment_prompt,
         reportSenderFactoryClasses = {ACRAReportSenderFactory.class})
 //optional. default is a warning sign
+@HiltAndroidApp
 public class App extends MultiDexApplication {
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
@@ -76,7 +81,8 @@ public class App extends MultiDexApplication {
     private Locale locale;
     private String lang;
 
-
+    @Inject
+    public AppTheme appTheme;
     private final AtomicInteger m_AtomicInteger = new AtomicInteger();
 
     public int getUniqueIntValue() {
@@ -106,7 +112,7 @@ public class App extends MultiDexApplication {
         super.onCreate();
         initTimber();
         org.softeg.slartus.forpdaplus.feature_preferences.App.INSTANCE.init(this);
-        org.softeg.slartus.forpdaplus.core_ui.AppTheme.init(this);
+
         //TooLargeTool.startLogging(this);//логирование saveinstancestate
         org.softeg.slartus.forpdacommon.FACTORY.init(this);
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();

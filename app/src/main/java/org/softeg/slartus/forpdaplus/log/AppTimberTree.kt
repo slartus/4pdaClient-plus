@@ -2,8 +2,9 @@ package org.softeg.slartus.forpdaplus.log
 
 import android.annotation.SuppressLint
 import android.util.Log
+import org.softeg.slartus.forpdaplus.App
 import org.softeg.slartus.forpdaplus.common.AppLog
-import org.softeg.slartus.forpdaplus.feature_preferences.App
+
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*

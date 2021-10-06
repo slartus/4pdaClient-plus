@@ -11,7 +11,7 @@ import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import org.softeg.slartus.forpdacommon.StringUtils;
-import org.softeg.slartus.forpdaplus.AppTheme;
+import org.softeg.slartus.forpdaplus.core_ui.AppTheme;
 import org.softeg.slartus.forpdaplus.IntentActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.BrowserViewsFragmentActivity;

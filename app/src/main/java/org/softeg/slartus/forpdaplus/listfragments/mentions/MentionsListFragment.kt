@@ -38,6 +38,7 @@ import org.softeg.slartus.forpdaplus.classes.SaveHtml
 import org.softeg.slartus.forpdaplus.classes.WebViewExternals
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl
 import org.softeg.slartus.forpdaplus.common.AppLog
+import org.softeg.slartus.forpdaplus.core_ui.AppTheme
 import org.softeg.slartus.forpdaplus.fragments.WebViewFragment
 import org.softeg.slartus.forpdaplus.feature_preferences.Preferences
 import org.softeg.slartus.forpdaplus.repositories.InternetConnection

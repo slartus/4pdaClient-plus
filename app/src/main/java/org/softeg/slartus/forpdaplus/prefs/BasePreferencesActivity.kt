@@ -11,8 +11,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.*
 import org.softeg.slartus.forpdaplus.App
-import org.softeg.slartus.forpdaplus.AppTheme.navBarColor
-import org.softeg.slartus.forpdaplus.AppTheme.prefsThemeStyleResID
+import org.softeg.slartus.forpdaplus.core_ui.AppTheme.Companion.navBarColor
+import org.softeg.slartus.forpdaplus.core_ui.AppTheme.Companion.prefsThemeStyleResID
 import java.util.*
 
 /*
