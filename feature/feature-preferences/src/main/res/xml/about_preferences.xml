@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/about">
+    <Preference
+        android:key="About.AppVersion"
+        android:title="@string/about" />
+    <Preference
+        android:key="About.History"
+        android:title="@string/ChangesHistory" />
+    <Preference
+        android:key="About.ShareIt"
+        android:title="@string/share_it" />
+    <Preference
+        android:key="About.ShowTheme"
+        android:summary="Открыть тему обсуждения программы"
+        android:title="@string/open_topic" />
+    <Preference
+        android:key="About.CheckNewVersion"
+        android:title="@string/check_new_version" />
+    <Preference
+        android:key="About.OpenThemeForPda"
+        android:summary="Открыть тему"
+        android:title="@string/alternative_client_radiation" />
+</PreferenceScreen>

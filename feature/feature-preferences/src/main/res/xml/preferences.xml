@@ -277,30 +277,10 @@
                 android:title="Восстановить" />
         </PreferenceCategory>
     </PreferenceScreen>
-    <PreferenceScreen
+    <Preference
         android:key="about_screen"
-        android:title="О программе">
-        <Preference
-            android:key="About.AppVersion"
-            android:title="О программе" />
-        <Preference
-            android:key="About.History"
-            android:title="История изменений" />
-        <Preference
-            android:key="About.ShareIt"
-            android:title="Рассказать друзьям" />
-        <Preference
-            android:key="About.ShowTheme"
-            android:summary="Открыть тему обсуждения программы"
-            android:title="Открыть тему" />
-        <Preference
-            android:key="About.CheckNewVersion"
-            android:title="Проверить наличие новой версии" />
-        <Preference
-            android:key="About.OpenThemeForPda"
-            android:summary="Открыть тему"
-            android:title="Альтернативный клиент от Radiation15" />
-    </PreferenceScreen>
+        android:title="@string/about"
+        app:fragment="org.softeg.slartus.forpdaplus.feature_preferences.fragments.AboutPreferencesFragment" />
 
     <Preference
         android:key="donate_screen"

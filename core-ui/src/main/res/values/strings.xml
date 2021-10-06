@@ -510,4 +510,9 @@
     <string name="load_all">Загружать все</string>
     <string name="show_images">Отображать картинки</string>
     <string name="list_view">Вид списка</string>
+    <string name="about">О программе</string>
+    <string name="share_it">Рассказать друзьям</string>
+    <string name="open_topic">Открыть тему</string>
+    <string name="check_new_version">Проверить наличие новой версии</string>
+    <string name="alternative_client_radiation">Альтернативный клиент от Radiation15</string>
 </resources>

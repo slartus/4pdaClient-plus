@@ -500,4 +500,9 @@
     <string name="load_all">Load all</string>
     <string name="show_images">Show images</string>
     <string name="list_view">List view</string>
+    <string name="about">About</string>
+    <string name="share_it">Share it</string>
+    <string name="open_topic">Open topic</string>
+    <string name="check_new_version">Check new version</string>
+    <string name="alternative_client_radiation">Alternative client by Radiation15</string>
 </resources>
