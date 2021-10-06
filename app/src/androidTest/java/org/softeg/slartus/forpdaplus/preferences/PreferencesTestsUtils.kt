@@ -58,13 +58,13 @@ fun listPreferenceTest(
     val initTitle = if (initValue == null) null else entries[entryValues.indexOf(initValue)]
 
     entries.forEachIndexed { index, s ->
-        onView(withText(title)).perform(click())
+        appearanceClick(title)
         onView(withText(s)).perform(click())
         Assert.assertEquals(context.preferences.getString(key, default), entryValues[index])
     }
 
     if (initValue != null) {
-        onView(withText(title)).perform(click())
+        appearanceClick(title)
         onView(withText(initTitle)).perform(click())
         Assert.assertEquals(context.preferences.getString(key, default), initValue)
     } else {

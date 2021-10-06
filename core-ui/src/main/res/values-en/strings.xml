@@ -492,4 +492,12 @@
     <string name="prefs_download_managers">Download a file using the...</string>
     <string name="full_screen">Full screen</string>
     <string name="dont_load_comments">Don\'t load comments</string>
+    <string name="lists">Lists</string>
+    <string name="scroll_by_buttons">Scroll by buttons</string>
+    <string name="refresh_list">Refresh list</string>
+    <string name="refresh_tab_list">Refresh tab list</string>
+    <string name="hide_description_in_item">Hide description in item</string>
+    <string name="load_all">Load all</string>
+    <string name="show_images">Show images</string>
+    <string name="list_view">List view</string>
 </resources>

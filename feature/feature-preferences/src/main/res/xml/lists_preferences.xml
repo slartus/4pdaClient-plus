@@ -6,22 +6,22 @@
             android:defaultValue="false"
             android:key="lists.scroll_by_buttons"
             android:summary="Использовать кнопки для скролла списка"
-            android:title="Скролл кнопками" />
+            android:title="@string/scroll_by_buttons" />
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="lists.refresh"
             android:summary="Обновлять при первом открытии"
-            android:title="Обновлять список" />
+            android:title="@string/refresh_list" />
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="lists.refresh_on_tab"
             android:summary="Обновлять при выборе вкладки"
-            android:title="Обновлять списки из вкладок" />
+            android:title="@string/refresh_tab_list" />
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="showSubMain"
             android:summary="@string/requires_application_restart"
-            android:title="Скрыть описание в пункте списка" />
+            android:title="@string/hide_description_in_item" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="Избранное">
@@ -29,14 +29,14 @@
             android:defaultValue="false"
             android:key="lists.favorites.load_all"
             android:summary="Загружать сразу все страницы"
-            android:title="Загружать все" />
+            android:title="@string/load_all" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="Форум">
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="forum.list.show_images"
-            android:title="Отображать картинки" />
+            android:title="@string/show_images" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="Новости">
@@ -45,14 +45,14 @@
             android:entries="@array/ConnectTypeArray"
             android:entryValues="@array/ConnectTypeValues"
             android:key="news.list.loadimages"
-            android:title="Загружать изображения" />
+            android:title="@string/menu_news_load_images" />
 
         <org.softeg.slartus.forpdaplus.feature_preferences.views.SummaryValueListPreference
             android:defaultValue="full"
             android:entries="@array/NewsListViewTitles"
             android:entryValues="@array/NewsListViewValues"
             android:key="news.list.view"
-            android:title="Вид списка" />
+            android:title="@string/list_view" />
     </PreferenceCategory>
 
 </PreferenceScreen>

@@ -63,7 +63,6 @@
     <string name="guest">гость</string>
     <string name="LeaveComment">Оставить комментарий</string>
 
-
     <string name="crash_dialog_text">Произошла непредвиденная ошибка. Отчёт отправлен</string>
     <string name="crash_dialog_title">Приложение остановлено</string>
     <string name="crash_dialog_comment_prompt">Вы можете добавить свой комментарий:</string>
@@ -99,7 +98,6 @@
     <string name="delete_m">Удалить</string>
     <string name="deleting_msg">Удаление сообщения…</string>
     <string name="theme_option">Опции темы</string>
-
 
     <string name="no">Нет</string>
     <string name="ask">Спрашивать</string>
@@ -504,4 +502,12 @@
     <string name="prefs_download_managers">Скачивать файл при помощи...</string>
     <string name="full_screen">Во весь экран</string>
     <string name="dont_load_comments">Не загружать комментарии</string>
+    <string name="lists">Списки</string>
+    <string name="scroll_by_buttons">Скролл кнопками</string>
+    <string name="refresh_list">Обновлять список</string>
+    <string name="refresh_tab_list">Обновлять списки из вкладок</string>
+    <string name="hide_description_in_item">Скрыть описание в пункте списка</string>
+    <string name="load_all">Загружать все</string>
+    <string name="show_images">Отображать картинки</string>
+    <string name="list_view">Вид списка</string>
 </resources>

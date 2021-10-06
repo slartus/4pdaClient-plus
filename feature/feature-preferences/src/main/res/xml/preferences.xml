@@ -22,7 +22,7 @@
 
     <Preference
         android:key="lists_screen"
-        android:title="Списки"
+        android:title="@string/lists"
         app:fragment="org.softeg.slartus.forpdaplus.feature_preferences.fragments.ListsPreferencesFragment" />
 
     <PreferenceScreen
