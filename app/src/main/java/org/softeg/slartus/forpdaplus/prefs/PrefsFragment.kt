@@ -23,7 +23,7 @@ import org.softeg.slartus.forpdaplus.App
 import org.softeg.slartus.forpdaplus.IntentActivity
 import org.softeg.slartus.forpdaplus.R
 import org.softeg.slartus.forpdaplus.common.AppLog
-import org.softeg.slartus.forpdaplus.controls.OpenFileDialog
+import org.softeg.slartus.forpdacommon.OpenFileDialog
 import org.softeg.slartus.forpdaplus.db.NotesDbHelper
 import org.softeg.slartus.forpdaplus.db.NotesTable
 import org.softeg.slartus.forpdaplus.feature_preferences.Dialogs.showBackupNotesBackupDialog

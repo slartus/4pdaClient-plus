@@ -1,4 +1,4 @@
-package org.softeg.slartus.forpdaplus.controls;
+package org.softeg.slartus.forpdacommon;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -22,7 +22,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.core_ui.AppTheme;
 
 import java.io.File;
@@ -31,9 +30,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/*
- * Created by slinkin on 16.10.2015.
- */
 public class OpenFileDialog extends AlertDialog.Builder {
 
     private String currentPath = Environment.getExternalStorageDirectory().getPath();
