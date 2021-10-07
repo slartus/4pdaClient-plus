@@ -1,187 +1,25 @@
 package org.softeg.slartus.forpdaplus.feature_preferences
 
 import android.content.Context
-import android.content.Intent
 import android.os.Environment
-import android.text.Html
-import android.text.InputType
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.CompoundButton
 import android.widget.EditText
 import android.widget.RadioButton
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.afollestad.materialdialogs.DialogAction
 import com.afollestad.materialdialogs.MaterialDialog
 import org.softeg.slartus.forpdacommon.ExternalStorage
 import org.softeg.slartus.forpdacommon.FileUtils
-import org.softeg.slartus.forpdacommon.appFullName
-import org.softeg.slartus.forpdaplus.core_ui.AppColors
-import org.softeg.slartus.forpdaplus.core_ui.CssStyles
-import org.softeg.slartus.hosthelper.HostHelper
 import timber.log.Timber
-import java.io.BufferedReader
 import java.io.File
-import java.io.IOException
-import java.io.InputStreamReader
 import java.util.*
 
 object Dialogs {
 
-    fun showMainAccentColorDialog(context: Context) {
-        try {
-            val string = Preferences.Common.Overall.mainAccentColor
-            val mainAccentColors = listOf(AppColors.pink, AppColors.blue, AppColors.gray)
-            val position = mainAccentColors.indexOfFirst { c -> c.name == string }
-            var selected = position
-            MaterialDialog.Builder(context)
-                .title(R.string.pick_accent_color)
-                .items(
-                    context.getString(R.string.pink),
-                    context.getString(R.string.blue),
-                    context.getString(R.string.gray)
-                )
-                .itemsCallbackSingleChoice(position) { _: MaterialDialog?, _: View?, which: Int, _: CharSequence? ->
-                    selected = which
-                    true
-                }
-                .alwaysCallSingleChoiceCallback()
-                .positiveText(R.string.accept)
-                .negativeText(R.string.cancel)
-                .onPositive { _: MaterialDialog?, _: DialogAction? ->
-                    val selectedColor = mainAccentColors[selected]
-                    Preferences.Common.Overall.mainAccentColor = selectedColor.name
-                    if (!Preferences.Common.Overall.accentColorEdited) {
-                        Preferences.Common.Overall.accentColor = selectedColor.color
-                        Preferences.Common.Overall.accentColorPressed = selectedColor.pressedColor
-                    }
-                }
-                .show()
-        } catch (ex: Exception) {
-            Timber.e(ex, "showMainAccentColorDialog")
-        }
-    }
 
-    fun webViewFontDialog(context: Context) {
-        try {
-            var selected = Preferences.Common.Overall.webViewFont
-            var name = ""
-            var dialogShowed = false
-            MaterialDialog.Builder(context)
-                .title(R.string.choose_font)
-                .items(
-                    context.getString(R.string.font_from_style),
-                    context.getString(R.string.system_font),
-                    context.getString(R.string.enter_font_name)
-                )
-                .itemsCallbackSingleChoice(selected) { _: MaterialDialog?, _: View?, which: Int, _: CharSequence? ->
-                    selected = which
-                    when (which) {
-                        0 -> name = ""
-                        1 -> name = "inherit"
-                        2 -> {
-                            if (dialogShowed) return@itemsCallbackSingleChoice true
-                            dialogShowed = true
-                            MaterialDialog.Builder(context)
-                                .inputType(InputType.TYPE_CLASS_TEXT)
-                                .input(
-                                    context.getString(R.string.font_name),
-                                    Preferences.Common.Overall.webViewFontName
-                                ) { _: MaterialDialog?, input: CharSequence ->
-                                    name = input.toString()
-                                }
-                                .positiveText(R.string.ok)
-                                .onPositive { _: MaterialDialog?, _: DialogAction? ->
-                                    Preferences.Common.Overall.webViewFontName = name
-                                }
-                                .show()
-                        }
-                    }
-                    true
-                }
-                .alwaysCallSingleChoiceCallback()
-                .positiveText(R.string.accept)
-                .negativeText(R.string.cancel)
-                .onPositive { _: MaterialDialog?, _: DialogAction? ->
-                    Preferences.Common.Overall.webViewFontName = name
-                    Preferences.Common.Overall.webViewFont = selected
-                }
-                .show()
-        } catch (ex: Exception) {
-            Timber.e(ex, "webViewFontDialog")
-        }
-    }
-
-    fun showStylesDialog(context: Context) {
-        try {
-            val currentValue = Preferences.Common.Overall.appStyle
-            val newStyleNames = ArrayList<CharSequence>()
-            val newStyleValues = ArrayList<CharSequence>()
-            CssStyles.getStylesList(
-                context,
-                Preferences.System.systemDir,
-                newStyleNames,
-                newStyleValues
-            )
-            var selected = newStyleValues.indexOf(currentValue)
-            MaterialDialog.Builder(context)
-                .title(R.string.app_theme)
-                .cancelable(true)
-                .items(*newStyleNames.toTypedArray())
-                .itemsCallbackSingleChoice(newStyleValues.indexOf(currentValue)) { _: MaterialDialog?, _: View?, i: Int, _: CharSequence? ->
-                    selected = i
-                    true // allow selection
-                }
-                .alwaysCallSingleChoiceCallback()
-                .positiveText(context.getString(R.string.AcceptStyle))
-                //.neutralText(context.getString(R.string.Information))
-                .onPositive { _: MaterialDialog?, _: DialogAction? ->
-                    if (selected == -1) {
-                        Toast.makeText(
-                            context,
-                            context.getString(R.string.ChooseStyle),
-                            Toast.LENGTH_LONG
-                        ).show()
-                        return@onPositive
-                    }
-                    Preferences.Common.Overall.appStyle = newStyleValues[selected].toString()
-                }
-//                .onNeutral { _: MaterialDialog?, _: DialogAction? ->
-//                    if (selected[0] == -1) {
-//                        Toast.makeText(
-//                            context,
-//                            context.getString(R.string.ChooseStyle),
-//                            Toast.LENGTH_LONG
-//                        ).show()
-//                        return@onNeutral
-//                    }
-//                    var stylePath = newStyleValues[selected[0]].toString()
-//                    stylePath = AppTheme.getThemeCssFileName(stylePath)
-//                    val xmlPath = stylePath.replace(".css", ".xml")
-//                    val cssStyle = CssStyle.parseStyle(context, xmlPath)
-//                    if (!cssStyle.ExistsInfo) {
-//                        Toast.makeText(
-//                            context,
-//                            context.getString(R.string.StyleDoesNotContainDesc),
-//                            Toast.LENGTH_SHORT
-//                        ).show()
-//                        return@onNeutral
-//                    }
-//
-//                    //dialogInterface.dismiss();
-////                    StyleInfoActivity.showStyleInfo(
-////                        activity,
-////                        newStyleValues[selected[0]].toString()
-////                    )
-//                }
-                .show()
-        } catch (ex: Exception) {
-            Timber.e(ex, "showStylesDialog")
-        }
-    }
 
 //    fun selectedMenuItemsDialog() {
 //        val preferences = preferenceManager.sharedPreferences
@@ -278,71 +116,6 @@ object Dialogs {
             .show()
     }
 
-    fun showAbout(context: Context) {
-        val text = """
-                <b>Неофициальный клиент для сайта <a href="https://www.4pda.ru">4pda.ru</a></b><br/><br/>
-                <b>Автор: </b> Артём Слинкин aka <a href="https://4pda.ru/forum/index.php?showuser=236113">slartus</a><br/>
-                <b>E-mail:</b> <a href="mailto:slartus+4pda@gmail.com">slartus+4pda@gmail.com</a><br/><br/>
-                <b>Разработчик(v3.x): </b> Евгений Низамиев aka <a href="https://4pda.ru/forum/index.php?showuser=2556269">Radiation15</a><br/>
-                <b>E-mail:</b> <a href="mailto:radiationx@yandex.ru">radiationx@yandex.ru</a><br/><br/>
-                <b>Разработчик(v3.x):</b> Александр Тайнюк aka <a href="https://4pda.ru/forum/index.php?showuser=1726458">iSanechek</a><br/>
-                <b>E-mail:</b> <a href="mailto:devuicore@gmail.com">devuicore@gmail.com</a><br/><br/>
-                <b>Помощник разработчиков: </b> Алексей Шолохов aka <a href="https://4pda.ru/forum/index.php?showuser=96664">Морфий</a>
-                <b>E-mail:</b> <a href="mailto:asolohov@gmail.com">asolohov@gmail.com</a><br/><br/>
-                <b>Благодарности: </b> <br/>
-                * <b><a href="https://4pda.ru/forum/index.php?showuser=1657987">__KoSyAk__</a></b> Иконка программы<br/>
-                * <b>Пользователям 4pda</b> (тестирование, идеи, поддержка)
-                <br/><br/>Copyright 2011-2016 Artem Slinkin <slartus@gmail.com>
-                """.trimIndent().replace("4pda.ru", HostHelper.host)
-        @Suppress("DEPRECATION")
-        MaterialDialog.Builder(context)
-            .title(context.appFullName)
-            .content(Html.fromHtml(text))
-            .positiveText(R.string.ok)
-            .show()
-        //TextView textView = (TextView) dialog.findViewById(android.R.id.message);
-        //textView.setTextSize(12);
-
-        //textView.setMovementMethod(LinkMovementMethod.getInstance());
-    }
-
-    fun showAboutHistory(context: Context) {
-        val sb = StringBuilder()
-        try {
-            val br = BufferedReader(
-                InputStreamReader(
-                    App.getInstance().assets.open("history.txt"),
-                    "UTF-8"
-                )
-            )
-            var line: String?
-            while (br.readLine().also { line = it } != null) {
-                sb.append(line).append("\n")
-            }
-        } catch (e: IOException) {
-            Timber.e(e)
-        }
-        MaterialDialog.Builder(context)
-            .title(context.getString(R.string.ChangesHistory))
-            .content(sb)
-            .positiveText(R.string.ok)
-            .show()
-        //TextView textView = (TextView) dialog.findViewById(android.R.id.message);
-        //textView.setTextSize(12);
-    }
-
-    fun showShareIt(context: Context) {
-        val sendMailIntent = Intent(Intent.ACTION_SEND)
-        sendMailIntent.putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.Recomend))
-        sendMailIntent.putExtra(Intent.EXTRA_TEXT, context.getString(R.string.RecommendText))
-        sendMailIntent.type = "text/plain"
-        context.startActivity(
-            Intent.createChooser(
-                sendMailIntent,
-                context.getString(R.string.SendBy_)
-            )
-        )
-    }
 
     fun showBackupNotesBackupDialog(context: Context, dataBasePath: String) {
         try {
@@ -392,4 +165,5 @@ object Dialogs {
             Timber.e(ex)
         }
     }
+
 }

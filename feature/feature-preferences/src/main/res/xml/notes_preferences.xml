@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="Заметки">
+
+    <org.softeg.slartus.forpdaplus.feature_preferences.views.SummaryValueListPreference
+        android:defaultValue="local"
+        android:entries="@array/NotesStoragePlacements"
+        android:entryValues="@array/NotesStoragePlacementValues"
+        android:key="notes.placement"
+        android:title="Место хранения" />
+    <PreferenceCategory
+        android:key="notes.remote.settings"
+        android:title="Удалённый сервер">
+        <Preference
+            android:key="notes.remote.url"
+            android:title="Ссылка" />
+        <Preference
+            android:key="notes.remote.help"
+            android:title="Помощь" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="notes.backup.category"
+        android:title="Локальное хранилище">
+        <Preference
+            android:key="notes.backup"
+            android:summary="Сделать резервную копию"
+            android:title="Резерв" />
+        <Preference
+            android:key="notes.restore"
+            android:summary="Восстановить из резервной копии"
+            android:title="Восстановить" />
+    </PreferenceCategory>
+</PreferenceScreen>
