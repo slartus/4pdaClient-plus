@@ -23,13 +23,18 @@ import org.junit.Assert
 import org.softeg.slartus.forpdaplus.feature_preferences.preferences
 
 // https://android.github.io/android-test/downloads/espresso-cheat-sheet-2.1.0.pdf
-fun appearanceClick(@StringRes title: Int) {
+
+fun appearanceAction(@StringRes title: Int, viewAction: ViewAction) {
     onView(withId(R.id.recycler_view))
         .perform(
             actionOnItem<RecyclerView.ViewHolder>(
-                hasDescendant(withText(title)), click()
+                hasDescendant(withText(title)), viewAction
             )
         )
+}
+
+fun appearanceClick(@StringRes title: Int) {
+    appearanceAction(title, click())
 }
 
 fun checkBoxPreferenceTest(context: Context, @StringRes title: Int, key: String, default: Boolean) {
@@ -69,55 +74,5 @@ fun listPreferenceTest(
         Assert.assertEquals(context.preferences.getString(key, default), initValue)
     } else {
         context.preferences.edit().putString(key, null).apply()
-    }
-}
-
-fun setProgress(progress: Int): ViewAction {
-    return object : ViewAction {
-        override fun getConstraints(): Matcher<View> {
-            return isAssignableFrom(SeekBar::class.java)
-        }
-
-        override fun getDescription(): String {
-            return "Set a progress on a SeekBar"
-        }
-
-        override fun perform(uiController: UiController?, view: View) {
-            val seekBar = view as SeekBar
-            seekBar.progress = progress
-        }
-    }
-}
-
-fun withProgress(expectedProgress: Int): Matcher<View?> {
-    return object : BoundedMatcher<View?, SeekBar?>(SeekBar::class.java) {
-        override fun describeTo(description: Description) {
-            description.appendText("expected: ")
-            description.appendText("" + expectedProgress)
-        }
-
-        override fun matchesSafely(seekBar: SeekBar?): Boolean {
-            return seekBar?.progress == expectedProgress
-        }
-    }
-}
-
-fun hasValueEqualTo(content: String): Matcher<View?> {
-    return object : TypeSafeMatcher<View?>() {
-        override fun describeTo(description: Description) {
-            description.appendText("Has EditText/TextView the value:  $content")
-        }
-
-        override fun matchesSafely(view: View?): Boolean {
-            if (view !is TextView && view !is EditText) {
-                return false
-            }
-            val text: String = if (view is TextView) {
-                view.text.toString()
-            } else {
-                (view as EditText).text.toString()
-            }
-            return text.equals(content, ignoreCase = true)
-        }
     }
 }
