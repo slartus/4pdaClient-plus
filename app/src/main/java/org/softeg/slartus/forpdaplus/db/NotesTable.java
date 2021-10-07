@@ -104,7 +104,7 @@ public class NotesTable {
     }
 
     public static ArrayList<Note> getNotes(SQLiteDatabase db, String topicId) throws ParseException {
-        ArrayList<Note> notes = new ArrayList<Note>();
+        ArrayList<Note> notes = new ArrayList<>();
 
         Cursor c = null;
         try {
@@ -209,7 +209,6 @@ public class NotesTable {
     public static void delete(String id) throws IOException {
 
         SQLiteDatabase db = null;
-        Cursor c = null;
         try {
 
             NotesDbHelper dbHelper = new NotesDbHelper(App.getInstance());
@@ -220,46 +219,22 @@ public class NotesTable {
 
         } finally {
             if (db != null) {
-                if (c != null)
-                    c.close();
                 db.close();
             }
         }
     }
 
-    public static void deleteAll(SQLiteAssetHelper helper) throws IOException {
-
-        SQLiteDatabase db = null;
-        Cursor c = null;
-        try {
-
-
-            db = helper.getWritableDatabase();
-
+    public static void deleteAll(SQLiteAssetHelper helper) {
+        try (SQLiteDatabase db = helper.getWritableDatabase()) {
             db.execSQL("delete from " + TABLE_NAME);
-
-
-        } finally {
-            if (db != null) {
-                if (c != null)
-                    c.close();
-                db.close();
-            }
         }
     }
 
-    public static ArrayList<Note> getNotesFromFile(String filePath) throws ParseException, IOException {
-        SQLiteDatabase backupDb = null;
+    public static ArrayList<Note> getNotesFromFile(String filePath) throws ParseException {
 
-        try {
+        try (SQLiteDatabase backupDb = SQLiteDatabase.openOrCreateDatabase(new File(filePath), null)) {
 
-            backupDb = SQLiteDatabase.openOrCreateDatabase(new File(filePath), null);
-            ArrayList<Note> notes = getNotes(backupDb, null);
-
-            return notes;
-        } finally {
-            if (backupDb != null)
-                backupDb.close();
+            return getNotes(backupDb, null);
         }
     }
 

@@ -3,11 +3,8 @@ package org.softeg.slartus.forpdaplus.di
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ActivityComponent
 import dagger.hilt.components.SingletonComponent
-import org.softeg.slartus.forpdaplus.core.di.AppThemePreferences
 import org.softeg.slartus.forpdaplus.core_ui.navigation.AppNavigator
-import org.softeg.slartus.forpdaplus.feature_preferences.di.AppThemingPreferencesImpl
 import org.softeg.slartus.forpdaplus.navigation.AppNavigatorImpl
 
 @Module
