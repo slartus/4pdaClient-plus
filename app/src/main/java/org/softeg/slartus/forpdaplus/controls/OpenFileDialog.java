@@ -1,12 +1,11 @@
 package org.softeg.slartus.forpdaplus.controls;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
-import android.os.Build;
 import android.os.Environment;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -17,23 +16,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
-import org.softeg.slartus.forpdaplus.App;
-import org.softeg.slartus.forpdaplus.core_ui.AppTheme;
 import org.softeg.slartus.forpdaplus.R;
+import org.softeg.slartus.forpdaplus.core_ui.AppTheme;
 
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /*
@@ -48,7 +43,6 @@ public class OpenFileDialog extends AlertDialog.Builder {
     private FilenameFilter filenameFilter;
     private int selectedIndex = -1;
     private OpenDialogListener listener;
-    private String accessDeniedMessage;
     private final static int ICON_FOLDER = R.drawable.ic_folder;
     private final static int ICON_FILE = R.drawable.ic_file;
 
@@ -101,19 +95,8 @@ public class OpenFileDialog extends AlertDialog.Builder {
 
     }
 
-    private final Context mContext;
-
-
-    @Override
-    public Context getContext() {
-        if (Build.VERSION.SDK_INT >= 11)
-            return super.getContext();
-        return mContext;
-    }
-
     public OpenFileDialog(Context context) {
         super(context);
-        mContext = context;
         title = createTitle(context);
         changeTitle();
         LinearLayout linearLayout = createMainLayout(context);
@@ -122,12 +105,9 @@ public class OpenFileDialog extends AlertDialog.Builder {
         linearLayout.addView(listView);
         setCustomTitle(title)
                 .setView(linearLayout)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (selectedIndex > -1 && listener != null) {
-                            listener.OnSelectedFile(listView.getItemAtPosition(selectedIndex).toString());
-                        }
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                    if (selectedIndex > -1 && listener != null) {
+                        listener.OnSelectedFile(listView.getItemAtPosition(selectedIndex).toString());
                     }
                 })
                 .setNegativeButton(android.R.string.cancel, null);
@@ -145,24 +125,15 @@ public class OpenFileDialog extends AlertDialog.Builder {
     }
 
     public OpenFileDialog setFilter(final String filter) {
-        filenameFilter = new FilenameFilter() {
-
-            @Override
-            public boolean accept(File file, String fileName) {
-                File tempFile = new File(String.format("%s/%s", file.getPath(), fileName));
-                return !tempFile.isFile() || tempFile.getName().matches(filter);
-            }
+        filenameFilter = (file, fileName) -> {
+            File tempFile = new File(String.format("%s/%s", file.getPath(), fileName));
+            return !tempFile.isFile() || tempFile.getName().matches(filter);
         };
         return this;
     }
 
     public OpenFileDialog setOpenDialogListener(OpenDialogListener listener) {
         this.listener = listener;
-        return this;
-    }
-
-    public OpenFileDialog setAccessDeniedMessage(String message) {
-        this.accessDeniedMessage = message;
         return this;
     }
 
@@ -176,15 +147,12 @@ public class OpenFileDialog extends AlertDialog.Builder {
 
     private static Point getDisplaySize(final Display display) {
         final Point point = new Point();
-        if (Build.VERSION.SDK_INT >= 13) {
-            try {
-                display.getSize(point);
-            } catch (NoSuchMethodError ignore) { // Older device
-                point.x = display.getWidth();
-                point.y = display.getHeight();
-            }
-        } else {
+        try {
+            display.getSize(point);
+        } catch (NoSuchMethodError ignore) { // Older device
+            //noinspection deprecation
             point.x = display.getWidth();
+            //noinspection deprecation
             point.y = display.getHeight();
         }
         return point;
@@ -205,17 +173,14 @@ public class OpenFileDialog extends AlertDialog.Builder {
     private int getItemHeight(Context context) {
         TypedValue value = new TypedValue();
         DisplayMetrics metrics = new DisplayMetrics();
-        if (Build.VERSION.SDK_INT >= 14)
-            context.getTheme().resolveAttribute(android.R.attr.listPreferredItemHeightSmall, value, true);
-        else
-            value.data = 12289;
+        context.getTheme().resolveAttribute(android.R.attr.listPreferredItemHeightSmall, value, true);
         getDefaultDisplay(context).getMetrics(metrics);
         return (int) TypedValue.complexToDimension(value.data, metrics);
     }
 
-    private TextView createTextView(Context context, int style) {
+    private TextView createTextView(Context context) {
         TextView textView = new TextView(context);
-        textView.setTextAppearance(context, style);
+        textView.setTextAppearance(context, android.R.style.TextAppearance_Medium);
         textView.setBackgroundColor(AppTheme.getThemeBackgroundColorRes());
         textView.setTextColor(AppTheme.getThemeTextColorRes());
         int itemHeight = getItemHeight(context);
@@ -227,31 +192,27 @@ public class OpenFileDialog extends AlertDialog.Builder {
     }
 
     private TextView createTitle(Context context) {
-        return createTextView(context, android.R.style.TextAppearance_Medium);
+        return createTextView(context);
     }
 
     private TextView createBackItem(Context context) {
-        TextView textView = createTextView(context, android.R.style.TextAppearance_Medium);
+        TextView textView = createTextView(context);
 
         int icon = android.R.drawable.ic_menu_directions;
         textView.setCompoundDrawablesWithIntrinsicBounds(icon, 0, 0, 0);
         textView.setText("..");
         textView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        textView.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                try {
-                    File file = new File(currentPath);
-                    File parentDirectory = file.getParentFile();
-                    if (parentDirectory != null) {
-                        currentPath = parentDirectory.getPath();
-                        RebuildFiles(((FileAdapter) listView.getAdapter()));
-                    }
-                } catch (Throwable ex) {
-                    Toast.makeText(getContext(), isNullOrEmpty(ex.getLocalizedMessage(), ex.getMessage()), Toast.LENGTH_SHORT)
-                            .show();
+        textView.setOnClickListener(view -> {
+            try {
+                File file = new File(currentPath);
+                File parentDirectory = file.getParentFile();
+                if (parentDirectory != null) {
+                    currentPath = parentDirectory.getPath();
+                    RebuildFiles(((FileAdapter) listView.getAdapter()));
                 }
+            } catch (Throwable ex) {
+                Toast.makeText(getContext(), isNullOrEmpty(ex.getLocalizedMessage(), ex.getMessage()), Toast.LENGTH_SHORT)
+                        .show();
             }
         });
         return textView;
@@ -269,6 +230,7 @@ public class OpenFileDialog extends AlertDialog.Builder {
         return bounds.left + bounds.width() + 80;
     }
 
+    @SuppressLint("SetTextI18n")
     private void changeTitle() {
         String titleText = currentPath;
         int screenWidth = getScreenSize(getContext()).x;
@@ -293,23 +255,20 @@ public class OpenFileDialog extends AlertDialog.Builder {
         File[] listFiles = directory.listFiles(filenameFilter);
         if (listFiles == null)
             throw new Exception("Пустая директория или доступ запрещен");
-        for (File file : directory.listFiles(filenameFilter)) {
+        for (File file : listFiles) {
             if (file.isDirectory() && file.getName().startsWith("."))
                 continue;
             fileList.add(file);
         }
 
 
-        Collections.sort(fileList, new Comparator<File>() {
-            @Override
-            public int compare(File file, File file2) {
-                if (file.isDirectory() && file2.isFile())
-                    return -1;
-                else if (file.isFile() && file2.isDirectory())
-                    return 1;
-                else
-                    return file.getPath().compareToIgnoreCase(file2.getPath());
-            }
+        Collections.sort(fileList, (file, file2) -> {
+            if (file.isDirectory() && file2.isFile())
+                return -1;
+            else if (file.isFile() && file2.isDirectory())
+                return 1;
+            else
+                return file.getPath().compareToIgnoreCase(file2.getPath());
         });
         return fileList;
     }
@@ -325,8 +284,7 @@ public class OpenFileDialog extends AlertDialog.Builder {
 
         } catch (NullPointerException e) {
             String message = getContext().getResources().getString(android.R.string.unknownName);
-            if (!accessDeniedMessage.equals(""))
-                message = accessDeniedMessage;
+
             Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
         }
     }
@@ -334,27 +292,23 @@ public class OpenFileDialog extends AlertDialog.Builder {
     private ListView createListView(Context context) {
         ListView listView = new ListView(context);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int index, long l) {
-                try {
-                    final ArrayAdapter<File> adapter = (FileAdapter) adapterView.getAdapter();
-                    File file = adapter.getItem(index);
-                    if (file.isDirectory()) {
-                        currentPath = file.getPath();
-                        RebuildFiles(adapter);
-                    } else {
-                        if (index != selectedIndex)
-                            selectedIndex = index;
-                        else
-                            selectedIndex = -1;
-                        adapter.notifyDataSetChanged();
-                    }
-                } catch (Throwable ex) {
-                    Toast.makeText(getContext(), isNullOrEmpty(isNullOrEmpty(ex.getLocalizedMessage(), ex.getMessage()), ex.toString()), Toast.LENGTH_SHORT)
-                            .show();
+        listView.setOnItemClickListener((adapterView, view, index, l) -> {
+            try {
+                final ArrayAdapter<File> adapter = (FileAdapter) adapterView.getAdapter();
+                File file = adapter.getItem(index);
+                if (file.isDirectory()) {
+                    currentPath = file.getPath();
+                    RebuildFiles(adapter);
+                } else {
+                    if (index != selectedIndex)
+                        selectedIndex = index;
+                    else
+                        selectedIndex = -1;
+                    adapter.notifyDataSetChanged();
                 }
+            } catch (Throwable ex) {
+                Toast.makeText(getContext(), isNullOrEmpty(isNullOrEmpty(ex.getLocalizedMessage(), ex.getMessage()), ex.toString()), Toast.LENGTH_SHORT)
+                        .show();
             }
         });
         return listView;
