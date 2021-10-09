@@ -2,17 +2,16 @@ package org.softeg.slartus.forpdaplus.prefs
 
 import android.app.Activity
 import android.app.TimePickerDialog
-import android.content.DialogInterface
 import android.content.Intent
 import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Bundle
-import android.text.*
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.EditText
+import android.widget.TimePicker
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -23,9 +22,7 @@ import org.softeg.slartus.forpdaplus.App
 import org.softeg.slartus.forpdaplus.IntentActivity
 import org.softeg.slartus.forpdaplus.R
 import org.softeg.slartus.forpdaplus.common.AppLog
-import org.softeg.slartus.forpdacommon.OpenFileDialog
 import org.softeg.slartus.forpdaplus.db.NotesDbHelper
-import org.softeg.slartus.forpdaplus.db.NotesTable
 import org.softeg.slartus.forpdaplus.feature_preferences.Dialogs.showBackupNotesBackupDialog
 import org.softeg.slartus.forpdaplus.feature_preferences.Dialogs.showSelectDirDialog
 import org.softeg.slartus.forpdaplus.feature_preferences.Preferences
@@ -79,9 +76,6 @@ class PrefsFragment : PreferenceFragmentCompat() {
                     requireContext(),
                     NotesDbHelper.DATABASE_DIR + "/" + NotesDbHelper.DATABASE_NAME
                 )
-            }
-            "notes.restore" -> {
-                restoreNotes()
             }
         }
         return super.onPreferenceTreeClick(preference)
@@ -210,48 +204,6 @@ class PrefsFragment : PreferenceFragmentCompat() {
                             )
                         )
                     })
-                } catch (ex: Throwable) {
-                    AppLog.e(activity, ex)
-                }
-            }
-            .show()
-    }
-
-    private fun restoreNotes() {
-        OpenFileDialog(activity)
-            .setFilter(".*\\.(?i:sqlite)")
-            .setOpenDialogListener { fileName: String? ->
-                try {
-                    val sourceuri = Uri.parse(fileName)
-                    if (sourceuri == null) {
-                        Toast.makeText(activity, "Файл не выбран!", Toast.LENGTH_SHORT).show()
-                        return@setOpenDialogListener
-                    }
-                    val notes = NotesTable.getNotesFromFile(fileName)
-                    AlertDialog.Builder(requireContext())
-                        .setTitle("Внимание!")
-                        .setMessage(
-                            """
-    Заметок для восстановления: ${notes.size}
-    
-    Восстановление заметок приведёт к полной потере всех существующих заметок!
-    """.trimIndent()
-                        )
-                        .setPositiveButton("Продолжить") { dialogInterface: DialogInterface, _: Int ->
-                            dialogInterface.dismiss()
-                            try {
-                                val count = NotesTable.restoreFrom(notes)
-                                AlertDialog.Builder(requireContext())
-                                    .setTitle("Успех!")
-                                    .setMessage("Резервная копия заметок восстановлена!\nЗаметок восстановлено: $count")
-                                    .setPositiveButton("ОК", null)
-                                    .create().show()
-                            } catch (ex: Throwable) {
-                                AppLog.e(activity, ex)
-                            }
-                        }
-                        .setNegativeButton("Отмена", null)
-                        .create().show()
                 } catch (ex: Throwable) {
                     AppLog.e(activity, ex)
                 }

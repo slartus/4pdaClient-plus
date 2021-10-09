@@ -3,16 +3,12 @@ package org.softeg.slartus.forpdaplus.db;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import androidx.annotation.NonNull;
 import android.text.TextUtils;
-
-import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.notes.Note;
 
-import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -71,22 +67,6 @@ public class NotesTable {
                 db.close();
             }
         }
-    }
-
-    @NonNull
-    private static ContentValues getContentValues(Note note) {
-        ContentValues values = new ContentValues();
-
-        values.put(COLUMN_TITLE, note.Title);
-        values.put(COLUMN_BODY, note.Body);
-        values.put(COLUMN_URL, note.Url);
-        values.put(COLUMN_TOPIC_ID, note.TopicId);
-        values.put(COLUMN_POST_ID, note.PostId);
-        values.put(COLUMN_USER_ID, note.UserId);
-        values.put(COLUMN_USER, note.User);
-        values.put(COLUMN_TOPIC, note.Topic);
-        values.put(COLUMN_DATE, DbHelper.DateTimeFormat.format(note.Date));
-        return values;
     }
 
     public static ArrayList<Note> getNotes(String topicId) throws ParseException, IOException {
@@ -221,47 +201,6 @@ public class NotesTable {
             if (db != null) {
                 db.close();
             }
-        }
-    }
-
-    public static void deleteAll(SQLiteAssetHelper helper) {
-        try (SQLiteDatabase db = helper.getWritableDatabase()) {
-            db.execSQL("delete from " + TABLE_NAME);
-        }
-    }
-
-    public static ArrayList<Note> getNotesFromFile(String filePath) throws ParseException {
-
-        try (SQLiteDatabase backupDb = SQLiteDatabase.openOrCreateDatabase(new File(filePath), null)) {
-
-            return getNotes(backupDb, null);
-        }
-    }
-
-    public static int restoreFrom(ArrayList<Note> notes) throws IOException {
-
-        SQLiteDatabase db = null;
-        try {
-
-
-            NotesDbHelper dbHelper = new NotesDbHelper(App.getInstance());
-            db = dbHelper.getWritableDatabase();
-            db.beginTransaction();
-            db.execSQL("delete from " + TABLE_NAME);
-            for (Note note : notes) {
-                ContentValues values = getContentValues(note);
-                values.put(COLUMN_ID, note.Id);
-                db.insertOrThrow(TABLE_NAME, null, values);
-            }
-
-            db.setTransactionSuccessful();
-            return notes.size();
-        } finally {
-            if (db != null) {
-                db.endTransaction();
-                db.close();
-            }
-
         }
     }
 }
