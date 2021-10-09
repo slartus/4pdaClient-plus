@@ -12,4 +12,7 @@ import org.softeg.slartus.forpdaplus.navigation.AppNavigatorImpl
 abstract class MainModule {
     @Binds
     abstract fun bindAppNavigator(appNavigatorImpl: AppNavigatorImpl): AppNavigator
+
 }
+
+

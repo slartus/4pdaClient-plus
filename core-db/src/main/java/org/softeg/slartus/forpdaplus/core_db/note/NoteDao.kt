@@ -3,22 +3,28 @@ package org.softeg.slartus.forpdaplus.core_db.note
 import androidx.room.*
 
 @Dao
-interface NoteDao {
+abstract class NoteDao {
+    //https://medium.com/androiddevelopers/room-coroutines-422b786dc4c5
+//    @Transaction
+//    open suspend fun setLoggedInUser(loggedInUser: User) {
+//        deleteUser(loggedInUser)
+//        insertUser(loggedInUser)
+//    }
     @Query("SELECT * FROM note")
-    fun getAll(): List<Note>
+    abstract suspend fun getAll(): List<Note>
 
     @Insert
-    fun insert(note: Note)
+    abstract suspend fun insert(note: Note)
 
     @Update
-    fun update(note: Note)
+    abstract suspend fun update(note: Note)
 
     @Insert
-    fun insertAll(vararg notes: Note)
+    abstract suspend fun insertAll(vararg notes: Note)
 
     @Query("DELETE FROM note")
-    fun deleteAll()
+    abstract suspend fun deleteAll()
 
     @Delete
-    fun delete(note: Note)
+    abstract suspend fun delete(note: Note)
 }

@@ -15,8 +15,12 @@ abstract class PreferencesModule {
     abstract fun bindCoreUiPreferences(appThemingPreferences: AppThemingPreferencesImpl): AppThemePreferences
 }
 
+interface NotesManager {
+    fun backupNotes()
+    fun restoreNotes()
+}
 
-class AppThemingPreferencesImpl @Inject constructor(): AppThemePreferences {
+class AppThemingPreferencesImpl @Inject constructor() : AppThemePreferences {
     override val mainAccentColor: String = Preferences.Common.Overall.mainAccentColor
     override val accentColor: Int = Preferences.Common.Overall.accentColor
     override val accentColorPressed: Int = Preferences.Common.Overall.accentColorPressed
