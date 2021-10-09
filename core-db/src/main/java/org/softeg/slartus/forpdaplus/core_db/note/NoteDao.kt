@@ -5,11 +5,12 @@ import androidx.room.*
 @Dao
 abstract class NoteDao {
     //https://medium.com/androiddevelopers/room-coroutines-422b786dc4c5
-//    @Transaction
-//    open suspend fun setLoggedInUser(loggedInUser: User) {
-//        deleteUser(loggedInUser)
-//        insertUser(loggedInUser)
-//    }
+    @Transaction
+    open suspend fun merge(notes: List<Note>) {
+        deleteAll()
+        insertAll(*notes.toTypedArray())
+    }
+
     @Query("SELECT * FROM note")
     abstract suspend fun getAll(): List<Note>
 

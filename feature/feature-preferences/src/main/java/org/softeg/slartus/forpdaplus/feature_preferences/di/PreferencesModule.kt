@@ -1,5 +1,6 @@
 package org.softeg.slartus.forpdaplus.feature_preferences.di
 
+import android.content.Context
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -16,8 +17,8 @@ abstract class PreferencesModule {
 }
 
 interface NotesManager {
-    fun backupNotes()
-    fun restoreNotes()
+    fun backupNotes(context: Context)
+    fun restoreNotes(context: Context)
 }
 
 class AppThemingPreferencesImpl @Inject constructor() : AppThemePreferences {

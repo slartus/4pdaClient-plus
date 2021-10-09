@@ -9,6 +9,9 @@ import javax.inject.Inject
 
 class NoteDaoImpl @Inject constructor(private val noteDao: NoteDao) :
     FeatureNoteDao {
+    override suspend fun merge(notes: List<org.softeg.slartus.forpdaplus.feature_notes.Note>) =
+        noteDao.merge(notes.map { it.map() })
+
     override suspend fun getAll(): List<FeatureNote> = noteDao.getAll().map { it.map() }
 
     override suspend fun insert(note: FeatureNote) = noteDao.insert(note.map())

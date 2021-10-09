@@ -21,10 +21,10 @@ class NotesPreferencesFragment : PreferenceFragmentCompat() {
     override fun onPreferenceTreeClick(preference: Preference?): Boolean {
         when (preference?.key) {
             "notes.backup" -> {
-                notesManager.backupNotes()
+                notesManager.backupNotes(requireContext())
             }
             "notes.restore" -> {
-                notesManager.restoreNotes()
+                notesManager.restoreNotes(requireContext())
             }
         }
         return super.onPreferenceTreeClick(preference)
