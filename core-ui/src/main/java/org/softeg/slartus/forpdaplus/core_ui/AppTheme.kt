@@ -11,7 +11,10 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class AppTheme @Inject constructor(@ApplicationContext context: Context, themePreferences: AppThemePreferences) {
+class AppTheme @Inject constructor(
+    @ApplicationContext context: Context,
+    themePreferences: AppThemePreferences
+) {
     init {
         contextRef = WeakReference(context)
         appThemePreferences = themePreferences
@@ -34,7 +37,6 @@ class AppTheme @Inject constructor(@ApplicationContext context: Context, themePr
         private val DARK_THEMES = arrayOf(THEME_MATERIAL_DARK, THEME_DARK)
         private var contextRef: WeakReference<Context>? = null
         private var appThemePreferences: AppThemePreferences? = null
-
 
         @JvmStatic
         val webViewFont: String?
@@ -132,10 +134,11 @@ class AppTheme @Inject constructor(@ApplicationContext context: Context, themePr
                 if (themeStr.length < 3) {
                     val theme = themeStr.toInt()
                     themeType =
-                        if (LIGHT_THEMES.indexOf(theme) != -1) THEME_TYPE_LIGHT else if (DARK_THEMES.indexOf(
-                                theme
-                            ) != -1
-                        ) THEME_TYPE_DARK else THEME_TYPE_BLACK
+                        when {
+                            LIGHT_THEMES.indexOf(theme) != -1 -> THEME_TYPE_LIGHT
+                            DARK_THEMES.indexOf(theme) != -1 -> THEME_TYPE_DARK
+                            else -> THEME_TYPE_BLACK
+                        }
                 } else {
                     if (themeStr.contains("/dark/")) themeType =
                         THEME_TYPE_DARK else if (themeStr.contains("/black/")) themeType =
@@ -147,36 +150,51 @@ class AppTheme @Inject constructor(@ApplicationContext context: Context, themePr
         @JvmStatic
         val themeBackgroundColorRes: Int
             get() {
-                val themeType = themeType
-                return if (themeType == THEME_TYPE_LIGHT) R.color.app_background_light else if (themeType == THEME_TYPE_DARK) R.color.app_background_dark else R.color.app_background_black
+                return when (themeType) {
+                    THEME_TYPE_LIGHT -> R.color.app_background_light
+                    THEME_TYPE_DARK -> R.color.app_background_dark
+                    else -> R.color.app_background_black
+                }
             }
 
         @JvmStatic
         val themeTextColorRes: Int
             get() {
-                val themeType = themeType
-                return if (themeType == THEME_TYPE_LIGHT) android.R.color.black else if (themeType == THEME_TYPE_DARK) android.R.color.white else android.R.color.white
+                return when (themeType) {
+                    THEME_TYPE_LIGHT -> android.R.color.black
+                    THEME_TYPE_DARK -> android.R.color.white
+                    else -> android.R.color.white
+                }
             }
 
         @JvmStatic
         val swipeRefreshBackground: Int
             get() {
-                val themeType = themeType
-                return if (themeType == THEME_TYPE_LIGHT) R.color.swipe_background_light else if (themeType == THEME_TYPE_DARK) R.color.swipe_background_dark else R.color.swipe_background_black
+                return when (themeType) {
+                    THEME_TYPE_LIGHT -> R.color.swipe_background_light
+                    THEME_TYPE_DARK -> R.color.swipe_background_dark
+                    else -> R.color.swipe_background_black
+                }
             }
 
         @JvmStatic
         val navBarColor: Int
             get() {
-                val themeType = themeType
-                return if (themeType == THEME_TYPE_LIGHT) R.color.navBar_light else if (themeType == THEME_TYPE_DARK) R.color.navBar_dark else R.color.navBar_black
+                return when (themeType) {
+                    THEME_TYPE_LIGHT -> R.color.navBar_light
+                    THEME_TYPE_DARK -> R.color.navBar_dark
+                    else -> R.color.navBar_black
+                }
             }
 
         @JvmStatic
         val drawerMenuText: Int
             get() {
-                val themeType = themeType
-                return if (themeType == THEME_TYPE_LIGHT) R.color.drawer_menu_text_light else if (themeType == THEME_TYPE_DARK) R.color.drawer_menu_text_dark else R.color.drawer_menu_text_dark
+                return when (themeType) {
+                    THEME_TYPE_LIGHT -> R.color.drawer_menu_text_light
+                    THEME_TYPE_DARK -> R.color.drawer_menu_text_dark
+                    else -> R.color.drawer_menu_text_dark
+                }
             }
 
         @JvmStatic
@@ -194,8 +212,11 @@ class AppTheme @Inject constructor(@ApplicationContext context: Context, themePr
         @JvmStatic
         val currentBackgroundColorHtml: String
             get() {
-                val themeType = themeType
-                return if (themeType == THEME_TYPE_LIGHT) "#eeeeee" else if (themeType == THEME_TYPE_DARK) "#1a1a1a" else "#000000"
+                return when (themeType) {
+                    THEME_TYPE_LIGHT -> "#eeeeee"
+                    THEME_TYPE_DARK -> "#1a1a1a"
+                    else -> "#000000"
+                }
             }
 
         @JvmStatic
@@ -205,8 +226,11 @@ class AppTheme @Inject constructor(@ApplicationContext context: Context, themePr
         @JvmStatic
         val currentThemeName: String
             get() {
-                val themeType = themeType
-                return if (themeType == THEME_TYPE_LIGHT) "white" else if (themeType == THEME_TYPE_DARK) "dark" else "black"
+                return when (themeType) {
+                    THEME_TYPE_LIGHT -> "white"
+                    THEME_TYPE_DARK -> "dark"
+                    else -> "black"
+                }
             }
 
         private fun checkThemeFile(themePath: String): String {

@@ -64,6 +64,8 @@ public class OpenFileDialog extends AlertDialog.Builder {
 
                 view = mInflater.inflate(R.layout.file, parent, false);
                 holder.file_textview = (TextView) view;
+                holder.file_textview.setBackgroundResource(AppTheme.getThemeBackgroundColorRes());
+                holder.file_textview.setTextColor(getContext().getResources().getColor(AppTheme.getThemeTextColorRes()));
                 view.setTag(holder);
             } else {
                 holder = (ViewHolder) view.getTag();
@@ -72,7 +74,6 @@ public class OpenFileDialog extends AlertDialog.Builder {
             File file = getItem(position);
 
             holder.file_textview.setText(file.getName());
-            // If the item is not a directory, use the file icon
             int icon = file.isDirectory() ? ICON_FOLDER : ICON_FILE;
             holder.file_textview.setCompoundDrawablesWithIntrinsicBounds(icon, 0, 0, 0);
             if (!file.isDirectory()) {
@@ -82,7 +83,7 @@ public class OpenFileDialog extends AlertDialog.Builder {
                     holder.file_textview.setBackgroundColor(getContext().getResources().getColor(android.R.color.transparent));
             }
 
-            return holder.file_textview;
+            return view;
         }
 
         class ViewHolder {
@@ -160,7 +161,7 @@ public class OpenFileDialog extends AlertDialog.Builder {
 
     private LinearLayout createMainLayout(Context context) {
         LinearLayout linearLayout = new LinearLayout(context);
-        linearLayout.setBackgroundColor(AppTheme.getThemeBackgroundColorRes());
+        linearLayout.setBackgroundResource(AppTheme.getThemeBackgroundColorRes());
         linearLayout.setOrientation(LinearLayout.VERTICAL);
         linearLayout.setMinimumHeight(getLinearLayoutMinHeight(context));
         return linearLayout;
@@ -177,8 +178,8 @@ public class OpenFileDialog extends AlertDialog.Builder {
     private TextView createTextView(Context context) {
         TextView textView = new TextView(context);
         textView.setTextAppearance(context, android.R.style.TextAppearance_Medium);
-        textView.setBackgroundColor(AppTheme.getThemeBackgroundColorRes());
-        textView.setTextColor(AppTheme.getThemeTextColorRes());
+        textView.setBackgroundResource(AppTheme.getThemeBackgroundColorRes());
+        textView.setTextColor(context.getResources().getColor(AppTheme.getThemeTextColorRes()));
         int itemHeight = getItemHeight(context);
         textView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, itemHeight));
         textView.setMinHeight(itemHeight);
