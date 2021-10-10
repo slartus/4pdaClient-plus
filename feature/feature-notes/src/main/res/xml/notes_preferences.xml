@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    android:title="Заметки">
+    android:key="notes"
+    android:title="@string/notes">
 
-    <org.softeg.slartus.forpdaplus.feature_preferences.views.SummaryValueListPreference
+    <ListPreference
         android:defaultValue="local"
         android:entries="@array/NotesStoragePlacements"
         android:entryValues="@array/NotesStoragePlacementValues"

@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.AdapterView
 import com.afollestad.materialdialogs.DialogAction
 import com.afollestad.materialdialogs.MaterialDialog
+import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -24,11 +25,14 @@ import org.softeg.slartus.forpdaplus.tabs.ListViewMethodsBridge
 import java.io.IOException
 import java.text.ParseException
 import java.util.*
+import javax.inject.Inject
 
 /*
 * Created by slinkin on 21.03.14.
 */
+@AndroidEntryPoint
 class NotesListFragment : BaseListFragment() {
+    @Inject lateinit var notesRepository: NotesRepository
     //    @Override
     //    protected ArrayList<? extends IListItem> loadTopics(Client client, ListInfo listInfo) throws IOException, ParseException {
     //        return NotesRepository.getInstance().
@@ -60,7 +64,7 @@ class NotesListFragment : BaseListFragment() {
 
         dataSubscriber?.dispose()
         dataSubscriber =
-                NotesRepository.instance
+            notesRepository
                         .notesSubject
                         .skip(1)
                         .subscribeOn(Schedulers.io())
@@ -83,7 +87,7 @@ class NotesListFragment : BaseListFragment() {
                                     AppLog.e(activity, it)
                                 }
                         )
-        NotesRepository.instance.load()
+        notesRepository.load()
     }
 
     var dataSubscriber: Disposable? = null
@@ -97,7 +101,7 @@ class NotesListFragment : BaseListFragment() {
         if (TextUtils.isEmpty(note.id)) return
         try {
             if (note.Url != null) {
-                IntentActivity.tryShowUrl(context as Activity?, mHandler, note.Url, true, false, null)
+                IntentActivity.tryShowUrl(activity, mHandler, note.Url, true, false, null)
             } else {
                 NoteFragment.showNote(note.id.toString())
             }
@@ -118,7 +122,7 @@ class NotesListFragment : BaseListFragment() {
         val list: MutableList<MenuListDialog> = ArrayList()
         addLinksSubMenu(list, topic)
         list.add(MenuListDialog(App.getContext().getString(R.string.delete)) {
-            MaterialDialog.Builder(context!!)
+            MaterialDialog.Builder(requireContext())
                     .title(R.string.confirm_action)
                     .content(R.string.ask_delete_note)
                     .cancelable(true)
@@ -126,7 +130,7 @@ class NotesListFragment : BaseListFragment() {
                     .positiveText(R.string.delete)
                     .onPositive { dialog: MaterialDialog?, which: DialogAction? ->
                         try {
-                            NotesRepository.instance.delete(topic.id.toString())
+                            notesRepository.delete(topic.id.toString())
                         } catch (ex: Throwable) {
                             AppLog.e(context, ex)
                         }

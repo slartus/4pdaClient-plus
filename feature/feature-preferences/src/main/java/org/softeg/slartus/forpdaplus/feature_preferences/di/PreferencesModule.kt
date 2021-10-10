@@ -1,6 +1,5 @@
 package org.softeg.slartus.forpdaplus.feature_preferences.di
 
-import android.content.Context
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -14,11 +13,6 @@ import javax.inject.Inject
 abstract class PreferencesModule {
     @Binds
     abstract fun bindCoreUiPreferences(appThemingPreferences: AppThemingPreferencesImpl): AppThemePreferences
-}
-
-interface NotesManager {
-    fun backupNotes(context: Context)
-    fun restoreNotes(context: Context)
 }
 
 class AppThemingPreferencesImpl @Inject constructor() : AppThemePreferences {

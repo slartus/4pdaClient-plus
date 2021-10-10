@@ -1,16 +1,11 @@
 package org.softeg.slartus.forpdaplus.prefs
 
-import android.content.pm.PackageInfo
-import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceScreen
 import dagger.hilt.android.AndroidEntryPoint
-import org.softeg.slartus.forpdacommon.appFullName
-import org.softeg.slartus.forpdacommon.packageInfo
 import org.softeg.slartus.forpdaplus.App
-import org.softeg.slartus.forpdaplus.R
-import org.softeg.slartus.forpdaplus.common.AppLog
+import org.softeg.slartus.forpdaplus.feature_notes.ui.NotesPreferencesFragment
 import org.softeg.slartus.forpdaplus.feature_preferences.fragments.TopicViewPreferences
 import ru.slartus.http.PersistentCookieStore.Companion.getInstance
 
@@ -41,6 +36,9 @@ class PreferencesActivity : BasePreferencesActivity(),
             when (preferenceScreen.key) {
                 "download_files_screen" -> {
                     TopicViewPreferences()
+                }
+                "notes"->{
+                    NotesPreferencesFragment()
                 }
                 else -> {
                     PrefsFragment()

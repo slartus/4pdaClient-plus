@@ -1,11 +1,11 @@
-package org.softeg.slartus.forpdaplus.fragments.base
+package org.softeg.slartus.forpdacommon.dialogs
 
 import android.os.Bundle
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import org.softeg.slartus.forpdaplus.R
+import org.softeg.slartus.forpdacommon.R
 
 class ProgressDialog : DialogFragment() {
 

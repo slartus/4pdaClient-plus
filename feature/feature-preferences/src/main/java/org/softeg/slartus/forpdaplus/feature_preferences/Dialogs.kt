@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.CompoundButton
 import android.widget.EditText
 import android.widget.RadioButton
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.afollestad.materialdialogs.DialogAction
 import com.afollestad.materialdialogs.MaterialDialog
@@ -109,4 +110,37 @@ object Dialogs {
             }
             .show()
     }
+
+    fun showCookiesDeleteDialog(context: Context) {
+        MaterialDialog.Builder(context)
+            .title(context.getString(R.string.ConfirmTheAction))
+            .content(context.getString(R.string.SureDeleteFile))
+            .cancelable(true)
+            .positiveText(context.getString(R.string.Delete))
+            .negativeText(context.getString(R.string.no))
+            .onPositive { _: MaterialDialog?, _: DialogAction? ->
+                try {
+                    val cookieFilePath = Preferences.cookieFilePath
+                    val f = File(cookieFilePath)
+                    if (!f.exists()) {
+                        Toast.makeText(
+                            context, context.getString(R.string.CookiesFileNotFound) +
+                                    ": " + cookieFilePath, Toast.LENGTH_LONG
+                        ).show()
+                    }
+                    if (f.delete()) Toast.makeText(
+                        context, context.getString(R.string.CookiesFileDeleted) +
+                                ": " + cookieFilePath, Toast.LENGTH_LONG
+                    ).show() else Toast.makeText(
+                        context, context.getString(R.string.FailedDeleteCookies) +
+                                ": " + cookieFilePath, Toast.LENGTH_LONG
+                    ).show()
+                } catch (ex: Exception) {
+                    Timber.e(ex)
+                }
+            }
+            .show()
+    }
+
+
 }

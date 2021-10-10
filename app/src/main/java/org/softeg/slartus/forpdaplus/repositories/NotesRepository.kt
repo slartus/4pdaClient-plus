@@ -13,8 +13,9 @@ import org.softeg.slartus.forpdaplus.db.NotesTable
 import org.softeg.slartus.forpdaplus.notes.Note
 import org.softeg.slartus.forpdaplus.feature_preferences.Preferences
 import java.util.*
+import javax.inject.Inject
 
-class NotesRepository private constructor() {
+class NotesRepository @Inject constructor() {
     private object Holder {
         val INSTANCE = NotesRepository()
     }

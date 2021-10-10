@@ -33,10 +33,15 @@ import org.softeg.slartus.hosthelper.HostHelper;
 
 import java.lang.ref.WeakReference;
 
-/**
- * Created by radiationx on 17.11.15.
- */
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class NoteFragment extends GeneralFragment {
+    @Inject
+    NotesRepository notesRepository;
+
     @Override
     public boolean closeTab() {
         return false;
@@ -195,7 +200,7 @@ public class NoteFragment extends GeneralFragment {
         return (TextView) getMainActivity().getLayoutInflater().inflate(R.layout.note_second_textview, null);
     }
 
-    private static class LoadPageTask extends AsyncTask<String, String, Note> {
+    private class LoadPageTask extends AsyncTask<String, String, Note> {
 
         private final MaterialDialog dialog;
 
@@ -224,7 +229,7 @@ public class NoteFragment extends GeneralFragment {
         @Override
         protected Note doInBackground(String... params) {
             try {
-                return NotesRepository.getInstance().getNote(id);
+                return notesRepository.getNote(id);
             } catch (Throwable e) {
 
                 ex = e;

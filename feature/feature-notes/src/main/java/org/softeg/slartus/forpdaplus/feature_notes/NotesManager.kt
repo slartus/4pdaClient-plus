@@ -77,7 +77,6 @@ class NotesManager @Inject constructor(
     }
 
     private fun showBackupNotesBackupDialog(context: Context) {
-
         val dbFile = appDatabase.getDatabasePath(context)
         if (!dbFile.exists()) {
             AlertDialog.Builder(context)
@@ -195,6 +194,10 @@ class NotesManager @Inject constructor(
 
     private suspend fun restoreFrom(notes: List<Note>) {
         notesDao.merge(notes)
+    }
+
+    fun remoteUrl(context: Context) {
+
     }
 
     companion object {

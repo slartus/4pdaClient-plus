@@ -85,6 +85,7 @@ import io.reactivex.schedulers.Schedulers;
  * Time: 22:23
  * To change this template use File | Settings | File Templates.
  */
+@AndroidEntryPoint
 public class MainActivity extends BaseActivity implements BricksListDialogFragment.IBricksListDialogCaller,
         MainDrawerMenu.SelectItemListener, TabDrawerMenu.SelectItemListener {
     // test commit to beta
