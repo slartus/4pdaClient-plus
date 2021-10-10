@@ -7,28 +7,28 @@
         android:entries="@array/NotesStoragePlacements"
         android:entryValues="@array/NotesStoragePlacementValues"
         android:key="notes.placement"
-        android:title="Место хранения" />
+        android:title="@string/notes_placement" />
     <PreferenceCategory
         android:key="notes.remote.settings"
-        android:title="Удалённый сервер">
+        android:title="@string/remote_server">
         <Preference
             android:key="notes.remote.url"
-            android:title="Ссылка" />
+            android:title="@string/link" />
         <Preference
             android:key="notes.remote.help"
-            android:title="Помощь" />
+            android:title="@string/help" />
     </PreferenceCategory>
 
     <PreferenceCategory
         android:key="notes.backup.category"
-        android:title="Локальное хранилище">
+        android:title="@string/local_repository">
         <Preference
             android:key="notes.backup"
             android:summary="Сделать резервную копию"
-            android:title="Резерв" />
+            android:title="@string/backup" />
         <Preference
             android:key="notes.restore"
             android:summary="Восстановить из резервной копии"
-            android:title="Восстановить" />
+            android:title="@string/restore" />
     </PreferenceCategory>
 </PreferenceScreen>
