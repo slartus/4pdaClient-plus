@@ -35,5 +35,6 @@ ext {
     jsoup = '1.13.1'
     rxjava2 = "2.1.1"
     hilt = "2.38.1"
-    coroutines="1.5.2"
+    coroutines = "1.5.2"
+    retrofit = "2.9.0"
 }

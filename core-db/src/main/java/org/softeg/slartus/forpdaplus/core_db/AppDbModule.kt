@@ -7,6 +7,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import org.softeg.slartus.forpdaplus.core_db.migrations.MIGRATION_1_2
 import org.softeg.slartus.forpdaplus.core_db.note.NoteDao
 import javax.inject.Singleton
 
@@ -19,6 +20,7 @@ open class AppDbModule {
     open fun provideDb(@ApplicationContext app: Context): AppDatabase {
         return Room
             .databaseBuilder(app, AppDatabase::class.java, AppDatabase.NAME)
+            .addMigrations(MIGRATION_1_2)
             .fallbackToDestructiveMigration()
             .build()
     }

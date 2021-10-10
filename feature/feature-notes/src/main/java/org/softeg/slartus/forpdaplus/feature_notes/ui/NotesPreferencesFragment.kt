@@ -5,15 +5,19 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.afollestad.materialdialogs.DialogAction
 import com.afollestad.materialdialogs.MaterialDialog
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.*
 import org.softeg.slartus.forpdacommon.NotReportException
 import org.softeg.slartus.forpdacommon.dialogs.ProgressDialog
+import org.softeg.slartus.forpdacommon.openUrl
 import org.softeg.slartus.forpdaplus.feature_notes.NotesManager
 import org.softeg.slartus.forpdaplus.feature_notes.R
+import org.softeg.slartus.forpdaplus.feature_notes.data.NotesRepository
 import org.softeg.slartus.forpdaplus.feature_notes.di.NotesPreferences
 import timber.log.Timber
 import javax.inject.Inject
@@ -27,9 +31,11 @@ class NotesPreferencesFragment : PreferenceFragmentCompat() {
     @Inject
     lateinit var notesPreferences: NotesPreferences
 
+    @Inject
+    lateinit var notesRepository: NotesRepository
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         findPreference<Preference>("notes.remote.url")?.let { p ->
             p.summary = notesPreferences.remoteUrl
             p.onPreferenceClickListener = Preference.OnPreferenceClickListener {
@@ -39,10 +45,7 @@ class NotesPreferencesFragment : PreferenceFragmentCompat() {
         }
         findPreference<Preference>("notes.remote.help")?.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {
-//                IntentActivity.showInDefaultBrowser(
-//                    activity,
-//                    "https://github.com/slartus/4pdaClient-plus/wiki/Notes"
-//                )
+                openUrl(requireContext(), "https://github.com/slartus/4pdaClient-plus/wiki/Notes")
                 true
             }
         refreshNotesEnabled()
@@ -67,7 +70,7 @@ class NotesPreferencesFragment : PreferenceFragmentCompat() {
                 notesManager.restoreNotes(requireContext())
             }
             "notes.remote.url" -> {
-                notesManager.remoteUrl(requireContext())
+                showNotesRemoteServerDialog()
             }
         }
         return super.onPreferenceTreeClick(preference)
@@ -89,27 +92,27 @@ class NotesPreferencesFragment : PreferenceFragmentCompat() {
                 try {
                     val baseUrl = editText?.text.toString()
                     setLoading(true)
-//                    NotesRepository.checUrlAsync(baseUrl, {
-//                        setLoading(false)
-//                        notesPreferences.setPlacement("remote")
-//                        notesPreferences.remoteUrl = baseUrl
-//                        findPreference<Preference>("notes.remote.url")?.summary = baseUrl
-//                        refreshNotesEnabled()
-//                    }, {
-//                        setLoading(false)
-//                        notesPreferences.setPlacement("local")
-//                        findPreference<Preference>("notes.placement")?.summary = resources
-//                            .getStringArray(R.array.NotesStoragePlacements)
-//                            .firstOrNull()
-//                        refreshNotesEnabled()
-//
-//                        Timber.e(
-//                            NotReportException(
-//                                it.localizedMessage
-//                                    ?: it.message, it
-//                            )
-//                        )
-//                    })
+                    val errorHandler = CoroutineExceptionHandler { _, throwable ->
+                        lifecycleScope.launch(Dispatchers.Main) {
+                            setLoading(false)
+                            Timber.e(
+                                NotReportException(
+                                    throwable.localizedMessage ?: throwable.message,
+                                    throwable
+                                )
+                            )
+                        }
+                    }
+                    lifecycleScope.launch(Dispatchers.IO + errorHandler) {
+                        notesRepository.checkUrl(baseUrl)
+                        withContext(Dispatchers.Main) {
+                            setLoading(false)
+                            notesPreferences.setPlacement("remote")
+                            notesPreferences.remoteUrl = baseUrl
+                            findPreference<Preference>("notes.remote.url")?.summary = baseUrl
+                            refreshNotesEnabled()
+                        }
+                    }
                 } catch (ex: Throwable) {
                     Timber.e(ex)
                 }
