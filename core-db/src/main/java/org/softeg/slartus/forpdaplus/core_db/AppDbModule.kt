@@ -18,7 +18,7 @@ open class AppDbModule {
     @Singleton
     open fun provideDb(@ApplicationContext app: Context): AppDatabase {
         return Room
-            .databaseBuilder(app, AppDatabase::class.java, "forpda.db")
+            .databaseBuilder(app, AppDatabase::class.java, AppDatabase.NAME)
             .fallbackToDestructiveMigration()
             .build()
     }

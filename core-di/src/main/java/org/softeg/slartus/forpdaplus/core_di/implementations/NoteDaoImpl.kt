@@ -2,12 +2,13 @@ package org.softeg.slartus.forpdaplus.core_di.implementations
 
 import org.softeg.slartus.forpdaplus.core_db.note.Note
 import org.softeg.slartus.forpdaplus.core_db.note.NoteDao
+import javax.inject.Inject
 import org.softeg.slartus.forpdaplus.feature_notes.Note as FeatureNote
 import org.softeg.slartus.forpdaplus.feature_notes.NotesDao as FeatureNoteDao
 
-import javax.inject.Inject
-
-class NoteDaoImpl @Inject constructor(private val noteDao: NoteDao) :
+class NoteDaoImpl @Inject constructor(
+    private val noteDao: NoteDao
+) :
     FeatureNoteDao {
     override suspend fun merge(notes: List<org.softeg.slartus.forpdaplus.feature_notes.Note>) =
         noteDao.merge(notes.map { it.map() })

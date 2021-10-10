@@ -10,4 +10,8 @@ import org.softeg.slartus.forpdaplus.core_db.note.NoteDao
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun noteDao(): NoteDao
+
+    companion object {
+        const val NAME = "forpda.db"
+    }
 }

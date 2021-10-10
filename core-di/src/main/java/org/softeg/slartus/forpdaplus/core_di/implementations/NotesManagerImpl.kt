@@ -8,7 +8,7 @@ class NotesManagerImpl @Inject constructor(
 ) :
     org.softeg.slartus.forpdaplus.feature_preferences.di.NotesManager {
     override fun backupNotes(context: Context) {
-        notesManager.backupNotes()
+        notesManager.backupNotes(context)
     }
 
     override fun restoreNotes(context: Context) {

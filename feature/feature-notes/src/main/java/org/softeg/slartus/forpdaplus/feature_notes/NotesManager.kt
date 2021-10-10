@@ -5,10 +5,13 @@ import android.content.DialogInterface
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.net.Uri
+import android.os.Environment
 import android.text.TextUtils
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import kotlinx.coroutines.*
+import org.softeg.slartus.forpdacommon.ExternalStorage
+import org.softeg.slartus.forpdacommon.FileUtils
 import org.softeg.slartus.forpdacommon.OpenFileDialog
 import timber.log.Timber
 import java.io.File
@@ -16,7 +19,10 @@ import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
-class NotesManager @Inject constructor(private val notesDao: NotesDao) {
+class NotesManager @Inject constructor(
+    private val appDatabase: AppDatabase,
+    private val notesDao: NotesDao
+) {
     fun restoreNotes(context: Context) {
         val errorJoinHandler = CoroutineExceptionHandler { _, ex ->
             Timber.e(ex)
@@ -66,11 +72,59 @@ class NotesManager @Inject constructor(private val notesDao: NotesDao) {
             .show()
     }
 
-    fun backupNotes() {
-        runBlocking {
-            notesDao.getAll()
+    fun backupNotes(context: Context) {
+        showBackupNotesBackupDialog(context)
+    }
+
+    private fun showBackupNotesBackupDialog(context: Context) {
+
+        val dbFile = appDatabase.getDatabasePath(context)
+        if (!dbFile.exists()) {
+            AlertDialog.Builder(context)
+                .setTitle("Ошибка")
+                .setMessage("Файл базы заметок не найден. Возможно, вы ещё не создали ни одной заметки")
+                .setPositiveButton("ОК", null)
+                .create().show()
+            return
         }
-        Timber.d("backupNotes")
+        try {
+            appDatabase.close()
+            val externalDirPath: String
+            val externalLocations = ExternalStorage.getAllStorageLocations()
+            val sdCard = externalLocations[ExternalStorage.SD_CARD]
+            val externalSdCard = externalLocations[ExternalStorage.EXTERNAL_SD_CARD]
+            externalDirPath = externalSdCard?.toString()
+                ?: (sdCard?.toString()
+                    ?: Environment.getExternalStorageDirectory().toString())
+            val toPath = "$externalDirPath/forpda_notes.sqlite"
+            var newFile = File(toPath)
+            var i = 0
+            while (newFile.exists()) {
+                newFile = File(
+                    externalDirPath + String.format(
+                        Locale.getDefault(),
+                        "/forpda_notes_%d.sqlite",
+                        i++
+                    )
+                )
+            }
+            val b = newFile.createNewFile()
+            if (!b) {
+                AlertDialog.Builder(context)
+                    .setTitle("Ошибка").setMessage("Не удалось создать файл: $toPath")
+                    .setPositiveButton("ОК", null)
+                    .create().show()
+                return
+            }
+            FileUtils.copy(dbFile, newFile)
+            AlertDialog.Builder(context)
+                .setTitle("Успех!")
+                .setMessage("Резервная копия заметок сохранена в файл:\n$newFile")
+                .setPositiveButton("ОК", null)
+                .create().show()
+        } catch (ex: Throwable) {
+            Timber.e(ex)
+        }
     }
 
     private fun getNotesFromFile(filePath: String): List<Note> {

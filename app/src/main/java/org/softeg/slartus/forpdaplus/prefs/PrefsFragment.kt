@@ -22,8 +22,6 @@ import org.softeg.slartus.forpdaplus.App
 import org.softeg.slartus.forpdaplus.IntentActivity
 import org.softeg.slartus.forpdaplus.R
 import org.softeg.slartus.forpdaplus.common.AppLog
-import org.softeg.slartus.forpdaplus.db.NotesDbHelper
-import org.softeg.slartus.forpdaplus.feature_preferences.Dialogs.showBackupNotesBackupDialog
 import org.softeg.slartus.forpdaplus.feature_preferences.Dialogs.showSelectDirDialog
 import org.softeg.slartus.forpdaplus.feature_preferences.Preferences
 import org.softeg.slartus.forpdaplus.fragments.base.ProgressDialog
@@ -69,13 +67,6 @@ class PrefsFragment : PreferenceFragmentCompat() {
                         String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute)
                 }, endcalendar[Calendar.HOUR_OF_DAY], endcalendar[Calendar.MINUTE], true).show()
                 return true
-            }
-
-            "notes.backup" -> {
-                showBackupNotesBackupDialog(
-                    requireContext(),
-                    NotesDbHelper.DATABASE_DIR + "/" + NotesDbHelper.DATABASE_NAME
-                )
             }
         }
         return super.onPreferenceTreeClick(preference)
