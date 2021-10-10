@@ -89,35 +89,36 @@ class NotesPreferencesFragment : PreferenceFragmentCompat() {
             .positiveText(R.string.ok)
             .negativeText(R.string.cancel)
             .onPositive { _: MaterialDialog?, _: DialogAction? ->
-                try {
-                    val baseUrl = editText?.text.toString()
-                    setLoading(true)
-                    val errorHandler = CoroutineExceptionHandler { _, throwable ->
-                        lifecycleScope.launch(Dispatchers.Main) {
-                            setLoading(false)
-                            Timber.e(
-                                NotReportException(
-                                    throwable.localizedMessage ?: throwable.message,
-                                    throwable
-                                )
-                            )
-                        }
-                    }
-                    lifecycleScope.launch(Dispatchers.IO + errorHandler) {
-                        notesRepository.checkUrl(baseUrl)
-                        withContext(Dispatchers.Main) {
-                            setLoading(false)
-                            notesPreferences.setPlacement("remote")
-                            notesPreferences.remoteUrl = baseUrl
-                            findPreference<Preference>("notes.remote.url")?.summary = baseUrl
-                            refreshNotesEnabled()
-                        }
-                    }
-                } catch (ex: Throwable) {
-                    Timber.e(ex)
-                }
+                val baseUrl = editText?.text.toString()
+
+                checkRemoteUrl(baseUrl)
             }
             .show()
+    }
+
+    private fun checkRemoteUrl(baseUrl: String) {
+        setLoading(true)
+        val errorHandler = CoroutineExceptionHandler { _, throwable ->
+            lifecycleScope.launch(Dispatchers.Main) {
+                setLoading(false)
+                Timber.e(
+                    NotReportException(
+                        throwable.localizedMessage ?: throwable.message,
+                        throwable
+                    )
+                )
+            }
+        }
+        lifecycleScope.launch(Dispatchers.IO + errorHandler) {
+            notesRepository.checkUrl(baseUrl)
+            withContext(Dispatchers.Main) {
+                setLoading(false)
+                notesPreferences.setPlacement("remote")
+                notesPreferences.remoteUrl = baseUrl
+                findPreference<Preference>("notes.remote.url")?.summary = baseUrl
+                refreshNotesEnabled()
+            }
+        }
     }
 
     private fun setLoading(progress: Boolean) {
