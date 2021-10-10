@@ -515,4 +515,10 @@
     <string name="open_topic">Открыть тему</string>
     <string name="check_new_version">Проверить наличие новой версии</string>
     <string name="alternative_client_radiation">Альтернативный клиент от Radiation15</string>
+    <string name="notes_placement">Место хранения</string>
+    <string name="remote_server">Удаленный сервер</string>
+    <string name="help">Помощь</string>
+    <string name="local_repository">Локальное хранилище</string>
+    <string name="backup">Бэкап</string>
+    <string name="restore">Восстановить</string>
 </resources>

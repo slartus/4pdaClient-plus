@@ -505,4 +505,10 @@
     <string name="open_topic">Open topic</string>
     <string name="check_new_version">Check new version</string>
     <string name="alternative_client_radiation">Alternative client by Radiation15</string>
+    <string name="notes_placement">Placement</string>
+    <string name="remote_server">Remote server</string>
+    <string name="help">Help</string>
+    <string name="local_repository">Local repository</string>
+    <string name="backup">Backup</string>
+    <string name="restore">Restore</string>
 </resources>
