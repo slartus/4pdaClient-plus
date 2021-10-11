@@ -28,7 +28,7 @@ import org.softeg.slartus.forpdaapi.qms.QmsUsers;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.R;
-import org.softeg.slartus.forpdaplus.classes.MenuListDialog;
+import org.softeg.slartus.forpdaplus.core.ui.dialogs.MenuItemAction;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.listfragments.BaseLoaderListFragment;
@@ -122,8 +122,8 @@ public class QmsContactsList extends BaseLoaderListFragment {
         final QmsUser qmsUser = (QmsUser) o;
         if (TextUtils.isEmpty(qmsUser.getId())) return;
 
-        final List<MenuListDialog> list = new ArrayList<>();
-        list.add(new MenuListDialog(getString(R.string.delete), () -> {
+        final List<MenuItemAction> list = new ArrayList<>();
+        list.add(new MenuItemAction(getString(R.string.delete), () -> {
             Handler handler = new Handler();
             new Thread(() -> {
                 try {

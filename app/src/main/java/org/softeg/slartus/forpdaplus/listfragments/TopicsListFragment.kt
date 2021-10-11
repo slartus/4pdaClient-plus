@@ -24,7 +24,7 @@ import org.softeg.slartus.forpdaplus.R
 import org.softeg.slartus.forpdaplus.classes.ActionSelectDialogFragment
 import org.softeg.slartus.forpdaplus.classes.ActionSelectDialogFragment.execute
 import org.softeg.slartus.forpdaplus.classes.ActionSelectDialogFragment.showSaveNavigateActionDialog
-import org.softeg.slartus.forpdaplus.classes.MenuListDialog
+import org.softeg.slartus.forpdaplus.core.ui.dialogs.MenuItemAction
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl
 import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic
 import org.softeg.slartus.forpdaplus.common.AppLog
@@ -111,22 +111,65 @@ abstract class TopicsListFragment : BaseTaskListFragment() {
                 val o = adapter.getItem(info.id.toInt()) ?: return
                 val topic = o as IListItem
                 if (TextUtils.isEmpty(topic.id)) return
-                val list: MutableList<MenuListDialog> = ArrayList()
-                list.add(MenuListDialog(context.getString(R.string.navigate_getfirstpost)) { showSaveNavigateActionDialog(topic, Topic.NAVIGATE_VIEW_FIRST_POST, "") })
-                list.add(MenuListDialog(getContext()!!.getString(R.string.navigate_getlastpost)) { showSaveNavigateActionDialog(topic, Topic.NAVIGATE_VIEW_LAST_POST, "view=getlastpost") })
-                list.add(MenuListDialog(getContext()!!.getString(R.string.navigate_getnewpost)) { showSaveNavigateActionDialog(topic, Topic.NAVIGATE_VIEW_NEW_POST, "view=getnewpost") })
-                list.add(MenuListDialog(getContext()!!.getString(R.string.navigate_last_url)) {
-                    showSaveNavigateActionDialog(topic, Topic.NAVIGATE_VIEW_LAST_URL,
-                            TopicUtils.getUrlArgs(topic.id, Topic.NAVIGATE_VIEW_LAST_URL.toString(), "")
-                                    ?: "")
-                })
-                list.add(MenuListDialog(getContext()!!.getString(R.string.notes_by_topic)) {
-                    val args = Bundle()
-                    args.putString(NotesListFragment.TOPIC_ID_KEY, topic.id.toString())
-                    MainActivity.showListFragment(topic.id.toString(), NotesBrickInfo().name, args)
-                })
-                list.add(MenuListDialog(getString(R.string.link)) { showLinkMenu(getContext(), topic) })
-                list.add(MenuListDialog(getString(R.string.options)) { showOptionsMenu(getContext(), mHandler, topic) })
+                val list: MutableList<MenuItemAction> = ArrayList()
+                list.add(
+                    MenuItemAction(
+                        context.getString(R.string.navigate_getfirstpost)
+                    ) { showSaveNavigateActionDialog(topic, Topic.NAVIGATE_VIEW_FIRST_POST, "") })
+                list.add(
+                    MenuItemAction(
+                        getContext()!!.getString(R.string.navigate_getlastpost)
+                    ) {
+                        showSaveNavigateActionDialog(
+                            topic,
+                            Topic.NAVIGATE_VIEW_LAST_POST,
+                            "view=getlastpost"
+                        )
+                    })
+                list.add(
+                    MenuItemAction(
+                        getContext()!!.getString(R.string.navigate_getnewpost)
+                    ) {
+                        showSaveNavigateActionDialog(
+                            topic,
+                            Topic.NAVIGATE_VIEW_NEW_POST,
+                            "view=getnewpost"
+                        )
+                    })
+                list.add(
+                    MenuItemAction(
+                        getContext()!!.getString(R.string.navigate_last_url)
+                    ) {
+                        showSaveNavigateActionDialog(
+                            topic, Topic.NAVIGATE_VIEW_LAST_URL,
+                            TopicUtils.getUrlArgs(
+                                topic.id,
+                                Topic.NAVIGATE_VIEW_LAST_URL.toString(),
+                                ""
+                            )
+                                ?: ""
+                        )
+                    })
+                list.add(
+                    MenuItemAction(
+                        getContext()!!.getString(R.string.notes_by_topic)
+                    ) {
+                        val args = Bundle()
+                        args.putString(NotesListFragment.TOPIC_ID_KEY, topic.id.toString())
+                        MainActivity.showListFragment(
+                            topic.id.toString(),
+                            NotesBrickInfo().name,
+                            args
+                        )
+                    })
+                list.add(
+                    MenuItemAction(
+                        getString(R.string.link)
+                    ) { showLinkMenu(getContext(), topic) })
+                list.add(
+                    MenuItemAction(
+                        getString(R.string.options)
+                    ) { showOptionsMenu(getContext(), mHandler, topic) })
                 ExtUrl.showContextDialog(getContext(), null, list)
             }
         } catch (ex: Exception) {
@@ -135,7 +178,7 @@ abstract class TopicsListFragment : BaseTaskListFragment() {
     }
 
     private fun showLinkMenu(context: Context?, topic: IListItem) {
-        val list: List<MenuListDialog> = ArrayList()
+        val list: List<MenuItemAction> = ArrayList()
         ExtUrl.addUrlSubMenu(mHandler, context, list,
                 TopicUtils.getTopicUrl(topic.id.toString(), TopicUtils.getOpenTopicArgs(topic.id,
                         listName) ?: ""), topic.id.toString(),
@@ -144,7 +187,7 @@ abstract class TopicsListFragment : BaseTaskListFragment() {
     }
 
     private fun showOptionsMenu(context: Context?, mHandler: Handler?, topic: IListItem) {
-        val list: MutableList<MenuListDialog> = ArrayList()
+        val list: MutableList<MenuItemAction> = ArrayList()
         configureOptionsMenu(context, mHandler, list, topic)
         ExtUrl.showContextDialog(context, getString(R.string.options), list)
     }
@@ -203,7 +246,7 @@ abstract class TopicsListFragment : BaseTaskListFragment() {
         )
     }
 
-    private fun configureOptionsMenu(context: Context?, mHandler: Handler?, optionsMenu: MutableList<MenuListDialog>,
+    private fun configureOptionsMenu(context: Context?, mHandler: Handler?, optionsMenus: MutableList<MenuItemAction>,
                                      listItem: IListItem) {
         val topic: Topic = if (listItem is Topic) {
             listItem
@@ -213,21 +256,42 @@ abstract class TopicsListFragment : BaseTaskListFragment() {
         if (Client.getInstance().logined && !topic.isInProgress) {
             val isFavotitesList = FavoritesBrickInfo.NAME == listName
             val title = if (isFavotitesList) context!!.getString(R.string.change_subscription) else context!!.getString(R.string.add_to_favorites)
-            optionsMenu.add(MenuListDialog(title) {
-                TopicUtils.showSubscribeSelectTypeDialog(context, mHandler!!, topic) { emailType -> addToFavoritesAsync(topic, emailType) }
-            })
+            optionsMenus.add(
+                MenuItemAction(
+                    title
+                ) {
+                    TopicUtils.showSubscribeSelectTypeDialog(
+                        context,
+                        mHandler!!,
+                        topic
+                    ) { emailType -> addToFavoritesAsync(topic, emailType) }
+                })
             if (isFavotitesList) {
-                optionsMenu.add(MenuListDialog(context.getString(R.string.delete_from_favorites)) {
-                    removeFromFavoritesAsync(topic)
-                })
+                optionsMenus.add(
+                    MenuItemAction(
+                        context.getString(R.string.delete_from_favorites)
+                    ) {
+                        removeFromFavoritesAsync(topic)
+                    })
                 val favTopic = topic as FavTopic
-                optionsMenu.add(MenuListDialog((if (favTopic.isPinned) context.getString(R.string.unpin) else context.getString(R.string.pin)) + context.getString(R.string.in_favorites_combined)) {
-                    togglePinAsync(topic)
-                })
+                optionsMenus.add(
+                    MenuItemAction(
+                        (if (favTopic.isPinned) context.getString(R.string.unpin) else context.getString(
+                            R.string.pin
+                        )) + context.getString(R.string.in_favorites_combined)
+                    ) {
+                        togglePinAsync(topic)
+                    })
             }
-            optionsMenu.add(MenuListDialog(context.getString(R.string.open_topics_forum)) { showActivity(topic.forumId, topic.id) })
+            optionsMenus.add(
+                MenuItemAction(
+                    context.getString(R.string.open_topics_forum)
+                ) { showActivity(topic.forumId, topic.id) })
         }
-        optionsMenu.add(MenuListDialog(getString(R.string.attachments)) { showActivity(listItem.id) })
+        optionsMenus.add(
+            MenuItemAction(
+                getString(R.string.attachments)
+            ) { showActivity(listItem.id) })
     }
 
     private fun showTopicActivity(topic: IListItem, args: String) {

@@ -14,7 +14,7 @@ import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
-import org.softeg.slartus.forpdaplus.classes.MenuListDialog;
+import org.softeg.slartus.forpdaplus.core.ui.dialogs.MenuItemAction;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.listfragments.adapters.DevDbAdapter;
 import org.softeg.slartus.forpdaplus.listtemplates.DevDbModelsBrickInfo;
@@ -140,7 +140,7 @@ public class DevDbCatalogFragment extends BaseCatalogFragment {
         final ICatalogItem topic = (ICatalogItem) getAdapter().getItem((int) info.id);
         if (TextUtils.isEmpty(topic.getId())) return;
 
-        List<MenuListDialog> list = new ArrayList<>();
+        List<MenuItemAction> list = new ArrayList<>();
         ExtUrl.addUrlMenu(getMHandler(), getContext(), list, topic.getId().toString(), topic.getTitle().toString());
         ExtUrl.showContextDialog(getContext(), null, list);
     }

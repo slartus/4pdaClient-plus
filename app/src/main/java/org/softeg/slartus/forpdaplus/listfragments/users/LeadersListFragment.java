@@ -20,7 +20,7 @@ import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.ForumUser;
-import org.softeg.slartus.forpdaplus.classes.MenuListDialog;
+import org.softeg.slartus.forpdaplus.core.ui.dialogs.MenuItemAction;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment;
 import org.softeg.slartus.forpdaplus.listfragments.BaseExpandableListFragment;
@@ -92,8 +92,8 @@ public class LeadersListFragment extends BaseExpandableListFragment {
             if (o == null) return;
             final LeadUser leadUser = ((LeadUser) o);
 
-            final List<MenuListDialog> list = new ArrayList<>();
-            list.add(new MenuListDialog(App.getInstance().getString(R.string.list_forums), () -> {
+            final List<MenuItemAction> list = new ArrayList<>();
+            list.add(new MenuItemAction(App.getInstance().getString(R.string.list_forums), () -> {
                 if (leadUser.isAllForumsOwner()) {
                     MainActivity.showListFragment(new ForumBrickInfo().getName(), null);
                 } else {

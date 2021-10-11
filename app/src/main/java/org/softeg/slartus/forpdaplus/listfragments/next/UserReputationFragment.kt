@@ -19,7 +19,7 @@ import org.softeg.slartus.forpdaapi.classes.ListData
 import org.softeg.slartus.forpdaapi.classes.ReputationsListData
 import org.softeg.slartus.forpdaplus.*
 import org.softeg.slartus.forpdaplus.classes.ForumUser
-import org.softeg.slartus.forpdaplus.classes.MenuListDialog
+import org.softeg.slartus.forpdaplus.core.ui.dialogs.MenuItemAction
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl
 import org.softeg.slartus.forpdaplus.fragments.GeneralFragment
 import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment
@@ -96,9 +96,21 @@ class UserReputationFragment : BrickFragmentListBase() {
         val info = menuInfo as AdapterView.AdapterContextMenuInfo
         if (info.id == -1L) return
         val item = adapter.getItem(info.id.toInt()) as ReputationEvent
-        val list: MutableList<MenuListDialog> = ArrayList()
+        val list: MutableList<MenuItemAction> = ArrayList()
         if (item.sourceUrl != null && !item.sourceUrl.contains("forum/index.php?showuser=")) {
-            list.add(MenuListDialog(getString(R.string.jump_to_page), Runnable { IntentActivity.tryShowUrl(activity, Handler(), item.sourceUrl, true, false) }))
+            list.add(
+                MenuItemAction(
+                    getString(R.string.jump_to_page),
+                    Runnable {
+                        IntentActivity.tryShowUrl(
+                            activity,
+                            Handler(),
+                            item.sourceUrl,
+                            true,
+                            false
+                        )
+                    })
+            )
         }
         ForumUser.onCreateContextMenu(activity, list, item.userId, item.user)
         ExtUrl.showContextDialog(context, item.user, list)
@@ -330,26 +342,26 @@ class UserReputationFragment : BrickFragmentListBase() {
         private const val START_KEY = "START_KEY"
 
         @JvmStatic
-        fun plusRep(activity: Activity?, handler: Handler?, userId: String?, userNick: String?) {
+        fun plusRep(activity: Context?, handler: Handler?, userId: String?, userNick: String?) {
             plusRep(activity, handler, "0", userId, userNick)
         }
 
         @JvmStatic
-        fun minusRep(activity: Activity?, handler: Handler?, userId: String?, userNick: String?) {
+        fun minusRep(activity: Context?, handler: Handler?, userId: String?, userNick: String?) {
             minusRep(activity, handler, "0", userId, userNick)
         }
 
         @JvmStatic
-        fun plusRep(activity: Activity?, handler: Handler?, postId: String, userId: String?, userNick: String?) {
+        fun plusRep(activity: Context?, handler: Handler?, postId: String, userId: String?, userNick: String?) {
             showChangeRep(activity, handler, postId, userId, userNick, "add", App.getContext().getString(R.string.increase_reputation))
         }
 
         @JvmStatic
-        fun minusRep(activity: Activity?, handler: Handler?, postId: String, userId: String?, userNick: String?) {
+        fun minusRep(activity: Context?, handler: Handler?, postId: String, userId: String?, userNick: String?) {
             showChangeRep(activity, handler, postId, userId, userNick, "minus", App.getContext().getString(R.string.decrease_reputation))
         }
 
-        private fun showChangeRep(activity: Activity?, handler: Handler?, postId: String, userId: String?, userNick: String?, type: String, title: String) {
+        private fun showChangeRep(activity: Context?, handler: Handler?, postId: String, userId: String?, userNick: String?, type: String, title: String) {
             ForumUser.startChangeRep(activity, handler, userId, userNick, postId, type, title)
         }
     }

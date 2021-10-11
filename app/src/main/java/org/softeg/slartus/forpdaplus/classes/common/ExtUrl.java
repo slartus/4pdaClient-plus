@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
 import android.text.TextUtils;
-import android.view.View;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -16,9 +15,10 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import org.softeg.slartus.forpdaplus.IntentActivity;
 import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
-import org.softeg.slartus.forpdaplus.classes.MenuListDialog;
+import org.softeg.slartus.forpdaplus.core.ui.dialogs.MenuItemAction;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.controls.imageview.ImgViewer;
+import org.softeg.slartus.forpdaplus.core.ui.dialogs.MenuItemActionsDialog;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
 import org.softeg.slartus.forpdaplus.notes.NoteDialog;
 
@@ -35,15 +35,8 @@ import java.util.List;
  */
 public class ExtUrl {
 
-    public static void showContextDialog(final Context context, final String title, final List<MenuListDialog> list) {
-        final List<String> names = new ArrayList<>();
-        for (MenuListDialog menuListDialog : list)
-            names.add(menuListDialog.getTitle());
-
-        new MaterialDialog.Builder(context)
-                .title(title)
-                .items(names.toArray(new CharSequence[names.size()]))
-                .itemsCallback((dialog, itemView, which, text) -> list.get(which).getRunnable().run())
+    public static void showContextDialog(final Context context, final String title, final List<MenuItemAction> list) {
+        new MenuItemActionsDialog(context, title, list)
                 .show();
     }
 
@@ -81,33 +74,33 @@ public class ExtUrl {
         Toast.makeText(context, R.string.link_copied_to_buffer, Toast.LENGTH_SHORT).show();
     }
 
-    public static void addUrlSubMenu(final android.os.Handler handler, final Context context, List<MenuListDialog> list, final String url
+    public static void addUrlSubMenu(final android.os.Handler handler, final Context context, List<MenuItemAction> list, final String url
             , final CharSequence id, final String title) {
         addUrlMenu(handler, context, list, url, id, title);
     }
 
-    public static void addUrlMenu(final android.os.Handler handler, final Context context, List<MenuListDialog> list, final String url, final String title) {
+    public static void addUrlMenu(final android.os.Handler handler, final Context context, List<MenuItemAction> list, final String url, final String title) {
         addTopicUrlMenu(handler, context, list, title, url, "", "", "", "", "", "");
     }
 
-    public static void addTopicUrlMenu(final android.os.Handler handler, final Context context, List<MenuListDialog> list,
+    public static void addTopicUrlMenu(final android.os.Handler handler, final Context context, List<MenuItemAction> list,
                                        final String title, final String url, final String body, final CharSequence topicId, final String topic,
                                        final String postId, final String userId, final String user) {
 
-        list.add(new MenuListDialog(context.getString(R.string.open_in_browser), new Runnable() {
+        list.add(new MenuItemAction(context.getString(R.string.open_in_browser), new Runnable() {
             @Override
             public void run() {
                 showInBrowser(context, url);
             }
         }));
 
-        list.add(new MenuListDialog(context.getString(R.string.share_link), new Runnable() {
+        list.add(new MenuItemAction(context.getString(R.string.share_link), new Runnable() {
             @Override
             public void run() {
                 shareItUrl(context, url);
             }
         }));
-        list.add(new MenuListDialog(context.getString(R.string.copy_link), new Runnable() {
+        list.add(new MenuItemAction(context.getString(R.string.copy_link), new Runnable() {
             @Override
             public void run() {
                 copyLinkToClipboard(context, url);
@@ -116,7 +109,7 @@ public class ExtUrl {
 
 
         if (!TextUtils.isEmpty(topicId)) {
-            list.add(new MenuListDialog(context.getString(R.string.create_note), new Runnable() {
+            list.add(new MenuItemAction(context.getString(R.string.create_note), new Runnable() {
                 @Override
                 public void run() {
                     NoteDialog.showDialog(handler, context,
@@ -154,7 +147,7 @@ public class ExtUrl {
 
     }
 
-    public static void addUrlMenu(final android.os.Handler handler, final Context context, List<MenuListDialog> menu, final String url,
+    public static void addUrlMenu(final android.os.Handler handler, final Context context, List<MenuItemAction> menu, final String url,
                                   final CharSequence id, final String title) {
         addTopicUrlMenu(handler, context, menu, title, url, url, id, title, "", "", "");
     }

@@ -34,7 +34,7 @@ import ru.slartus.http.Http;
  */
 public class DownloadsService {
 
-    public static void download(final Activity context1, final String url, final Boolean finish) {
+    public static void download(final Context context1, final String url, final Boolean finish) {
         ActionSelectDialogFragment.INSTANCE.execute(context1,
                 context1.getString(R.string.download_method),
                 "file.downloaderManagers",
@@ -49,7 +49,7 @@ public class DownloadsService {
                                     Intent marketIntent = new Intent(Intent.ACTION_VIEW, uri);
                                     context1.startActivity(marketIntent);
                                     if (finish)
-                                        context1.finish();
+                                        ((Activity)context1).finish();
                                 } catch (Throwable e) {
                                     AppLog.e(context1, e);
                                 }
@@ -63,7 +63,7 @@ public class DownloadsService {
                                     try {
                                         systemDownload(context1, FileUtils.getFileNameFromUrl(url), uri.toString());
                                         if (finish)
-                                            context1.finish();
+                                            ((Activity)context1).finish();
                                     } catch (Throwable e) {
                                         AppLog.e(context1, e);
                                     }

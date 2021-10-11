@@ -16,7 +16,7 @@ import org.softeg.slartus.forpdaapi.IListItem;
 import org.softeg.slartus.forpdaapi.devdb.DevModel;
 import org.softeg.slartus.forpdaapi.devdb.NewDevDbApi;
 import org.softeg.slartus.forpdaplus.Client;
-import org.softeg.slartus.forpdaplus.classes.MenuListDialog;
+import org.softeg.slartus.forpdaplus.core.ui.dialogs.MenuItemAction;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.devdb.ParentFragment;
 import org.softeg.slartus.forpdaplus.listfragments.adapters.DevDbModelsAdapter;
@@ -133,7 +133,7 @@ public class DevDbModelsFragment extends BaseTaskListFragment {
         final IListItem topic = (IListItem) getAdapter().getItem((int) info.id);
         if (TextUtils.isEmpty(topic.getId())) return;
 
-        List<MenuListDialog> list = new ArrayList<>();
+        List<MenuItemAction> list = new ArrayList<>();
         ExtUrl.addUrlMenu(getMHandler(), getContext(), list, topic.getId().toString(), topic.getMain().toString());
         ExtUrl.showContextDialog(getContext(), null, list);
     }

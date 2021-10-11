@@ -111,7 +111,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
         return PatternExtensions.compile("youtube.com/(?:watch|v|e|embed)|youtu.be").matcher(url).find();
     }
 
-    public static Boolean tryShowYoutube(Activity context, String url) {
+    public static Boolean tryShowYoutube(Context context, String url) {
         url = IntentActivity.getRedirectUrl(url);
         if (!isYoutube(url)) return false;
         IntentActivity.showInDefaultBrowser(context, url);
@@ -196,7 +196,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
         return false;
     }
 
-    public static boolean tryReputation(Activity context, Handler handler, Uri uri) {
+    public static boolean tryReputation(Context context, Handler handler, Uri uri) {
         if (uri.getHost() != null && !HostHelperKt.is4pdaHost(uri.getHost()))
             return false;
         if (!"rep".equals(uri.getQueryParameter("act")))
@@ -247,7 +247,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
     }
 
 
-    public static boolean tryShowClaim(Activity context, Handler handler, Uri uri) {
+    public static boolean tryShowClaim(Context context, Handler handler, Uri uri) {
         if (uri.getHost() != null && !HostHelperKt.is4pdaHost(uri.getHost()))
             return false;
         if (!"report".equals(uri.getQueryParameter("act")))
@@ -298,7 +298,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
         return false;
     }
 
-    public static boolean tryEditDevice(Activity context, Uri uri) {
+    public static boolean tryEditDevice(Context context, Uri uri) {
         if (uri.getHost() != null && !HostHelperKt.is4pdaHost(uri.getHost()))
             return false;
         if ("profile-xhr".equals(uri.getQueryParameter("act"))) {
@@ -357,7 +357,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
         return url;
     }
 
-    public static Boolean tryShowUrl(Activity context, Handler handler, String url, Boolean showInDefaultBrowser,
+    public static Boolean tryShowUrl(Context context, Handler handler, String url, Boolean showInDefaultBrowser,
                                      final Boolean finishActivity, String authKey) {
         if (url.startsWith("//")) {
             url = "https:".concat(url);
@@ -503,7 +503,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
         return false;
     }
 
-    public static boolean tryShowEditPost(Activity context, Uri uri, String authKey) {
+    public static boolean tryShowEditPost(Context context, Uri uri, String authKey) {
         if (uri.getHost() != null && !HostHelperKt.is4pdaHost(uri.getHost()))
             return false;
         if (!"post".equals(uri.getQueryParameter("act")))
@@ -583,7 +583,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
         return true;
     }
 
-    public static boolean tryShowFile(final Activity activity, final Uri uri, final Boolean finish) {
+    public static boolean tryShowFile(final Context activity, final Uri uri, final Boolean finish) {
         if (uri.getHost() != null && !(HostHelperKt.is4pdaHost(uri.getHost())
                 || uri.getHost().toLowerCase().contains("ggpht.com")
                 || uri.getHost().toLowerCase().contains("googleusercontent.com")
@@ -608,7 +608,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
 //                    showImage(activity, uri.toString());
                     showImage(activity, uri.toString());
                     if (finish)
-                        activity.finish();
+                        ((Activity)activity).finish();
                 } else
                     downloadFileStart(activity, uri.toString(), finish);
             }
@@ -623,7 +623,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
 //            showImage(activity, uri.toString());
             showImage(activity, uri.toString());
             if (finish)
-                activity.finish();
+                ((Activity)activity).finish();
             return true;
         }
         return false;
@@ -635,7 +635,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
         ImgViewer.startActivity(context, url);
     }
 
-    public static void downloadFileStart(final Activity activity, final String url, final Boolean finish) {
+    public static void downloadFileStart(final Context activity, final String url, final Boolean finish) {
 
         if (Preferences.Files.isConfirmDownload()) {
             LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -657,14 +657,14 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
                     })
                     .onNegative((dialog, which) -> {
                         if (finish)
-                            activity.finish();
+                            ((Activity)activity).finish();
                     })
                     .show();
 
         } else {
             DownloadsService.download(activity, url, finish);
             if (finish)
-                activity.finish();
+                ((Activity)activity).finish();
         }
 
     }

@@ -15,6 +15,7 @@ import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.common.AppLog;
+import org.softeg.slartus.forpdaplus.core.ui.dialogs.MenuItemAction;
 import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment;
 import org.softeg.slartus.forpdaplus.fragments.qms.QmsContactThemes;
 import org.softeg.slartus.forpdaplus.fragments.search.SearchSettingsDialogFragment;
@@ -119,17 +120,17 @@ public class ForumUser {
         }
     }
 
-    public static void onCreateContextMenu(final Context context, List<MenuListDialog> menu, final String userId,
+    public static void onCreateContextMenu(final Context context, List<MenuItemAction> menu, final String userId,
                                            String userNick) {
         try {
             final String finalUserNick = Html.fromHtml(userNick).toString();
 
             if (Client.getInstance().getLogined()) {
-                menu.add(new MenuListDialog(context.getString(R.string.MessagesQms), () -> QmsContactThemes.showThemes(userId, finalUserNick)));
+                menu.add(new MenuItemAction(context.getString(R.string.MessagesQms), () -> QmsContactThemes.showThemes(userId, finalUserNick)));
             }
-            menu.add(new MenuListDialog(context.getString(R.string.profile), () -> ProfileFragment.showProfile(userId, finalUserNick)));
-            menu.add(new MenuListDialog(context.getString(R.string.FindUserTopics), () -> MainActivity.startForumSearch(SearchSettingsDialogFragment.createUserTopicsSearchSettings(finalUserNick))));
-            menu.add(new MenuListDialog(context.getString(R.string.FindUserPosts), () -> MainActivity.startForumSearch(SearchSettingsDialogFragment.createUserPostsSearchSettings(finalUserNick))));
+            menu.add(new MenuItemAction(context.getString(R.string.profile), () -> ProfileFragment.showProfile(userId, finalUserNick)));
+            menu.add(new MenuItemAction(context.getString(R.string.FindUserTopics), () -> MainActivity.startForumSearch(SearchSettingsDialogFragment.createUserTopicsSearchSettings(finalUserNick))));
+            menu.add(new MenuItemAction(context.getString(R.string.FindUserPosts), () -> MainActivity.startForumSearch(SearchSettingsDialogFragment.createUserPostsSearchSettings(finalUserNick))));
         } catch (Throwable ex) {
             AppLog.e(context, ex);
         }

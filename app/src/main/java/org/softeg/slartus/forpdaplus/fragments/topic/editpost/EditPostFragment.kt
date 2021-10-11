@@ -802,7 +802,7 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
             return fragment
         }
 
-        fun editPost(context: Activity, forumId: String, topicId: String, postId: String, authKey: String, tag: String) {
+        fun editPost(context: Context, forumId: String, topicId: String, postId: String, authKey: String, tag: String) {
             val url = thisFragmentUrl + forumId + topicId + postId
             val args = Bundle()
             args.putString("forumId", forumId)
@@ -813,7 +813,7 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
             MainActivity.addTab(context.getString(R.string.edit_post_combined) + context.getString(R.string.combined_in) + TabsManager.instance.getTabByTag(tag)!!.title, url, newInstance(args))
         }
 
-        fun newPost(context: Activity, forumId: String, topicId: String, authKey: String,
+        fun newPost(context: Context, forumId: String, topicId: String, authKey: String,
                     body: String, tag: String) {
             val url = thisFragmentUrl + forumId + topicId + PostApi.NEW_POST_ID
             val args = Bundle()

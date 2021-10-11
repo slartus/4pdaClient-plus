@@ -7,14 +7,12 @@ import android.widget.AdapterView.AdapterContextMenuInfo
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import org.softeg.slartus.forpdaapi.Forum
 import org.softeg.slartus.forpdaapi.IListItem
 import org.softeg.slartus.forpdaapi.ListInfo
-import org.softeg.slartus.forpdacommon.sameContentWith
 import org.softeg.slartus.forpdaplus.Client
 import org.softeg.slartus.forpdaplus.MainActivity
 import org.softeg.slartus.forpdaplus.R
-import org.softeg.slartus.forpdaplus.classes.MenuListDialog
+import org.softeg.slartus.forpdaplus.core.ui.dialogs.MenuItemAction
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl
 import org.softeg.slartus.forpdaplus.common.AppLog
 import org.softeg.slartus.forpdaplus.db.TopicsHistoryTable
@@ -68,12 +66,15 @@ class TopicsHistoryListFragment : TopicsListFragment() {
             if (info!!.id == -1L) return
             val o = adapter!!.getItem(info.id.toInt()) ?: return
             val topic = o as IListItem
-            val list: MutableList<MenuListDialog> = ArrayList()
-            list.add(MenuListDialog(getString(R.string.delete_from_visited)) {
-                TopicsHistoryTable.delete(topic.id)
-                mData.remove(topic)
-                adapter!!.notifyDataSetChanged()
-            })
+            val list: MutableList<MenuItemAction> = ArrayList()
+            list.add(
+                MenuItemAction(
+                    getString(R.string.delete_from_visited)
+                ) {
+                    TopicsHistoryTable.delete(topic.id)
+                    mData.remove(topic)
+                    adapter!!.notifyDataSetChanged()
+                })
             ExtUrl.showContextDialog(context, null, list)
         } catch (ex: Throwable) {
             AppLog.e(ex)

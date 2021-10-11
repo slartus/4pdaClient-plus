@@ -1,20 +1,26 @@
 package org.softeg.slartus.forpdaplus.feature_notes.ui
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.RecyclerView
+import com.afollestad.materialdialogs.DialogAction
+import com.afollestad.materialdialogs.MaterialDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import org.softeg.slartus.forpdaplus.feature_notes.Note
+import org.softeg.slartus.forpdaplus.feature_notes.R
+import org.softeg.slartus.forpdaplus.feature_notes.data.getUrls
 import org.softeg.slartus.forpdaplus.feature_notes.databinding.FragmentNotesListBinding
+import org.softeg.slartus.forpdaplus.feature_notes.di.UrlManager
 import timber.log.Timber
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class NotesListFragment : Fragment() {
@@ -22,6 +28,8 @@ class NotesListFragment : Fragment() {
     private var _binding: FragmentNotesListBinding? = null
     private val binding get() = _binding!!
 
+    @Inject
+    lateinit var urlManager: UrlManager
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -33,13 +41,11 @@ class NotesListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        registerForContextMenu(binding.list)
 
-        val adapter = NotesListAdapter(
-            {
-            },
-            {
-            }
-        )
+        val adapter = NotesListAdapter() {
+            onNoteClick(it.note)
+        }
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -68,6 +74,62 @@ class NotesListFragment : Fragment() {
         binding.list.adapter = adapter
     }
 
+    override fun onCreateContextMenu(
+        menu: ContextMenu,
+        v: View,
+        menuInfo: ContextMenu.ContextMenuInfo?
+    ) {
+        if (v is RecyclerView) {
+            val adapter = binding.list.adapter as NotesListAdapter
+            adapter.lastLongClickItem?.let {
+                val note = it.note
+
+                val linksMenu = menu.addSubMenu(R.string.links)
+                note.getUrls(requireContext())
+                    .forEach { (title, url) ->
+                        linksMenu.add(Menu.NONE, Menu.NONE, Menu.NONE, title).apply {
+                            this.setOnMenuItemClickListener {
+                                urlManager.openUrl(url)
+                                true
+                            }
+                        }
+                    }
+                menu.add(Menu.NONE, Menu.NONE, Menu.NONE, R.string.delete).apply {
+                    this.setOnMenuItemClickListener {
+                        showDeleteNoteDialog(note)
+                        true
+                    }
+                }
+            }
+        }
+    }
+
+    private fun onNoteClick(note: Note) {
+        if (note.url != null) {
+            urlManager.openUrl(note.url)
+        } else {
+            //!TODO:
+            //NoteFragment.showNote(note.id.toString())
+        }
+    }
+
+    private fun showDeleteNoteDialog(note: Note) {
+        MaterialDialog.Builder(requireContext())
+            .title(R.string.confirm_action)
+            .content(R.string.ask_delete_note)
+            .cancelable(true)
+            .negativeText(R.string.cancel)
+            .positiveText(R.string.delete)
+            .onPositive { _: MaterialDialog?, _: DialogAction? ->
+                try {
+                    viewModel.delete(note.id.toString())
+                } catch (ex: Throwable) {
+                    Timber.e(ex)
+                }
+            }
+            .show()
+    }
+
     private fun setLoading(loading: Boolean) {
         binding.progressView.visibility = if (loading) View.VISIBLE else View.GONE
     }
@@ -81,6 +143,7 @@ class NotesListFragment : Fragment() {
     }
 
     override fun onDestroyView() {
+        binding.list.adapter = null
         _binding = null
         super.onDestroyView()
     }

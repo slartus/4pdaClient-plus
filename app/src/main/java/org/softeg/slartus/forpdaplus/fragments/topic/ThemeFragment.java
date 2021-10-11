@@ -57,7 +57,7 @@ import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.AdvWebView;
 import org.softeg.slartus.forpdaplus.classes.ForumUser;
-import org.softeg.slartus.forpdaplus.classes.MenuListDialog;
+import org.softeg.slartus.forpdaplus.core.ui.dialogs.MenuItemAction;
 import org.softeg.slartus.forpdaplus.classes.Post;
 import org.softeg.slartus.forpdaplus.classes.TopicBodyBuilder;
 import org.softeg.slartus.forpdaplus.classes.WebViewExternals;
@@ -838,21 +838,21 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                                final String userId, final String userNick,
                                final Boolean canEdit, final Boolean canDelete) {
         try {
-            final List<MenuListDialog> list = new ArrayList<>();
+            final List<MenuItemAction> list = new ArrayList<>();
 
             if (Client.getInstance().getLogined()) {
-                list.add(new MenuListDialog(getS(R.string.url_post), () -> showLinkMenu(Post.getLink(m_Topic.getId(), postId), postId)));
-                list.add(new MenuListDialog(getS(R.string.report_msg), () -> Post.claim(getMainActivity(), mHandler, m_Topic.getId(), postId)));
+                list.add(new MenuItemAction(getS(R.string.url_post), () -> showLinkMenu(Post.getLink(m_Topic.getId(), postId), postId)));
+                list.add(new MenuItemAction(getS(R.string.report_msg), () -> Post.claim(getMainActivity(), mHandler, m_Topic.getId(), postId)));
                 if (canEdit) {
-                    list.add(new MenuListDialog(getS(R.string.edit_post), () ->
+                    list.add(new MenuItemAction(getS(R.string.edit_post), () ->
                             EditPostFragment.Companion.editPost(getMainActivity(), m_Topic.getForumId(), m_Topic.getId(), postId, Client.getInstance().getAuthKey(), getTag())));
                 }
                 if (canDelete) {
-                    list.add(new MenuListDialog(getS(R.string.delete_post), () -> prepareDeleteMessage(postId)));
+                    list.add(new MenuItemAction(getS(R.string.delete_post), () -> prepareDeleteMessage(postId)));
                 }
-                list.add(new MenuListDialog(getS(R.string.quote_post), () -> quote(m_Topic.getForumId(), m_Topic.getId(), postId, postDate, userId, userNick)));
+                list.add(new MenuItemAction(getS(R.string.quote_post), () -> quote(m_Topic.getForumId(), m_Topic.getId(), postId, postDate, userId, userNick)));
             }
-            list.add(new MenuListDialog(getS(R.string.create_note), () -> NoteDialog.showDialog(mHandler, getMainActivity(), m_Topic.getTitle(), null,
+            list.add(new MenuItemAction(getS(R.string.create_note), () -> NoteDialog.showDialog(mHandler, getMainActivity(), m_Topic.getTitle(), null,
                     "https://" + HostHelper.getHost() + "/forum/index.php?showtopic=" + m_Topic.getId() + "&view=findpost&p=" + postId,
                     m_Topic.getId(), m_Topic.getTitle(), postId, null, null, notesRepository)));
 

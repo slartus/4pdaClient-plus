@@ -1,5 +1,6 @@
 package org.softeg.slartus.forpdaplus.feature_notes.ui
 
+import android.view.ContextMenu
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,10 +12,12 @@ import org.softeg.slartus.forpdacommon.toForumDate
 import org.softeg.slartus.forpdaplus.feature_notes.R
 
 class NotesListAdapter(
-    private val onClick: (NoteListItem) -> Unit,
-    private val onLongClick: (NoteListItem) -> Unit
+    private val onClick: (NoteListItem) -> Unit
 ) :
     ListAdapter<NoteListItem, NotesListViewHolder>(NoteDiffCallback) {
+
+    var lastLongClickItem: NoteListItem? = null
+        private set
 
     override fun getItemViewType(position: Int): Int {
         return if (getItem(position).inProgress) TYPE_NORMAL else TYPE_PROGRESS
@@ -23,7 +26,12 @@ class NotesListAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotesListViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.layout_note, parent, false)
-        return NotesListViewHolder(view, onClick, onLongClick)
+        val holder = NotesListViewHolder(view, onClick)
+        holder.itemView.setOnLongClickListener {
+            lastLongClickItem = getItem(holder.adapterPosition)
+            false
+        }
+        return holder
     }
 
     override fun onBindViewHolder(holder: NotesListViewHolder, position: Int) {
@@ -49,9 +57,8 @@ object NoteDiffCallback : DiffUtil.ItemCallback<NoteListItem>() {
 
 class NotesListViewHolder(
     itemView: View,
-    private val onClick: (NoteListItem) -> Unit,
-    private val onLongClick: (NoteListItem) -> Unit,
-) : RecyclerView.ViewHolder(itemView) {
+    private val onClick: (NoteListItem) -> Unit
+) : RecyclerView.ViewHolder(itemView), View.OnCreateContextMenuListener {
 
     private var currentItem: NoteListItem? = null
 
@@ -67,13 +74,7 @@ class NotesListViewHolder(
                 onClick(it)
             }
         }
-        itemView.setOnLongClickListener {
-            currentItem?.let {
-                onLongClick(it)
-                return@setOnLongClickListener true
-            }
-            return@setOnLongClickListener false
-        }
+        itemView.setOnCreateContextMenuListener(this)
     }
 
     fun bind(item: NoteListItem) {
@@ -84,5 +85,13 @@ class NotesListViewHolder(
         userTextView.text = item.note.userName ?: ""
         dateTextView.text = item.note.date.toForumDate()
         progressView.visibility = if (item.inProgress) View.VISIBLE else View.GONE
+    }
+
+    override fun onCreateContextMenu(
+        menu: ContextMenu?,
+        v: View?,
+        p2: ContextMenu.ContextMenuInfo?
+    ) {
+
     }
 }

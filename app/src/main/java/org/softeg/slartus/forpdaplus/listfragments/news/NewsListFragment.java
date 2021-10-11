@@ -25,7 +25,7 @@ import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.IntentActivity;
 import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
-import org.softeg.slartus.forpdaplus.classes.MenuListDialog;
+import org.softeg.slartus.forpdaplus.core.ui.dialogs.MenuItemAction;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.controls.ListViewLoadMoreFooter;
@@ -325,7 +325,7 @@ public class NewsListFragment extends BaseTaskListFragment implements ActionBar.
         if (TextUtils.isEmpty(news.getId())) return;
 
 
-        List<MenuListDialog> list = new ArrayList<>();
+        List<MenuItemAction> list = new ArrayList<>();
         ExtUrl.addUrlMenu(getMHandler(), getContext(), list, news.getUrl(), news.getId(),news.getTitle().toString());
         ExtUrl.showContextDialog(getContext(), null, list);
 

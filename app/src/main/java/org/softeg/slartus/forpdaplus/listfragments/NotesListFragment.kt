@@ -3,6 +3,7 @@ package org.softeg.slartus.forpdaplus.listfragments
 import android.os.Bundle
 import android.view.View
 import org.softeg.slartus.forpdaplus.R
+import org.softeg.slartus.forpdaplus.core.ui.dialogs.MenuItemAction
 import org.softeg.slartus.forpdaplus.feature_notes.ui.NotesListFragment
 
 class NotesListFragment : BaseBrickFragment(R.layout.fragment_notes_list_container) {
@@ -34,24 +35,27 @@ class NotesListFragment : BaseBrickFragment(R.layout.fragment_notes_list_contain
 //        if (info.id < 0 || adapter!!.count <= info.id) return
 //        val o = adapter!!.getItem(info.id.toInt()) ?: return
 //        val note = o as Note
-//        val list: MutableList<MenuListDialog> = ArrayList()
+//        val list: MutableList<MenuItemAction> = ArrayList()
 //        addLinksSubMenu(list, note)
-//        list.add(MenuListDialog(App.getContext().getString(R.string.delete)) {
-//            MaterialDialog.Builder(requireContext())
-//                .title(R.string.confirm_action)
-//                .content(R.string.ask_delete_note)
-//                .cancelable(true)
-//                .negativeText(R.string.cancel)
-//                .positiveText(R.string.delete)
-//                .onPositive { _: MaterialDialog?, _: DialogAction? ->
-//                    try {
-//                        viewModel.delete(note.id.toString())
-//                    } catch (ex: Throwable) {
-//                        AppLog.e(context, ex)
+//        list.add(
+//            MenuItemAction(
+//                App.getContext().getString(R.string.delete)
+//            ) {
+//                MaterialDialog.Builder(requireContext())
+//                    .title(R.string.confirm_action)
+//                    .content(R.string.ask_delete_note)
+//                    .cancelable(true)
+//                    .negativeText(R.string.cancel)
+//                    .positiveText(R.string.delete)
+//                    .onPositive { _: MaterialDialog?, _: DialogAction? ->
+//                        try {
+//                            viewModel.delete(note.id.toString())
+//                        } catch (ex: Throwable) {
+//                            AppLog.e(context, ex)
+//                        }
 //                    }
-//                }
-//                .show()
-//        })
+//                    .show()
+//            })
 //        ExtUrl.showContextDialog(context, null, list)
 //    }
 

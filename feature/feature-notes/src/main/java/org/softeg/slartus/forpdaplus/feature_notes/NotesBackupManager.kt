@@ -151,12 +151,6 @@ class NotesBackupManager @Inject constructor(
         val tableStruct = if (oldStruct) NotesTableStruct.Old else NotesTableStruct.Actual
         var c: Cursor? = null
         try {
-            val selection: String? = null
-            val selectionArgs: Array<String?>? = null
-//            if (!TextUtils.isEmpty(topicId)) {
-//                selection = "$COLUMN_TOPIC_ID=?"
-//                selectionArgs = arrayOf(topicId)
-//            }
             c = db.query(
                 tableStruct.tableName,
                 null,

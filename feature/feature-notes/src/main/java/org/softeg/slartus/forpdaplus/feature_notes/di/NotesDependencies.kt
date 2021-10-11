@@ -6,3 +6,7 @@ interface NotesPreferences {
     val isLocal: Boolean
     var remoteUrl: String?
 }
+
+interface UrlManager {
+    fun openUrl(url:String)
+}
