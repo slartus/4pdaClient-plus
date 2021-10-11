@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -143,7 +144,15 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.news_fragment, container, false);
+        View view = inflater.inflate(R.layout.news_fragment, container, false);
+
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
         webView = (AdvWebView) findViewById(R.id.wvBody);
         initSwipeRefreshLayout();
         registerForContextMenu(webView);
@@ -166,7 +175,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         fab = (FloatingActionButton) findViewById(R.id.fab);
 
         if (!App.getInstance().getPreferences().getBoolean("pancilInActionBar", false)) {
-            fab.setOnClickListener(view -> {
+            fab.setOnClickListener(v -> {
                 if (Client.getInstance().getLogined())
                     respond();
                 else
@@ -179,7 +188,6 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         }
 
         buttonsPanel = (FrameLayout) findViewById(R.id.buttonsPanel);
-        return view;
     }
 
     @Override

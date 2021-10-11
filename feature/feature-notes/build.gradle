@@ -30,6 +30,9 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 dependencies {
@@ -46,6 +49,11 @@ dependencies {
 
     implementation 'androidx.preference:preference-ktx:1.1.1'
     implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
+
+
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0-rc01"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.4.0-rc01"
+
     implementation "com.google.dagger:hilt-android:$rootProject.hilt"
 
     kapt "com.google.dagger:hilt-compiler:$rootProject.hilt"

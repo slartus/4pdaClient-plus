@@ -133,8 +133,16 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        view = inflater.inflate(R.layout.edit_post_plus, container, false)
+        val view = inflater.inflate(R.layout.edit_post_plus, container, false)
 
+
+
+        //createActionMenu();
+        return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         progressSearch = findViewById(R.id.progress_search) as ProgressBar
         lastSelectDirPath = App.getInstance().preferences.getString("EditPost.AttachDirPath", lastSelectDirPath)
 
@@ -209,11 +217,7 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
             AppLog.e(mainActivity, ex)
             mainActivity.tryRemoveTab(tag)
         }
-
-        //createActionMenu();
-        return view
     }
-
 
     override fun onBackPressed(): Boolean {
         return if (!TextUtils.isEmpty(txtPost!!.text)) {

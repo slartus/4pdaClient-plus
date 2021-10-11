@@ -9,6 +9,9 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.AsyncTaskLoader;
 import androidx.loader.content.Loader;
@@ -168,7 +171,14 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.profile_web_view_fragment, container, false);
+        View view = inflater.inflate(R.layout.profile_web_view_fragment, container, false);
+
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         initSwipeRefreshLayout();
         // getDialog().setTitle("Профиль");
         assert view != null;
@@ -179,7 +189,6 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
         m_WebView.getSettings().setDefaultFontSize(Preferences.Topic.getFontSize());
         m_WebView.addJavascriptInterface(this, "HTMLOUT");
         m_WebView.setWebViewClient(new MyWebViewClient());
-        return view;
     }
 
     private final static int FILECHOOSER_RESULTCODE = 1;

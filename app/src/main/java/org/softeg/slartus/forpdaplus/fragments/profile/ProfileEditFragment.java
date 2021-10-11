@@ -14,6 +14,9 @@ import android.webkit.WebSettings;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.json.JSONArray;
@@ -99,7 +102,14 @@ public class ProfileEditFragment extends WebViewFragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.profile_edit_activity, container, false);
+        View view = inflater.inflate(R.layout.profile_edit_activity, container, false);
+
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         initSwipeRefreshLayout();
         assert view != null;
         m_WebView = (AdvWebView) findViewById(R.id.wvBody);
@@ -119,7 +129,6 @@ public class ProfileEditFragment extends WebViewFragment {
         m_WebView.getSettings().setDefaultFontSize(Preferences.Topic.getFontSize());
 
         asyncTask = new getEditProfileTask().execute();
-        return view;
     }
 
     @JavascriptInterface

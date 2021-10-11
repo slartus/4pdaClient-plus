@@ -107,14 +107,13 @@ super();
     public android.view.View onCreateView(@NotNull android.view.LayoutInflater inflater,
                                           android.view.ViewGroup container, android.os.Bundle savedInstanceState) {
 
-        view = inflater.inflate(getViewId(), container, false);
+        View view = inflater.inflate(getViewId(), container, false);
         assert view != null;
-        mListView = (ExpandableListView) findViewById(android.R.id.list);
-        mListView.setOnChildClickListener(this);
-        mEmptyTextView = (TextView) findViewById(android.R.id.empty);
-        mListView.setEmptyView(mEmptyTextView);
+
         return view;
     }
+
+
 
     @Override
     public void onSaveInstanceState(android.os.Bundle outState) {
@@ -158,7 +157,10 @@ super();
     @Override
     public void onViewCreated(@NotNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        mListView = (ExpandableListView) findViewById(android.R.id.list);
+        mListView.setOnChildClickListener(this);
+        mEmptyTextView = (TextView) findViewById(android.R.id.empty);
+        mListView.setEmptyView(mEmptyTextView);
         mSwipeRefreshLayout = createSwipeRefreshLayout(view);
     }
 

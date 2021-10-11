@@ -113,7 +113,7 @@ class MentionsListFragment : WebViewFragment() {
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        view = inflater.inflate(R.layout.fragment_mentions_list, container, false)
+        val view = inflater.inflate(R.layout.fragment_mentions_list, container, false)
 
         return view
     }
@@ -202,7 +202,7 @@ class MentionsListFragment : WebViewFragment() {
 
     private fun showHtmlBody(body: String?) {
         try {
-            body_webview.loadDataWithBaseURL("https://${HostHelper.host}/forum/", body, "text/html", "UTF-8", null)
+            body_webview.loadDataWithBaseURL("https://${HostHelper.host}/forum/", body?:"", "text/html", "UTF-8", null)
             if (buttonsPanel!!.translationY != 0f)
                 ViewPropertyAnimator.animate(buttonsPanel)
                         .setInterpolator(AccelerateDecelerateInterpolator())

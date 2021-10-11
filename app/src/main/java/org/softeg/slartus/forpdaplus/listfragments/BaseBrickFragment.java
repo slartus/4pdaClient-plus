@@ -4,6 +4,7 @@ package org.softeg.slartus.forpdaplus.listfragments;/*
 
 import android.os.Bundle;
 
+import androidx.annotation.LayoutRes;
 import androidx.fragment.app.Fragment;
 
 import android.view.Menu;
@@ -26,6 +27,10 @@ public abstract class BaseBrickFragment extends GeneralFragment {
 
     public BaseBrickFragment() {
         super();
+    }
+
+    public BaseBrickFragment(@LayoutRes int contentLayoutId){
+        super(contentLayoutId);
     }
 
     @Override

@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -109,7 +110,15 @@ public class CuratorFragment extends WebViewFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.curator_fragment, container, false);
+        View view = inflater.inflate(R.layout.curator_fragment, container, false);
+
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
         webView = (AdvWebView) findViewById(R.id.wvBody);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         if (App.getInstance().getPreferences().getBoolean("pancilInActionBar", false)) {
@@ -117,7 +126,7 @@ public class CuratorFragment extends WebViewFragment {
         } else {
             setHideFab(fab);
             setFabColors(fab);
-            fab.setOnClickListener(view -> webView.evalJs("getIds();"));
+            fab.setOnClickListener(v -> webView.evalJs("getIds();"));
         }
         ImageButton up = (ImageButton) findViewById(R.id.btnUp);
         ImageButton down = (ImageButton) findViewById(R.id.btnDown);
@@ -128,7 +137,6 @@ public class CuratorFragment extends WebViewFragment {
         topicId = getArguments().getString("TOPIC_ID");
         url = getArguments().getString("URL");
         load(url, topicId);
-        return view;
     }
 
     private class LoadPostsTask extends AsyncTask<Boolean, String, Boolean> {

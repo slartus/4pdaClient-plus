@@ -3,6 +3,8 @@ package org.softeg.slartus.forpdaplus.fragments.qms;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import android.text.Editable;
@@ -90,7 +92,14 @@ public class QmsNewThreadFragment extends GeneralFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setArrow();
-        view = inflater.inflate(R.layout.qms_new_thread, container, false);
+        View view = inflater.inflate(R.layout.qms_new_thread, container, false);
+
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -149,7 +158,6 @@ public class QmsNewThreadFragment extends GeneralFragment {
             TabsManager.getInstance().getTabByTag(getTag()).setTitle(getString(R.string.qms_title_new_thread));
         }
         getMainActivity().notifyTabAdapter();
-        return view;
     }
 
     @Override

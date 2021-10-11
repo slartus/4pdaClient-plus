@@ -43,6 +43,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.3.1'
     implementation 'com.google.android.material:material:1.4.0'
     implementation "com.google.dagger:hilt-android:$rootProject.hilt"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.coroutines"
 
     kapt "com.google.dagger:hilt-compiler:$rootProject.hilt"
 

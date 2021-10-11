@@ -239,15 +239,20 @@ class ForumFragment : GeneralFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        view = inflater.inflate(R.layout.forum_fragment, container, false)
+        val view = inflater.inflate(R.layout.forum_fragment, container, false)
         assert(view != null)
+
+        return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         listView = findViewById(android.R.id.list) as RecyclerView
 
         registerForContextMenu(listView!!)
         mEmptyTextView = findViewById(android.R.id.empty) as TextView?
 
-
-        return view
     }
 
     private fun reloadData() {

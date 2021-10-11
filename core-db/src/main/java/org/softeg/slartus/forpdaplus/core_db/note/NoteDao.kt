@@ -1,6 +1,7 @@
 package org.softeg.slartus.forpdaplus.core_db.note
 
 import androidx.room.*
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 abstract class NoteDao {
@@ -12,7 +13,7 @@ abstract class NoteDao {
     }
 
     @Query("SELECT * FROM note")
-    abstract suspend fun getAll(): List<Note>
+    abstract fun getAll(): Flow<List<Note>>
 
     @Query("SELECT * FROM note where topicId=:topicId")
     abstract suspend fun getByTopicId(topicId: String): List<Note>

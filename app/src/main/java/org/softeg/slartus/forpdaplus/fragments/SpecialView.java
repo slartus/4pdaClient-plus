@@ -11,6 +11,9 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import org.softeg.slartus.forpdacommon.PatternExtensions;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
@@ -91,7 +94,15 @@ public class SpecialView extends WebViewFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.webview_fragment, container, false);
+        View view = inflater.inflate(R.layout.webview_fragment, container, false);
+
+
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         m_WebView = (AdvWebView) findViewById(R.id.wvBody);
 
 
@@ -114,8 +125,6 @@ public class SpecialView extends WebViewFragment {
         m_WebView.setWebViewClient(new MyWebViewClient());
 
         asyncTask = new LoadRulesTask().execute();
-
-        return view;
     }
 
     private class LoadRulesTask extends AsyncTask<String, String, Boolean> {

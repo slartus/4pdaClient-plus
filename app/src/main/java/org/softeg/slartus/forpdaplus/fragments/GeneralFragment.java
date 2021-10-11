@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.fragment.app.Fragment;
@@ -25,6 +26,7 @@ import org.softeg.slartus.forpdaplus.tabs.TabsManager;
 
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import timber.log.Timber;
 
 /**
  * Created by radiationx on 12.11.15.
@@ -36,7 +38,7 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
     private ActionBar actionBar;
     private MainActivity mainActivity;
-    protected View view;
+
     private boolean fragmentPaused = true;
     protected boolean activityCreated = false;
 
@@ -45,6 +47,14 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
     private String generalUrl = "DefaultURL";
     private String generalParentTag = "DefaultParentTag";
     private Menu menu;
+
+    public GeneralFragment(){
+        super();
+    }
+
+    public GeneralFragment(@LayoutRes int contentLayoutId){
+        super(contentLayoutId);
+    }
 
     public Menu getMenu() {
         return menu;
@@ -63,11 +73,11 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
     @Nullable
     @Override
     public View getView() {
-        return view;
+        return super.getView();
     }
 
     public View findViewById(int id) {
-        return view.findViewById(id);
+        return getView().findViewById(id);
     }
 
     public String getGeneralTitle() {
@@ -164,12 +174,12 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
     @Override
     public void onSaveInstanceState(@NotNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.i(TAG, "onSaveInstanceState");
+        Timber.i("onSaveInstanceState");
         try {
             TabItem tab = getThisTab();
-            Log.i(TAG, tab.getTitle());
-            Log.i(TAG, tab.getUrl());
-            Log.i(TAG, tab.getParentTag());
+            Timber.i(tab.getTitle());
+            Timber.i(tab.getUrl());
+            Timber.i(tab.getParentTag());
             outState.putString("generalTitle", tab.getTitle());
             outState.putString("generalUrl", tab.getUrl());
             outState.putString("generalParentTag", tab.getParentTag());

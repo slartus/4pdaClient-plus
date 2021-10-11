@@ -89,18 +89,9 @@ public abstract class BrickFragmentListBase extends BrickFragmentBase
     @Override
     public View onCreateView(@NotNull android.view.LayoutInflater inflater, android.view.ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(getViewResourceId(), container, false);
+        View view = inflater.inflate(getViewResourceId(), container, false);
         assert view != null;
-        mListView = (ListView) findViewById(android.R.id.list);
-        mEmptyTextView = (TextView) findViewById(android.R.id.empty);
-        mListView.setEmptyView(mEmptyTextView);
-        mListView.setOnItemClickListener(this);
-        mListView.setOnItemLongClickListener(this);
-        if (savedInstanceState != null && savedInstanceState.containsKey(FIRST_VISIBLE_POSITION_KEY)) {
-            mListView.setSelectionFromTop(savedInstanceState.getInt(FIRST_VISIBLE_POSITION_KEY), savedInstanceState.getInt(FIRST_VISIBLE_VIEW_KEY));
-        }
 
-        registerForContextMenu(mListView);
         return view;
     }
 
@@ -116,6 +107,18 @@ public abstract class BrickFragmentListBase extends BrickFragmentBase
     @Override
     public void onViewCreated(@NotNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        mListView = (ListView) findViewById(android.R.id.list);
+        mEmptyTextView = (TextView) findViewById(android.R.id.empty);
+        mListView.setEmptyView(mEmptyTextView);
+        mListView.setOnItemClickListener(this);
+        mListView.setOnItemLongClickListener(this);
+        if (savedInstanceState != null && savedInstanceState.containsKey(FIRST_VISIBLE_POSITION_KEY)) {
+            mListView.setSelectionFromTop(savedInstanceState.getInt(FIRST_VISIBLE_POSITION_KEY), savedInstanceState.getInt(FIRST_VISIBLE_VIEW_KEY));
+        }
+
+        registerForContextMenu(mListView);
+
         mSwipeRefreshLayout = App.createSwipeRefreshLayout(view, this::reloadData);
     }
 

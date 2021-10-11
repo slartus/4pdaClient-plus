@@ -28,7 +28,7 @@ allprojects {
 }
 
 ext {
-    compileSdkVersion = 29
+    compileSdkVersion = 31
     targetSdkVersion = 29
     minSdk = 16
     okhttp3 = "3.12.3"// увеличивать нельзя!!

@@ -16,6 +16,9 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -111,7 +114,15 @@ public class ForumRulesFragment extends WebViewFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.webview_fragment, container, false);
+        View view = inflater.inflate(R.layout.webview_fragment, container, false);
+
+
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         m_WebView = (AdvWebView) findViewById(R.id.wvBody);
         initSwipeRefreshLayout();
 
@@ -134,8 +145,6 @@ public class ForumRulesFragment extends WebViewFragment {
             url = getArguments().getString("URL");
 
         asyncTask = new LoadRulesTask().execute();
-
-        return view;
     }
 
     private class LoadRulesTask extends AsyncTask<String, String, Boolean> {

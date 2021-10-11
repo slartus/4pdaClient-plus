@@ -5,6 +5,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import android.view.LayoutInflater;
@@ -105,7 +106,14 @@ public class PostPreviewFragment extends WebViewFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.post_preview_layout, container, false);
+        View view = inflater.inflate(R.layout.post_preview_layout, container, false);
+
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         title = TabsManager.getInstance().getTabByTag(getTag()).getTitle();
         url = TabsManager.getInstance().getTabByTag(getTag()).getUrl();
         initBBCodes();
@@ -133,7 +141,6 @@ public class PostPreviewFragment extends WebViewFragment {
         webView.addJavascriptInterface(this, "HTMLOUT");
         webView.getSettings().setDefaultFontSize(Preferences.Topic.getFontSize());
         load(getArguments().getString("BB_CODES_BODY"));
-        return view;
     }
 
     public class MyWebViewClient extends WebViewClient {

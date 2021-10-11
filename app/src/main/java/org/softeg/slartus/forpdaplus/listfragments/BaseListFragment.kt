@@ -66,15 +66,9 @@ abstract class BaseListFragment : BaseBrickFragment(), AdapterView.OnItemClickLi
     }
 
     override fun onCreateView(inflater: android.view.LayoutInflater, container: android.view.ViewGroup?, savedInstanceState: Bundle?): View? {
-        view = inflater.inflate(viewId, container, false)
+        val view = inflater.inflate(viewId, container, false)
         assert(view != null)
-        listView = findViewById(android.R.id.list) as ListView
-        listView!!.onItemClickListener = this
-        val header = listViewHeader
-        if (header != null)
-            listView!!.addHeaderView(header)
-        mEmptyTextView = findViewById(android.R.id.empty) as TextView
-        listView!!.emptyView = mEmptyTextView
+
         return view
     }
 
@@ -111,6 +105,14 @@ abstract class BaseListFragment : BaseBrickFragment(), AdapterView.OnItemClickLi
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        listView = findViewById(android.R.id.list) as ListView
+        listView!!.onItemClickListener = this
+        val header = listViewHeader
+        if (header != null)
+            listView!!.addHeaderView(header)
+        mEmptyTextView = findViewById(android.R.id.empty) as TextView
+        listView!!.emptyView = mEmptyTextView
 
         if (needLogin() == true)
             addToDisposable(UserInfoRepository.instance

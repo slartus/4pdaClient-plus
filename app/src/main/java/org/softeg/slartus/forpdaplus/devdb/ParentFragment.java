@@ -123,8 +123,17 @@ public class ParentFragment extends GeneralFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 //        recLifeCycle(getClass(), CALL_TO_SUPER);
-        view = inflater.inflate(LAYOUT, container, false);
+        View view = inflater.inflate(LAYOUT, container, false);
+
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+//        recLifeCycle(getClass(), CALL_TO_SUPER);
+        super.onViewCreated(view, savedInstanceState);
 //        recLifeCycle(getClass(), RETURN_FROM_SUPER);
+        //        recLifeCycle(getClass(), RETURN_FROM_SUPER);
         getMainActivity().getToolbarShadow().setVisibility(View.GONE);
 
         if (DevDbUtils.isAndroid5()) {
@@ -139,14 +148,6 @@ public class ParentFragment extends GeneralFragment {
         tabLayout.addTab(tabLayout.newTab().setText(R.string.review));
         tabLayout.addTab(tabLayout.newTab().setText(R.string.firmwares));
         tabLayout.addTab(tabLayout.newTab().setText(R.string.prices));
-        return view;
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-//        recLifeCycle(getClass(), CALL_TO_SUPER);
-        super.onViewCreated(view, savedInstanceState);
-//        recLifeCycle(getClass(), RETURN_FROM_SUPER);
 
     }
 

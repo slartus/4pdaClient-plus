@@ -9,6 +9,9 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.appcompat.app.ActionBar;
 import android.text.TextUtils;
@@ -134,7 +137,14 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
 
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.search_posts_result, container, false);
+        View view = inflater.inflate(R.layout.search_posts_result, container, false);
+
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         initSwipeRefreshLayout();
         assert view != null;
         mWvBody = (AdvWebView) findViewById(R.id.body_webview);
@@ -153,7 +163,6 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
                 "</head><body bgcolor=" + AppTheme.getCurrentBackgroundColorHtml() + "></body></html>", "text/html", "UTF-8", null);
         registerForContextMenu(mWvBody);
         buttonsPanel = (FrameLayout) findViewById(R.id.buttonsPanel);
-        return view;
     }
 
     @Override

@@ -115,8 +115,17 @@ public abstract class BaseLoaderListFragment extends BaseBrickFragment
     @Override
     public android.view.View onCreateView(@NotNull android.view.LayoutInflater inflater, android.view.ViewGroup container,
                                           android.os.Bundle savedInstanceState) {
-        view = inflater.inflate(getViewResourceId(), container, false);
+        View view = inflater.inflate(getViewResourceId(), container, false);
         assert view != null;
+
+
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NotNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
         mListView = view.findViewById(android.R.id.list);
         mEmptyTextView = view.findViewById(android.R.id.empty);
         mListView.setEmptyView(mEmptyTextView);
@@ -126,13 +135,6 @@ public abstract class BaseLoaderListFragment extends BaseBrickFragment
             mListView.setSelectionFromTop(savedInstanceState.getInt(FIRST_VISIBLE_POSITION_KEY), savedInstanceState.getInt(FIRST_VISIBLE_VIEW_KEY));
         }
 
-
-        return view;
-    }
-
-    @Override
-    public void onViewCreated(@NotNull View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
         mSwipeRefreshLayout = createSwipeRefreshLayout(view);
     }
 

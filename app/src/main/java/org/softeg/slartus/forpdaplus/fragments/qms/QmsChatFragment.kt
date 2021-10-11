@@ -131,7 +131,13 @@ class QmsChatFragment : WebViewFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        view = inflater.inflate(R.layout.qms_chat, container, false)
+        val view = inflater.inflate(R.layout.qms_chat, container, false)
+
+        return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         assert(view != null)
 
         htmlPreferences = HtmlPreferences()
@@ -215,11 +221,6 @@ class QmsChatFragment : WebViewFragment() {
 
         btnAttachments = findViewById(R.id.btnAttachments) as Button
         btnAttachments?.setOnClickListener { showAttachesListDialog() }
-        return view
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         App.stopQmsService()
         clearNotification(1)
 
@@ -558,7 +559,7 @@ class QmsChatFragment : WebViewFragment() {
         }
 
         val finalEx = ex
-        val finalChatBody = chatBody
+        val finalChatBody = chatBody?:""
 
         uiHandler.post {
             if (finalEx == null) {

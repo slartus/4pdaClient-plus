@@ -3,6 +3,7 @@ package org.softeg.slartus.forpdaplus.notes;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -11,7 +12,6 @@ import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.common.AppLog;
-import org.softeg.slartus.forpdaplus.repositories.NotesRepository;
 
 /**
  * Created with IntelliJ IDEA.
@@ -25,8 +25,14 @@ public class NoteDialog {
     public static void showDialog(final android.os.Handler handler, final Context context,
                                   final String title, final String body, final String url, final CharSequence topicId, final String topic,
                                   final String postId, final String userId, final String user) {
+        showDialog(handler, context, title, body, url, topicId, topic, postId, userId, user, null);
+    }
+
+    public static void showDialog(final android.os.Handler handler, final Context context,
+                                  final String title, final String body, final String url, final CharSequence topicId, final String topic,
+                                  final String postId, final String userId, final String user, org.softeg.slartus.forpdaplus.feature_notes.data.NotesRepository notesRepository) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.note_new, null);
+        View view = inflater.inflate(R.layout.note_new, (ViewGroup) null);
 
         final EditText etTitle = view.findViewById(R.id.title);
         etTitle.setText(title);
@@ -42,38 +48,42 @@ public class NoteDialog {
                 .title(context.getString(R.string.NewNote))
                 .customView(view, true)
                 .positiveText(context.getString(R.string.Save))
-                .onPositive((dialog, which) -> {
-                    new Thread(() -> {
-                        Throwable ex = null;
+                .onPositive((dialog, which) -> new Thread(() -> {
+                    Throwable ex = null;
+                    try {
+                        if (notesRepository != null) {
+                            notesRepository.tempInsertRow(
+                                    etTitle.getText().toString(),
+                                    etMessage.getText().toString(),
+                                    url,
+                                    topicId,
+                                    topic,
+                                    postId,
+                                    userId,
+                                    user, () -> {
+                                        handler.post(() -> Toast.makeText(context, context.getString(R.string.NoteSaved), Toast.LENGTH_LONG).show()
+                                        );
+                                        return null;
+                                    });
+                        }
+                    } catch (Throwable e) {
+                        ex = e;
+                    }
+
+                    final Throwable finalEx = ex;
+
+                    handler.post(() -> {
                         try {
-                            NotesRepository.getInstance()
-                                    .insertRow(etTitle.getText().toString(), etMessage.getText().toString(),
-                                            url, topicId, topic, postId, userId, user, () -> {
-                                                handler.post(() -> {
-                                                            Toast.makeText(context, context.getString(R.string.NoteSaved), Toast.LENGTH_LONG).show();
-                                                        }
-                                                );
-                                                return null;
-                                            });
-                        } catch (Throwable e) {
-                            ex = e;
+                            if (finalEx != null) {
+                                Toast.makeText(context, finalEx.getMessage(), Toast.LENGTH_SHORT).show();
+                                AppLog.e(context, finalEx);
+                            }
+                        } catch (Exception ex1) {
+                            AppLog.e(context, ex1);
                         }
 
-                        final Throwable finalEx = ex;
-
-                        handler.post(() -> {
-                            try {
-                                if (finalEx != null) {
-                                    Toast.makeText(context, finalEx.getMessage(), Toast.LENGTH_SHORT).show();
-                                    AppLog.e(context, finalEx);
-                                }
-                            } catch (Exception ex1) {
-                                AppLog.e(context, ex1);
-                            }
-
-                        });
-                    }).start();
-                })
+                    });
+                }).start())
                 .negativeText(R.string.cancel)
                 .cancelable(true)
                 .show();

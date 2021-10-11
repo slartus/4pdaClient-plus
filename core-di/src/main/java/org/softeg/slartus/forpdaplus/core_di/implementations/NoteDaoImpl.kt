@@ -1,5 +1,7 @@
 package org.softeg.slartus.forpdaplus.core_di.implementations
 
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import org.softeg.slartus.forpdaplus.core_db.note.Note
 import org.softeg.slartus.forpdaplus.core_db.note.NoteDao
 import javax.inject.Inject
@@ -10,10 +12,13 @@ class NoteDaoImpl @Inject constructor(
     private val noteDao: NoteDao
 ) :
     FeatureNoteDao {
+    override fun getAll(): Flow<List<FeatureNote>> =
+        noteDao.getAll().map { it.map { note -> note.map() } }
+
     override suspend fun merge(notes: List<org.softeg.slartus.forpdaplus.feature_notes.Note>) =
         noteDao.merge(notes.map { it.map() })
 
-    override suspend fun getAll(): List<FeatureNote> = noteDao.getAll().map { it.map() }
+    //  override suspend fun getAll() = noteDao.getAll().map { it.map() }
     override suspend fun getByTopicId(topicId: String) =
         noteDao.getByTopicId(topicId).map { it.map() }
 

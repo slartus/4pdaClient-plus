@@ -6,6 +6,9 @@ import android.view.ContextMenu;
 import android.view.View;
 import android.widget.AbsListView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import org.softeg.slartus.forpdaapi.IListItem;
 import org.softeg.slartus.forpdaapi.ListInfo;
 import org.softeg.slartus.forpdaapi.search.SearchApi;
@@ -42,13 +45,19 @@ public class SearchTopicsFragment extends TopicsListFragment
 
     @Override
     public android.view.View onCreateView(android.view.LayoutInflater inflater, android.view.ViewGroup container, android.os.Bundle savedInstanceState) {
-        view = super.onCreateView(inflater, container, savedInstanceState);
+        View view = super.onCreateView(inflater, container, savedInstanceState);
 
-        getListView().setOnScrollListener(this);
         return view;
     }
 
-//    @Override
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        getListView().setOnScrollListener(this);
+    }
+
+    //    @Override
 //    protected View getListViewHeader(){
 //        LayoutInflater inflater=getLayoutInflater(null);
 //        inflater.inflate()
