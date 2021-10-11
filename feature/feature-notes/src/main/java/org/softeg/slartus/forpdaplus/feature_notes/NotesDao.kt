@@ -4,8 +4,8 @@ interface NotesDao {
     suspend fun merge(notes: List<Note>)
     suspend fun getAll(): List<Note>
     suspend fun getByTopicId(topicId: String): List<Note>
-    suspend fun get(id: Int): Note
-    suspend fun delete(id: Int): Int
+    suspend fun get(id: Int): Note?
+    suspend fun delete(id: Int)
     suspend fun insert(note: Note)
     suspend fun update(note: Note)
     suspend fun insertAll(vararg notes: Note)

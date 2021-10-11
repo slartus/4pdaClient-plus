@@ -15,7 +15,7 @@ import kotlinx.coroutines.*
 import org.softeg.slartus.forpdacommon.NotReportException
 import org.softeg.slartus.forpdacommon.dialogs.ProgressDialog
 import org.softeg.slartus.forpdacommon.openUrl
-import org.softeg.slartus.forpdaplus.feature_notes.NotesManager
+import org.softeg.slartus.forpdaplus.feature_notes.NotesBackupManager
 import org.softeg.slartus.forpdaplus.feature_notes.R
 import org.softeg.slartus.forpdaplus.feature_notes.data.NotesRepository
 import org.softeg.slartus.forpdaplus.feature_notes.di.NotesPreferences
@@ -26,7 +26,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class NotesPreferencesFragment : PreferenceFragmentCompat() {
     @Inject
-    lateinit var notesManager: NotesManager
+    lateinit var notesManager: NotesBackupManager
 
     @Inject
     lateinit var notesPreferences: NotesPreferences

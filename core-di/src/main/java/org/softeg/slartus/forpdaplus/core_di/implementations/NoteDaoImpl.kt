@@ -14,6 +14,12 @@ class NoteDaoImpl @Inject constructor(
         noteDao.merge(notes.map { it.map() })
 
     override suspend fun getAll(): List<FeatureNote> = noteDao.getAll().map { it.map() }
+    override suspend fun getByTopicId(topicId: String) =
+        noteDao.getByTopicId(topicId).map { it.map() }
+
+    override suspend fun get(id: Int) = noteDao.get(id)?.map()
+
+    override suspend fun delete(id: Int) = noteDao.delete(id)
 
     override suspend fun insert(note: FeatureNote) = noteDao.insert(note.map())
 

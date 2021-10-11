@@ -19,7 +19,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
-class NotesManager @Inject constructor(
+class NotesBackupManager @Inject constructor(
     private val appDatabase: AppDatabase,
     private val notesDao: NotesDao
 ) {

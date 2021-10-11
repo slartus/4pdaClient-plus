@@ -9,5 +9,7 @@ class NotesPreferencesImpl @Inject constructor() : NotesPreferences {
         Preferences.Notes.setPlacement(placement)
     }
 
-    override var remoteUrl: CharSequence? = Preferences.Notes.remoteUrl
+    override val isLocal = Preferences.Notes.isLocal
+
+    override var remoteUrl: String? = Preferences.Notes.remoteUrl
 }

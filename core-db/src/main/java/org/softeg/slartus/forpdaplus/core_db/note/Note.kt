@@ -6,7 +6,7 @@ import java.util.*
 
 @Entity
 data class Note(
-    @PrimaryKey val id: Int? = null,
+    @PrimaryKey(autoGenerate = true) val id: Int? = null,
     val title: String? = null,
     val body: String? = null,
     val url: String? = null,

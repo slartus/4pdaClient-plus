@@ -14,6 +14,12 @@ abstract class NoteDao {
     @Query("SELECT * FROM note")
     abstract suspend fun getAll(): List<Note>
 
+    @Query("SELECT * FROM note where topicId=:topicId")
+    abstract suspend fun getByTopicId(topicId: String): List<Note>
+
+    @Query("SELECT * FROM note where id=:id")
+    abstract suspend fun get(id: Int): Note?
+
     @Insert
     abstract suspend fun insert(note: Note)
 
@@ -28,4 +34,8 @@ abstract class NoteDao {
 
     @Delete
     abstract suspend fun delete(note: Note)
+
+    @Query("DELETE FROM note WHERE id = :id")
+    abstract suspend fun delete(id: Int)
+
 }
