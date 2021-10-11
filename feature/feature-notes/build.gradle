@@ -47,9 +47,10 @@ dependencies {
     api "com.squareup.retrofit2:retrofit:$rootProject.retrofit"
     api "com.squareup.retrofit2:converter-gson:$rootProject.retrofit"
 
+    implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.okhttp3"
+
     implementation 'androidx.preference:preference-ktx:1.1.1'
     implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
-
 
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0-rc01"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.4.0-rc01"

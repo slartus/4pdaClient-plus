@@ -9,7 +9,12 @@ class NotesPreferencesImpl @Inject constructor() : NotesPreferences {
         Preferences.Notes.setPlacement(placement)
     }
 
-    override val isLocal = Preferences.Notes.isLocal
+    override val isLocal
+        get() = Preferences.Notes.isLocal
 
-    override var remoteUrl: String? = Preferences.Notes.remoteUrl
+    override var remoteUrl: String?
+        get() = Preferences.Notes.remoteUrl
+        set(value) {
+            Preferences.Notes.remoteUrl = value ?: ""
+        }
 }
