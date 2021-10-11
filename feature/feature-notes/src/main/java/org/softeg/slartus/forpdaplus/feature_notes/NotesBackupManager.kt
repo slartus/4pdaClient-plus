@@ -6,7 +6,6 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.net.Uri
 import android.os.Environment
-import android.text.TextUtils
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import kotlinx.coroutines.*
@@ -128,47 +127,61 @@ class NotesBackupManager @Inject constructor(
 
     private fun getNotesFromFile(filePath: String): List<Note> {
         SQLiteDatabase.openOrCreateDatabase(File(filePath), null).use { backupDb ->
-            return getNotes(
-                backupDb,
-                null
-            )
+            return getNotes(backupDb)
+        }
+    }
+
+    private fun isOldDb(db: SQLiteDatabase): Boolean {
+        val query = "select DISTINCT tbl_name from sqlite_master where tbl_name = 'Setting'"
+        db.rawQuery(query, null).use { cursor ->
+            if (cursor != null) {
+                if (cursor.count > 0) {
+                    return false
+                }
+            }
+            return true
         }
     }
 
     private fun getNotes(
-        db: SQLiteDatabase,
-        topicId: String?
+        db: SQLiteDatabase
     ): List<Note> {
         val notes: ArrayList<Note> = ArrayList<Note>()
+        val oldStruct = isOldDb(db)
+        val tableStruct = if (oldStruct) NotesTableStruct.Old else NotesTableStruct.Actual
         var c: Cursor? = null
         try {
-            var selection: String? = null
-            var selectionArgs: Array<String?>? = null
-            if (!TextUtils.isEmpty(topicId)) {
-                selection = "$COLUMN_TOPIC_ID=?"
-                selectionArgs = arrayOf(topicId)
-            }
+            val selection: String? = null
+            val selectionArgs: Array<String?>? = null
+//            if (!TextUtils.isEmpty(topicId)) {
+//                selection = "$COLUMN_TOPIC_ID=?"
+//                selectionArgs = arrayOf(topicId)
+//            }
             c = db.query(
-                TABLE_NAME,
-                null,
-                selection,
-                selectionArgs,
+                tableStruct.tableName,
                 null,
                 null,
-                "$COLUMN_DATE DESC"
+                null,
+                null,
+                null,
+                "${tableStruct.dateColumn} DESC"
             )
             val dateFormat = SimpleDateFormat("yyyy.MM.dd HH:mm:ss", Locale.getDefault())
             if (c.moveToFirst()) {
-                val columnIdIndex = c.getColumnIndex(COLUMN_ID)
-                val columnTitleIndex = c.getColumnIndex(COLUMN_TITLE)
-                val columnBodyIndex = c.getColumnIndex(COLUMN_BODY)
-                val columnUrlIndex = c.getColumnIndex(COLUMN_URL)
-                val columnTopicIdIndex = c.getColumnIndex(COLUMN_TOPIC_ID)
-                val columnPostIdIndex = c.getColumnIndex(COLUMN_POST_ID)
-                val columnUserIdIndex = c.getColumnIndex(COLUMN_USER_ID)
-                val columnUserIndex = c.getColumnIndex(COLUMN_USER)
-                val columnTopicIndex = c.getColumnIndex(COLUMN_TOPIC)
-                val columnDateIndex = c.getColumnIndex(COLUMN_DATE)
+                val columnIdIndex = c.getColumnIndex(tableStruct.idColumn)
+                val columnTitleIndex = c.getColumnIndex(tableStruct.titleColumn)
+                val columnBodyIndex = c.getColumnIndex(tableStruct.bodyColumn)
+                val columnUrlIndex = c.getColumnIndex(tableStruct.urlColumn)
+                val columnTopicIdIndex = c.getColumnIndex(tableStruct.topicIdColumn)
+                val columnPostIdIndex = c.getColumnIndex(tableStruct.postIdColumn)
+                val columnUserIdIndex = c.getColumnIndex(tableStruct.userIdColumn)
+                val columnUserIndex = c.getColumnIndex(tableStruct.userNameColumn)
+                val columnTopicIndex = c.getColumnIndex(tableStruct.topicTitleColumn)
+                val columnDateIndex = c.getColumnIndex(tableStruct.dateColumn)
+                fun getDate() =
+                    if (oldStruct) dateFormat.parse(c.getString(columnDateIndex)) ?: Date()
+                    else
+                        Date(c.getLong(columnDateIndex))
                 do {
                     val note = Note(
                         id = c.getString(columnIdIndex).toIntOrNull(),
@@ -180,7 +193,7 @@ class NotesBackupManager @Inject constructor(
                         postId = c.getString(columnPostIdIndex),
                         userId = c.getString(columnUserIdIndex),
                         userName = c.getString(columnUserIndex),
-                        date = dateFormat.parse(c.getString(columnDateIndex)) ?: Date()
+                        date = getDate()
                     )
 
                     notes.add(note)
@@ -195,22 +208,45 @@ class NotesBackupManager @Inject constructor(
     private suspend fun restoreFrom(notes: List<Note>) {
         notesDao.merge(notes)
     }
+}
 
-    fun remoteUrl(context: Context) {
-
-    }
-
-    companion object {
-        private const val TABLE_NAME = "Notes"
-        private const val COLUMN_ID = "_id"
-        private const val COLUMN_TITLE = "Title"
-        private const val COLUMN_BODY = "Body"
-        private const val COLUMN_URL = "Url"
-        private const val COLUMN_TOPIC_ID = "TopicId"
-        private const val COLUMN_POST_ID = "PostId"
-        private const val COLUMN_USER_ID = "UserId"
-        private const val COLUMN_USER = "User"
-        private const val COLUMN_TOPIC = "Topic"
-        private const val COLUMN_DATE = "Date"
-    }
+private enum class NotesTableStruct(
+    val tableName: String,
+    val idColumn: String,
+    val titleColumn: String,
+    val bodyColumn: String,
+    val urlColumn: String,
+    val topicIdColumn: String,
+    val topicTitleColumn: String,
+    val postIdColumn: String,
+    val userIdColumn: String,
+    val userNameColumn: String,
+    val dateColumn: String
+) {
+    Old(
+        tableName = "Notes",
+        idColumn = "_id",
+        titleColumn = "Title",
+        bodyColumn = "Body",
+        urlColumn = "Url",
+        topicIdColumn = "TopicId",
+        topicTitleColumn = "Topic",
+        postIdColumn = "PostId",
+        userIdColumn = "UserId",
+        userNameColumn = "User",
+        dateColumn = "Date"
+    ),
+    Actual(
+        tableName = "note",
+        idColumn = "id",
+        titleColumn = "title",
+        bodyColumn = "body",
+        urlColumn = "url",
+        topicIdColumn = "topicId",
+        topicTitleColumn = "topicTitle",
+        postIdColumn = "postId",
+        userIdColumn = "userId",
+        userNameColumn = "userName",
+        dateColumn = "date"
+    )
 }
