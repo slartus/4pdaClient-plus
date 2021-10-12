@@ -1,273 +1,49 @@
-package org.softeg.slartus.forpdaplus.fragments;
+package org.softeg.slartus.forpdaplus.fragments
 
-import android.content.Context;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.os.Handler;
-import androidx.annotation.Nullable;
-import android.text.Html;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
+import android.os.Bundle
+import androidx.fragment.app.Fragment
+import org.softeg.slartus.forpdacommon.NotReportException
+import org.softeg.slartus.forpdaplus.App
+import org.softeg.slartus.forpdaplus.MainActivity
+import org.softeg.slartus.forpdaplus.R
+import org.softeg.slartus.forpdaplus.listfragments.BaseGeneralContainerFragment
 
-import com.afollestad.materialdialogs.MaterialDialog;
+class NoteFragment : BaseGeneralContainerFragment() {
 
-import org.softeg.slartus.forpdaplus.App;
-import org.softeg.slartus.forpdaplus.IntentActivity;
-import org.softeg.slartus.forpdaplus.MainActivity;
-import org.softeg.slartus.forpdaplus.R;
-import org.softeg.slartus.forpdaplus.classes.AdvWebView;
-import org.softeg.slartus.forpdaplus.classes.HtmlBuilder;
-import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
-import org.softeg.slartus.forpdaplus.common.AppLog;
-import org.softeg.slartus.forpdaplus.db.DbHelper;
-import org.softeg.slartus.forpdaplus.emotic.Smiles;
-import org.softeg.slartus.forpdaplus.notes.Note;
-import org.softeg.slartus.forpdaplus.prefs.HtmlPreferences;
-import org.softeg.slartus.forpdaplus.repositories.NotesRepository;
-import org.softeg.slartus.hosthelper.HostHelper;
-
-import java.lang.ref.WeakReference;
-
-import javax.inject.Inject;
-
-import dagger.hilt.android.AndroidEntryPoint;
-
-@AndroidEntryPoint
-public class NoteFragment extends GeneralFragment {
-    @Inject
-    NotesRepository notesRepository;
-
-    @Override
-    public boolean closeTab() {
-        return false;
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setArrow()
     }
 
-    private final Handler mHandler = new Handler();
-    private static final String NOTE_ID_KEY = "NoteId";
-
-    private String m_Id;
-    private AdvWebView webView;
-    private TableLayout infoTable;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setArrow();
+    override fun closeTab(): Boolean {
+        return false
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
+    override fun getFragmentInstance(savedInstanceState: Bundle?): Fragment {
+        val noteId = arguments?.getInt(ARG_NOTE_ID)
+            ?: throw NotReportException("parameter $ARG_NOTE_ID not found")
+        return org.softeg.slartus.forpdaplus.feature_notes.ui.note.NoteFragment.newInstance(noteId)
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.note_view, container, false);
-        //createActionMenu();
-
-        infoTable = (TableLayout) findViewById(R.id.infoTable);
-        webView = (AdvWebView) findViewById(R.id.webView);
-        Bundle extras = getArguments();
-
-        m_Id = extras.getString(NOTE_ID_KEY);
-        loadData();
-        return view;
+    override fun onResume() {
+        super.onResume()
+        setArrow()
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        outState.putString(NOTE_ID_KEY, m_Id);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        setArrow();
-    }
-
-    public static NoteFragment newInstance(Bundle args) {
-        NoteFragment fragment = new NoteFragment();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    public static void showNote(String id) {
-        Bundle args = new Bundle();
-        args.putString(NOTE_ID_KEY, id);
-        MainActivity.addTab(App.getContext().getString(R.string.note), NOTE_ID_KEY + id, newInstance(args));
-    }
-
-
-    private void loadData() {
-        new LoadPageTask(new WeakReference<>(this), m_Id).execute();
-    }
-
-    private void fillData(final Note note) {
-        try {
-            setTitle(DbHelper.getDateString(note.Date));
-            infoTable.removeAllViews();
-            TableLayout.LayoutParams rowparams = new TableLayout.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
-                    TableRow.LayoutParams.WRAP_CONTENT);
-
-            TableRow.LayoutParams textviewparams = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
-                    TableRow.LayoutParams.WRAP_CONTENT);
-
-            if (!TextUtils.isEmpty(note.Title)) {
-                addRow(getString(R.string.theme), note.Title, null, rowparams, textviewparams);
-            }
-
-
-            if (!TextUtils.isEmpty(note.Topic)) {
-                addRow(getString(R.string.topic), note.getTopicLink(), note.getTopicUrl(), rowparams, textviewparams);
-            }
-
-            if (!TextUtils.isEmpty(note.User)) {
-                addRow(getString(R.string.user), note.getUserLink(), note.getUserUrl(), rowparams, textviewparams);
-            }
-
-            if (!TextUtils.isEmpty(note.Url)) {
-                addRow(getString(R.string.link), note.getUrlLink(), note.Url, rowparams, textviewparams);
-            }
-
-            webView.loadDataWithBaseURL("https://"+ HostHelper.getHost() +"/forum/", transformChatBody(note.Body), "text/html", "UTF-8", null);
-        } catch (Throwable ex) {
-            AppLog.e(getMainActivity(), ex);
-        }
-
-
-    }
-
-    private void addRow(String title, String text, final String url,
-                        TableLayout.LayoutParams rowparams, TableRow.LayoutParams textviewparams) {
-        TableRow row = new TableRow(getContext());
-
-        TextView textView = createFirtsTextView();
-        textView.setText(title);
-        row.addView(textView, textviewparams);
-        infoTable.addView(row, rowparams);
-
-        row = new TableRow(getContext());
-
-        TextView textView2 = createSecondTextView();
-        textView2.setText(Html.fromHtml(text));
-        textView2.setEllipsize(null);
-        textView2.setOnClickListener(view -> {
-            if (!TextUtils.isEmpty(url))
-
-                IntentActivity.tryShowUrl(getMainActivity(), mHandler, url, true, false);
-        });
-        textView2.setOnLongClickListener(view -> {
-            if (!TextUtils.isEmpty(url)) {
-                ExtUrl.showSelectActionDialog(mHandler, getMainActivity(), url);
-            }
-            return true;
-        });
-
-        row.addView(textView2, textviewparams);
-
-
-        infoTable.addView(row, rowparams);
-    }
-
-    private String transformChatBody(String chatBody) {
-        HtmlBuilder htmlBuilder = new HtmlBuilder();
-        htmlBuilder.beginHtml(getString(R.string.note));
-        htmlBuilder.append("<div class=\"emoticons\">");
-
-        chatBody = HtmlPreferences.modifyBody(chatBody, Smiles.getSmilesDict());
-        htmlBuilder.append(chatBody);
-        htmlBuilder.append("</div>");
-
-        htmlBuilder.endBody();
-        htmlBuilder.endHtml();
-
-        return htmlBuilder.getHtml().toString();
-    }
-
-    private TextView createFirtsTextView() {
-        return (TextView) getMainActivity().getLayoutInflater().inflate(R.layout.note_first_textview, null);
-    }
-
-    private TextView createSecondTextView() {
-        return (TextView) getMainActivity().getLayoutInflater().inflate(R.layout.note_second_textview, null);
-    }
-
-    private class LoadPageTask extends AsyncTask<String, String, Note> {
-
-        private final MaterialDialog dialog;
-
-        private final String id;
-
-        private final WeakReference<NoteFragment> fragment;
-
-        public LoadPageTask(WeakReference<NoteFragment> fragment, String id) {
-            this.id = id;
-            this.fragment = fragment;
-            Context context = fragment.get().getContext();
-            dialog = new MaterialDialog.Builder(context)
-                    .progress(true, 0)
-                    .cancelable(false)
-                    .content(context.getString(R.string.loading))
-                    .build();
-        }
-
-        @Override
-        protected void onProgressUpdate(String... progress) {
-            this.dialog.setContent(progress[0]);
-        }
-
-        private Throwable ex;
-
-        @Override
-        protected Note doInBackground(String... params) {
-            try {
-                return notesRepository.getNote(id);
-            } catch (Throwable e) {
-
-                ex = e;
-                return null;
+    companion object {
+        private const val ARG_NOTE_ID = "NoteFragment.NOTE_ID"
+        fun newInstance(noteId: Int) = NoteFragment().apply {
+            arguments = Bundle().apply {
+                putInt(ARG_NOTE_ID, noteId)
             }
         }
 
-        protected void onPreExecute() {
-            try {
-                this.dialog.show();
-            } catch (Exception ex) {
-                AppLog.e(null, ex);
-                this.cancel(true);
-            }
+        fun showNote(noteId: Int) {
+            MainActivity.addTab(
+                App.getContext().getString(R.string.note),
+                ARG_NOTE_ID + noteId,
+                newInstance(noteId)
+            )
         }
-
-        protected void onCancelled() {
-            super.onCancelled();
-
-        }
-
-
-        // can use UI thread here
-        protected void onPostExecute(final Note note) {
-            if (this.dialog.isShowing()) {
-                this.dialog.dismiss();
-            }
-            NoteFragment f = fragment.get();
-            if (note != null) {
-                if (f != null)
-                    f.fillData(note);
-            } else {
-                if (ex != null)
-                    AppLog.e(f == null ? null : f.getContext(), ex, f != null ? f::loadData : null);
-            }
-        }
-
     }
-
-
 }

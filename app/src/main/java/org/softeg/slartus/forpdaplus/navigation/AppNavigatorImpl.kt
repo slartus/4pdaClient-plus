@@ -4,6 +4,7 @@ import org.softeg.slartus.forpdaplus.core_ui.navigation.AppNavigator
 import org.softeg.slartus.forpdaplus.core_ui.navigation.AppScreen
 import org.softeg.slartus.forpdaplus.core_ui.navigation.AppService
 import org.softeg.slartus.forpdaplus.feature_preferences.App
+import org.softeg.slartus.forpdaplus.fragments.NoteFragment
 import org.softeg.slartus.forpdaplus.fragments.topic.ThemeFragment
 import org.softeg.slartus.forpdaplus.mainnotifiers.ForPdaVersionNotifier
 import org.softeg.slartus.forpdaplus.mainnotifiers.NotifiersManager
@@ -14,6 +15,7 @@ class AppNavigatorImpl @Inject constructor() : AppNavigator {
     override fun navigateTo(appScreen: AppScreen) {
         when (appScreen) {
             is AppScreen.Topic -> ThemeFragment.showTopicById(appScreen.topicId)
+            is AppScreen.Note -> NoteFragment.showNote(appScreen.noteId)
         }
     }
 

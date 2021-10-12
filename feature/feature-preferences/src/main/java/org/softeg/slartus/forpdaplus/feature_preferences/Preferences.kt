@@ -244,6 +244,11 @@ object Preferences {
     }
 
     object System {
+
+        val onlyCustomScript: Boolean by appPreference("only_custom_script", false)
+
+        val isAccelerateGif: Boolean by appPreference("isAccelerateGif", false)
+
         @JvmStatic
         val webviewCompatMode: Boolean by appPreference("webviewCompatMode", false)
 

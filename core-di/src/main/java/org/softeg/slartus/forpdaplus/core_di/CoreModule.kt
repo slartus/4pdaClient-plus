@@ -5,8 +5,10 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import org.softeg.slartus.forpdaplus.core_di.implementations.AppDatabaseImpl
+import org.softeg.slartus.forpdaplus.core_di.implementations.HtmlStylePreferencesImpl
 import org.softeg.slartus.forpdaplus.core_di.implementations.NoteDaoImpl
 import org.softeg.slartus.forpdaplus.core_di.implementations.NotesPreferencesImpl
+import org.softeg.slartus.forpdaplus.core_ui.html.HtmlStylePreferences
 import org.softeg.slartus.forpdaplus.feature_notes.di.NotesPreferences
 
 @Suppress("unused")
@@ -25,4 +27,8 @@ abstract class CoreModule {
     @Binds
     abstract fun bindNotesPreferences(notesPreferencesImpl: NotesPreferencesImpl):
             NotesPreferences
+
+    @Binds
+    abstract fun bindHtmlStylePreferences(htmlStylePreferencesImpl: HtmlStylePreferencesImpl):
+            HtmlStylePreferences
 }

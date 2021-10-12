@@ -15,6 +15,8 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.softeg.slartus.forpdaplus.core.di.GenericSavedStateViewModelFactory
 import org.softeg.slartus.forpdaplus.core.ui.fragments.BaseFragment
+import org.softeg.slartus.forpdaplus.core_ui.navigation.AppNavigator
+import org.softeg.slartus.forpdaplus.core_ui.navigation.AppScreen
 import org.softeg.slartus.forpdaplus.feature_notes.Note
 import org.softeg.slartus.forpdaplus.feature_notes.R
 import org.softeg.slartus.forpdaplus.feature_notes.data.getUrls
@@ -36,11 +38,14 @@ class NotesListFragment :
     @Inject
     lateinit var urlManager: UrlManager
 
+    @Inject
+    lateinit var router: AppNavigator
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         registerForContextMenu(binding.list)
 
-        val adapter = NotesListAdapter() {
+        val adapter = NotesListAdapter {
             onNoteClick(it.note)
         }
 
@@ -102,12 +107,7 @@ class NotesListFragment :
     }
 
     private fun onNoteClick(note: Note) {
-        if (note.url != null) {
-            urlManager.openUrl(note.url)
-        } else {
-            //!TODO:
-            //NoteFragment.showNote(note.id.toString())
-        }
+        router.navigateTo(AppScreen.Note(note.id!!))
     }
 
     private fun showDeleteNoteDialog(note: Note) {

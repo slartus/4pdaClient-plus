@@ -80,4 +80,8 @@ public class UrlExtensions {
     public static String removeDoubleSplitters(String url) {
         return url.replaceAll("([^:])//", "$1/");
     }
+
+    public static String urlToHref(String url, String title) {
+        return "<a href='" + url + "'>" + title + "</a>";
+    }
 }

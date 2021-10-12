@@ -20,8 +20,6 @@ import javax.inject.Singleton
 abstract class MainModule {
     @Binds
     abstract fun bindAppNavigator(appNavigatorImpl: AppNavigatorImpl): AppNavigator
-
-
 }
 
 @Module
