@@ -2,7 +2,7 @@ package org.softeg.slartus.forpdaplus.listfragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import org.softeg.slartus.forpdaplus.feature_notes.ui.NotesListFragment
+import org.softeg.slartus.forpdaplus.feature_notes.ui.list.NotesListFragment
 
 class NotesListFragment : BaseBrickContainerFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {

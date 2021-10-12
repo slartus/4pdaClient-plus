@@ -1,4 +1,4 @@
-package org.softeg.slartus.forpdaplus.feature_notes.ui
+package org.softeg.slartus.forpdaplus.feature_notes.ui.list
 
 import android.os.Bundle
 import android.view.*
