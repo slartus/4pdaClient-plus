@@ -1,20 +1,23 @@
 package org.softeg.slartus.forpdaplus.feature_notes.ui
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import org.softeg.slartus.forpdaplus.core.di.ViewModelAssistedFactory
 import org.softeg.slartus.forpdaplus.feature_notes.data.NotesRepository
 import javax.inject.Inject
 
-@HiltViewModel
-class NotesListViewModel @Inject constructor(private val repository: NotesRepository) :
+class NotesListViewModel constructor(
+    state: SavedStateHandle,
+    private val repository: NotesRepository
+) :
     ViewModel() {
+
+    val topicId = state.get<String>(NotesListFragment.ARG_TOPIC_ID)
+
     fun delete(id: String) {
         viewModelScope.launch(errorHandler) {
             repository.delete(id)
@@ -35,11 +38,23 @@ class NotesListViewModel @Inject constructor(private val repository: NotesReposi
             repository.notes
                 .distinctUntilChanged()
                 .collect { items ->
-                    _uiState.value = NotesListState.Success(items.map { NoteListItem(it, false) })
+                    _uiState.value = NotesListState.Success(
+                        items
+                            .filter { topicId == null || it.topicId == topicId }
+                            .map { NoteListItem(it, false) }
+                    )
                 }
 
         }
     }
+}
+
+class NotesListViewModelFactory @Inject constructor(
+    private val repository: NotesRepository
+) : ViewModelAssistedFactory<NotesListViewModel> {
+    override fun create(handle: SavedStateHandle) =
+        NotesListViewModel(handle, repository)
+
 }
 
 sealed class NotesListState {

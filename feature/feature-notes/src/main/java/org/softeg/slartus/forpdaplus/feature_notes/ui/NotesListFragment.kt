@@ -3,7 +3,6 @@ package org.softeg.slartus.forpdaplus.feature_notes.ui
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -14,6 +13,8 @@ import com.afollestad.materialdialogs.MaterialDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import org.softeg.slartus.forpdaplus.core.di.GenericSavedStateViewModelFactory
+import org.softeg.slartus.forpdaplus.core.ui.fragments.BaseFragment
 import org.softeg.slartus.forpdaplus.feature_notes.Note
 import org.softeg.slartus.forpdaplus.feature_notes.R
 import org.softeg.slartus.forpdaplus.feature_notes.data.getUrls
@@ -23,21 +24,17 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class NotesListFragment : Fragment() {
-    private val viewModel: NotesListViewModel by viewModels()
-    private var _binding: FragmentNotesListBinding? = null
-    private val binding get() = _binding!!
+class NotesListFragment :
+    BaseFragment<FragmentNotesListBinding>(FragmentNotesListBinding::inflate) {
+    @Inject
+    internal lateinit var notesListViewModelFactory: NotesListViewModelFactory
+
+    private val viewModel: NotesListViewModel by viewModels {
+        GenericSavedStateViewModelFactory(notesListViewModelFactory, this, arguments)
+    }
 
     @Inject
     lateinit var urlManager: UrlManager
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentNotesListBinding.inflate(inflater, container, false)
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -144,12 +141,16 @@ class NotesListFragment : Fragment() {
 
     override fun onDestroyView() {
         binding.list.adapter = null
-        _binding = null
         super.onDestroyView()
     }
 
     companion object {
-        fun newInstance() = NotesListFragment()
+        internal const val ARG_TOPIC_ID = "NotesListFragment.TOPIC_ID"
+        fun newInstance(topicId: String?) = NotesListFragment().apply {
+            arguments = Bundle().apply {
+                putString(ARG_TOPIC_ID, topicId)
+            }
+        }
     }
 }
 
