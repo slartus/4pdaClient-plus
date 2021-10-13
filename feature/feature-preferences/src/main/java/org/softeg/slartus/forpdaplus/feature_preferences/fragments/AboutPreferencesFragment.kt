@@ -9,7 +9,7 @@ import androidx.preference.PreferenceFragmentCompat
 import com.afollestad.materialdialogs.MaterialDialog
 import dagger.hilt.android.AndroidEntryPoint
 import org.softeg.slartus.forpdacommon.appFullName
-import org.softeg.slartus.forpdaplus.core_ui.navigation.AppNavigator
+import org.softeg.slartus.forpdaplus.core_ui.navigation.AppRouter
 import org.softeg.slartus.forpdaplus.core_ui.navigation.AppScreen
 import org.softeg.slartus.forpdaplus.core_ui.navigation.AppService
 import org.softeg.slartus.forpdaplus.feature_preferences.App
@@ -25,7 +25,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class AboutPreferencesFragment : PreferenceFragmentCompat() {
     @Inject
-    lateinit var appNavigator: AppNavigator
+    lateinit var appRouter: AppRouter
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.about_preferences, rootKey)
@@ -62,12 +62,12 @@ class AboutPreferencesFragment : PreferenceFragmentCompat() {
     }
 
     private fun showTheme(themeId: String) {
-        appNavigator.navigateTo(AppScreen.Topic(themeId))
+        appRouter.navigateTo(AppScreen.Topic(themeId))
         activity?.finish()
     }
 
     private fun checkUpdates() {
-        appNavigator.startService(AppService.VersionChecker)
+        appRouter.startService(AppService.VersionChecker)
     }
 
 

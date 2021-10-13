@@ -169,7 +169,7 @@ dependencies {
 
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0-rc01"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.4.0-rc01"
-
+    implementation("com.github.terrakok:cicerone:7.1")
     kapt "com.google.dagger:hilt-compiler:$rootProject.hilt"
 
     testImplementation 'junit:junit:4.13.2'

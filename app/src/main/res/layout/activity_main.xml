@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <androidx.drawerlayout.widget.DrawerLayout android:id="@+id/drawer_layout"
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -19,8 +20,8 @@
 
                 <com.google.android.material.appbar.AppBarLayout
                     android:id="@+id/appbarlayout"
-                    android:layout_height="wrap_content"
                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:theme="@style/MainThemeLight.AppBarOverlay">
 
                     <androidx.appcompat.widget.Toolbar
@@ -28,8 +29,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="?attr/actionBarSize"
                         android:background="?attr/colorPrimary"
-                        app:contentInsetStartWithNavigation="0dp"
                         app:contentInsetEndWithActions="0dp"
+                        app:contentInsetStartWithNavigation="0dp"
                         app:popupTheme="?attr/actionBarPopupTheme"
                         app:subtitleTextAppearance="@style/actionbar_subtitle" />
                 </com.google.android.material.appbar.AppBarLayout>
@@ -45,9 +46,9 @@
                         android:layout_height="match_parent" />
 
                     <View
+                        android:id="@+id/toolbar_shadow"
                         android:layout_width="match_parent"
                         android:layout_height="4dp"
-                        android:id="@+id/toolbar_shadow"
                         android:background="@drawable/toolbar_shadow"
                         android:fitsSystemWindows="true" />
                 </FrameLayout>
@@ -61,26 +62,26 @@
 
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/left_drawer"
+            style="?drawer_menu"
             android:layout_width="240dp"
             android:layout_height="match_parent"
             android:layout_gravity="start"
             app:headerLayout="@layout/nav_header_main"
-            app:itemBackground="@drawable/nav_bg"
-            style="?drawer_menu" />
+            app:itemBackground="@drawable/nav_bg" />
 
         <RelativeLayout
             android:id="@+id/tab_drawer"
+            style="?drawer_menu"
             android:layout_width="240dp"
             android:layout_height="match_parent"
-            android:paddingTop="25dp"
             android:layout_gravity="end"
-            style="?drawer_menu">
+            android:paddingTop="25dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:layout_above="@+id/closeAll">
+                android:layout_above="@+id/closeAll"
+                android:orientation="vertical">
 
                 <ListView
                     android:id="@+id/tab_list"
@@ -94,19 +95,19 @@
                 android:id="@+id/closeAll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Закрыть все"
                 android:layout_alignParentBottom="true"
-                android:gravity="left|center_vertical"
                 android:background="?attr/selectableItemBackground"
+                android:gravity="left|center_vertical"
                 android:paddingLeft="16dp"
-                android:paddingRight="16dp" />
+                android:paddingRight="16dp"
+                android:text="Закрыть все" />
         </RelativeLayout>
     </androidx.drawerlayout.widget.DrawerLayout>
 
     <RelativeLayout
+        android:id="@+id/fakeSB"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/fakeSB"
         android:background="@color/statusBar_translucent_light"
         android:visibility="gone" />
 </RelativeLayout>

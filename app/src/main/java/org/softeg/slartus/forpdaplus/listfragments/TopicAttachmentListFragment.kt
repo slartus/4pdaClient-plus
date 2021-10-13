@@ -79,7 +79,7 @@ class TopicAttachmentListFragment : BaseTaskListFragment() {
                 getString(R.string.jump_to_page),
                 Runnable { IntentActivity.showTopic(attach.postUrl) })
         )
-        ExtUrl.showContextDialog(context, null, list)
+        ExtUrl.showContextDialog(requireContext(), null, list)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

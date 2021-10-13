@@ -10,6 +10,9 @@ import android.os.Handler;
 import android.text.TextUtils;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.softeg.slartus.forpdaplus.IntentActivity;
@@ -19,6 +22,8 @@ import org.softeg.slartus.forpdaplus.core.ui.dialogs.MenuItemAction;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.controls.imageview.ImgViewer;
 import org.softeg.slartus.forpdaplus.core.ui.dialogs.MenuItemActionsDialog;
+import org.softeg.slartus.forpdaplus.core_ui.navigation.AppRouter;
+import org.softeg.slartus.forpdaplus.core_ui.navigation.AppScreen;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
 import org.softeg.slartus.forpdaplus.notes.NoteDialog;
 
@@ -35,8 +40,17 @@ import java.util.List;
  */
 public class ExtUrl {
 
-    public static void showContextDialog(final Context context, final String title, final List<MenuItemAction> list) {
-        new MenuItemActionsDialog(context, title, list)
+    public static void showContextDialog(@NonNull final Context context, @Nullable final String title, @NonNull final List<MenuItemAction> list) {
+        if (title == null) {
+            showContextDialog(context, list);
+        } else {
+            new MenuItemActionsDialog(context, title, list)
+                    .show();
+        }
+    }
+
+    public static void showContextDialog(@NonNull final Context context, @NonNull final List<MenuItemAction> list) {
+        new MenuItemActionsDialog(context, list)
                 .show();
     }
 
@@ -75,17 +89,18 @@ public class ExtUrl {
     }
 
     public static void addUrlSubMenu(final android.os.Handler handler, final Context context, List<MenuItemAction> list, final String url
-            , final CharSequence id, final String title) {
-        addUrlMenu(handler, context, list, url, id, title);
+            , final CharSequence id, final String title, AppRouter router) {
+        addUrlMenu(handler, context, list, url, id, title, router);
     }
 
-    public static void addUrlMenu(final android.os.Handler handler, final Context context, List<MenuItemAction> list, final String url, final String title) {
-        addTopicUrlMenu(handler, context, list, title, url, "", "", "", "", "", "");
+    public static void addUrlMenu(final android.os.Handler handler, final Context context, List<MenuItemAction> list,
+                                  final String url, final String title, AppRouter router) {
+        addTopicUrlMenu(handler, context, list, title, url, "", "", "", "", "", "", router);
     }
 
     public static void addTopicUrlMenu(final android.os.Handler handler, final Context context, List<MenuItemAction> list,
                                        final String title, final String url, final String body, final CharSequence topicId, final String topic,
-                                       final String postId, final String userId, final String user) {
+                                       final String postId, final String userId, final String user, AppRouter router) {
 
         list.add(new MenuItemAction(context.getString(R.string.open_in_browser), new Runnable() {
             @Override
@@ -109,14 +124,12 @@ public class ExtUrl {
 
 
         if (!TextUtils.isEmpty(topicId)) {
-            list.add(new MenuItemAction(context.getString(R.string.create_note), new Runnable() {
-                @Override
-                public void run() {
-                    NoteDialog.showDialog(handler, context,
-                            title, body, url, topicId, topic,
-                            postId, userId, user);
-                }
-            }));
+            list.add(new MenuItemAction(context.getString(R.string.create_note), () ->
+                    router.navigateTo(AppScreen.NewNote.INSTANCE)
+            ));
+//                    NoteDialog.showDialog(handler, context,
+//                    title, body, url, topicId, topic,
+//                    postId, userId, user)));
         }
     }
 
@@ -148,8 +161,8 @@ public class ExtUrl {
     }
 
     public static void addUrlMenu(final android.os.Handler handler, final Context context, List<MenuItemAction> menu, final String url,
-                                  final CharSequence id, final String title) {
-        addTopicUrlMenu(handler, context, menu, title, url, url, id, title, "", "", "");
+                                  final CharSequence id, final String title, AppRouter router) {
+        addTopicUrlMenu(handler, context, menu, title, url, url, id, title, "", "", "", router);
     }
 
     public static void showSelectActionDialog(final android.os.Handler handler, final Context context,

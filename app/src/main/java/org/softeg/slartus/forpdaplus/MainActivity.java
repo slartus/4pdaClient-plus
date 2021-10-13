@@ -37,6 +37,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.github.terrakok.cicerone.NavigatorHolder;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.navigation.NavigationView;
 
@@ -62,6 +63,7 @@ import org.softeg.slartus.forpdaplus.log.ActivityTimberTree;
 import org.softeg.slartus.forpdaplus.mainnotifiers.DonateNotifier;
 import org.softeg.slartus.forpdaplus.mainnotifiers.ForPdaVersionNotifier;
 import org.softeg.slartus.forpdaplus.mainnotifiers.NotifiersManager;
+import org.softeg.slartus.forpdaplus.navigation.MainActivityNavigator;
 import org.softeg.slartus.forpdaplus.repositories.UserInfoRepository;
 import org.softeg.slartus.forpdaplus.tabs.TabItem;
 import org.softeg.slartus.forpdaplus.tabs.TabsManager;
@@ -70,24 +72,23 @@ import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import dagger.hilt.android.AndroidEntryPoint;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Admin
- * Date: 17.09.11
- * Time: 22:23
- * To change this template use File | Settings | File Templates.
- */
 @AndroidEntryPoint
 public class MainActivity extends BaseActivity implements BricksListDialogFragment.IBricksListDialogCaller,
         MainDrawerMenu.SelectItemListener, TabDrawerMenu.SelectItemListener {
     // test commit to beta
     public static final int REQUEST_WRITE_STORAGE = 112;
+    @Inject
+    MainActivityNavigator navigator;
 
+    @Inject
+    NavigatorHolder navigatorHolder;
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -222,7 +223,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
                 getWindow().setNavigationBarColor(App.getInstance().getResources().getColor(AppTheme.getNavBarColor()));
 
 
-            setContentView(R.layout.main);
+            setContentView(R.layout.activity_main);
             toolbar = findViewById(R.id.toolbar);
             appBarLayout = findViewById(R.id.appbarlayout);
             toolbarShadow = findViewById(R.id.toolbar_shadow);
@@ -544,6 +545,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
 
     private void addFragment(FragmentTransaction transaction, Fragment fragment, String tag) {
         if (fragment.isAdded()) return;
+
         transaction.add(R.id.content_frame, fragment, tag);
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).show(fragment);
     }
@@ -654,6 +656,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
     @Override
     protected void onPause() {
         super.onPause();
+        navigatorHolder.removeNavigator();
         activityPaused = true;
         if (!(String.valueOf(TabsManager.getInstance().getCurrentFragmentTag())).equals("null")) {
             Fragment fragment = getSupportFragmentManager().findFragmentByTag(TabsManager.getInstance().getCurrentFragmentTag());
@@ -945,4 +948,12 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
     private void loadPreferences(SharedPreferences prefs) {
         setRequestedOrientation(ExtPreferences.parseInt(prefs, "theme.ScreenOrientation", -1));
     }
+
+    @Override
+    protected void onResumeFragments() {
+        super.onResumeFragments();
+        navigatorHolder.setNavigator(navigator);
+    }
+
+
 }

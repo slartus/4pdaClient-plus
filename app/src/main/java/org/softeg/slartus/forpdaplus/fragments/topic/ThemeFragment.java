@@ -71,6 +71,7 @@ import org.softeg.slartus.forpdaplus.controls.imageview.ImageViewDialogFragment;
 import org.softeg.slartus.forpdaplus.controls.imageview.ImgViewer;
 import org.softeg.slartus.forpdaplus.controls.quickpost.PostTask;
 import org.softeg.slartus.forpdaplus.controls.quickpost.QuickPostFragment;
+import org.softeg.slartus.forpdaplus.core_ui.navigation.AppScreen;
 import org.softeg.slartus.forpdaplus.db.TopicsHistoryTable;
 import org.softeg.slartus.forpdaplus.feature_notes.data.NotesRepository;
 import org.softeg.slartus.forpdaplus.fragments.WebViewFragment;
@@ -852,9 +853,14 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 }
                 list.add(new MenuItemAction(getS(R.string.quote_post), () -> quote(m_Topic.getForumId(), m_Topic.getId(), postId, postDate, userId, userNick)));
             }
-            list.add(new MenuItemAction(getS(R.string.create_note), () -> NoteDialog.showDialog(mHandler, getMainActivity(), m_Topic.getTitle(), null,
-                    "https://" + HostHelper.getHost() + "/forum/index.php?showtopic=" + m_Topic.getId() + "&view=findpost&p=" + postId,
-                    m_Topic.getId(), m_Topic.getTitle(), postId, null, null, notesRepository)));
+            list.add(new MenuItemAction(getS(R.string.create_note), () ->
+
+                    router.navigateTo(AppScreen.NewNote.INSTANCE)
+//                    NoteDialog.showDialog(mHandler, getMainActivity(), m_Topic.getTitle(), null,
+//                    "https://" + HostHelper.getHost() + "/forum/index.php?showtopic=" + m_Topic.getId() + "&view=findpost&p=" + postId,
+//                    m_Topic.getId(), m_Topic.getTitle(), postId, null, null, notesRepository)
+
+            ));
 
             ExtUrl.showContextDialog(getContext(), null, list);
         } catch (Throwable ex) {

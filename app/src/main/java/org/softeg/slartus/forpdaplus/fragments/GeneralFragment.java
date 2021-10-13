@@ -20,10 +20,14 @@ import org.jetbrains.annotations.NotNull;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.common.AppLog;
+import org.softeg.slartus.forpdaplus.core_ui.navigation.AppRouter;
 import org.softeg.slartus.forpdaplus.listfragments.IBrickFragment;
 import org.softeg.slartus.forpdaplus.tabs.TabItem;
 import org.softeg.slartus.forpdaplus.tabs.TabsManager;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import timber.log.Timber;
@@ -31,9 +35,12 @@ import timber.log.Timber;
 /**
  * Created by radiationx on 12.11.15.
  */
+@AndroidEntryPoint
 public abstract class GeneralFragment extends Fragment implements IBrickFragment {
     public abstract boolean closeTab();
 
+    @Inject
+    public AppRouter router;
     private static final String TAG = GeneralFragment.class.getSimpleName();
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
     private ActionBar actionBar;

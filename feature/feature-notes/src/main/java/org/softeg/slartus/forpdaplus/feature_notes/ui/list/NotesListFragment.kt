@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.softeg.slartus.forpdaplus.core.di.GenericSavedStateViewModelFactory
 import org.softeg.slartus.forpdaplus.core.ui.fragments.BaseFragment
-import org.softeg.slartus.forpdaplus.core_ui.navigation.AppNavigator
+import org.softeg.slartus.forpdaplus.core_ui.navigation.AppRouter
 import org.softeg.slartus.forpdaplus.core_ui.navigation.AppScreen
 import org.softeg.slartus.forpdaplus.feature_notes.Note
 import org.softeg.slartus.forpdaplus.feature_notes.R
@@ -39,7 +39,7 @@ class NotesListFragment :
     lateinit var urlManager: UrlManager
 
     @Inject
-    lateinit var router: AppNavigator
+    lateinit var router: AppRouter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

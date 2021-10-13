@@ -75,7 +75,7 @@ class TopicsHistoryListFragment : TopicsListFragment() {
                     mData.remove(topic)
                     adapter!!.notifyDataSetChanged()
                 })
-            ExtUrl.showContextDialog(context, null, list)
+            ExtUrl.showContextDialog(requireContext(), null, list)
         } catch (ex: Throwable) {
             AppLog.e(ex)
         }

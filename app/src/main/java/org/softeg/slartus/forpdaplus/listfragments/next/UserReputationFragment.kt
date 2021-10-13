@@ -113,7 +113,7 @@ class UserReputationFragment : BrickFragmentListBase() {
             )
         }
         ForumUser.onCreateContextMenu(activity, list, item.userId, item.user)
-        ExtUrl.showContextDialog(context, item.user, list)
+        ExtUrl.showContextDialog(requireContext(), item.user, list)
     }
 
     override fun getLoadArgs(): Bundle {

@@ -132,7 +132,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
 
     @Override
     public void onCompletion(MediaPlayer mediaPlayer) {
-        getMainActivity().setContentView(R.layout.main);
+        getMainActivity().setContentView(R.layout.activity_main);
     }
 
     @Override

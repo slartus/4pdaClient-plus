@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="?android:colorBackground"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="12dp">
+
+    <EditText
+        android:id="@+id/title_textView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="12dp"
+        android:hint="@string/enter_subject"
+        android:inputType="text"
+        android:maxLines="1"
+        android:nextFocusRight="@+id/clear_title_button"
+        android:nextFocusDown="@+id/body_textView"
+        app:layout_constraintEnd_toStartOf="@+id/clear_title_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@tools:sample/lorem/random">
+
+        <requestFocus />
+    </EditText>
+
+    <ImageButton
+        android:id="@+id/clear_title_button"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/clear"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:nextFocusRight="@+id/body_textView"
+        android:nextFocusDown="@+id/body_textView"
+        android:src="@drawable/close_grey"
+        app:layout_constraintBottom_toBottomOf="@+id/title_textView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/title_textView"
+        tools:ignore="UnusedAttribute" />
+
+    <EditText
+        android:id="@+id/body_textView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:gravity="top"
+        android:hint="@string/enter_message"
+        android:inputType="textMultiLine"
+        android:minLines="10"
+        android:nextFocusRight="@+id/clear_message"
+        android:scrollHorizontally="false"
+        android:singleLine="false"
+        android:textCursorDrawable="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_textView" />
+
+    <ImageButton
+        android:id="@+id/clear_message"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:background="@android:color/transparent"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:src="@drawable/close_grey"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="UnusedAttribute" />
+</androidx.constraintlayout.widget.ConstraintLayout>

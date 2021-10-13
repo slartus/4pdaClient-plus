@@ -134,7 +134,7 @@ public class DevDbModelsFragment extends BaseTaskListFragment {
         if (TextUtils.isEmpty(topic.getId())) return;
 
         List<MenuItemAction> list = new ArrayList<>();
-        ExtUrl.addUrlMenu(getMHandler(), getContext(), list, topic.getId().toString(), topic.getMain().toString());
+        ExtUrl.addUrlMenu(getMHandler(), getContext(), list, topic.getId().toString(), topic.getMain().toString(), router);
         ExtUrl.showContextDialog(getContext(), null, list);
     }
 }

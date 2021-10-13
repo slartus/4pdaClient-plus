@@ -184,9 +184,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".FeatureActivity"
-            android:label="kekos" />
-        <activity
             android:name="org.acra.CrashReportDialog"
             android:excludeFromRecents="true"
             android:finishOnTaskLaunch="true"
@@ -230,12 +227,6 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="Информация о стиле"
             android:launchMode="singleTop" />
-        <activity
-            android:name=".classes.TestActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="Тестовая"
-            android:launchMode="singleTop" />
-
         <activity
             android:name=".controls.imageview.ImgViewer"
             android:label="Изображения"

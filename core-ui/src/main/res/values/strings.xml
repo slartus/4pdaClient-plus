@@ -521,4 +521,5 @@
     <string name="local_repository">Локальное хранилище</string>
     <string name="backup">Бэкап</string>
     <string name="restore">Восстановить</string>
+    <string name="clear">Очистить</string>
 </resources>

@@ -326,7 +326,7 @@ public class NewsListFragment extends BaseTaskListFragment implements ActionBar.
 
 
         List<MenuItemAction> list = new ArrayList<>();
-        ExtUrl.addUrlMenu(getMHandler(), getContext(), list, news.getUrl(), news.getId(),news.getTitle().toString());
+        ExtUrl.addUrlMenu(getMHandler(), getContext(), list, news.getUrl(), news.getId(),news.getTitle().toString(), router);
         ExtUrl.showContextDialog(getContext(), null, list);
 
     }
