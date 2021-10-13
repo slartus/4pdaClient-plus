@@ -1,17 +1,12 @@
 package org.softeg.slartus.forpdaplus.feature_notes.data
 
 import android.net.Uri
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import org.softeg.slartus.forpdacommon.NotReportException
 import org.softeg.slartus.forpdaplus.feature_notes.Note
 import org.softeg.slartus.forpdaplus.feature_notes.NotesDao
 import org.softeg.slartus.forpdaplus.feature_notes.di.NotesPreferences
 import org.softeg.slartus.forpdaplus.feature_notes.network.NotesService
 import retrofit2.Response
-import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
@@ -73,40 +68,22 @@ class NotesRepository @Inject constructor(
         return notesService.request(url).notesOrError()
     }
 
-    suspend fun getNote(id: String): Note? {
+    suspend fun getNote(id: Int): Note? {
         if (!local) {
             load()
         }
-        return notesDao.get(id.toInt())
+        return notesDao.get(id)
     }
 
-    fun tempInsertRow(
-        title: String?, body: String?, url: String?, topicId: CharSequence, topic: String?,
-        postId: String?, userId: String?, user: String?, action: () -> Unit
-    ) {
-        val handler = CoroutineExceptionHandler { coroutineContext, throwable ->
-            Timber.e(throwable)
-        }
-        GlobalScope.launch(Dispatchers.IO + handler) {
-            launch {
-                insertRow(
-                    title, body, url, topicId, topic,
-                    postId, userId, user, action
-                )
-            }
-
-        }
-    }
-
-    suspend fun insertRow(
-        title: String?, body: String?, url: String?, topicId: CharSequence, topic: String?,
-        postId: String?, userId: String?, user: String?, action: () -> Unit
+    suspend fun createNote(
+        title: String?, body: String?, url: String?, topicId: String?, topic: String?,
+        postId: String?, userId: String?, user: String?
     ) {
         val note = Note(
             title = title,
             body = body,
             url = url,
-            topicId = topicId.toString(),
+            topicId = topicId,
             topicTitle = topic,
             postId = postId,
             userId = userId,
@@ -116,12 +93,10 @@ class NotesRepository @Inject constructor(
 
         if (local) {
             notesDao.insert(note)
-            action()
         } else {
             val requestUrl = getUrl("ins")
 
             notesDao.merge(notesService.post(requestUrl, note).notesOrError())
-            action()
         }
     }
 }

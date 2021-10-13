@@ -4,4 +4,6 @@ interface AppRouter {
     fun navigateTo(appScreen: AppScreen)
 
     fun startService(appService: AppService)
+
+    fun exit()
 }

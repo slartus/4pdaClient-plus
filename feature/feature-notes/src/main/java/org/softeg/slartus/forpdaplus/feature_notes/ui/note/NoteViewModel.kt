@@ -21,7 +21,7 @@ class NoteViewModel constructor(
 ) :
     ViewModel() {
 
-    private val noteId = state.get<Int>(NoteFragment.ARG_NOTE_ID)
+    private val noteId: Int = state.get<Int>(NoteFragment.ARG_NOTE_ID)!!
 
     private val errorHandler = CoroutineExceptionHandler { _, ex ->
         _uiState.value = NoteUIState.Error(ex)
@@ -34,15 +34,9 @@ class NoteViewModel constructor(
         viewModelScope.launch(errorHandler) {
             repository.load()
 
-            repository.notes
-                .distinctUntilChanged()
-                .collect { items ->
-                    _uiState.value = items
-                        .firstOrNull { it.id == noteId }?.let {
-                            NoteUIState.Success(it)
-                        } ?: NoteUIState.Error(NotReportException("note $noteId not found"))
-                }
-
+            _uiState.value = repository.getNote(noteId)?.let {
+                NoteUIState.Success(it)
+            }?: NoteUIState.Error(NotReportException("note $noteId not found"))
         }
     }
 }

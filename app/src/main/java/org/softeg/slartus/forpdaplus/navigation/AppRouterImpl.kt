@@ -12,13 +12,12 @@ import org.softeg.slartus.forpdaplus.mainnotifiers.ForPdaVersionNotifier
 import org.softeg.slartus.forpdaplus.mainnotifiers.NotifiersManager
 import javax.inject.Inject
 
-
 class AppRouterImpl @Inject constructor(private val router: ExtendedRouter) : AppRouter {
     override fun navigateTo(appScreen: AppScreen) {
         when (appScreen) {
             is AppScreen.Topic -> ThemeFragment.showTopicById(appScreen.topicId)
             is AppScreen.Note -> NoteFragment.showNote(appScreen.noteId)
-            is AppScreen.NewNote -> router.showDialog(DialogScreen { NewNoteDialogFragment() })
+            is AppScreen.NewNote -> router.showDialog(getNewNoteScreen(appScreen))
         }
     }
 
@@ -28,9 +27,26 @@ class AppRouterImpl @Inject constructor(private val router: ExtendedRouter) : Ap
         }
     }
 
+    override fun exit() {
+        router.exit()
+    }
+
     private fun startVersionChecked() {
         val notifiersManager = NotifiersManager()
         ForPdaVersionNotifier(notifiersManager, 0, true).start(App.getInstance())
+    }
+
+    private fun getNewNoteScreen(appScreen: AppScreen.NewNote) = DialogScreen {
+        NewNoteDialogFragment.newInstance(
+            appScreen.title,
+            appScreen.body,
+            appScreen.url,
+            appScreen.topicId,
+            appScreen.topicTitle,
+            appScreen.postId,
+            appScreen.userId,
+            appScreen.userName
+        )
     }
 }
 

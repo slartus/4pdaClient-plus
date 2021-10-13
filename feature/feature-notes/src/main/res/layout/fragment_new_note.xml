@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="?android:colorBackground"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:padding="12dp">
 
     <EditText
-        android:id="@+id/title_textView"
+        android:id="@+id/title_editText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="12dp"
@@ -16,7 +16,7 @@
         android:inputType="text"
         android:maxLines="1"
         android:nextFocusRight="@+id/clear_title_button"
-        android:nextFocusDown="@+id/body_textView"
+        android:nextFocusDown="@+id/body_editText"
         app:layout_constraintEnd_toStartOf="@+id/clear_title_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -32,16 +32,16 @@
         android:background="@android:color/transparent"
         android:contentDescription="@string/clear"
         android:foreground="?android:attr/selectableItemBackground"
-        android:nextFocusRight="@+id/body_textView"
-        android:nextFocusDown="@+id/body_textView"
+        android:nextFocusRight="@+id/body_editText"
+        android:nextFocusDown="@+id/body_editText"
         android:src="@drawable/close_grey"
-        app:layout_constraintBottom_toBottomOf="@+id/title_textView"
+        app:layout_constraintBottom_toBottomOf="@+id/title_editText"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/title_textView"
+        app:layout_constraintTop_toTopOf="@+id/title_editText"
         tools:ignore="UnusedAttribute" />
 
     <EditText
-        android:id="@+id/body_textView"
+        android:id="@+id/body_editText"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:gravity="top"
@@ -52,17 +52,16 @@
         android:scrollHorizontally="false"
         android:singleLine="false"
         android:textCursorDrawable="@null"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title_textView" />
+        app:layout_constraintTop_toBottomOf="@+id/title_editText" />
 
     <ImageButton
-        android:id="@+id/clear_message"
+        android:id="@+id/clear_body_button"
         android:layout_width="36dp"
         android:layout_height="36dp"
         android:background="@android:color/transparent"
         android:foreground="?android:attr/selectableItemBackground"
         android:src="@drawable/close_grey"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/body_editText"
+        app:layout_constraintEnd_toEndOf="@+id/body_editText"
         tools:ignore="UnusedAttribute" />
 </androidx.constraintlayout.widget.ConstraintLayout>

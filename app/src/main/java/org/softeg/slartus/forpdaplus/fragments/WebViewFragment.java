@@ -71,7 +71,7 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
         if (TextUtils.isEmpty(url) || url.contains("HTMLOUT.ru")
                 || url.equals("#")
                 || url.startsWith("file:///")) return;
-        ExtUrl.showSelectActionDialog(mHandler, getContext(), url);
+        ExtUrl.showSelectActionDialog(mHandler, getContext(), url, router);
     }
 
     @Override

@@ -11,7 +11,7 @@ abstract class BaseDialogFragment<VB : ViewBinding>(private val inflate: Inflate
     DialogFragment() {
 
     private var _binding: VB? = null
-    val binding get() = _binding!!
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,

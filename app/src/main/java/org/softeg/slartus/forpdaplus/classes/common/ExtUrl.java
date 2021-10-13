@@ -18,14 +18,13 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import org.softeg.slartus.forpdaplus.IntentActivity;
 import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
-import org.softeg.slartus.forpdaplus.core.ui.dialogs.MenuItemAction;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.controls.imageview.ImgViewer;
+import org.softeg.slartus.forpdaplus.core.ui.dialogs.MenuItemAction;
 import org.softeg.slartus.forpdaplus.core.ui.dialogs.MenuItemActionsDialog;
 import org.softeg.slartus.forpdaplus.core_ui.navigation.AppRouter;
 import org.softeg.slartus.forpdaplus.core_ui.navigation.AppScreen;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
-import org.softeg.slartus.forpdaplus.notes.NoteDialog;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -95,37 +94,22 @@ public class ExtUrl {
 
     public static void addUrlMenu(final android.os.Handler handler, final Context context, List<MenuItemAction> list,
                                   final String url, final String title, AppRouter router) {
-        addTopicUrlMenu(handler, context, list, title, url, "", "", "", "", "", "", router);
+        addTopicUrlMenu(context, list, title, url, "", "", "", "", "", "", router);
     }
 
-    public static void addTopicUrlMenu(final android.os.Handler handler, final Context context, List<MenuItemAction> list,
-                                       final String title, final String url, final String body, final CharSequence topicId, final String topic,
+    public static void addTopicUrlMenu(final Context context, List<MenuItemAction> list,
+                                       final String title, final String url, final String body, @NonNull final CharSequence topicId, final String topic,
                                        final String postId, final String userId, final String user, AppRouter router) {
 
-        list.add(new MenuItemAction(context.getString(R.string.open_in_browser), new Runnable() {
-            @Override
-            public void run() {
-                showInBrowser(context, url);
-            }
-        }));
+        list.add(new MenuItemAction(context.getString(R.string.open_in_browser), () -> showInBrowser(context, url)));
 
-        list.add(new MenuItemAction(context.getString(R.string.share_link), new Runnable() {
-            @Override
-            public void run() {
-                shareItUrl(context, url);
-            }
-        }));
-        list.add(new MenuItemAction(context.getString(R.string.copy_link), new Runnable() {
-            @Override
-            public void run() {
-                copyLinkToClipboard(context, url);
-            }
-        }));
+        list.add(new MenuItemAction(context.getString(R.string.share_link), () -> shareItUrl(context, url)));
+        list.add(new MenuItemAction(context.getString(R.string.copy_link), () -> copyLinkToClipboard(context, url)));
 
 
         if (!TextUtils.isEmpty(topicId)) {
             list.add(new MenuItemAction(context.getString(R.string.create_note), () ->
-                    router.navigateTo(AppScreen.NewNote.INSTANCE)
+                    router.navigateTo(new AppScreen.NewNote(title, body, url, topicId.toString(), topic, postId, userId, user))
             ));
 //                    NoteDialog.showDialog(handler, context,
 //                    title, body, url, topicId, topic,
@@ -162,12 +146,12 @@ public class ExtUrl {
 
     public static void addUrlMenu(final android.os.Handler handler, final Context context, List<MenuItemAction> menu, final String url,
                                   final CharSequence id, final String title, AppRouter router) {
-        addTopicUrlMenu(handler, context, menu, title, url, url, id, title, "", "", "", router);
+        addTopicUrlMenu(context, menu, title, url, url, id, title, "", "", "", router);
     }
 
     public static void showSelectActionDialog(final android.os.Handler handler, final Context context,
                                               final String title, final String body, final String url, final String topicId, final String topic,
-                                              final String postId, final String userId, final String user) {
+                                              final String postId, final String userId, final String user, AppRouter router) {
         ArrayList<String> titles =
                 new ArrayList<>(Arrays.asList(
                         context.getString(R.string.open_in_new_tab),
@@ -194,9 +178,8 @@ public class ExtUrl {
                             copyLinkToClipboard(context, url);
                             break;
                         case 4:
-                            NoteDialog.showDialog(handler, context,
-                                    title, body, url, topicId, topic,
-                                    postId, userId, user);
+                            router.navigateTo(new AppScreen.NewNote(title, body, url, topicId, topic,
+                                    postId, userId, user));
                             break;
                         case 5:
                             DownloadsService.download(((MainActivity) context), url, false);
@@ -209,8 +192,8 @@ public class ExtUrl {
                 .show();
     }
 
-    public static void showSelectActionDialog(final android.os.Handler handler, final Context context, final String url) {
-        showSelectActionDialog(handler, context, "", "", url, "", "", "", "", "");
+    public static void showSelectActionDialog(final android.os.Handler handler, final Context context, final String url, AppRouter router) {
+        showSelectActionDialog(handler, context, "", "", url, "", "", "", "", "", router);
     }
 
 

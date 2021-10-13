@@ -697,7 +697,7 @@ class QmsChatFragment : WebViewFragment() {
             return
         ExtUrl.showSelectActionDialog(
             mHandler,
-            context!!,
+            requireContext(),
             themeTitle,
             "",
             link,
@@ -705,7 +705,8 @@ class QmsChatFragment : WebViewFragment() {
             "",
             "",
             contactId,
-            contactNick
+            contactNick,
+            router
         )
     }
 
@@ -800,7 +801,7 @@ class QmsChatFragment : WebViewFragment() {
 
     private fun startAddAttachment() {
         if (ContextCompat.checkSelfPermission(
-                activity!!,
+                requireActivity(),
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
             ) != PackageManager.PERMISSION_GRANTED
         ) {

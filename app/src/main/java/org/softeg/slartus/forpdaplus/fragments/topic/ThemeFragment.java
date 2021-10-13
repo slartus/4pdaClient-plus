@@ -73,7 +73,6 @@ import org.softeg.slartus.forpdaplus.controls.quickpost.PostTask;
 import org.softeg.slartus.forpdaplus.controls.quickpost.QuickPostFragment;
 import org.softeg.slartus.forpdaplus.core_ui.navigation.AppScreen;
 import org.softeg.slartus.forpdaplus.db.TopicsHistoryTable;
-import org.softeg.slartus.forpdaplus.feature_notes.data.NotesRepository;
 import org.softeg.slartus.forpdaplus.fragments.WebViewFragment;
 import org.softeg.slartus.forpdaplus.fragments.search.SearchSettingsDialogFragment;
 import org.softeg.slartus.forpdaplus.fragments.topic.editpost.EditPostFragment;
@@ -90,7 +89,6 @@ import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.NotesBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.TopicReadersBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.TopicWritersBrickInfo;
-import org.softeg.slartus.forpdaplus.notes.NoteDialog;
 import org.softeg.slartus.forpdaplus.feature_preferences.Preferences;
 import org.softeg.slartus.forpdaplus.tabs.TabItem;
 import org.softeg.slartus.forpdaplus.tabs.TabsManager;
@@ -104,20 +102,16 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import dagger.hilt.android.AndroidEntryPoint;
 import io.paperdb.Paper;
 import ru.slartus.http.AppResponse;
 import ru.slartus.http.Http;
 
 import static org.softeg.slartus.forpdaplus.utils.Utils.getS;
 
-import javax.inject.Inject;
-
 /**
  * Created by radiationx on 28.10.15.
  */
 @SuppressWarnings("unused")
-@AndroidEntryPoint
 public class ThemeFragment extends WebViewFragment implements BricksListDialogFragment.IBricksListDialogCaller, QuickPostFragment.PostSendListener {
     LinearLayout mQuickPostPanel;
     FloatingActionButton fab;
@@ -126,8 +120,6 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     LinearLayout pnlSearch;
     FrameLayout buttonsPanel;
 
-    @Inject
-    NotesRepository notesRepository;
 
     private static final String TAG = ThemeFragment.class.getSimpleName();
     private static final String TOPIC_URL_KEY = "ThemeActivity.TOPIC_URL_KEY";
@@ -721,7 +713,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 || link.equals("#")
                 || link.startsWith("file:///")) return;
         ExtUrl.showSelectActionDialog(mHandler, getMainActivity(), m_Topic.getTitle(), "", link, m_Topic.getId(),
-                m_Topic.getTitle(), postId, "", "");
+                m_Topic.getTitle(), postId, "", "", router);
 
     }
 
@@ -855,10 +847,13 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             }
             list.add(new MenuItemAction(getS(R.string.create_note), () ->
 
-                    router.navigateTo(AppScreen.NewNote.INSTANCE)
-//                    NoteDialog.showDialog(mHandler, getMainActivity(), m_Topic.getTitle(), null,
-//                    "https://" + HostHelper.getHost() + "/forum/index.php?showtopic=" + m_Topic.getId() + "&view=findpost&p=" + postId,
-//                    m_Topic.getId(), m_Topic.getTitle(), postId, null, null, notesRepository)
+                    router.navigateTo(
+                            new AppScreen.NewNote(
+                                    m_Topic.getTitle(),
+                                    null,
+                                    HostHelper.getPostUrl(m_Topic.getId(), postId),
+                                    m_Topic.getId(), m_Topic.getTitle(), postId, null, null)
+                    )
 
             ));
 

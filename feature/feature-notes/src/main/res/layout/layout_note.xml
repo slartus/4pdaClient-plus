@@ -9,7 +9,7 @@
     android:padding="@dimen/list_item_margin">
 
     <TextView
-        android:id="@+id/title_textView"
+        android:id="@+id/title_editText"
         style="?list_text_general_color"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -24,7 +24,7 @@
         tools:text="@tools:sample/lorem/random" />
 
     <TextView
-        android:id="@+id/body_textView"
+        android:id="@+id/body_editText"
         style="?list_text_second_color"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
         android:minHeight="20dp"
         android:textAppearance="?android:textAppearanceSmall"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title_textView"
+        app:layout_constraintTop_toBottomOf="@+id/title_editText"
 
         tools:text="@tools:sample/lorem/random" />
 
@@ -46,7 +46,7 @@
         android:singleLine="true"
         android:textAppearance="?android:textAppearanceSmall"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/body_textView"
+        app:layout_constraintTop_toBottomOf="@+id/body_editText"
         tools:text="SomeUserNick" />
 
     <TextView
@@ -58,7 +58,7 @@
         android:lines="1"
         android:textAppearance="?android:textAppearanceSmall"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/body_textView"
+        app:layout_constraintTop_toBottomOf="@+id/body_editText"
         tools:text="22.03.2018 22:12" />
 
     <FrameLayout

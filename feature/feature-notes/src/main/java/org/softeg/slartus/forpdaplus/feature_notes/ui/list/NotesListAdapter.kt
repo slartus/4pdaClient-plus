@@ -62,8 +62,8 @@ class NotesListViewHolder(
 
     private var currentItem: NoteListItem? = null
 
-    private val titleTextView: TextView = itemView.findViewById(R.id.title_textView)
-    private val bodyTextView: TextView = itemView.findViewById(R.id.body_textView)
+    private val titleTextView: TextView = itemView.findViewById(R.id.title_editText)
+    private val bodyTextView: TextView = itemView.findViewById(R.id.body_editText)
     private val userTextView: TextView = itemView.findViewById(R.id.user_nick_textView)
     private val dateTextView: TextView = itemView.findViewById(R.id.date_textView)
     private val progressView: View = itemView.findViewById(R.id.progress_view)
