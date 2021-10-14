@@ -50,7 +50,7 @@ class NotesListFragment :
         }
 
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+           // repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
                     viewModel.uiState.collect { uiState ->
                         when (uiState) {
@@ -69,7 +69,7 @@ class NotesListFragment :
                             }
                         }
                     }
-                }
+               // }
             }
         }
 

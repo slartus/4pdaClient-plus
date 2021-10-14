@@ -231,6 +231,7 @@
             android:name=".controls.imageview.ImgViewer"
             android:label="Изображения"
             android:launchMode="singleTask" />
+        <activity android:name=".feature_notes.TestActivity" />
 
         <receiver android:name="org.softeg.slartus.forpdanotifyservice.qms.AlarmReceiver"
             android:exported="false" android:enabled="true">

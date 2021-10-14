@@ -3,12 +3,12 @@ package org.softeg.slartus.forpdaplus.preferences
 import android.util.Log
 import android.view.View
 import android.widget.SeekBar
-import androidx.test.espresso.PerformException
-import androidx.test.espresso.UiController
-import androidx.test.espresso.ViewAction
+import androidx.recyclerview.widget.RecyclerView
+import androidx.test.espresso.*
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.util.HumanReadables
 import androidx.test.espresso.util.TreeIterables
+import org.hamcrest.CoreMatchers
 import org.hamcrest.Matcher
 import java.util.concurrent.TimeoutException
 
@@ -82,5 +82,16 @@ fun waitForView(viewId: Int, timeout: Long): ViewAction {
                 .withViewDescription(HumanReadables.describe(rootView))
                 .build()
         }
+    }
+}
+
+class RecyclerViewItemCountAssertion(private val expectedCount: Int) : ViewAssertion {
+    override fun check(view: View, noViewFoundException: NoMatchingViewException?) {
+        if (noViewFoundException != null) {
+            throw noViewFoundException
+        }
+        val recyclerView = view as RecyclerView
+        val adapter = recyclerView.adapter
+        ViewMatchers.assertThat(adapter!!.itemCount, CoreMatchers.`is`(expectedCount))
     }
 }

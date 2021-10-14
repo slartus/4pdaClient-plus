@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="list_item_margin" type="dimen">12dp</item>
+    <dimen name="keyboard_height">230dp</dimen>
+
+    <dimen name="actionbar_prefs_height">56dp</dimen>
+    <dimen name="actionbar_prefs_height_kk">80dp</dimen>
 </resources>
