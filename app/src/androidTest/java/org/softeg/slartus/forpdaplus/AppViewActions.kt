@@ -1,4 +1,4 @@
-package org.softeg.slartus.forpdaplus.preferences
+package org.softeg.slartus.forpdaplus
 
 import android.util.Log
 import android.view.View

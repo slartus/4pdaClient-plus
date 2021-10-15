@@ -44,3 +44,19 @@ internal class ActivityTimberTree(activity: Activity) : Timber.Tree() {
         }
     }
 }
+//
+//class ReleaseTree : Timber.DebugTree() {
+//
+//    override fun log(priority: Int, tag: String?, message: String,
+//                     t: Throwable?) {
+//        if (priority == Log.VERBOSE) {
+//            return
+//        }
+//        //print to logcat
+//        Log.println(priority, tag, message)
+//
+//        Crashlytics.log(priority, tag, message)
+//        val t = t ?: Exception(message)
+//        Crashlytics.logException(t)
+//    }
+//}

@@ -401,12 +401,10 @@ object Preferences {
 
     object Notes {
         val isLocal: Boolean
-            get() = getPreferences()!!
-                .getString("notes.placement", "local") != "remote"
+            get() = getPreferences()?.getString("notes.placement", "local") != "remote"
 
         fun setPlacement(value: String?) {
-            getPreferences()!!
-                .edit().putString("notes.placement", value).apply()
+            getPreferences()?.edit()?.putString("notes.placement", value)?.apply()
         }
 
         var remoteUrl by appPreference("notes.remote.url", "")

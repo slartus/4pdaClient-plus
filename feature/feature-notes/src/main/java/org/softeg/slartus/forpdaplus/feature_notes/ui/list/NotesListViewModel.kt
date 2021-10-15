@@ -42,6 +42,7 @@ class NotesListViewModel constructor(
                         _uiState.value = NotesListState.Success(
                             items
                                 .filter { topicId == null || it.topicId == topicId }
+                                .sortedByDescending { it.date }
                                 .map { NoteListItem(it, false) }
                         )
                     }

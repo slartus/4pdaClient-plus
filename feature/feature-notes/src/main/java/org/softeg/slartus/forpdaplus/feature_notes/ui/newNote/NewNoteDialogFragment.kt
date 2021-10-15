@@ -13,6 +13,7 @@ import com.afollestad.materialdialogs.MaterialDialog
 import dagger.hilt.android.AndroidEntryPoint
 import org.softeg.slartus.forpdacommon.dip2px
 import org.softeg.slartus.forpdacommon.getDisplaySize
+import org.softeg.slartus.forpdacommon.uiMessage
 import org.softeg.slartus.forpdaplus.core.di.GenericSavedStateViewModelFactory
 import org.softeg.slartus.forpdaplus.core_ui.navigation.AppRouter
 import org.softeg.slartus.forpdaplus.feature_notes.R
@@ -93,7 +94,7 @@ class NewNoteDialogFragment : DialogFragment() {
         viewModel.error.observe(this, {
             Toast.makeText(
                 requireContext(),
-                it.localizedMessage ?: it.message ?: it.toString(),
+                it.uiMessage,
                 Toast.LENGTH_SHORT
             ).show()
             Timber.e(it)

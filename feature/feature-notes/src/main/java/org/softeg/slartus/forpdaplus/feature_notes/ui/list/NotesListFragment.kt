@@ -13,6 +13,7 @@ import com.afollestad.materialdialogs.MaterialDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import org.softeg.slartus.forpdacommon.uiMessage
 import org.softeg.slartus.forpdaplus.core.di.GenericSavedStateViewModelFactory
 import org.softeg.slartus.forpdaplus.core.ui.fragments.BaseFragment
 import org.softeg.slartus.forpdaplus.core_ui.navigation.AppRouter
@@ -50,7 +51,7 @@ class NotesListFragment :
         }
 
         lifecycleScope.launch {
-           // repeatOnLifecycle(Lifecycle.State.STARTED) {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
                     viewModel.uiState.collect { uiState ->
                         when (uiState) {
@@ -69,7 +70,7 @@ class NotesListFragment :
                             }
                         }
                     }
-               // }
+                }
             }
         }
 
@@ -86,16 +87,19 @@ class NotesListFragment :
             adapter.lastLongClickItem?.let {
                 val note = it.note
 
-                val linksMenu = menu.addSubMenu(R.string.links)
-                note.getUrls(requireContext())
-                    .forEach { (title, url) ->
-                        linksMenu.add(Menu.NONE, Menu.NONE, Menu.NONE, title).apply {
-                            this.setOnMenuItemClickListener {
-                                urlManager.openUrl(url)
-                                true
+                val urls = note.getUrls(requireContext())
+                if (urls.any()) {
+                    val linksMenu = menu.addSubMenu(R.string.links)
+                    urls
+                        .forEach { (title, url) ->
+                            linksMenu.add(Menu.NONE, Menu.NONE, Menu.NONE, title).apply {
+                                this.setOnMenuItemClickListener {
+                                    urlManager.openUrl(url)
+                                    true
+                                }
                             }
                         }
-                    }
+                }
                 menu.add(Menu.NONE, Menu.NONE, Menu.NONE, R.string.delete).apply {
                     this.setOnMenuItemClickListener {
                         showDeleteNoteDialog(note)
@@ -136,7 +140,7 @@ class NotesListFragment :
     }
 
     private fun showError(exception: Throwable) {
-        Toast.makeText(requireContext(), exception.message, Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(), exception.uiMessage, Toast.LENGTH_SHORT).show()
     }
 
     override fun onDestroyView() {

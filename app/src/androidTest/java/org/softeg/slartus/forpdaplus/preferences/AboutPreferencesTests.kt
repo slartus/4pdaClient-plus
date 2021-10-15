@@ -8,10 +8,13 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import androidx.test.platform.app.InstrumentationRegistry
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.softeg.slartus.forpdaplus.R
+import org.softeg.slartus.forpdaplus.nothing
 import org.softeg.slartus.forpdaplus.prefs.PreferencesActivity
 
 @RunWith(AndroidJUnit4::class)

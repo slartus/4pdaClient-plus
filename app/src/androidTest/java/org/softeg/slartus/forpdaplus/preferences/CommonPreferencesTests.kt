@@ -29,6 +29,7 @@ import org.softeg.slartus.forpdaplus.R
 import org.softeg.slartus.forpdaplus.feature_preferences.Preferences
 import org.softeg.slartus.forpdaplus.feature_preferences.preferences
 import org.softeg.slartus.forpdaplus.prefs.PreferencesActivity
+import org.softeg.slartus.forpdaplus.setProgress
 import java.io.File
 
 @RunWith(AndroidJUnit4::class)
