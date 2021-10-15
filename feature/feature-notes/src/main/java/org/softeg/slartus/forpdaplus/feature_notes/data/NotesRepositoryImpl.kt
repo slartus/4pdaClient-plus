@@ -15,7 +15,7 @@ open class NotesRepositoryImpl @Inject constructor(
     private val notesDao: NotesDao,
     private val notesPreferences: NotesPreferences
 ) : NotesRepository {
-    override val notes = notesDao.getAll()
+    override val notes = notesDao.getAllFlow()
     protected open val local: Boolean
         get() {
             return notesPreferences.isLocal

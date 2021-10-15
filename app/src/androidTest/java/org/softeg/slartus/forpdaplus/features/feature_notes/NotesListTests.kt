@@ -4,6 +4,7 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Rule
@@ -36,17 +37,18 @@ class NotesListTests {
 
     @Test
     fun test() {
-        launchFragmentInHiltContainer<NotesListFragment>()
-        onView(withId(R.id.list))
-            .check(RecyclerViewItemCountAssertion(0))
-        Thread.sleep(5000)
         runBlocking {
-            notesDao.insert(Note(date = Date()))
+            launchFragmentInHiltContainer<NotesListFragment>()
+            onView(withId(R.id.list))
+                .check(RecyclerViewItemCountAssertion(0))
 
+
+            notesDao.insert(Note(date = Date()))
+            delay(300)
+
+            onView(withId(R.id.list))
+                .check(RecyclerViewItemCountAssertion(1))
         }
-        Thread.sleep(5000)
-        onView(withId(R.id.list))
-            .check(RecyclerViewItemCountAssertion(1))
 
     }
 }
