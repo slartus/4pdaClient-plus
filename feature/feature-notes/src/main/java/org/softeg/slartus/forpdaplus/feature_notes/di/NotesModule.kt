@@ -7,6 +7,9 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.softeg.slartus.forpdaplus.feature_notes.NotesDao
+import org.softeg.slartus.forpdaplus.feature_notes.data.NotesRepository
+import org.softeg.slartus.forpdaplus.feature_notes.data.NotesRepositoryImpl
 import org.softeg.slartus.forpdaplus.feature_notes.network.NotesService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -16,7 +19,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class NotesModule {
+open class NotesModule {
     @Provides
     fun providesBaseUrl(): String = "https://any.com/"
 
@@ -49,4 +52,20 @@ class NotesModule {
     @Singleton
     fun provideNotesService(retrofit: Retrofit): NotesService =
         retrofit.create(NotesService::class.java)
+
+    open fun createRepository(
+        notesService: NotesService,
+        notesDao: NotesDao,
+        notesPreferences: NotesPreferences
+    ): NotesRepository =
+        NotesRepositoryImpl(notesService, notesDao, notesPreferences)
+
+    @Provides
+    @Singleton
+    fun provideNotesRepository(
+        notesService: NotesService,
+        notesDao: NotesDao,
+        notesPreferences: NotesPreferences
+    ): NotesRepository =
+        createRepository(notesService, notesDao, notesPreferences)
 }

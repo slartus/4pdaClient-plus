@@ -13,7 +13,10 @@ abstract class NoteDao {
     }
 
     @Query("SELECT * FROM note")
-    abstract fun getAll(): Flow<List<Note>>
+    abstract fun getAllFlow(): Flow<List<Note>>
+
+    @Query("SELECT * FROM note")
+    abstract fun getAll(): List<Note>
 
     @Query("SELECT * FROM note where topicId=:topicId")
     abstract suspend fun getByTopicId(topicId: String): List<Note>

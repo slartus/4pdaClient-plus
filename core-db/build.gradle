@@ -48,7 +48,6 @@ dependencies {
     api "androidx.room:room-runtime:$room_version" // api for access in AppDatabaseImpl
     implementation "androidx.room:room-ktx:$room_version"
 
-    annotationProcessor "androidx.room:room-compiler:$room_version"    
     kapt "androidx.room:room-compiler:$room_version"
     kapt "androidx.room:room-ktx:$room_version"
 

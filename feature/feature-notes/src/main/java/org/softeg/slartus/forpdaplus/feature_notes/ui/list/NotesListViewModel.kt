@@ -35,16 +35,17 @@ class NotesListViewModel constructor(
         viewModelScope.launch(errorHandler) {
             repository.load()
 
-            repository.notes
-                .distinctUntilChanged()
-                .collect { items ->
-                    _uiState.value = NotesListState.Success(
-                        items
-                            .filter { topicId == null || it.topicId == topicId }
-                            .map { NoteListItem(it, false) }
-                    )
-                }
-
+            launch {
+                repository.notes
+                    .distinctUntilChanged()
+                    .collect { items ->
+                        _uiState.value = NotesListState.Success(
+                            items
+                                .filter { topicId == null || it.topicId == topicId }
+                                .map { NoteListItem(it, false) }
+                        )
+                    }
+            }
         }
     }
 }

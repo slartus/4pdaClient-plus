@@ -3,8 +3,9 @@ package org.softeg.slartus.forpdaplus.core_db.tests
 import androidx.test.espresso.matcher.ViewMatchers.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.newSingleThreadContext
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.After
@@ -13,7 +14,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.softeg.slartus.forpdaplus.core_db.AppDatabase
 import org.softeg.slartus.forpdaplus.core_db.note.Note
-import java.io.IOException
 import java.util.*
 import javax.inject.Inject
 
@@ -58,7 +58,7 @@ class NoteDaoTest {
             val item = Note(date = Date())
             db.noteDao().insert(item)
             val dbItem = db.noteDao()
-                .getAll().first()
+                .getAll().take(1).first()
             db.noteDao().delete(dbItem)
             assert(
                 db.noteDao()
@@ -129,12 +129,54 @@ class NoteDaoTest {
     @Test
     fun deleteById() {
         runBlocking {
-            db.noteDao().insert(Note( date = Date()))
+            db.noteDao().insert(Note(date = Date()))
             db.noteDao().insert(Note(id = 1, date = Date()))
             db.noteDao().insert(Note(id = 2, date = Date()))
             db.noteDao().delete(1)
 
-            assertThat( db.noteDao().getAll().size, equalTo(2))
+            assertThat(db.noteDao().getAll().size, equalTo(2))
+        }
+    }
+
+    @Test
+    fun flowTest() {
+
+        runBlocking {
+            val lock = Any()
+            var count = 0
+            var flowCollectCount = 0
+            val job = launch {
+                db.noteDao().getAllFlow().collect {
+                    synchronized(lock) {
+                        assertThat(it.size, equalTo(count))
+                        flowCollectCount = it.size
+                    }
+                }
+            }
+            synchronized(lock) {
+                runBlocking {
+                    db.noteDao().insert(Note(date = Date()))
+                    count += 1
+                }
+            }
+            delay(10)
+            synchronized(lock) {
+                runBlocking {
+                    db.noteDao().insert(Note(date = Date()))
+                    count += 1
+                }
+            }
+            delay(10)
+            synchronized(lock) {
+                runBlocking {
+                    db.noteDao().insert(Note(date = Date()))
+                    count += 1
+                }
+            }
+            delay(10)
+            job.cancel()
+            delay(10)
+            assertThat(flowCollectCount, equalTo(count))
         }
     }
 
