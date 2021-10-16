@@ -32,8 +32,11 @@ class MainModule {
 
     @Singleton
     @Provides
-    fun provideAppNavigator(cicerone: Cicerone<Router>): AppRouter =
-        AppRouterImpl(cicerone.router as ExtendedRouter)
+    fun provideAppNavigator(
+        @ApplicationContext context: Context,
+        cicerone: Cicerone<Router>
+    ): AppRouter =
+        AppRouterImpl(context, cicerone.router as ExtendedRouter)
 
     @Singleton
     @Provides

@@ -5,5 +5,7 @@ interface AppRouter {
 
     fun startService(appService: AppService)
 
+    fun openUrl(url: String)
+
     fun exit()
 }

@@ -331,7 +331,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
         return false;
     }
 
-    public static Boolean tryShowUrl(Activity context, Handler handler, String url, Boolean showInDefaultBrowser,
+    public static Boolean tryShowUrl(Context context, Handler handler, String url, Boolean showInDefaultBrowser,
                                      final Boolean finishActivity) {
         return tryShowUrl(context, handler, url, showInDefaultBrowser, finishActivity, null);
     }

@@ -15,9 +15,12 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.softeg.slartus.forpdacommon.UrlExtensions
+import org.softeg.slartus.forpdacommon.fromHtml
 import org.softeg.slartus.forpdaplus.core.di.GenericSavedStateViewModelFactory
 import org.softeg.slartus.forpdaplus.core.ui.fragments.BaseFragment
 import org.softeg.slartus.forpdaplus.core_ui.html.HtmlBuilder
+import org.softeg.slartus.forpdaplus.core_ui.html.HtmlStylePreferences
+import org.softeg.slartus.forpdaplus.core_ui.navigation.AppRouter
 import org.softeg.slartus.forpdaplus.feature_notes.Note
 import org.softeg.slartus.forpdaplus.feature_notes.R
 import org.softeg.slartus.forpdaplus.feature_notes.data.topicUrl
@@ -33,7 +36,10 @@ class NoteFragment : BaseFragment<FragmentNoteBinding>(FragmentNoteBinding::infl
     internal lateinit var viewModelFactory: NoteViewModelFactory
 
     @Inject
-    internal lateinit var htmlBuilder: HtmlBuilder
+    internal lateinit var router: AppRouter
+
+    @Inject
+    internal lateinit var htmlStylePreferences: HtmlStylePreferences
 
     private val viewModel: NoteViewModel by viewModels {
         GenericSavedStateViewModelFactory(viewModelFactory, this, arguments)
@@ -66,6 +72,8 @@ class NoteFragment : BaseFragment<FragmentNoteBinding>(FragmentNoteBinding::infl
     }
 
     private fun updateUi(note: Note) {
+        binding.titleTextView.text = note.title
+
         binding.infoTable.removeAllViews()
         val rowparams = TableLayout.LayoutParams(
             TableRow.LayoutParams.WRAP_CONTENT,
@@ -131,22 +139,19 @@ class NoteFragment : BaseFragment<FragmentNoteBinding>(FragmentNoteBinding::infl
         binding.infoTable.addView(row, rowparams)
         row = TableRow(context)
         val textView2: TextView = createSecondTextView()
-        textView2.text = Html.fromHtml(text)
+        textView2.text = text.fromHtml()
         textView2.ellipsize = null
         textView2.setOnClickListener {
-            if (!TextUtils.isEmpty(
-                    url
-                )
-            ) {
-                //  IntentActivity.tryShowUrl(getMainActivity(), mHandler, url, true, false)
-            }
+            if (!url.isNullOrEmpty())
+                router.openUrl(url)
         }
-        textView2.setOnLongClickListener { view: View? ->
-            if (!TextUtils.isEmpty(url)) {
-                //ExtUrl.showSelectActionDialog(mHandler, getMainActivity(), url)
-            }
-            true
-        }
+        // TODO: вернуть меню для ссылки
+//        textView2.setOnLongClickListener { view: View? ->
+//            if (!url.isNullOrEmpty())
+//                router.openUrl(url)
+//
+//            true
+//        }
         row.addView(textView2, textviewparams)
         binding.infoTable.addView(row, rowparams)
     }
@@ -161,14 +166,14 @@ class NoteFragment : BaseFragment<FragmentNoteBinding>(FragmentNoteBinding::infl
 
     private fun transformChatBody(body: String): String {
 
-        val htmlBuilder = htmlBuilder
+        val htmlBuilder = HtmlBuilder(htmlStylePreferences)
         htmlBuilder.beginHtml(getString(R.string.note))
         htmlBuilder.append("<div class=\"emoticons\">")
         htmlBuilder.append(body)
         htmlBuilder.append("</div>")
         htmlBuilder.endBody()
         htmlBuilder.endHtml()
-        return htmlBuilder.getHtml().toString()
+        return htmlBuilder.getHtml()
     }
 
     private fun setLoading(loading: Boolean) {

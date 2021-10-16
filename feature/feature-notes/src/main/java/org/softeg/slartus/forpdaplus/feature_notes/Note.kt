@@ -23,5 +23,5 @@ data class Note(
     @SerializedName("UserName")
     val userName: String? = null,
     @SerializedName("Date")
-    val date: Date
+    val date: Date = Date()
 )
