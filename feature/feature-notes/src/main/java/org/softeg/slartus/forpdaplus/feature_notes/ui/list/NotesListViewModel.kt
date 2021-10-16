@@ -8,10 +8,11 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.softeg.slartus.forpdaplus.core.di.ViewModelAssistedFactory
 import org.softeg.slartus.forpdaplus.feature_notes.data.NotesRepository
+import org.softeg.slartus.forpdaplus.feature_notes.ui.newNote.NewNoteViewModel
 import javax.inject.Inject
 
 class NotesListViewModel constructor(
-    state: SavedStateHandle,
+    private val state: SavedStateHandle,
     private val repository: NotesRepository
 ) :
     ViewModel() {
@@ -48,6 +49,10 @@ class NotesListViewModel constructor(
                     }
             }
         }
+    }
+
+    fun saveState() {
+        state.set(NotesListFragment.ARG_TOPIC_ID, topicId)
     }
 }
 

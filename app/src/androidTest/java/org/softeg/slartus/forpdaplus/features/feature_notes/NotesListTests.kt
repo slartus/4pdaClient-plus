@@ -92,7 +92,7 @@ class NotesListTests {
     @Test
     fun listItemContextLinksTest() {
         launchFragmentInHiltContainer<NotesListFragment>()
-        addNoteToList(Note(title = "title $1", date = Date()))
+        addNoteToList(Note(title = "title 1", date = Date()))
 
         // check links menu not exists
         showContextMenu(0)
@@ -131,13 +131,9 @@ class NotesListTests {
                 )
             )
         scenario.recreate()
-        onView(withId(R.id.list))
-            .perform(
-                RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
-                    100,
-                    longClick()
-                )
-            )
+
+        onView(withText("title 100"))
+            .check(matches(isDisplayed()))
     }
 
     private fun addItemsAndCheckCount(itemsCount: Int) {
@@ -167,5 +163,8 @@ class NotesListTests {
                     longClick()
                 )
             )
+    }
+    companion object{
+
     }
 }

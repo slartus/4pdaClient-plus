@@ -148,6 +148,11 @@ class NotesListFragment :
         super.onDestroyView()
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        viewModel.saveState()
+    }
+
     companion object {
         internal const val ARG_TOPIC_ID = "NotesListFragment.TOPIC_ID"
         fun newInstance(topicId: String?) = NotesListFragment().apply {
