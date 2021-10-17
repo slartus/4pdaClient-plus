@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -15,20 +16,11 @@
         android:padding="16dp"
         android:shrinkColumns="1" />
 
-    <TextView
-        style="?list_text_special_color"
+    <org.softeg.slartus.forpdaplus.feature_notes.ui.note.RowView
+        android:id="@+id/title_rowView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/theme"
-        android:textSize="16sp" />
-
-    <TextView
-        android:id="@+id/title_textView"
-        style="?list_text_second_color"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="14sp"
-        tools:text="Название темы"/>
+        app:title="@string/theme" />
 
     <WebView
         android:id="@+id/webView"

@@ -1,5 +1,6 @@
 package org.softeg.slartus.forpdaplus.feature_notes.ui
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -99,6 +100,7 @@ class NotesPreferencesFragment : PreferenceFragmentCompat() {
 
     private fun checkRemoteUrl(baseUrl: String) {
         setLoading(true)
+
         val errorHandler = CoroutineExceptionHandler { _, throwable ->
             lifecycleScope.launch(Dispatchers.Main) {
                 setLoading(false)
@@ -111,11 +113,17 @@ class NotesPreferencesFragment : PreferenceFragmentCompat() {
             }
         }
         lifecycleScope.launch(Dispatchers.IO + errorHandler) {
-            notesRepository.checkUrl(baseUrl)
+            val uri = Uri.parse(baseUrl)
+            val url = if (uri.scheme == null) {
+                "https://$uri"
+            } else {
+                uri.toString()
+            }
+            notesRepository.checkUrl(url)
             withContext(Dispatchers.Main) {
                 setLoading(false)
                 notesPreferences.setPlacement("remote")
-                notesPreferences.remoteUrl = baseUrl
+                notesPreferences.remoteUrl = url
                 findPreference<Preference>("notes.remote.url")?.summary = baseUrl
                 refreshNotesEnabled()
             }

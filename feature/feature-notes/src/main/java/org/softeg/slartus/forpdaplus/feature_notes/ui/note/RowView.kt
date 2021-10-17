@@ -4,13 +4,8 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.LinearLayout
+import org.softeg.slartus.forpdaplus.feature_notes.R
 import org.softeg.slartus.forpdaplus.feature_notes.databinding.ViewNoteRowBinding
-import android.R
-
-import android.content.res.TypedArray
-
-
-
 
 class RowView @JvmOverloads constructor(
     context: Context,
@@ -25,21 +20,33 @@ class RowView @JvmOverloads constructor(
         init(context, attrs)
     }
 
+    var title: CharSequence?
+        get() = binding.titleTextView.text
+        set(value) {
+            binding.titleTextView.text = value
+        }
+
+    var value: CharSequence?
+        get() = binding.valueTextView.text
+        set(value) {
+            binding.valueTextView.text = value
+        }
+
     private fun init(context: Context, attrs: AttributeSet?) {
         orientation = VERTICAL
 
         context.theme.obtainStyledAttributes(
             attrs,
-            R.styleable.PieChart,
-            0, 0).apply {
+            R.styleable.RowView,
+            0, 0
+        ).apply {
 
             try {
-                mShowText = getBoolean(R.styleable.PieChart_showText, false)
-                textPos = getInteger(R.styleable.PieChart_labelPosition, 0)
+                title = getString(R.styleable.RowView_title)
+                value = getString(R.styleable.RowView_value)
             } finally {
                 recycle()
             }
         }
-        val typedArray = context.obtainStyledAttributes(attrs, R.styleable.BottomBarItemCustomView)
     }
 }

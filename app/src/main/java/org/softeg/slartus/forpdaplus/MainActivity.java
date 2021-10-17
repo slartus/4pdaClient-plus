@@ -170,11 +170,13 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
         hack = true;
     }
 
+    private Timber.Tree timberTree = new ActivityTimberTree(this);
+
     @Override
     public void onCreate(Bundle saveInstance) {
         setTheme(AppTheme.getThemeStyleResID());
         super.onCreate(saveInstance);
-        Timber.plant(new ActivityTimberTree(this));
+
 
         //BackgroundServiceUtils.requestBackgroundPermission(this);
         loadPreferences(App.getInstance().getPreferences());
@@ -618,6 +620,18 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
         m_ExitWarned = false;
         onStart();
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Timber.plant(timberTree);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Timber.uproot(timberTree);
     }
 
     @Override

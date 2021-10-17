@@ -72,7 +72,7 @@ class NoteFragment : BaseFragment<FragmentNoteBinding>(FragmentNoteBinding::infl
     }
 
     private fun updateUi(note: Note) {
-        binding.titleTextView.text = note.title
+        binding.titleRowView.value = note.title
 
         binding.infoTable.removeAllViews()
         val rowparams = TableLayout.LayoutParams(

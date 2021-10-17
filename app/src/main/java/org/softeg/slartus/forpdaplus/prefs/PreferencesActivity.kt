@@ -7,7 +7,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.softeg.slartus.forpdaplus.App
 import org.softeg.slartus.forpdaplus.feature_notes.ui.NotesPreferencesFragment
 import org.softeg.slartus.forpdaplus.feature_preferences.fragments.TopicViewPreferences
+import org.softeg.slartus.forpdaplus.log.ActivityTimberTree
 import ru.slartus.http.PersistentCookieStore.Companion.getInstance
+import timber.log.Timber
 
 /**
  * User: slinkin
@@ -18,8 +20,10 @@ import ru.slartus.http.PersistentCookieStore.Companion.getInstance
 class PreferencesActivity : BasePreferencesActivity(),
     PreferenceFragmentCompat.OnPreferenceStartScreenCallback {
 
+    private val timberTree = ActivityTimberTree(this)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         if (savedInstanceState == null) {
             supportFragmentManager
                 .beginTransaction()
@@ -37,7 +41,7 @@ class PreferencesActivity : BasePreferencesActivity(),
                 "download_files_screen" -> {
                     TopicViewPreferences()
                 }
-                "notes"->{
+                "notes" -> {
                     NotesPreferencesFragment()
                 }
                 else -> {
@@ -55,9 +59,15 @@ class PreferencesActivity : BasePreferencesActivity(),
         return true
     }
 
+    override fun onStart() {
+        super.onStart()
+
+        Timber.plant(timberTree)
+    }
+
     public override fun onStop() {
         super.onStop()
-
+        Timber.uproot(timberTree)
         App.resStartNotifierServices()
         getInstance(App.getInstance()).reload()
     }
