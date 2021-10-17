@@ -3,14 +3,15 @@ package org.softeg.slartus.forpdaplus.prefs;/*
  */
 
 import android.os.Bundle;
-import android.preference.Preference;
-import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
+
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceManager;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
@@ -18,20 +19,23 @@ import org.softeg.slartus.forpdaplus.R;
 
 import org.softeg.slartus.forpdaplus.feature_preferences.Preferences;
 
-public class TopicsPreferenceFragment extends PreferenceFragment implements Preference.OnPreferenceClickListener {
+public class TopicsPreferenceFragment extends PreferenceFragmentCompat implements Preference.OnPreferenceClickListener {
     public static String ListName = "";
 
     @SuppressWarnings("ConstantConditions")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.xml.topics_list_prefs);
 
         Preference sortPreference = findPreference("topics.list.sort");
         sortPreference.setOnPreferenceClickListener(this);
         sortPreference.setSummary(getSortTitle());
     }
 
+    @Override
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+        setPreferencesFromResource(R.xml.topics_list_prefs, rootKey);
+    }
 
     private String getSortTitle() {
         String title = "";
@@ -109,7 +113,7 @@ public class TopicsPreferenceFragment extends PreferenceFragment implements Pref
 
         new MaterialDialog.Builder(getActivity())
                 .title(R.string.sort)
-                .customView(v,true)
+                .customView(v, true)
                 .positiveText(R.string.sort_descending)
                 .neutralText(R.string.sort_ascending)
                 .callback(new MaterialDialog.ButtonCallback() {
@@ -134,6 +138,7 @@ public class TopicsPreferenceFragment extends PreferenceFragment implements Pref
                         Toast.makeText(getActivity(), R.string.need_refresh_list,
                                 Toast.LENGTH_SHORT).show();
                     }
+
                     @Override
                     public void onNeutral(MaterialDialog dialog) {
                         String sortValue = "date";

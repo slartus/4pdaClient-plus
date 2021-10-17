@@ -4,8 +4,12 @@ import android.content.Context
 import android.util.AttributeSet
 import androidx.preference.ListPreference
 
-class SummaryValueListPreference(context: Context?, attrs: AttributeSet?) :
-    ListPreference(context, attrs) {
+class SummaryValueListPreference @JvmOverloads constructor(
+    context: Context? = null,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) :
+    ListPreference(context, attrs, defStyleAttr) {
 
     init {
         summaryProvider = SimpleSummaryProvider.instance

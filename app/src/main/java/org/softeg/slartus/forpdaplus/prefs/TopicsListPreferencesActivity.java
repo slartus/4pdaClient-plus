@@ -8,7 +8,7 @@ public class TopicsListPreferencesActivity extends BasePreferencesActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getFragmentManager().beginTransaction().replace(android.R.id.content,
+        getSupportFragmentManager().beginTransaction().replace(android.R.id.content,
                 new TopicsPreferenceFragment()).commitAllowingStateLoss();
     }
 

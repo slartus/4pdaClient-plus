@@ -23,7 +23,6 @@ class PrefsFragment : PreferenceFragmentCompat() {
         setPreferencesFromResource(R.xml.preferences, rootKey)
     }
 
-
     override fun onPreferenceTreeClick(preference: Preference?): Boolean {
         when (val key = preference?.key) {
             "path.system_path" -> {

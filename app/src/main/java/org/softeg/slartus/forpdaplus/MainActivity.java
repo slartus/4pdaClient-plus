@@ -27,6 +27,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
@@ -139,6 +143,12 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
         }
     };
 
+    private ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+
+            });
+
 
     public static SearchSettings searchSettings;
 
@@ -158,16 +168,8 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
         return mMainDrawerMenu;
     }
 
-    public boolean hack = false;
-
     public Context getContext() {
         return this;
-    }
-
-    @Override
-    public void startActivityForResult(android.content.Intent intent, int requestCode) {
-        super.startActivityForResult(intent, requestCode);
-        hack = true;
     }
 
     private Timber.Tree timberTree = new ActivityTimberTree(this);
@@ -571,11 +573,11 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
         outState.putInt("tabIterator", TabsManager.getInstance().getTabIterator());
         outState.putString("currentTag", TabsManager.getInstance().getCurrentFragmentTag());
         super.onSaveInstanceState(outState);
-        if (hack) {
-            onStop();
-            onStart();
-        }
-        hack = false;
+    }
+
+    public void startActivityForResult(Class<?> cls){
+        Intent intent = new Intent(this, cls);
+        activityResultLauncher.launch(intent);
     }
 
     public static SharedPreferences getPreferences() {

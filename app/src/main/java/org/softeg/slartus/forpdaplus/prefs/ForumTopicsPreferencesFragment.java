@@ -1,21 +1,32 @@
 package org.softeg.slartus.forpdaplus.prefs;
 
 import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.preference.CheckBoxPreference;
-import android.preference.ListPreference;
-import android.preference.Preference;
-import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
+import android.os.Bundle;;
 
-import org.softeg.slartus.forpdacommon.ExtPreferences;
+import androidx.preference.CheckBoxPreference;
+import androidx.preference.ListPreference;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceManager;
+
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
 
 /*
  * Created by Артём on 01.05.14.
  */
-public class ForumTopicsPreferencesFragment extends PreferenceFragment {
+public class ForumTopicsPreferencesFragment extends PreferenceFragmentCompat {
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+        setPreferencesFromResource(R.xml.forum_topics_list_prefs, rootKey);
+    }
+
     @Override
     public void onActivityCreated(android.os.Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -37,14 +48,6 @@ public class ForumTopicsPreferencesFragment extends PreferenceFragment {
         PreferenceManager.setDefaultValues(getActivity(), R.xml.forum_topics_list_prefs, false);
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        addPreferencesFromResource(R.xml.forum_topics_list_prefs);
-
-
-    }
 
     @SuppressWarnings("ConstantConditions")
     private void setKey(SharedPreferences preferences, String prefsKey, String listName, String defValue) {
@@ -70,5 +73,11 @@ public class ForumTopicsPreferencesFragment extends PreferenceFragment {
         });
 
 
+    }
+
+
+    private androidx.preference.Preference findPreference(String key){
+
+        return super.findPreference(key);
     }
 }

@@ -5,6 +5,8 @@ package org.softeg.slartus.forpdaplus.prefs;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+
 public class ForumTopicsPreferencesActivity extends BasePreferencesActivity {
     public static final int RESULT_OK = 1;
     public static final int RESULT_NONE = 0;
@@ -23,12 +25,12 @@ public class ForumTopicsPreferencesActivity extends BasePreferencesActivity {
 
         ForumTopicsPreferencesFragment fragment = new ForumTopicsPreferencesFragment();
         fragment.setArguments(getIntent().getExtras());
-        getFragmentManager().beginTransaction().replace(android.R.id.content,
+        getSupportFragmentManager().beginTransaction().replace(android.R.id.content,
                 fragment).commitAllowingStateLoss();
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBundle(ARGS_KEY, mArgs);
     }
