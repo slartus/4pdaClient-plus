@@ -3,6 +3,7 @@ package org.softeg.slartus.forpdaplus.feature_notes.ui.note
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.LinearLayout
 import org.softeg.slartus.forpdaplus.feature_notes.R
 import org.softeg.slartus.forpdaplus.feature_notes.databinding.ViewNoteRowBinding
@@ -16,10 +17,6 @@ class RowView @JvmOverloads constructor(
     private var binding: ViewNoteRowBinding =
         ViewNoteRowBinding.inflate(LayoutInflater.from(context), this)
 
-    init {
-        init(context, attrs)
-    }
-
     var title: CharSequence?
         get() = binding.titleTextView.text
         set(value) {
@@ -31,6 +28,10 @@ class RowView @JvmOverloads constructor(
         set(value) {
             binding.valueTextView.text = value
         }
+
+    init {
+        init(context, attrs)
+    }
 
     private fun init(context: Context, attrs: AttributeSet?) {
         orientation = VERTICAL
@@ -48,5 +49,9 @@ class RowView @JvmOverloads constructor(
                 recycle()
             }
         }
+    }
+
+    fun setOnValueClickListener(listener: View.OnClickListener) {
+        binding.valueTextView.setOnClickListener(listener)
     }
 }

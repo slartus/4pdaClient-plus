@@ -226,6 +226,7 @@
     <string name="request_performed">Request performed</string>
     <string name="note">Note</string>
     <string name="topic">Topic</string>
+    <string name="post">Post</string>
     <string name="user">User</string>
     <string name="notes">Notes</string>
     <string name="ask_delete_note">Delete note?</string>

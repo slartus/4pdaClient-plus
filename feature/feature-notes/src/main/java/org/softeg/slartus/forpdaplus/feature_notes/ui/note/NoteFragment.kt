@@ -18,11 +18,14 @@ import org.softeg.slartus.forpdacommon.UrlExtensions
 import org.softeg.slartus.forpdacommon.fromHtml
 import org.softeg.slartus.forpdaplus.core.di.GenericSavedStateViewModelFactory
 import org.softeg.slartus.forpdaplus.core.ui.fragments.BaseFragment
+import org.softeg.slartus.forpdaplus.core_ui.AppTheme
+import org.softeg.slartus.forpdaplus.core_ui.AppTheme.Companion.themeStyleWebViewBackground
 import org.softeg.slartus.forpdaplus.core_ui.html.HtmlBuilder
 import org.softeg.slartus.forpdaplus.core_ui.html.HtmlStylePreferences
 import org.softeg.slartus.forpdaplus.core_ui.navigation.AppRouter
 import org.softeg.slartus.forpdaplus.feature_notes.Note
 import org.softeg.slartus.forpdaplus.feature_notes.R
+import org.softeg.slartus.forpdaplus.feature_notes.data.postUrl
 import org.softeg.slartus.forpdaplus.feature_notes.data.topicUrl
 import org.softeg.slartus.forpdaplus.feature_notes.data.userUrl
 import org.softeg.slartus.forpdaplus.feature_notes.databinding.FragmentNoteBinding
@@ -48,6 +51,7 @@ class NoteFragment : BaseFragment<FragmentNoteBinding>(FragmentNoteBinding::infl
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.webView.setBackgroundColor(themeStyleWebViewBackground)
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
@@ -72,44 +76,41 @@ class NoteFragment : BaseFragment<FragmentNoteBinding>(FragmentNoteBinding::infl
     }
 
     private fun updateUi(note: Note) {
-        binding.titleRowView.value = note.title
+        binding.titleTextView.text = note.title
+        binding.titleTextView.visibility =
+            if (note.title.isNullOrEmpty() || note.title == note.topicTitle) View.GONE else View.VISIBLE
 
-        binding.infoTable.removeAllViews()
-        val rowparams = TableLayout.LayoutParams(
-            TableRow.LayoutParams.WRAP_CONTENT,
-            TableRow.LayoutParams.WRAP_CONTENT
-        )
-
-        val textviewparams = TableRow.LayoutParams(
-            TableRow.LayoutParams.WRAP_CONTENT,
-            TableRow.LayoutParams.WRAP_CONTENT
-        )
-
-        if (!TextUtils.isEmpty(note.title)) {
-            addRow(getString(R.string.theme), note.title, null, rowparams, textviewparams)
+        binding.topicTextView.text =
+            UrlExtensions.urlToHref(note.topicUrl, note.title ?: getString(R.string.topic))
+                .fromHtml()
+        binding.topicTextView.visibility =
+            if (note.topicId.isNullOrEmpty()) View.GONE else View.VISIBLE
+        binding.topicTextView.setOnClickListener {
+            note.topicUrl?.let {
+                router.openUrl(it)
+            }
         }
 
-
-        if (!TextUtils.isEmpty(note.topicTitle)) {
-            addLinkRow(
-                getString(R.string.topic),
-                note.topicUrl,
-                rowparams,
-                textviewparams
-            )
+        binding.postTextView.text =
+            UrlExtensions.urlToHref(note.postUrl, getString(R.string.post) + "#${note.postId}")
+                .fromHtml()
+        binding.postTextView.visibility =
+            if (note.postUrl.isNullOrEmpty()) View.GONE else View.VISIBLE
+        binding.postTextView.setOnClickListener {
+            note.postUrl?.let {
+                router.openUrl(it)
+            }
         }
 
-        if (!TextUtils.isEmpty(note.userName)) {
-            addLinkRow(
-                getString(R.string.user),
-                note.userUrl,
-                rowparams,
-                textviewparams
-            )
-        }
-
-        if (!TextUtils.isEmpty(note.url)) {
-            addLinkRow(getString(R.string.link), note.url, rowparams, textviewparams)
+        binding.userTextView.text =
+            UrlExtensions.urlToHref(note.userUrl, note.userName ?: getString(R.string.user))
+                .fromHtml()
+        binding.userTextView.visibility =
+            if (note.userUrl.isNullOrEmpty()) View.GONE else View.VISIBLE
+        binding.userTextView.setOnClickListener {
+            note.userUrl?.let {
+                router.openUrl(it)
+            }
         }
 
         binding.webView.loadDataWithBaseURL(
@@ -119,49 +120,6 @@ class NoteFragment : BaseFragment<FragmentNoteBinding>(FragmentNoteBinding::infl
             "UTF-8",
             null
         )
-    }
-
-    private fun addLinkRow(
-        title: String?, url: String?,
-        rowparams: TableLayout.LayoutParams, textviewparams: TableRow.LayoutParams
-    ) {
-        addRow(title, UrlExtensions.urlToHref(url, title), url, rowparams, textviewparams)
-    }
-
-    private fun addRow(
-        title: String?, text: String?, url: String?,
-        rowparams: TableLayout.LayoutParams, textviewparams: TableRow.LayoutParams
-    ) {
-        var row = TableRow(context)
-        val textView: TextView = createFirstTextView()
-        textView.text = title
-        row.addView(textView, textviewparams)
-        binding.infoTable.addView(row, rowparams)
-        row = TableRow(context)
-        val textView2: TextView = createSecondTextView()
-        textView2.text = text.fromHtml()
-        textView2.ellipsize = null
-        textView2.setOnClickListener {
-            if (!url.isNullOrEmpty())
-                router.openUrl(url)
-        }
-        // TODO: вернуть меню для ссылки
-//        textView2.setOnLongClickListener { view: View? ->
-//            if (!url.isNullOrEmpty())
-//                router.openUrl(url)
-//
-//            true
-//        }
-        row.addView(textView2, textviewparams)
-        binding.infoTable.addView(row, rowparams)
-    }
-
-    private fun createFirstTextView(): TextView {
-        return layoutInflater.inflate(R.layout.note_first_textview, null) as TextView
-    }
-
-    private fun createSecondTextView(): TextView {
-        return layoutInflater.inflate(R.layout.note_second_textview, null) as TextView
     }
 
     private fun transformChatBody(body: String): String {
@@ -177,7 +135,7 @@ class NoteFragment : BaseFragment<FragmentNoteBinding>(FragmentNoteBinding::infl
     }
 
     private fun setLoading(loading: Boolean) {
-
+        binding.progressView.visibility = if (loading) View.VISIBLE else View.GONE
     }
 
     companion object {

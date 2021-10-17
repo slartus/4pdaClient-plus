@@ -235,6 +235,7 @@
     <string name="request_performed">Запрос выполнен</string>
     <string name="note">Заметка</string>
     <string name="topic">Топик</string>
+    <string name="post">Сообщение</string>
     <string name="user">Пользователь</string>
     <string name="notes">Заметки</string>
     <string name="ask_delete_note">Удалить заметку?</string>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,21 +9,66 @@
     android:paddingStart="16dp"
     android:paddingEnd="16dp">
 
-    <TableLayout
-        android:id="@+id/infoTable"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:shrinkColumns="1" />
-
-    <org.softeg.slartus.forpdaplus.feature_notes.ui.note.RowView
-        android:id="@+id/title_rowView"
+    <TextView
+        android:id="@+id/title_textView"
+        style="?list_text_special_color"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:title="@string/theme" />
+        android:textSize="16sp"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Тема" />
+
+    <TextView
+        android:id="@+id/topic_textView"
+        style="?list_text_second_color"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ellipsize="none"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_textView"
+        tools:text="Топик" />
+
+    <TextView
+        android:id="@+id/post_textView"
+        style="?list_text_second_color"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ellipsize="none"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/topic_textView"
+        tools:text="Пост" />
+
+    <TextView
+        android:id="@+id/user_textView"
+        style="?list_text_second_color"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ellipsize="none"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/post_textView"
+        tools:text="Пользователь" />
 
     <WebView
         android:id="@+id/webView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-</LinearLayout>
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/user_textView" />
+
+    <ProgressBar
+        android:id="@+id/progress_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
