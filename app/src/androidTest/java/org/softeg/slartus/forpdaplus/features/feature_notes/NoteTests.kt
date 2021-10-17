@@ -39,15 +39,15 @@ class NoteTests {
 
     @Test
     fun listReactionTest() {
-        val note = notesList().random()
-        var dbNote: Note? = null
-        runBlocking {
-            notesDao.insert(note)
-            notesDao.getAllFlow().take(1).collect {
-                dbNote = it.first()
-            }
-        }
-        runFragment(dbNote?.id ?: 0)
+//        val note = notesList().random()
+//        var dbNote: Note? = null
+//        runBlocking {
+//            notesDao.insert(note)
+//            notesDao.getAllFlow().take(1).collect {
+//                dbNote = it.first()
+//            }
+//        }
+//        runFragment(dbNote?.id ?: 0)
 
     }
 
