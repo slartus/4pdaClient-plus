@@ -9,28 +9,22 @@ import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.*
-import dagger.hilt.android.HiltAndroidApp
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import dagger.hilt.android.testing.HiltTestApplication
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
-import org.hamcrest.Matchers.not
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.softeg.slartus.forpdaplus.CustomTestRunner
+import org.softeg.slartus.forpdaplus.RecyclerViewItemCountAssertion
 import org.softeg.slartus.forpdaplus.feature_notes.Note
 import org.softeg.slartus.forpdaplus.feature_notes.NotesDao
+import org.softeg.slartus.forpdaplus.feature_notes.R
 import org.softeg.slartus.forpdaplus.feature_notes.ui.list.NotesListFragment
 import org.softeg.slartus.forpdaplus.launchFragmentInHiltContainer
-import org.softeg.slartus.forpdaplus.RecyclerViewItemCountAssertion
-import org.softeg.slartus.forpdaplus.feature_notes.R
-import org.softeg.slartus.forpdaplus.feature_notes.data.topicUrl
-import org.softeg.slartus.forpdaplus.feature_notes.data.userUrl
 import java.util.*
 import javax.inject.Inject
-import org.softeg.slartus.forpdaplus.ApplicationTestRule
-import org.softeg.slartus.forpdaplus.CustomTestRunner
 
 @HiltAndroidTest
 class NotesListTests {
