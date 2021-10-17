@@ -27,8 +27,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -143,11 +141,9 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
         }
     };
 
-    private ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
+    private final ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
-            result -> {
-
-            });
+            result -> Timber.d("activityresult"));
 
 
     public static SearchSettings searchSettings;
@@ -172,7 +168,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
         return this;
     }
 
-    private Timber.Tree timberTree = new ActivityTimberTree(this);
+    private final Timber.Tree timberTree = new ActivityTimberTree(this);
 
     @Override
     public void onCreate(Bundle saveInstance) {
@@ -575,7 +571,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
         super.onSaveInstanceState(outState);
     }
 
-    public void startActivityForResult(Class<?> cls){
+    public void startActivityForResult(Class<?> cls) {
         Intent intent = new Intent(this, cls);
         activityResultLauncher.launch(intent);
     }

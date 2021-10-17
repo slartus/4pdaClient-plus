@@ -205,7 +205,7 @@ public class MainDrawerMenu implements NavigationView.OnNavigationItemSelectedLi
                 ThemeFragment.showTopicById("275433");
                 break;
             case PreferencesBrickInfo.NAME:
-                mActivity.startActivityForResult(new Intent(mActivity, PreferencesActivity.class), 0);
+                mActivity.startActivityForResult(PreferencesActivity.class);
                 break;
             case MarkAllReadBrickInfo.NAME:
                 if (!Client.getInstance().getLogined()) {
