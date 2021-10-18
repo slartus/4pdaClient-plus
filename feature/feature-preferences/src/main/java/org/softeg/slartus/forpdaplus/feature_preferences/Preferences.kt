@@ -17,6 +17,7 @@ import java.io.File
 import java.util.*
 
 object Preferences {
+
     private const val DEFAULT_FONT_SIZE = 16
     private const val MAX_FONT_SIZE = 72
 

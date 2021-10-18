@@ -7,10 +7,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import org.softeg.slartus.forpdacommon.NotReportException
 import org.softeg.slartus.forpdacommon.dialogs.ProgressDialog
 import org.softeg.slartus.forpdacommon.openUrl
@@ -35,11 +32,24 @@ class NotesPreferencesFragment : BasePreferenceFragment() {
     @Inject
     lateinit var notesRepository: NotesRepository
 
+    private val errorHandler = CoroutineExceptionHandler { _, throwable ->
+        lifecycleScope.launch(Dispatchers.Main) {
+            setLoading(false)
+            Timber.e(
+                NotReportException(
+                    throwable.uiMessage,
+                    throwable
+                )
+            )
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         preferenceManager.sharedPreferences.registerOnSharedPreferenceChangeListener { _, s ->
             when (s) {
                 KEY_REMOTE_URL -> updateRemoteUrlSummary()
+                KEY_NOTES_PLACEMENT -> lifecycleScope.launch(Dispatchers.IO + errorHandler) { notesRepository.load() }
             }
         }
         findPreference<EditTextPreference>(KEY_REMOTE_URL)?.apply {
@@ -55,7 +65,6 @@ class NotesPreferencesFragment : BasePreferenceFragment() {
         }
         updateRemoteUrlSummary()
     }
-
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.notes_preferences, rootKey)
@@ -88,17 +97,7 @@ class NotesPreferencesFragment : BasePreferenceFragment() {
     private fun checkRemoteUrl(baseUrl: String) {
         setLoading(true)
 
-        val errorHandler = CoroutineExceptionHandler { _, throwable ->
-            lifecycleScope.launch(Dispatchers.Main) {
-                setLoading(false)
-                Timber.e(
-                    NotReportException(
-                        throwable.uiMessage,
-                        throwable
-                    )
-                )
-            }
-        }
+
         lifecycleScope.launch(Dispatchers.IO + errorHandler) {
             val uri = Uri.parse(baseUrl)
             val url = if (uri.scheme == null) {

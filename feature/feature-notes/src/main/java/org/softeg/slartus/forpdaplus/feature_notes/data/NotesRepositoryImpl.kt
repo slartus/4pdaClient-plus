@@ -1,6 +1,7 @@
 package org.softeg.slartus.forpdaplus.feature_notes.data
 
 import android.net.Uri
+import kotlinx.coroutines.flow.*
 import org.softeg.slartus.forpdacommon.NotReportException
 import org.softeg.slartus.forpdaplus.feature_notes.Note
 import org.softeg.slartus.forpdaplus.feature_notes.NotesDao
@@ -15,11 +16,15 @@ open class NotesRepositoryImpl @Inject constructor(
     private val notesDao: NotesDao,
     private val notesPreferences: NotesPreferences
 ) : NotesRepository {
-    override val notes = notesDao.getAllFlow()
+
     protected open val local: Boolean
         get() {
             return notesPreferences.isLocal
         }
+
+    private val notesFlow = MutableStateFlow<List<Note>>(emptyList())
+    override val notes
+        get() = notesFlow
 
     private val apiUrl: String
         get() {
@@ -48,19 +53,22 @@ open class NotesRepositoryImpl @Inject constructor(
         if (!local) {
             val url = getUrl("get")
             val notes = requestOrError(url)
-            notesDao.merge(notes)
+            notesFlow.emit(notes)
+        } else {
+            notesFlow.emit(notesDao.getAll())
         }
     }
 
     override suspend fun delete(id: String) {
         if (local) {
             notesDao.delete(id.toInt())
+            notesFlow.emit(notesDao.getAll())
         } else {
             val uriBuilder = Uri.parse(apiUrl).buildUpon()
             uriBuilder.appendQueryParameter("action", "del")
             uriBuilder.appendQueryParameter("id", id)
             val url = uriBuilder.build().toString()
-            notesDao.merge(requestOrError(url))
+            notesFlow.emit(requestOrError(url))
         }
     }
 
@@ -69,10 +77,12 @@ open class NotesRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getNote(id: Int): Note? {
-        if (!local) {
+        return if (!local) {
             load()
+            notesFlow.last().firstOrNull { it.id == id }
+        } else {
+            notesDao.get(id)
         }
-        return notesDao.get(id)
     }
 
     override suspend fun createNote(
@@ -93,10 +103,11 @@ open class NotesRepositoryImpl @Inject constructor(
 
         if (local) {
             notesDao.insert(note)
+            notesFlow.emit(notesDao.getAll())
         } else {
             val requestUrl = getUrl("ins")
-
-            notesDao.merge(notesService.post(requestUrl, note).notesOrError())
+            val notes = notesService.post(requestUrl, note).notesOrError()
+            notesFlow.emit(notes)
         }
     }
 }

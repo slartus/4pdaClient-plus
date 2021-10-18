@@ -32,6 +32,7 @@ class NotesListViewModel constructor(
     private val _uiState = MutableStateFlow<NotesListState>(NotesListState.Initialize)
     val uiState: StateFlow<NotesListState> = _uiState
 
+    private val _reloadFlag = MutableStateFlow(true)
     private val _loading = MutableStateFlow(true)
     val loading: StateFlow<Boolean> = _loading
 
@@ -59,6 +60,7 @@ class NotesListViewModel constructor(
     }
 
     fun reload() {
+        _reloadFlag.value = !_reloadFlag.value
         _loading.value = true
         viewModelScope.launch(errorHandler) {
             repository.load()

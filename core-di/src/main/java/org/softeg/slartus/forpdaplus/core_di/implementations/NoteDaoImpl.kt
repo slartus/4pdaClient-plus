@@ -15,6 +15,9 @@ class NoteDaoImpl @Inject constructor(
     override fun getAllFlow(): Flow<List<FeatureNote>> =
         noteDao.getAllFlow().map { it.map { note -> note.map() } }
 
+    override suspend fun getAll(): List<FeatureNote> =
+        noteDao.getAll().map { note -> note.map() }
+
     override suspend fun merge(notes: List<org.softeg.slartus.forpdaplus.feature_notes.Note>) =
         noteDao.merge(notes.map { it.map() })
 

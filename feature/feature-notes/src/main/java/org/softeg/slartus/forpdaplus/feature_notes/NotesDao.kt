@@ -4,6 +4,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface NotesDao {
     fun getAllFlow(): Flow<List<Note>>
+    suspend fun getAll(): List<Note>
     suspend fun merge(notes: List<Note>)
     suspend fun getByTopicId(topicId: String): List<Note>
     suspend fun get(id: Int): Note?
