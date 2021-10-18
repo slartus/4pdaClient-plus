@@ -12,7 +12,10 @@ import androidx.preference.PreferenceFragmentCompat
 import com.afollestad.materialdialogs.DialogAction
 import com.afollestad.materialdialogs.MaterialDialog
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.softeg.slartus.forpdacommon.NotReportException
 import org.softeg.slartus.forpdacommon.dialogs.ProgressDialog
 import org.softeg.slartus.forpdacommon.openUrl
@@ -38,27 +41,26 @@ class NotesPreferencesFragment : PreferenceFragmentCompat() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        findPreference<Preference>("notes.placement")?.summaryProvider =
-//            ListSummaryProvider.instance
-        findPreference<Preference>("notes.remote.url")?.let { p ->
-            p.summary = notesPreferences.remoteUrl
-            p.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-                showNotesRemoteServerDialog()
-                true
+        preferenceManager.sharedPreferences.registerOnSharedPreferenceChangeListener { _, s ->
+            when (s) {
+                KEY_REMOTE_URL -> updateRemoteUrlSummary()
             }
         }
-        findPreference<Preference>("notes.remote.help")?.onPreferenceClickListener =
-            Preference.OnPreferenceClickListener {
-                openUrl(requireContext(), "https://github.com/slartus/4pdaClient-plus/wiki/Notes")
-                true
-            }
-        refreshNotesEnabled()
+        findPreference<Preference>(KEY_REMOTE_URL)?.setOnPreferenceClickListener {
+            showNotesRemoteServerDialog()
+            true
+        }
+        findPreference<Preference>(KEY_HELP)?.setOnPreferenceClickListener {
+            openUrl(requireContext(), "https://github.com/slartus/4pdaClient-plus/wiki/Notes")
+            true
+        }
+        updateRemoteUrlSummary()
     }
 
-    private fun refreshNotesEnabled() {
-//            findPreference("notes.remote.settings").isEnabled = !Preferences.Notes.isLocal()
-//            findPreference("notes.backup.category").isEnabled = Preferences.Notes.isLocal()
-
+    private fun updateRemoteUrlSummary() {
+        findPreference<Preference>(KEY_REMOTE_URL)?.let { p ->
+            p.summary = notesPreferences.remoteUrl
+        }
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -67,13 +69,13 @@ class NotesPreferencesFragment : PreferenceFragmentCompat() {
 
     override fun onPreferenceTreeClick(preference: Preference?): Boolean {
         when (preference?.key) {
-            "notes.backup" -> {
+            KEY_BACKUP -> {
                 notesManager.backupNotes(requireContext())
             }
-            "notes.restore" -> {
+            KEY_RESTORE -> {
                 notesManager.restoreNotes(requireContext())
             }
-            "notes.remote.url" -> {
+            KEY_REMOTE_URL -> {
                 showNotesRemoteServerDialog()
             }
         }
@@ -126,8 +128,6 @@ class NotesPreferencesFragment : PreferenceFragmentCompat() {
                 setLoading(false)
                 notesPreferences.setPlacement("remote")
                 notesPreferences.remoteUrl = url
-                findPreference<Preference>("notes.remote.url")?.summary = baseUrl
-                refreshNotesEnabled()
             }
         }
     }
@@ -144,6 +144,16 @@ class NotesPreferencesFragment : PreferenceFragmentCompat() {
             ProgressDialog().show(childFragmentManager, progressTag)
             childFragmentManager.executePendingTransactions()
         }
+    }
+
+    companion object {
+        private const val KEY_REMOTE_URL = "notes.remote.url"
+        private const val KEY_RESTORE = "notes.restore"
+        private const val KEY_BACKUP = "notes.backup"
+        private const val KEY_HELP = "notes.remote.help"
+        private const val KEY_NOTES_PLACEMENT = "notes.placement"
+        private const val KEY_REMOTE_CATEGORY = "notes.remote.settings"
+        private const val KEY_LOCAL_CATEGORY = "notes.backup.category"
     }
 
 }

@@ -54,14 +54,16 @@
             android:entryValues="@array/entry_values_lang"
             android:key="lang"
             android:summary="@string/lang_pref_summary"
-            android:title="@string/lang_pref_title" />
+            android:title="@string/lang_pref_title"
+            app:useSimpleSummaryProvider="true" />
         <ListPreference
             android:defaultValue="0"
             android:entries="@array/listOffsetsArray"
             android:entryValues="@array/listOffsetsValues"
             android:key="topics.list.offset"
             android:summary="При неверном открытии тем выберите какую тему открывать"
-            android:title="Смещение в списке тем" />
+            android:title="Смещение в списке тем"
+            app:useSimpleSummaryProvider="true" />
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="system.WebviewAllowJavascriptInterface"
@@ -79,7 +81,8 @@
             android:entryValues="@array/drawermenupositions_values"
             android:key="system.drawermenuposition"
             android:summary="С какой стороны удобно вытаскивать меню (требуется перезапуск)"
-            android:title="Выезжающее меню" />
+            android:title="Выезжающее меню"
+            app:useSimpleSummaryProvider="true" />
 
         <PreferenceScreen
             android:key="buttons_screen"

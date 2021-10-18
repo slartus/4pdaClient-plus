@@ -54,6 +54,7 @@
             android:entries="@array/downloaderManagersArray"
             android:entryValues="@array/downloaderManagersValues"
             android:key="file.downloaderManagers"
+            app:useSimpleSummaryProvider="true"
             android:summary="Использовать для скачивания файлов выбранный менеджер"
             android:title="@string/prefs_download_managers" />
     </PreferenceScreen>
