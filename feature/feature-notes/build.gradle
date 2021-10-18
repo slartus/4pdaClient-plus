@@ -48,6 +48,7 @@ dependencies {
     api "com.squareup.retrofit2:retrofit:$rootProject.retrofit"
     api "com.squareup.retrofit2:converter-gson:$rootProject.retrofit"
 
+
     implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.okhttp3"
 
     implementation 'androidx.preference:preference-ktx:1.1.1'

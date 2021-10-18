@@ -31,6 +31,7 @@ import org.softeg.slartus.forpdanotifyservice.favorites.FavoritesNotifier;
 import org.softeg.slartus.forpdanotifyservice.qms.QmsNotifier;
 import org.softeg.slartus.forpdaplus.acra.ACRAReportSenderFactory;
 import org.softeg.slartus.forpdaplus.core_ui.AppTheme;
+import org.softeg.slartus.forpdaplus.core_ui.ui.views.SwipeRefreshLayoutKt;
 import org.softeg.slartus.forpdaplus.db.DbHelper;
 import org.softeg.slartus.forpdaplus.feature_preferences.Preferences;
 import org.softeg.slartus.forpdaplus.log.AppTimberTree;
@@ -297,10 +298,10 @@ public class App extends MultiDexApplication {
 
     public static SwipeRefreshLayout createSwipeRefreshLayout(View view,
                                                               final Runnable refreshAction) {
+
         SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.ptr_layout);
+        SwipeRefreshLayoutKt.configure(swipeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(refreshAction::run);
-        swipeRefreshLayout.setColorSchemeResources(AppTheme.getMainAccentColor());
-        swipeRefreshLayout.setProgressBackgroundColorSchemeResource(AppTheme.getSwipeRefreshBackground());
         return swipeRefreshLayout;
     }
 

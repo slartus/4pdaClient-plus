@@ -24,6 +24,7 @@ import org.softeg.slartus.forpdaplus.core_ui.AppTheme;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.common.AppLog;
+import org.softeg.slartus.forpdaplus.core_ui.ui.views.SwipeRefreshLayoutKt;
 import org.softeg.slartus.forpdaplus.listfragments.adapters.ExpandableMyListAdapter;
 import org.softeg.slartus.forpdaplus.feature_preferences.Preferences;
 
@@ -165,11 +166,7 @@ super();
     }
 
     protected SwipeRefreshLayout createSwipeRefreshLayout(View view) {
-        SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.ptr_layout);
-        swipeRefreshLayout.setOnRefreshListener(() -> loadData(true));
-        swipeRefreshLayout.setColorSchemeResources(AppTheme.getMainAccentColor());
-        swipeRefreshLayout.setProgressBackgroundColorSchemeResource(AppTheme.getSwipeRefreshBackground());
-        return swipeRefreshLayout;
+        return App.createSwipeRefreshLayout(view, () -> loadData(true));
     }
 
     @Override

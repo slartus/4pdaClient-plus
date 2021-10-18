@@ -18,6 +18,7 @@ import org.softeg.slartus.forpdaplus.core_ui.di.GenericSavedStateViewModelFactor
 import org.softeg.slartus.forpdaplus.core_ui.ui.fragments.BaseFragment
 import org.softeg.slartus.forpdaplus.core_ui.navigation.AppRouter
 import org.softeg.slartus.forpdaplus.core_ui.navigation.AppScreen
+import org.softeg.slartus.forpdaplus.core_ui.ui.views.configure
 import org.softeg.slartus.forpdaplus.feature_notes.Note
 import org.softeg.slartus.forpdaplus.feature_notes.R
 import org.softeg.slartus.forpdaplus.feature_notes.data.getUrls
@@ -49,32 +50,36 @@ class NotesListFragment :
         val adapter = NotesListAdapter {
             onNoteClick(it.note)
         }
-
+        binding.list.adapter = adapter
+        binding.swipeLayout.configure()
+        binding.swipeLayout.setOnRefreshListener {
+            viewModel.reload()
+        }
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
                     viewModel.uiState.collect { uiState ->
                         when (uiState) {
                             is NotesListState.Initialize -> {
-                                setLoading(true)
                             }
                             is NotesListState.Success -> {
-                                setLoading(false)
                                 adapter.submitList(uiState.items)
                                 refreshUi(uiState.items)
                             }
                             is NotesListState.Error -> {
-                                setLoading(false)
                                 Timber.e(uiState.exception)
                                 showError(uiState.exception)
                             }
                         }
                     }
                 }
+                launch {
+                    viewModel.loading.collect {
+                        setLoading(it)
+                    }
+                }
             }
         }
-
-        binding.list.adapter = adapter
     }
 
     override fun onCreateContextMenu(
@@ -132,7 +137,7 @@ class NotesListFragment :
     }
 
     private fun setLoading(loading: Boolean) {
-        binding.progressView.visibility = if (loading) View.VISIBLE else View.GONE
+        binding.swipeLayout.isRefreshing = loading
     }
 
     private fun refreshUi(items: List<NoteListItem>) {

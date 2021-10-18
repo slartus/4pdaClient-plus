@@ -37,4 +37,5 @@ ext {
     hilt = "2.38.1"
     coroutines = "1.5.2"
     retrofit = "2.9.0"
+    swiperefreshlayout = "1.1.0"
 }

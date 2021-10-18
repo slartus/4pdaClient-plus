@@ -46,7 +46,6 @@ abstract class BaseListFragment : BaseBrickFragment(), AdapterView.OnItemClickLi
     protected open val viewId: Int
         get() = R.layout.list_fragment
 
-
     var adapter: BaseAdapter? = null
         protected set
     protected var mListViewLoadMoreFooter: ListViewLoadMoreFooter? = null
@@ -65,7 +64,11 @@ abstract class BaseListFragment : BaseBrickFragment(), AdapterView.OnItemClickLi
         }
     }
 
-    override fun onCreateView(inflater: android.view.LayoutInflater, container: android.view.ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: android.view.LayoutInflater,
+        container: android.view.ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val view = inflater.inflate(viewId, container, false)
         assert(view != null)
 
@@ -116,14 +119,14 @@ abstract class BaseListFragment : BaseBrickFragment(), AdapterView.OnItemClickLi
 
         if (needLogin() == true)
             addToDisposable(UserInfoRepository.instance
-                    .userInfo
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe { userInfo ->
-                        setLoading(false)
-                        if (userInfo.logined)
-                            loadData(true)
-                    })
+                .userInfo
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { userInfo ->
+                    setLoading(false)
+                    if (userInfo.logined)
+                        loadData(true)
+                })
         mListViewLoadMoreFooter = ListViewLoadMoreFooter(view.context, listView!!)
         mListViewLoadMoreFooter?.setOnLoadMoreClickListener {
             mListViewLoadMoreFooter?.setState(ListViewLoadMoreFooter.STATE_LOADING)
@@ -135,13 +138,8 @@ abstract class BaseListFragment : BaseBrickFragment(), AdapterView.OnItemClickLi
     }
 
     private fun createSwipeRefreshLayout(view: View): SwipeRefreshLayout {
-        val swipeRefreshLayout = view.findViewById<SwipeRefreshLayout>(R.id.ptr_layout)
-        swipeRefreshLayout.setOnRefreshListener { loadData(true) }
-        swipeRefreshLayout.setColorSchemeResources(AppTheme.mainAccentColor)
-        swipeRefreshLayout.setProgressBackgroundColorSchemeResource(AppTheme.swipeRefreshBackground)
-        return swipeRefreshLayout
+        return App.createSwipeRefreshLayout(view) { loadData(true) }
     }
-
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -193,7 +191,6 @@ abstract class BaseListFragment : BaseBrickFragment(), AdapterView.OnItemClickLi
     protected fun setEmptyText(s: String) {
         mEmptyTextView!!.text = s
     }
-
 
     override fun onItemClick(adapterView: AdapterView<*>, v: View, position: Int, id: Long) {
 

@@ -26,32 +26,44 @@ class NotesListViewModel constructor(
 
     private val errorHandler = CoroutineExceptionHandler { _, ex ->
         _uiState.value = NotesListState.Error(ex)
+        _loading.value = false
     }
 
     private val _uiState = MutableStateFlow<NotesListState>(NotesListState.Initialize)
     val uiState: StateFlow<NotesListState> = _uiState
 
+    private val _loading = MutableStateFlow(true)
+    val loading: StateFlow<Boolean> = _loading
+
     init {
+        _loading.value = true
         viewModelScope.launch(errorHandler) {
             repository.load()
 
-            launch {
-                repository.notes
-                    .distinctUntilChanged()
-                    .collect { items ->
-                        _uiState.value = NotesListState.Success(
-                            items
-                                .filter { topicId == null || it.topicId == topicId }
-                                .sortedByDescending { it.date }
-                                .map { NoteListItem(it, false) }
-                        )
-                    }
-            }
+            repository.notes
+                .distinctUntilChanged()
+                .collect { items ->
+                    _uiState.value = NotesListState.Success(
+                        items
+                            .filter { topicId == null || it.topicId == topicId }
+                            .sortedByDescending { it.date }
+                            .map { NoteListItem(it, false) }
+                    )
+                    _loading.value = false
+                }
         }
     }
 
     fun saveState() {
         state.set(NotesListFragment.ARG_TOPIC_ID, topicId)
+    }
+
+    fun reload() {
+        _loading.value = true
+        viewModelScope.launch(errorHandler) {
+            repository.load()
+            _loading.value = false
+        }
     }
 }
 
@@ -65,6 +77,7 @@ class NotesListViewModelFactory @Inject constructor(
 
 sealed class NotesListState {
     object Initialize : NotesListState()
+
     data class Success(val items: List<NoteListItem>) : NotesListState()
     data class Error(val exception: Throwable) : NotesListState()
 }

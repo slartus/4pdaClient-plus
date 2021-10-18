@@ -139,11 +139,7 @@ public abstract class BaseLoaderListFragment extends BaseBrickFragment
     }
 
     private SwipeRefreshLayout createSwipeRefreshLayout(View view) {
-        final SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.ptr_layout);
-        swipeRefreshLayout.setOnRefreshListener(() -> loadData(true));
-        swipeRefreshLayout.setColorSchemeResources(AppTheme.getMainAccentColor());
-        swipeRefreshLayout.setProgressBackgroundColorSchemeResource(AppTheme.getSwipeRefreshBackground());
-        return swipeRefreshLayout;
+        return App.createSwipeRefreshLayout(view, () -> loadData(true));
     }
 
     public void reloadData() {
