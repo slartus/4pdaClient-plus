@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
 
     android:title="@string/topic_view">
     <CheckBoxPreference
@@ -13,12 +14,13 @@
         android:key="theme.ConfirmSend"
         android:summary="Подтверждать отправку сообщения"
         android:title="@string/prefs_confirm_send" />
-    <org.softeg.slartus.forpdaplus.feature_preferences.views.SummaryValueListPreference
+    <ListPreference
         android:defaultValue="1"
         android:entries="@array/ConnectTypeArray"
         android:entryValues="@array/ConnectTypeValues"
         android:key="theme.LoadsImages"
-        android:title="@string/prefs_load_images" />
+        android:title="@string/prefs_load_images"
+        app:useSimpleSummaryProvider="true" />
     <CheckBoxPreference
         android:defaultValue="false"
         android:key="theme.UseVolumesScroll"

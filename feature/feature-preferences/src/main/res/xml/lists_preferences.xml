@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:title="Списки">
     <PreferenceCategory android:title="Общее">
         <CheckBoxPreference
@@ -40,19 +41,21 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="Новости">
-        <org.softeg.slartus.forpdaplus.feature_preferences.views.SummaryValueListPreference
+        <ListPreference
             android:defaultValue="1"
             android:entries="@array/ConnectTypeArray"
             android:entryValues="@array/ConnectTypeValues"
             android:key="news.list.loadimages"
-            android:title="@string/menu_news_load_images" />
+            android:title="@string/menu_news_load_images"
+            app:useSimpleSummaryProvider="true" />
 
-        <org.softeg.slartus.forpdaplus.feature_preferences.views.SummaryValueListPreference
+        <ListPreference
             android:defaultValue="full"
             android:entries="@array/NewsListViewTitles"
             android:entryValues="@array/NewsListViewValues"
             android:key="news.list.view"
-            android:title="@string/list_view" />
+            android:title="@string/list_view"
+            app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 
 </PreferenceScreen>

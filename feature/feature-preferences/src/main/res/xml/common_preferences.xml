@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:title="@string/appearance">
     <PreferenceCategory android:title="@string/overall">
         <Preference
@@ -81,8 +82,9 @@
             android:title="@string/show_tab_drawer_button" />
     </PreferenceCategory>
 
-    <org.softeg.slartus.forpdaplus.feature_preferences.views.SummaryValueListPreference
+    <ListPreference
         android:defaultValue="-1"
+        app:useSimpleSummaryProvider="true"
         android:entries="@array/screenOrienationArray"
         android:entryValues="@array/screenOrienationValues"
         android:key="theme.ScreenOrientation"

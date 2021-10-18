@@ -1,32 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <org.softeg.slartus.forpdaplus.feature_preferences.views.SummaryValueListPreference
-        android:title="Сортировать по"
-        android:key="sort_key"
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <ListPreference
         android:defaultValue="last_post"
         android:entries="@array/forum_topics_sort_key_titles"
-        android:entryValues="@array/forum_topics_sort_key_values" />
-    <org.softeg.slartus.forpdaplus.feature_preferences.views.SummaryValueListPreference
-        android:title="Направление"
-        android:key="sort_by"
+        android:entryValues="@array/forum_topics_sort_key_values"
+        android:key="sort_key"
+        android:title="Сортировать по"
+        app:useSimpleSummaryProvider="true" />
+    <ListPreference
         android:defaultValue="Z-A"
         android:entries="@array/forum_topics_sort_by_titles"
-        android:entryValues="@array/forum_topics_sort_by_values" />
-    <org.softeg.slartus.forpdaplus.feature_preferences.views.SummaryValueListPreference
-        android:title="Период"
-        android:key="prune_day"
+        android:entryValues="@array/forum_topics_sort_by_values"
+        android:key="sort_by"
+        android:title="Направление"
+        app:useSimpleSummaryProvider="true" />
+    <ListPreference
         android:defaultValue="100"
         android:entries="@array/forum_topics_prune_day_titles"
-        android:entryValues="@array/forum_topics_prune_day_values" />
-    <org.softeg.slartus.forpdaplus.feature_preferences.views.SummaryValueListPreference
-        android:title="Темы"
-        android:key="topicfilter"
+        android:entryValues="@array/forum_topics_prune_day_values"
+        android:key="prune_day"
+        android:title="Период"
+        app:useSimpleSummaryProvider="true" />
+    <ListPreference
         android:defaultValue="all"
         android:entries="@array/forum_topics_topicfilter_titles"
-        android:entryValues="@array/forum_topics_topicfilter_values" />
+        android:entryValues="@array/forum_topics_topicfilter_values"
+        android:key="topicfilter"
+        android:title="Темы"
+        app:useSimpleSummaryProvider="true" />
     <CheckBoxPreference
-        android:title="С непрочитанными - вверху"
+        android:defaultValue="false"
         android:key="unread_in_top"
-        android:defaultValue="false" />
+        android:title="С непрочитанными - вверху" />
 </PreferenceScreen>

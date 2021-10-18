@@ -38,6 +38,8 @@ class NotesPreferencesFragment : PreferenceFragmentCompat() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+//        findPreference<Preference>("notes.placement")?.summaryProvider =
+//            ListSummaryProvider.instance
         findPreference<Preference>("notes.remote.url")?.let { p ->
             p.summary = notesPreferences.remoteUrl
             p.onPreferenceClickListener = Preference.OnPreferenceClickListener {

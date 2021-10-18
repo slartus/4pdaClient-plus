@@ -23,6 +23,6 @@ class CustomTestRunner : AndroidJUnitRunner() {
     }
 
     companion object {
-        var hiltTest = true
+        var hiltTest = false
     }
 }
