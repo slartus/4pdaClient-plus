@@ -1,6 +1,12 @@
 package org.softeg.slartus.forpdaplus.prefs
 
+import android.content.Context
 import android.os.Bundle
+import android.util.AttributeSet
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceScreen
 import dagger.hilt.android.AndroidEntryPoint

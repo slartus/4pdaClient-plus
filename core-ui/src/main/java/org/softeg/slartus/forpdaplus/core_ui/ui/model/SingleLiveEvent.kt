@@ -1,4 +1,4 @@
-package org.softeg.slartus.forpdaplus.core.ui.model
+package org.softeg.slartus.forpdaplus.core_ui.ui.model
 
 import androidx.annotation.MainThread
 import androidx.lifecycle.LifecycleOwner

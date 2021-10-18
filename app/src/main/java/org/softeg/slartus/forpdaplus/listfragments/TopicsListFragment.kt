@@ -25,12 +25,11 @@ import org.softeg.slartus.forpdaplus.R
 import org.softeg.slartus.forpdaplus.classes.ActionSelectDialogFragment
 import org.softeg.slartus.forpdaplus.classes.ActionSelectDialogFragment.execute
 import org.softeg.slartus.forpdaplus.classes.ActionSelectDialogFragment.showSaveNavigateActionDialog
-import org.softeg.slartus.forpdaplus.core.ui.dialogs.MenuItemAction
+import org.softeg.slartus.forpdaplus.core_ui.ui.dialogs.MenuItemAction
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl
 import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic
 import org.softeg.slartus.forpdaplus.common.AppLog
 import org.softeg.slartus.forpdaplus.controls.ListViewLoadMoreFooter
-import org.softeg.slartus.forpdaplus.core_ui.navigation.AppRouter
 import org.softeg.slartus.forpdaplus.fragments.topic.editpost.EditPostFragment.Companion.newPostWithAttach
 import org.softeg.slartus.forpdaplus.listfragments.TopicAttachmentListFragment.Companion.showActivity
 import org.softeg.slartus.forpdaplus.listfragments.adapters.SortedListAdapter
@@ -48,7 +47,6 @@ import java.io.IOException
 import java.net.URISyntaxException
 import java.text.ParseException
 import java.util.*
-import javax.inject.Inject
 import kotlin.math.max
 import kotlin.math.min
 

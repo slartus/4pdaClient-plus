@@ -6,9 +6,8 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import org.softeg.slartus.forpdaplus.core.di.ViewModelAssistedFactory
+import org.softeg.slartus.forpdaplus.core_ui.di.ViewModelAssistedFactory
 import org.softeg.slartus.forpdaplus.feature_notes.data.NotesRepository
-import org.softeg.slartus.forpdaplus.feature_notes.ui.newNote.NewNoteViewModel
 import javax.inject.Inject
 
 class NotesListViewModel constructor(

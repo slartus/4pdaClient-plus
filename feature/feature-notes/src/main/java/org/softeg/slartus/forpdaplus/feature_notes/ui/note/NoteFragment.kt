@@ -1,12 +1,7 @@
 package org.softeg.slartus.forpdaplus.feature_notes.ui.note
 
 import android.os.Bundle
-import android.text.Html
-import android.text.TextUtils
 import android.view.View
-import android.widget.TableLayout
-import android.widget.TableRow
-import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -16,9 +11,8 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.softeg.slartus.forpdacommon.UrlExtensions
 import org.softeg.slartus.forpdacommon.fromHtml
-import org.softeg.slartus.forpdaplus.core.di.GenericSavedStateViewModelFactory
-import org.softeg.slartus.forpdaplus.core.ui.fragments.BaseFragment
-import org.softeg.slartus.forpdaplus.core_ui.AppTheme
+import org.softeg.slartus.forpdaplus.core_ui.di.GenericSavedStateViewModelFactory
+import org.softeg.slartus.forpdaplus.core_ui.ui.fragments.BaseFragment
 import org.softeg.slartus.forpdaplus.core_ui.AppTheme.Companion.themeStyleWebViewBackground
 import org.softeg.slartus.forpdaplus.core_ui.html.HtmlBuilder
 import org.softeg.slartus.forpdaplus.core_ui.html.HtmlStylePreferences

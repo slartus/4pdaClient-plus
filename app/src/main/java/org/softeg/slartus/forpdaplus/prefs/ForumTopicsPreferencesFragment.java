@@ -6,16 +6,16 @@ import android.os.Bundle;;
 import androidx.preference.CheckBoxPreference;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
-import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
+import org.softeg.slartus.forpdaplus.core_ui.ui.fragments.BasePreferenceFragment;
 
 /*
  * Created by Артём on 01.05.14.
  */
-public class ForumTopicsPreferencesFragment extends PreferenceFragmentCompat {
+public class ForumTopicsPreferencesFragment extends BasePreferenceFragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

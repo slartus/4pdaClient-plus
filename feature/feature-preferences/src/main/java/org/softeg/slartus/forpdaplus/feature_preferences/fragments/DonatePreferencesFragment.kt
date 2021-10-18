@@ -5,12 +5,12 @@ import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
 import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
 import org.softeg.slartus.forpdacommon.StringUtils.copyToClipboard
 import org.softeg.slartus.forpdacommon.openUrl
+import org.softeg.slartus.forpdaplus.core_ui.ui.fragments.BasePreferenceFragment
 import org.softeg.slartus.forpdaplus.feature_preferences.R
 
-class DonatePreferencesFragment : PreferenceFragmentCompat() {
+class DonatePreferencesFragment : BasePreferenceFragment() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.donate_prefs, rootKey)
     }

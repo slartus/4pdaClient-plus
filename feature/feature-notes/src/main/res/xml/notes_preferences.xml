@@ -9,12 +9,12 @@
         android:entries="@array/NotesStoragePlacements"
         android:entryValues="@array/NotesStoragePlacementValues"
         android:key="notes.placement"
-        app:useSimpleSummaryProvider="true"
-        android:title="@string/notes_placement" />
+        android:title="@string/notes_placement"
+        app:useSimpleSummaryProvider="true" />
     <PreferenceCategory
         android:key="notes.remote.settings"
         android:title="@string/remote_server">
-        <Preference
+        <EditTextPreference
             android:key="notes.remote.url"
             android:title="@string/link" />
         <Preference

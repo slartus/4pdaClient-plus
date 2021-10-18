@@ -7,8 +7,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.parcelize.Parcelize
-import org.softeg.slartus.forpdaplus.core.di.ViewModelAssistedFactory
-import org.softeg.slartus.forpdaplus.core.ui.model.SingleLiveEvent
+import org.softeg.slartus.forpdaplus.core_ui.di.ViewModelAssistedFactory
+import org.softeg.slartus.forpdaplus.core_ui.ui.model.SingleLiveEvent
 import org.softeg.slartus.forpdaplus.feature_notes.data.NotesRepository
 import javax.inject.Inject
 

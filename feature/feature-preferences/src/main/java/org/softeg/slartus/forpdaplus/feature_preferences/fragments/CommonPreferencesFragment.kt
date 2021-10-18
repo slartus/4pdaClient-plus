@@ -9,10 +9,10 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
 import com.afollestad.materialdialogs.DialogAction
 import com.afollestad.materialdialogs.MaterialDialog
 import org.softeg.slartus.forpdacommon.FilePath
+import org.softeg.slartus.forpdaplus.core_ui.ui.fragments.BasePreferenceFragment
 import org.softeg.slartus.forpdaplus.core_ui.AppColors
 import org.softeg.slartus.forpdaplus.core_ui.CssStyles
 import org.softeg.slartus.forpdaplus.feature_preferences.*
@@ -20,7 +20,7 @@ import timber.log.Timber
 import java.util.ArrayList
 
 @Suppress("unused")
-class CommonPreferencesFragment : PreferenceFragmentCompat() {
+class CommonPreferencesFragment : BasePreferenceFragment() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.common_preferences, rootKey)
     }

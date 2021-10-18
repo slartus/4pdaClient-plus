@@ -4,7 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import android.os.Environment
 import dagger.hilt.android.qualifiers.ApplicationContext
-import org.softeg.slartus.forpdaplus.core.di.AppThemePreferences
+import org.softeg.slartus.forpdaplus.core_ui.di.AppThemePreferences
 import java.io.File
 import java.lang.ref.WeakReference
 import javax.inject.Inject

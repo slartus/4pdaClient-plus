@@ -1,4 +1,4 @@
-package org.softeg.slartus.forpdaplus.core.di
+package org.softeg.slartus.forpdaplus.core_ui.di
 
 interface AppThemePreferences {
     val mainAccentColor: String

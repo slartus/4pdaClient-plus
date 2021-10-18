@@ -10,16 +10,16 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.preference.Preference;
-import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.softeg.slartus.forpdaplus.R;
 
+import org.softeg.slartus.forpdaplus.core_ui.ui.fragments.BasePreferenceFragment;
 import org.softeg.slartus.forpdaplus.feature_preferences.Preferences;
 
-public class TopicsPreferenceFragment extends PreferenceFragmentCompat implements Preference.OnPreferenceClickListener {
+public class TopicsPreferenceFragment extends BasePreferenceFragment implements Preference.OnPreferenceClickListener {
     public static String ListName = "";
 
     @SuppressWarnings("ConstantConditions")

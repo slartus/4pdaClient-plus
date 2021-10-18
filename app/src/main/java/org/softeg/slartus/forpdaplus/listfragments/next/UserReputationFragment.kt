@@ -1,6 +1,5 @@
 package org.softeg.slartus.forpdaplus.listfragments.next
 
-import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
@@ -19,7 +18,7 @@ import org.softeg.slartus.forpdaapi.classes.ListData
 import org.softeg.slartus.forpdaapi.classes.ReputationsListData
 import org.softeg.slartus.forpdaplus.*
 import org.softeg.slartus.forpdaplus.classes.ForumUser
-import org.softeg.slartus.forpdaplus.core.ui.dialogs.MenuItemAction
+import org.softeg.slartus.forpdaplus.core_ui.ui.dialogs.MenuItemAction
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl
 import org.softeg.slartus.forpdaplus.fragments.GeneralFragment
 import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment

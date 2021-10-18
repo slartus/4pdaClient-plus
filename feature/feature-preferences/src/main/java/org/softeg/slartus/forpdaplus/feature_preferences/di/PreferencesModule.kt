@@ -4,7 +4,7 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import org.softeg.slartus.forpdaplus.core.di.AppThemePreferences
+import org.softeg.slartus.forpdaplus.core_ui.di.AppThemePreferences
 import org.softeg.slartus.forpdaplus.feature_preferences.Preferences
 import javax.inject.Inject
 

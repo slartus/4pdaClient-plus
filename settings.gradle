@@ -2,7 +2,6 @@ include ':app', ':forpdaapi', ':forpdacommon', ':forpdanotifyservice', ':sqlitea
 include ':hosthelper'
 include ':feature:feature-preferences'
 include ':core-ui'
-include ':core'
 include ':core-db'
 include ':feature:feature-notes'
 include ':core-di'

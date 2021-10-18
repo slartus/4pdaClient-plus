@@ -133,7 +133,6 @@ dependencies {
     implementation project(':feature:feature-preferences')
     implementation project(':feature:feature-notes')
     implementation project(':core-ui')
-    implementation project(':core')
     implementation project(':core-db')
     implementation project(':core-di')
     api 'com.google.android.material:material:1.3.0'

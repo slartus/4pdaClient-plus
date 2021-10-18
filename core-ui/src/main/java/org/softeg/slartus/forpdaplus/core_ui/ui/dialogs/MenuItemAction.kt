@@ -1,4 +1,4 @@
-package org.softeg.slartus.forpdaplus.core.ui.dialogs
+package org.softeg.slartus.forpdaplus.core_ui.ui.dialogs
 
 /**
  * Created by radiationx on 31.01.16.

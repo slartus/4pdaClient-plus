@@ -9,15 +9,15 @@ import android.os.Bundle
 import android.widget.TimePicker
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
 import org.softeg.slartus.forpdaplus.App
 import org.softeg.slartus.forpdaplus.R
+import org.softeg.slartus.forpdaplus.core_ui.ui.fragments.BasePreferenceFragment
 import org.softeg.slartus.forpdaplus.feature_preferences.Dialogs.showCookiesDeleteDialog
 import org.softeg.slartus.forpdaplus.feature_preferences.Dialogs.showSelectDirDialog
 import org.softeg.slartus.forpdaplus.feature_preferences.Preferences
 import java.util.*
 
-class PrefsFragment : PreferenceFragmentCompat() {
+class PrefsFragment : BasePreferenceFragment() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences, rootKey)

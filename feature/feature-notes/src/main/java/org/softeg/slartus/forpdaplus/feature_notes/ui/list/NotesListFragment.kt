@@ -14,8 +14,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.softeg.slartus.forpdacommon.uiMessage
-import org.softeg.slartus.forpdaplus.core.di.GenericSavedStateViewModelFactory
-import org.softeg.slartus.forpdaplus.core.ui.fragments.BaseFragment
+import org.softeg.slartus.forpdaplus.core_ui.di.GenericSavedStateViewModelFactory
+import org.softeg.slartus.forpdaplus.core_ui.ui.fragments.BaseFragment
 import org.softeg.slartus.forpdaplus.core_ui.navigation.AppRouter
 import org.softeg.slartus.forpdaplus.core_ui.navigation.AppScreen
 import org.softeg.slartus.forpdaplus.feature_notes.Note

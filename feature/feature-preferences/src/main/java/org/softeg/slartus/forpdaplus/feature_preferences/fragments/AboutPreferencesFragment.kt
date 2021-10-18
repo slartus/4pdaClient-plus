@@ -5,10 +5,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Html
 import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
 import com.afollestad.materialdialogs.MaterialDialog
 import dagger.hilt.android.AndroidEntryPoint
 import org.softeg.slartus.forpdacommon.appFullName
+import org.softeg.slartus.forpdaplus.core_ui.ui.fragments.BasePreferenceFragment
 import org.softeg.slartus.forpdaplus.core_ui.navigation.AppRouter
 import org.softeg.slartus.forpdaplus.core_ui.navigation.AppScreen
 import org.softeg.slartus.forpdaplus.core_ui.navigation.AppService
@@ -23,7 +23,7 @@ import javax.inject.Inject
 
 @Suppress("unused")
 @AndroidEntryPoint
-class AboutPreferencesFragment : PreferenceFragmentCompat() {
+class AboutPreferencesFragment : BasePreferenceFragment() {
     @Inject
     lateinit var appRouter: AppRouter
 

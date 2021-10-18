@@ -1,4 +1,4 @@
-package org.softeg.slartus.forpdaplus.core.ui.dialogs
+package org.softeg.slartus.forpdaplus.core_ui.ui.dialogs
 
 import android.content.Context
 import com.afollestad.materialdialogs.MaterialDialog

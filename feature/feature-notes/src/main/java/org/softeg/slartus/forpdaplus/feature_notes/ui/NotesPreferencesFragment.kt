@@ -2,15 +2,10 @@ package org.softeg.slartus.forpdaplus.feature_notes.ui
 
 import android.net.Uri
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import android.widget.EditText
-import androidx.appcompat.app.AppCompatActivity
+import android.text.InputType
 import androidx.lifecycle.lifecycleScope
+import androidx.preference.EditTextPreference
 import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
-import com.afollestad.materialdialogs.DialogAction
-import com.afollestad.materialdialogs.MaterialDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
@@ -20,6 +15,7 @@ import org.softeg.slartus.forpdacommon.NotReportException
 import org.softeg.slartus.forpdacommon.dialogs.ProgressDialog
 import org.softeg.slartus.forpdacommon.openUrl
 import org.softeg.slartus.forpdacommon.uiMessage
+import org.softeg.slartus.forpdaplus.core_ui.ui.fragments.BasePreferenceFragment
 import org.softeg.slartus.forpdaplus.feature_notes.NotesBackupManager
 import org.softeg.slartus.forpdaplus.feature_notes.R
 import org.softeg.slartus.forpdaplus.feature_notes.data.NotesRepository
@@ -29,7 +25,7 @@ import javax.inject.Inject
 
 @Suppress("unused")
 @AndroidEntryPoint
-class NotesPreferencesFragment : PreferenceFragmentCompat() {
+class NotesPreferencesFragment : BasePreferenceFragment() {
     @Inject
     lateinit var notesManager: NotesBackupManager
 
@@ -46,25 +42,29 @@ class NotesPreferencesFragment : PreferenceFragmentCompat() {
                 KEY_REMOTE_URL -> updateRemoteUrlSummary()
             }
         }
-        findPreference<Preference>(KEY_REMOTE_URL)?.setOnPreferenceClickListener {
-            showNotesRemoteServerDialog()
-            true
-        }
-        findPreference<Preference>(KEY_HELP)?.setOnPreferenceClickListener {
-            openUrl(requireContext(), "https://github.com/slartus/4pdaClient-plus/wiki/Notes")
-            true
+        findPreference<EditTextPreference>(KEY_REMOTE_URL)?.apply {
+            setOnBindEditTextListener { editText ->
+                editText.setText(notesPreferences.remoteUrl ?: "")
+                editText.inputType = InputType.TYPE_TEXT_VARIATION_URI
+            }
+            setOnPreferenceChangeListener { _, newValue ->
+                checkRemoteUrl(newValue?.toString() ?: "")
+                false
+            }
+            this.dialogIcon = null
         }
         updateRemoteUrlSummary()
+    }
+
+
+    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        setPreferencesFromResource(R.xml.notes_preferences, rootKey)
     }
 
     private fun updateRemoteUrlSummary() {
         findPreference<Preference>(KEY_REMOTE_URL)?.let { p ->
             p.summary = notesPreferences.remoteUrl
         }
-    }
-
-    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        setPreferencesFromResource(R.xml.notes_preferences, rootKey)
     }
 
     override fun onPreferenceTreeClick(preference: Preference?): Boolean {
@@ -76,30 +76,13 @@ class NotesPreferencesFragment : PreferenceFragmentCompat() {
                 notesManager.restoreNotes(requireContext())
             }
             KEY_REMOTE_URL -> {
-                showNotesRemoteServerDialog()
+                //showNotesRemoteServerDialog()
+            }
+            KEY_HELP -> {
+                openUrl(requireContext(), "https://github.com/slartus/4pdaClient-plus/wiki/Notes")
             }
         }
         return super.onPreferenceTreeClick(preference)
-    }
-
-    private fun showNotesRemoteServerDialog() {
-        val inflater =
-            (activity?.getSystemService(AppCompatActivity.LAYOUT_INFLATER_SERVICE) as LayoutInflater)
-        val view = inflater.inflate(R.layout.input_notes_remote_url_layout, null as ViewGroup?)
-        val editText = view.findViewById<EditText>(R.id.edit_text)
-        editText.setText(notesPreferences.remoteUrl)
-        MaterialDialog.Builder(requireContext())
-            .title(R.string.notes_remote_url)
-            .customView(view, true)
-            .cancelable(true)
-            .positiveText(R.string.ok)
-            .negativeText(R.string.cancel)
-            .onPositive { _: MaterialDialog?, _: DialogAction? ->
-                val baseUrl = editText?.text.toString()
-
-                checkRemoteUrl(baseUrl)
-            }
-            .show()
     }
 
     private fun checkRemoteUrl(baseUrl: String) {

@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import org.softeg.slartus.forpdacommon.NotReportException
-import org.softeg.slartus.forpdaplus.core.di.ViewModelAssistedFactory
+import org.softeg.slartus.forpdaplus.core_ui.di.ViewModelAssistedFactory
 import org.softeg.slartus.forpdaplus.feature_notes.Note
 import org.softeg.slartus.forpdaplus.feature_notes.data.NotesRepository
 import javax.inject.Inject
