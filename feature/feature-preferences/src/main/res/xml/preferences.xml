@@ -246,12 +246,10 @@
         </PreferenceScreen>
     </PreferenceScreen>
 
-    <PreferenceScreen
+    <Preference
         android:key="notes"
-        android:title="@string/notes">
-        <!-- fake preference because empty screen is not open -->
-        <Preference />
-    </PreferenceScreen>
+        android:title="@string/notes"
+        app:fragment="org.softeg.slartus.forpdaplus.feature_notes.ui.NotesPreferencesFragment"/>
 
     <Preference
         android:key="about_screen"

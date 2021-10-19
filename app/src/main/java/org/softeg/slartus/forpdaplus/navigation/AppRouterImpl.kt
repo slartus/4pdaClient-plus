@@ -1,17 +1,21 @@
 package org.softeg.slartus.forpdaplus.navigation
 
 import android.content.Context
+import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import com.github.terrakok.cicerone.Router
+import com.github.terrakok.cicerone.androidx.ActivityScreen
 import org.softeg.slartus.forpdaplus.IntentActivity
 import org.softeg.slartus.forpdaplus.core_ui.navigation.*
+import org.softeg.slartus.forpdaplus.core_ui.ui.fragments.ChooseFileDialogFragment
 import org.softeg.slartus.forpdaplus.feature_notes.ui.newNote.NewNoteDialogFragment
 import org.softeg.slartus.forpdaplus.feature_preferences.App
 import org.softeg.slartus.forpdaplus.fragments.NoteFragment
 import org.softeg.slartus.forpdaplus.fragments.topic.ThemeFragment
 import org.softeg.slartus.forpdaplus.mainnotifiers.ForPdaVersionNotifier
 import org.softeg.slartus.forpdaplus.mainnotifiers.NotifiersManager
+import org.softeg.slartus.forpdaplus.prefs.PreferencesActivity
 import java.lang.ref.WeakReference
 import javax.inject.Inject
 
@@ -25,6 +29,13 @@ class AppRouterImpl @Inject constructor(
             is AppScreen.Topic -> ThemeFragment.showTopicById(appScreen.topicId)
             is AppScreen.Note -> NoteFragment.showNote(appScreen.noteId)
             is AppScreen.NewNote -> router.showDialog(getNewNoteScreen(appScreen))
+            is AppScreen.ChooseFileDialog -> router.showDialog(getChooseFileDialog(appScreen))
+//            AppScreen.Preferences -> ActivityScreen {
+//                Intent(
+//                    contextRef.get(),
+//                    PreferencesActivity::class.java
+//                )
+//            }
         }
     }
 
@@ -35,9 +46,8 @@ class AppRouterImpl @Inject constructor(
     }
 
     override fun openUrl(url: String) {
-        contextRef.get()?.let {
-            context->
-            val handler= Handler(Looper.getMainLooper())
+        contextRef.get()?.let { context ->
+            val handler = Handler(Looper.getMainLooper())
             IntentActivity
                 .tryShowUrl(context, handler, url, true, false)
         }
@@ -77,6 +87,10 @@ class AppRouterImpl @Inject constructor(
             appScreen.userId,
             appScreen.userName
         )
+    }
+
+    private fun getChooseFileDialog(appScreen: AppScreen.ChooseFileDialog) = DialogScreen {
+        ChooseFileDialogFragment.newInstance(appScreen.resultKey)
     }
 }
 

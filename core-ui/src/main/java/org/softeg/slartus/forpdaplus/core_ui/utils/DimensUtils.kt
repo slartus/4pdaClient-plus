@@ -1,8 +1,4 @@
-package org.softeg.slartus.forpdacommon
-
-/*
- * Created by slinkin on 30.06.2017.
- */
+package org.softeg.slartus.forpdaplus.core_ui.utils
 
 import android.content.Context
 import android.util.TypedValue

@@ -57,7 +57,11 @@ class NotesBackupManager @Inject constructor(
     private fun restoreNotes(context: Context, file: File) {
         val notes = getNotesFromFile(file)
         val errorJoinHandler = CoroutineExceptionHandler { _, ex ->
-            Timber.e(ex)
+            runBlocking {
+                withContext(Dispatchers.Main) {
+                    Timber.e(ex)
+                }
+            }
         }
         val job = Job()
         val scope = CoroutineScope(job + Dispatchers.Default + errorJoinHandler)

@@ -1,31 +1,33 @@
 package org.softeg.slartus.forpdaplus.core_ui.ui.fragments
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
-import androidx.viewbinding.ViewBinding
+import org.softeg.slartus.forpdaplus.core_ui.utils.dip2px
+import org.softeg.slartus.forpdaplus.core_ui.utils.getDisplaySize
 
-abstract class BaseDialogFragment<VB : ViewBinding>(private val inflate: Inflate<VB>) :
-    DialogFragment() {
+abstract class BaseDialogFragment : DialogFragment() {
 
-    private var _binding: VB? = null
-    private val binding get() = _binding!!
+    protected open val widthPercentsOfScreen: Float? = 90f
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = inflate.invoke(inflater, container, false)
-        return binding.root
+    override fun onStart() {
+        super.onStart()
+        setDialogSize()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
+    private fun setDialogSize() {
+        val widthPercentsOfScreen = widthPercentsOfScreen ?: return
 
-    protected fun isBindingInitialized() = _binding != null
+        dialog?.window?.let {
+            val context = requireContext()
+            val size = context.getDisplaySize()
+            val width = (size.x * widthPercentsOfScreen / 100.0f)
+                .coerceAtMost((480f.dip2px(context)).toFloat())
+
+            val lp = WindowManager.LayoutParams()
+            lp.copyFrom(it.attributes)
+            lp.width = width.toInt()
+
+            it.attributes = lp
+        }
+    }
 }

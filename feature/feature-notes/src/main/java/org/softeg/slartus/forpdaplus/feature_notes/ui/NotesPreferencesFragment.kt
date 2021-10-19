@@ -17,6 +17,8 @@ import org.softeg.slartus.forpdacommon.NotReportException
 import org.softeg.slartus.forpdacommon.dialogs.ProgressDialog
 import org.softeg.slartus.forpdacommon.openUrl
 import org.softeg.slartus.forpdacommon.uiMessage
+import org.softeg.slartus.forpdaplus.core_ui.navigation.AppRouter
+import org.softeg.slartus.forpdaplus.core_ui.navigation.AppScreen
 import org.softeg.slartus.forpdaplus.core_ui.ui.fragments.BasePreferenceFragment
 import org.softeg.slartus.forpdaplus.feature_notes.NotesBackupManager
 import org.softeg.slartus.forpdaplus.feature_notes.R
@@ -25,7 +27,6 @@ import org.softeg.slartus.forpdaplus.feature_notes.di.NotesPreferences
 import timber.log.Timber
 import javax.inject.Inject
 
-@Suppress("unused")
 @AndroidEntryPoint
 class NotesPreferencesFragment : BasePreferenceFragment() {
     @Inject
@@ -36,6 +37,9 @@ class NotesPreferencesFragment : BasePreferenceFragment() {
 
     @Inject
     lateinit var notesRepository: NotesRepository
+
+    @Inject
+    lateinit var router: AppRouter
 
     private val errorHandler = CoroutineExceptionHandler { _, throwable ->
         lifecycleScope.launch(Dispatchers.Main) {
@@ -158,6 +162,12 @@ class NotesPreferencesFragment : BasePreferenceFragment() {
     }
 
     private fun restoreNotes() {
+//        val resultKey = "NotesPreferencesFragment.chooseFileKey"
+//        router.setResultListener(resultKey) { data ->
+//            Timber.d(data.toString())
+//        }
+//        router.navigateTo(AppScreen.ChooseFileDialog(resultKey))
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             val chooseFileIntent = Intent(ACTION_OPEN_DOCUMENT).apply {
                 addCategory(Intent.CATEGORY_OPENABLE)
@@ -177,8 +187,5 @@ class NotesPreferencesFragment : BasePreferenceFragment() {
         private const val KEY_BACKUP = "notes.backup"
         private const val KEY_HELP = "notes.remote.help"
         private const val KEY_NOTES_PLACEMENT = "notes.placement"
-        private const val KEY_REMOTE_CATEGORY = "notes.remote.settings"
-        private const val KEY_LOCAL_CATEGORY = "notes.backup.category"
     }
-
 }

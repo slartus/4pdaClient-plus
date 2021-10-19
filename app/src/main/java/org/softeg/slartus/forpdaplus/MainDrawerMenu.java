@@ -3,15 +3,10 @@ package org.softeg.slartus.forpdaplus;/*
  */
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Handler;
-import com.google.android.material.navigation.NavigationView;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.Menu;
@@ -20,9 +15,15 @@ import android.view.SubMenu;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.android.material.navigation.NavigationView;
 
 import org.softeg.slartus.forpdaplus.common.AppLog;
+import org.softeg.slartus.forpdaplus.feature_preferences.Preferences;
 import org.softeg.slartus.forpdaplus.fragments.ForumRulesFragment;
 import org.softeg.slartus.forpdaplus.fragments.topic.ThemeFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.AppAndGame;
@@ -32,16 +33,16 @@ import org.softeg.slartus.forpdaplus.listtemplates.ForumRulesBrick;
 import org.softeg.slartus.forpdaplus.listtemplates.ListCore;
 import org.softeg.slartus.forpdaplus.listtemplates.MarkAllReadBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.PreferencesBrickInfo;
-import org.softeg.slartus.forpdaplus.feature_preferences.Preferences;
 import org.softeg.slartus.forpdaplus.prefs.PreferencesActivity;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 public class MainDrawerMenu implements NavigationView.OnNavigationItemSelectedListener {
     private final DrawerLayout mDrawerLayout;
     private final NavigationView mDrawer;
     private final ActionBarDrawerToggle mDrawerToggle;
-    private final MainActivity mActivity;
+    private final WeakReference<MainActivity> mActivityRef;
     private final SelectItemListener mSelectItemListener;
     private final Handler mHandler = new Handler();
     private final SharedPreferences prefs;
@@ -64,7 +65,7 @@ public class MainDrawerMenu implements NavigationView.OnNavigationItemSelectedLi
             dpWidth = displayMetrics.density * 400;
         }
         dpWidth -= 80 * displayMetrics.density;
-        mActivity = activity;
+        mActivityRef = new WeakReference<>(activity);
         mSelectItemListener = listener;
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
@@ -83,11 +84,11 @@ public class MainDrawerMenu implements NavigationView.OnNavigationItemSelectedLi
 
         setNavigationItems();
 
-        mDrawerToggle = new ActionBarDrawerToggle(mActivity, mDrawerLayout, mActivity.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
+        mDrawerToggle = new ActionBarDrawerToggle(activity, mDrawerLayout, activity.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                mActivity.hidePopupWindows();
+                activity.hidePopupWindows();
             }
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
@@ -153,11 +154,11 @@ public class MainDrawerMenu implements NavigationView.OnNavigationItemSelectedLi
     }
 
     private Context getContext() {
-        return mActivity.getContext();
+        return mActivityRef.get().getContext();
     }
 
     private View findViewById(int id) {
-        return mActivity.findViewById(id);
+        return mActivityRef.get().findViewById(id);
     }
 
     public void toggleOpenState() {
@@ -205,21 +206,21 @@ public class MainDrawerMenu implements NavigationView.OnNavigationItemSelectedLi
                 ThemeFragment.showTopicById("275433");
                 break;
             case PreferencesBrickInfo.NAME:
-                mActivity.startActivityForResult(PreferencesActivity.class);
+                mActivityRef.get().startActivityForResult(PreferencesActivity.class);
                 break;
             case MarkAllReadBrickInfo.NAME:
                 if (!Client.getInstance().getLogined()) {
-                    Toast.makeText(mActivity, R.string.need_login, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mActivityRef.get(), R.string.need_login, Toast.LENGTH_SHORT).show();
                     break;
                 }
-                new MaterialDialog.Builder(mActivity)
+                new MaterialDialog.Builder(mActivityRef.get())
                         .title(R.string.confirm_action)
                         .content(getContext().getString(R.string.mark_all_forums_read) + "?")
                         .positiveText(R.string.yes)
                         .callback(new MaterialDialog.ButtonCallback() {
                             @Override
                             public void onPositive(MaterialDialog dialog) {
-                                Toast.makeText(mActivity, R.string.request_sent, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(mActivityRef.get(), R.string.request_sent, Toast.LENGTH_SHORT).show();
                                 new Thread(() -> {
                                     Throwable ex = null;
                                     try {
@@ -233,13 +234,13 @@ public class MainDrawerMenu implements NavigationView.OnNavigationItemSelectedLi
                                     mHandler.post(() -> {
                                         try {
                                             if (finalEx != null) {
-                                                Toast.makeText(mActivity, R.string.error, Toast.LENGTH_SHORT).show();
-                                                AppLog.e(mActivity, finalEx);
+                                                Toast.makeText(mActivityRef.get(), R.string.error, Toast.LENGTH_SHORT).show();
+                                                AppLog.e(mActivityRef.get(), finalEx);
                                             } else {
-                                                Toast.makeText(mActivity, R.string.forum_setted_read, Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(mActivityRef.get(), R.string.forum_setted_read, Toast.LENGTH_SHORT).show();
                                             }
                                         } catch (Exception ex1) {
-                                            AppLog.e(mActivity, ex1);
+                                            AppLog.e(mActivityRef.get(), ex1);
                                         }
 
                                     });

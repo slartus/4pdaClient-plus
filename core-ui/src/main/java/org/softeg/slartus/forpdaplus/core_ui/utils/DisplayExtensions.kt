@@ -1,4 +1,4 @@
-package org.softeg.slartus.forpdacommon
+package org.softeg.slartus.forpdaplus.core_ui.utils
 
 import android.content.Context
 import android.graphics.Point

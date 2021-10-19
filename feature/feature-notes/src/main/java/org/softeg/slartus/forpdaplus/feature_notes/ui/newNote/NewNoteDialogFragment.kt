@@ -4,26 +4,23 @@ import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.WindowManager
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.core.widget.addTextChangedListener
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import com.afollestad.materialdialogs.MaterialDialog
 import dagger.hilt.android.AndroidEntryPoint
-import org.softeg.slartus.forpdacommon.dip2px
-import org.softeg.slartus.forpdacommon.getDisplaySize
 import org.softeg.slartus.forpdacommon.uiMessage
 import org.softeg.slartus.forpdaplus.core_ui.di.GenericSavedStateViewModelFactory
 import org.softeg.slartus.forpdaplus.core_ui.navigation.AppRouter
+import org.softeg.slartus.forpdaplus.core_ui.ui.fragments.BaseDialogFragment
 import org.softeg.slartus.forpdaplus.feature_notes.R
 import org.softeg.slartus.forpdaplus.feature_notes.databinding.FragmentNewNoteBinding
 import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class NewNoteDialogFragment : DialogFragment() {
-
+class NewNoteDialogFragment : BaseDialogFragment() {
     @Inject
     internal lateinit var viewModelFactory: NewNoteViewModelFactory
 
@@ -34,25 +31,7 @@ class NewNoteDialogFragment : DialogFragment() {
         GenericSavedStateViewModelFactory(viewModelFactory, this, arguments)
     }
 
-    private val widthPercentsOfScreen: Float
-        get() = 90f
-
-    override fun onStart() {
-        super.onStart()
-
-        dialog?.window?.let {
-            val context = requireContext()
-            val size = context.getDisplaySize()
-            val width = (size.x * widthPercentsOfScreen / 100.0f)
-                .coerceAtMost((480f.dip2px(context)).toFloat())
-
-            val lp = WindowManager.LayoutParams()
-            lp.copyFrom(it.attributes)
-            lp.width = width.toInt()
-
-            it.attributes = lp
-        }
-    }
+    override val widthPercentsOfScreen = 90f
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -127,16 +106,16 @@ class NewNoteDialogFragment : DialogFragment() {
             userId: String? = null,
             userName: String? = null
         ) = NewNoteDialogFragment().apply {
-            arguments = Bundle().apply {
-                putString(NewNoteViewModel.TITLE_KEY, title)
-                putString(NewNoteViewModel.BODY_KEY, body)
-                putString(NewNoteViewModel.URL_KEY, url)
-                putString(NewNoteViewModel.TOPIC_ID_KEY, topicId)
-                putString(NewNoteViewModel.TOPIC_TITLE_KEY, topicTitle)
-                putString(NewNoteViewModel.POST_ID_KEY, postId)
-                putString(NewNoteViewModel.USER_ID_KEY, userId)
-                putString(NewNoteViewModel.USER_NAME_KEY, userName)
-            }
+            arguments = bundleOf(
+                NewNoteViewModel.TITLE_KEY to title,
+                NewNoteViewModel.BODY_KEY to body,
+                NewNoteViewModel.URL_KEY to url,
+                NewNoteViewModel.TOPIC_ID_KEY to topicId,
+                NewNoteViewModel.TOPIC_TITLE_KEY to topicTitle,
+                NewNoteViewModel.POST_ID_KEY to postId,
+                NewNoteViewModel.USER_ID_KEY to userId,
+                NewNoteViewModel.USER_NAME_KEY to userName
+            )
         }
     }
 

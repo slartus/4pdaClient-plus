@@ -42,7 +42,13 @@
         android:summary="Показывать на странице 'Кто читает тему' и 'Кто писал сообщения'"
         android:title="@string/prefs_show_readers_writers" />
 
-    <PreferenceScreen
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="fullThemeTitle"
+        android:summary="Вместе с названием отображать описание темы на странице"
+        android:title="@string/prefs_full_topic_title" />
+
+    <PreferenceCategory
         android:key="download_files_screen"
         android:title="@string/prefs_files_downloading">
         <CheckBoxPreference
@@ -57,13 +63,9 @@
             app:useSimpleSummaryProvider="true"
             android:summary="Использовать для скачивания файлов выбранный менеджер"
             android:title="@string/prefs_download_managers" />
-    </PreferenceScreen>
+    </PreferenceCategory>
 
-    <CheckBoxPreference
-        android:defaultValue="false"
-        android:key="fullThemeTitle"
-        android:summary="Вместе с названием отображать описание темы на странице"
-        android:title="@string/prefs_full_topic_title" />
+
     <!--<CheckBoxPreference-->
     <!--android:defaultValue="false"-->
     <!--android:key="theme.Fullscreen"-->

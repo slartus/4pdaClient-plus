@@ -44,12 +44,6 @@ class PreferencesActivity : BasePreferencesActivity(),
     ): Boolean {
         val fragment =
             when (preferenceScreen.key) {
-                "download_files_screen" -> {
-                    TopicViewPreferences()
-                }
-                "notes" -> {
-                    NotesPreferencesFragment()
-                }
                 else -> {
                     PrefsFragment()
                 }
