@@ -5,9 +5,7 @@ import android.os.Handler
 import android.os.Looper
 import com.github.terrakok.cicerone.Router
 import org.softeg.slartus.forpdaplus.IntentActivity
-import org.softeg.slartus.forpdaplus.core_ui.navigation.AppRouter
-import org.softeg.slartus.forpdaplus.core_ui.navigation.AppScreen
-import org.softeg.slartus.forpdaplus.core_ui.navigation.AppService
+import org.softeg.slartus.forpdaplus.core_ui.navigation.*
 import org.softeg.slartus.forpdaplus.feature_notes.ui.newNote.NewNoteDialogFragment
 import org.softeg.slartus.forpdaplus.feature_preferences.App
 import org.softeg.slartus.forpdaplus.fragments.NoteFragment
@@ -44,6 +42,19 @@ class AppRouterImpl @Inject constructor(
                 .tryShowUrl(context, handler, url, true, false)
         }
 
+    }
+
+    override fun sendResult(key: String, data: Any) {
+        router.sendResult(key, data)
+    }
+
+    override fun setResultListener(key: String, listener: ResultListener): ResultListenerHandler {
+        val resultListenerHandler = router.setResultListener(key) { data ->
+            listener.onResult(data)
+        }
+        return ResultListenerHandler {
+            resultListenerHandler.dispose()
+        }
     }
 
     override fun exit() {
