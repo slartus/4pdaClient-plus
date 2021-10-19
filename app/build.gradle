@@ -204,4 +204,8 @@ dependencies {
     // For instrumentation tests
     androidTestImplementation  'com.google.dagger:hilt-android-testing:2.39.1'
     kaptAndroidTest 'com.google.dagger:hilt-compiler:2.39.1'
+
+
+    // leak-canary https://square.github.io/leakcanary/fundamentals-how-leakcanary-works/
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
 }
