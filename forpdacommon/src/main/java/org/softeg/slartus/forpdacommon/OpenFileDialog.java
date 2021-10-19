@@ -44,7 +44,7 @@ public class OpenFileDialog extends AlertDialog.Builder {
 
 
     public interface OpenDialogListener {
-        void OnSelectedFile(String fileName);
+        void OnSelectedFile(File file);
     }
 
     private class FileAdapter extends ArrayAdapter<File> {
@@ -104,7 +104,7 @@ public class OpenFileDialog extends AlertDialog.Builder {
                 .setView(linearLayout)
                 .setPositiveButton(android.R.string.ok, (dialog, which) -> {
                     if (selectedIndex > -1 && listener != null) {
-                        listener.OnSelectedFile(listView.getItemAtPosition(selectedIndex).toString());
+                        listener.OnSelectedFile((File)listView.getItemAtPosition(selectedIndex) );
                     }
                 })
                 .setNegativeButton(android.R.string.cancel, null);

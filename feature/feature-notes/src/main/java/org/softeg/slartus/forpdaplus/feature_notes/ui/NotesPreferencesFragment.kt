@@ -1,8 +1,13 @@
 package org.softeg.slartus.forpdaplus.feature_notes.ui
 
+import android.app.Activity
+import android.content.Intent
+import android.content.Intent.ACTION_OPEN_DOCUMENT
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.text.InputType
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.EditTextPreference
 import androidx.preference.Preference
@@ -43,6 +48,15 @@ class NotesPreferencesFragment : BasePreferenceFragment() {
             )
         }
     }
+
+    // https://habr.com/ru/company/e-Legion/blog/545934/
+    private val chooseFileLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val fileUri = result.data?.data ?: return@registerForActivityResult
+                notesManager.restoreNotes(requireContext(), fileUri)
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -95,7 +109,7 @@ class NotesPreferencesFragment : BasePreferenceFragment() {
     override fun onPreferenceTreeClick(preference: Preference?): Boolean {
         when (preference?.key) {
             KEY_BACKUP -> notesManager.backupNotes(requireContext())
-            KEY_RESTORE -> notesManager.restoreNotes(requireContext())
+            KEY_RESTORE -> restoreNotes()
             KEY_HELP -> openUrl(
                 requireContext(),
                 "https://github.com/slartus/4pdaClient-plus/wiki/Notes"
@@ -140,6 +154,20 @@ class NotesPreferencesFragment : BasePreferenceFragment() {
     private fun reloadRepository() {
         lifecycleScope.launch(Dispatchers.Default + errorHandler) {
             notesRepository.load()
+        }
+    }
+
+    private fun restoreNotes() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            val chooseFileIntent = Intent(ACTION_OPEN_DOCUMENT).apply {
+                addCategory(Intent.CATEGORY_OPENABLE)
+                type = "*/*"
+                val mimeTypes = arrayOf("application/octet-stream")
+                putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes)
+            }
+            chooseFileLauncher.launch(chooseFileIntent)
+        } else {
+            notesManager.restoreNotes(requireContext())
         }
     }
 

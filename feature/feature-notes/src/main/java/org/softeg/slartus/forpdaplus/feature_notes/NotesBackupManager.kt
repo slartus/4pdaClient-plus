@@ -23,52 +23,68 @@ class NotesBackupManager @Inject constructor(
     private val notesDao: NotesDao
 ) {
     fun restoreNotes(context: Context) {
-        val errorJoinHandler = CoroutineExceptionHandler { _, ex ->
-            Timber.e(ex)
-        }
-        val job = Job()
-        val scope = CoroutineScope(job + Dispatchers.Default + errorJoinHandler)
-
         OpenFileDialog(context)
             .setFilter(".*\\.(?i:sqlite)")
-            .setOpenDialogListener { fileName: String? ->
+            .setOpenDialogListener { file: File? ->
                 try {
-                    val sourceuri = Uri.parse(fileName)
-                    if (sourceuri == null || fileName == null) {
+                    val sourceUri = Uri.fromFile(file)
+                    if (sourceUri == null || file == null) {
                         Toast.makeText(context, "Файл не выбран!", Toast.LENGTH_SHORT).show()
                         return@setOpenDialogListener
                     }
-                    val notes = getNotesFromFile(fileName)
-
-                    AlertDialog.Builder(context)
-                        .setTitle("Внимание!")
-                        .setMessage(
-                            """
-    Заметок для восстановления: ${notes.size}
-
-    Восстановление заметок приведёт к полной потере всех существующих заметок!
-    """.trimIndent()
-                        )
-                        .setPositiveButton("Продолжить") { dialogInterface: DialogInterface, _: Int ->
-                            dialogInterface.dismiss()
-                            scope.launch {
-                                restoreFrom(notes)
-                                withContext(Dispatchers.Main) {
-                                    Toast.makeText(
-                                        context,
-                                        "Заметки восстановлены",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                }
-                            }
-                        }
-                        .setNegativeButton("Отмена", null)
-                        .create().show()
+                    restoreNotes(context, file)
                 } catch (ex: Throwable) {
                     Timber.e(ex)
                 }
             }
             .show()
+    }
+
+    fun restoreNotes(context: Context, fileUri: Uri) {
+        try {
+            context.contentResolver.openInputStream(fileUri)?.let { inputStream ->
+                val tempFile = FileUtils.createTempFile(context)
+                FileUtils.copyInputStreamToFile(inputStream, tempFile)
+
+                restoreNotes(context, tempFile)
+                tempFile.delete()
+            }
+        } catch (ex: Throwable) {
+            Timber.e(ex)
+        }
+    }
+
+    private fun restoreNotes(context: Context, file: File) {
+        val notes = getNotesFromFile(file)
+        val errorJoinHandler = CoroutineExceptionHandler { _, ex ->
+            Timber.e(ex)
+        }
+        val job = Job()
+        val scope = CoroutineScope(job + Dispatchers.Default + errorJoinHandler)
+        AlertDialog.Builder(context)
+            .setTitle("Внимание!")
+            .setMessage(
+                """
+    Заметок для восстановления: ${notes.size}
+
+    Восстановление заметок приведёт к полной потере всех существующих заметок!
+    """.trimIndent()
+            )
+            .setPositiveButton("Продолжить") { dialogInterface: DialogInterface, _: Int ->
+                dialogInterface.dismiss()
+                scope.launch {
+                    restoreFrom(notes)
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(
+                            context,
+                            "Заметки восстановлены",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+            .setNegativeButton("Отмена", null)
+            .create().show()
     }
 
     fun backupNotes(context: Context) {
@@ -125,8 +141,8 @@ class NotesBackupManager @Inject constructor(
         }
     }
 
-    private fun getNotesFromFile(filePath: String): List<Note> {
-        SQLiteDatabase.openOrCreateDatabase(File(filePath), null).use { backupDb ->
+    private fun getNotesFromFile(file: File): List<Note> {
+        SQLiteDatabase.openOrCreateDatabase(file, null).use { backupDb ->
             return getNotes(backupDb)
         }
     }
@@ -213,7 +229,7 @@ class NotesBackupManager @Inject constructor(
                 return@launch
             }
             if (notesDao.getAll().isNotEmpty()) return@launch
-            val notes = getNotesFromFile(oldNotesDbPath)
+            val notes = getNotesFromFile(oldDbFile)
             restoreFrom(notes)
             oldDbFile.delete()
         }

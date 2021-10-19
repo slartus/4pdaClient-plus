@@ -2,6 +2,7 @@ package org.softeg.slartus.forpdaplus.log
 
 import android.app.Activity
 import android.util.Log
+import kotlinx.coroutines.runBlocking
 import org.acra.ACRA
 import org.apache.http.conn.ConnectTimeoutException
 import org.softeg.slartus.forpdacommon.NotReportException
@@ -39,7 +40,9 @@ internal class ActivityTimberTree constructor(private val activityRef: WeakRefer
 
     override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
         if (t != null) {
-            AppLog.e(activityRef.get(), t)
+            runBlocking {
+                AppLog.e(activityRef.get(), t)
+            }
         }
     }
 }

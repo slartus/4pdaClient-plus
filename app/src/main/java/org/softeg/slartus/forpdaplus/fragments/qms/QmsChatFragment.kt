@@ -271,7 +271,7 @@ class QmsChatFragment : WebViewFragment() {
 
             } else if (requestCode == FILECHOOSER_RESULTCODE) {
                 val attachFilePath = org.softeg.slartus.forpdacommon.FileUtils.getRealPathFromURI(
-                    context,
+                    requireContext(),
                     data!!.data!!
                 )
                 val cssData = org.softeg.slartus.forpdacommon.FileUtils.readFileText(attachFilePath)
