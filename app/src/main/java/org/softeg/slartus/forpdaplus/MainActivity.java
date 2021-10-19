@@ -61,7 +61,6 @@ import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.ListCore;
 import org.softeg.slartus.forpdaplus.listtemplates.NewsPagerBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.QmsContactsBrickInfo;
-import org.softeg.slartus.forpdaplus.log.ActivityTimberTree;
 import org.softeg.slartus.forpdaplus.mainnotifiers.DonateNotifier;
 import org.softeg.slartus.forpdaplus.mainnotifiers.ForPdaVersionNotifier;
 import org.softeg.slartus.forpdaplus.mainnotifiers.NotifiersManager;
@@ -168,7 +167,6 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
         return this;
     }
 
-    private final Timber.Tree timberTree = new ActivityTimberTree(this);
 
     @Override
     public void onCreate(Bundle saveInstance) {
@@ -618,18 +616,6 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
         m_ExitWarned = false;
         onStart();
 
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Timber.plant(timberTree);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Timber.uproot(timberTree);
     }
 
     @Override

@@ -1,62 +1,45 @@
 package org.softeg.slartus.forpdaplus.log
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.util.Log
+import org.acra.ACRA
+import org.apache.http.conn.ConnectTimeoutException
 import org.softeg.slartus.forpdacommon.NotReportException
-import org.softeg.slartus.forpdaplus.App
+import org.softeg.slartus.forpdacommon.ShowInBrowserException
+import org.softeg.slartus.forpdaplus.classes.Exceptions.MessageInfoException
 import org.softeg.slartus.forpdaplus.common.AppLog
-
+import ru.slartus.http.HttpException
 import timber.log.Timber
 import java.lang.ref.WeakReference
-import java.text.SimpleDateFormat
-import java.util.*
-import java.util.concurrent.ConcurrentLinkedQueue
+import java.net.*
 
 internal class AppTimberTree : Timber.Tree() {
     override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
-//        if (priority == Log.VERBOSE || priority == Log.DEBUG) {
-//            return
-//        }
-//        if (strings.size > MAX_LOG_LENGTH) {
-//            strings.poll()
-//        }
-//        val logTimeStamp: String = simpleDateFormat.format(
-//            Date()
-//        )
-//        val str = "$logTimeStamp: $tag - $message"
-//        strings.add(str)
-    }
-
-    companion object {
-//        @SuppressLint("ConstantLocale")
-//        private val simpleDateFormat = SimpleDateFormat("HH:mm:ss:SSS", Locale.getDefault())
-//        private const val MAX_LOG_LENGTH = 1000
-//        private val strings: Queue<String> = ConcurrentLinkedQueue()
-    }
-}
-
-internal class ActivityTimberTree(activity: Activity) : Timber.Tree() {
-    private val activityRef = WeakReference(activity)
-    override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
-        if (t != null) {
-            AppLog.e(activityRef.get(), NotReportException(t.message))
+        if (t != null && priority != Log.VERBOSE && priority != Log.DEBUG) {
+            when (t) {
+                is ShowInBrowserException,
+                is UnknownHostException,
+                is NotReportException,
+                is MessageInfoException,
+                is ConnectTimeoutException,
+                is SocketTimeoutException,
+                is ConnectException,
+                is HttpException,
+                is SocketException,
+                is ProtocolException -> Log.println(priority, tag, "$message $t")
+                else -> ACRA.getErrorReporter().handleException(t)
+            }
         }
     }
 }
-//
-//class ReleaseTree : Timber.DebugTree() {
-//
-//    override fun log(priority: Int, tag: String?, message: String,
-//                     t: Throwable?) {
-//        if (priority == Log.VERBOSE) {
-//            return
-//        }
-//        //print to logcat
-//        Log.println(priority, tag, message)
-//
-//        Crashlytics.log(priority, tag, message)
-//        val t = t ?: Exception(message)
-//        Crashlytics.logException(t)
-//    }
-//}
+
+internal class ActivityTimberTree constructor(private val activityRef: WeakReference<Activity>) :
+    Timber.Tree() {
+    constructor(activity: Activity) : this(WeakReference(activity))
+
+    override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
+        if (t != null) {
+            AppLog.e(activityRef.get(), t)
+        }
+    }
+}

@@ -2,6 +2,7 @@ package org.softeg.slartus.forpdaplus.feature_notes.ui.note
 
 import android.os.Bundle
 import android.view.View
+import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -74,38 +75,25 @@ class NoteFragment : BaseFragment<FragmentNoteBinding>(FragmentNoteBinding::infl
         binding.titleTextView.visibility =
             if (note.title.isNullOrEmpty() || note.title == note.topicTitle) View.GONE else View.VISIBLE
 
-        binding.topicTextView.text =
-            UrlExtensions.urlToHref(note.topicUrl, note.title ?: getString(R.string.topic))
-                .fromHtml()
-        binding.topicTextView.visibility =
-            if (note.topicId.isNullOrEmpty()) View.GONE else View.VISIBLE
-        binding.topicTextView.setOnClickListener {
-            note.topicUrl?.let {
-                router.openUrl(it)
-            }
-        }
+        setTextViewUrl(
+            binding.topicTextView,
+            note.topicUrl,
+            note.title ?: getString(R.string.topic)
+        )
 
-        binding.postTextView.text =
-            UrlExtensions.urlToHref(note.postUrl, getString(R.string.post) + "#${note.postId}")
-                .fromHtml()
-        binding.postTextView.visibility =
-            if (note.postUrl.isNullOrEmpty()) View.GONE else View.VISIBLE
-        binding.postTextView.setOnClickListener {
-            note.postUrl?.let {
-                router.openUrl(it)
-            }
-        }
+        setTextViewUrl(
+            binding.postTextView,
+            note.postUrl,
+            getString(R.string.post) + "#${note.postId}"
+        )
 
-        binding.userTextView.text =
-            UrlExtensions.urlToHref(note.userUrl, note.userName ?: getString(R.string.user))
-                .fromHtml()
-        binding.userTextView.visibility =
-            if (note.userUrl.isNullOrEmpty()) View.GONE else View.VISIBLE
-        binding.userTextView.setOnClickListener {
-            note.userUrl?.let {
-                router.openUrl(it)
-            }
-        }
+        setTextViewUrl(
+            binding.userTextView,
+            note.userUrl,
+            note.userName ?: getString(R.string.user)
+        )
+
+        setTextViewUrl(binding.urlTextView, note.url, getString(R.string.link))
 
         binding.webView.loadDataWithBaseURL(
             "https://" + HostHelper.host + "/forum/",
@@ -114,6 +102,16 @@ class NoteFragment : BaseFragment<FragmentNoteBinding>(FragmentNoteBinding::infl
             "UTF-8",
             null
         )
+    }
+
+    private fun setTextViewUrl(textView: TextView, url: String?, title: String?) {
+        textView.text = UrlExtensions.urlToHref(url, title).fromHtml()
+        textView.visibility = if (url.isNullOrEmpty()) View.GONE else View.VISIBLE
+        textView.setOnClickListener {
+            url?.let {
+                router.openUrl(it)
+            }
+        }
     }
 
     private fun transformChatBody(body: String): String {

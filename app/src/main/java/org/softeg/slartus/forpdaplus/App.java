@@ -33,6 +33,7 @@ import org.softeg.slartus.forpdaplus.acra.ACRAReportSenderFactory;
 import org.softeg.slartus.forpdaplus.core_ui.AppTheme;
 import org.softeg.slartus.forpdaplus.core_ui.ui.views.SwipeRefreshLayoutKt;
 import org.softeg.slartus.forpdaplus.db.DbHelper;
+import org.softeg.slartus.forpdaplus.feature_notes.NotesBackupManager;
 import org.softeg.slartus.forpdaplus.feature_preferences.Preferences;
 import org.softeg.slartus.forpdaplus.log.AppTimberTree;
 import org.softeg.slartus.forpdaplus.repositories.ForumsRepository;
@@ -84,6 +85,9 @@ public class App extends MultiDexApplication {
 
     @Inject
     public AppTheme appTheme;
+    @Inject
+    public NotesBackupManager notesBackupManager;
+
     private final AtomicInteger m_AtomicInteger = new AtomicInteger();
 
     public int getUniqueIntValue() {
@@ -136,6 +140,7 @@ public class App extends MultiDexApplication {
         setTheme(AppTheme.getThemeStyleResID());
         try {
             DbHelper.prepareBases(this);
+            migrateOldNotesDb();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -187,7 +192,6 @@ public class App extends MultiDexApplication {
         m_MyActivityLifecycleCallbacks.finishActivities();
     }
 
-
     public static App getInstance() {
         if (INSTANCE == null) {
             INSTANCE = new App();
@@ -225,6 +229,10 @@ public class App extends MultiDexApplication {
         } catch (Throwable e) {
             e.printStackTrace();
         }
+    }
+
+    private void migrateOldNotesDb() {
+        notesBackupManager.migrateFromOld(Preferences.System.getSystemDir() + "/notes");
     }
 
     private static final DisplayImageOptions.Builder options = new DisplayImageOptions.Builder()
@@ -298,7 +306,6 @@ public class App extends MultiDexApplication {
 
     public static SwipeRefreshLayout createSwipeRefreshLayout(View view,
                                                               final Runnable refreshAction) {
-
         SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.ptr_layout);
         SwipeRefreshLayoutKt.configure(swipeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(refreshAction::run);

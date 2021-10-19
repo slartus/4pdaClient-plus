@@ -202,6 +202,22 @@ class NotesBackupManager @Inject constructor(
     private suspend fun restoreFrom(notes: List<Note>) {
         notesDao.merge(notes)
     }
+
+    fun migrateFromOld(oldNotesDbPath: String) {
+        val errorHandler = CoroutineExceptionHandler { _, throwable ->
+            Timber.w(throwable)
+        }
+        MainScope().launch(Dispatchers.Default + errorHandler) {
+            val oldDbFile = File(oldNotesDbPath)
+            if (!oldDbFile.exists()) {
+                return@launch
+            }
+            if (notesDao.getAll().isNotEmpty()) return@launch
+            val notes = getNotesFromFile(oldNotesDbPath)
+            restoreFrom(notes)
+            oldDbFile.delete()
+        }
+    }
 }
 
 private enum class NotesTableStruct(
