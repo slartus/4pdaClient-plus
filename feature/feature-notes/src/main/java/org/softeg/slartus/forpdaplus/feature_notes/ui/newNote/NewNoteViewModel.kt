@@ -48,7 +48,7 @@ class NewNoteViewModel constructor(
 
     fun saveNote() {
         _state.value?.let { data ->
-            viewModelScope.launch(Dispatchers.IO + errorHandler) {
+            viewModelScope.launch(Dispatchers.Default + errorHandler) {
                 repository.createNote(
                     title = data.title,
                     body = data.body,

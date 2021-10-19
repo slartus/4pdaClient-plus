@@ -16,6 +16,7 @@
         android:title="@string/remote_server">
         <EditTextPreference
             android:key="notes.remote.url"
+            android:enabled="false"
             android:title="@string/link" />
         <Preference
             android:key="notes.remote.help"

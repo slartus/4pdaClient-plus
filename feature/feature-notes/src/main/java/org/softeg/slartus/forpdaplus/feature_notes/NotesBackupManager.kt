@@ -27,7 +27,7 @@ class NotesBackupManager @Inject constructor(
             Timber.e(ex)
         }
         val job = Job()
-        val scope = CoroutineScope(job + Dispatchers.IO + errorJoinHandler)
+        val scope = CoroutineScope(job + Dispatchers.Default + errorJoinHandler)
 
         OpenFileDialog(context)
             .setFilter(".*\\.(?i:sqlite)")

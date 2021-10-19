@@ -48,8 +48,14 @@ class NotesPreferencesFragment : BasePreferenceFragment() {
         super.onCreate(savedInstanceState)
         preferenceManager.sharedPreferences.registerOnSharedPreferenceChangeListener { _, s ->
             when (s) {
-                KEY_REMOTE_URL -> updateRemoteUrlSummary()
-                KEY_NOTES_PLACEMENT -> lifecycleScope.launch(Dispatchers.IO + errorHandler) { notesRepository.load() }
+                KEY_REMOTE_URL -> {
+                    updateRemoteUrlSummary()
+                    reloadRepository()
+                }
+                KEY_NOTES_PLACEMENT -> {
+                    reloadRepository()
+                    refreshRemoteEnabled()
+                }
             }
         }
         findPreference<EditTextPreference>(KEY_REMOTE_URL)?.apply {
@@ -64,6 +70,7 @@ class NotesPreferencesFragment : BasePreferenceFragment() {
             this.dialogIcon = null
         }
         updateRemoteUrlSummary()
+        refreshRemoteEnabled()
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -76,20 +83,19 @@ class NotesPreferencesFragment : BasePreferenceFragment() {
         }
     }
 
+    private fun refreshRemoteEnabled() {
+        findPreference<Preference>(KEY_REMOTE_URL)?.isEnabled = !notesPreferences.isLocal
+        findPreference<Preference>(KEY_HELP)?.isEnabled = !notesPreferences.isLocal
+    }
+
     override fun onPreferenceTreeClick(preference: Preference?): Boolean {
         when (preference?.key) {
-            KEY_BACKUP -> {
-                notesManager.backupNotes(requireContext())
-            }
-            KEY_RESTORE -> {
-                notesManager.restoreNotes(requireContext())
-            }
-            KEY_REMOTE_URL -> {
-                //showNotesRemoteServerDialog()
-            }
-            KEY_HELP -> {
-                openUrl(requireContext(), "https://github.com/slartus/4pdaClient-plus/wiki/Notes")
-            }
+            KEY_BACKUP -> notesManager.backupNotes(requireContext())
+            KEY_RESTORE -> notesManager.restoreNotes(requireContext())
+            KEY_HELP -> openUrl(
+                requireContext(),
+                "https://github.com/slartus/4pdaClient-plus/wiki/Notes"
+            )
         }
         return super.onPreferenceTreeClick(preference)
     }
@@ -97,8 +103,7 @@ class NotesPreferencesFragment : BasePreferenceFragment() {
     private fun checkRemoteUrl(baseUrl: String) {
         setLoading(true)
 
-
-        lifecycleScope.launch(Dispatchers.IO + errorHandler) {
+        lifecycleScope.launch(Dispatchers.Default + errorHandler) {
             val uri = Uri.parse(baseUrl)
             val url = if (uri.scheme == null) {
                 "https://$uri"
@@ -125,6 +130,12 @@ class NotesPreferencesFragment : BasePreferenceFragment() {
         } else if (fragment == null && progress) {
             ProgressDialog().show(childFragmentManager, progressTag)
             childFragmentManager.executePendingTransactions()
+        }
+    }
+
+    private fun reloadRepository() {
+        lifecycleScope.launch(Dispatchers.Default + errorHandler) {
+            notesRepository.load()
         }
     }
 

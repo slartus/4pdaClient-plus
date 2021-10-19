@@ -78,65 +78,73 @@
 
     <style name="MainGrayBlack" parent="MainGrayBlackBase" />
 
-
     <style name="ThemePrefsLightPinkBase" parent="MainPinkLight">
-        <item name="android:textColor">@color/list_text_special_color_light</item>
+        <item name="android:textColor">@color/text_primary_color_light</item>
+        <item name="android:textColorSecondary">@color/text_secondary_color_light</item>
         <item name="android:windowNoTitle">false</item>
         <item name="android:windowTitleSize">@dimen/actionbar_prefs_height</item>
         <item name="android:windowTitleBackgroundStyle">@style/prefs_title_background_light</item>
     </style>
 
     <style name="ThemePrefsLightGrayBase" parent="MainGrayLight">
-        <item name="android:textColor">@color/list_text_special_color_light</item>
+        <item name="android:textColor">@color/text_primary_color_light</item>
+        <item name="android:textColorSecondary">@color/text_secondary_color_light</item>
         <item name="android:windowNoTitle">false</item>
         <item name="android:windowTitleSize">@dimen/actionbar_prefs_height</item>
         <item name="android:windowTitleBackgroundStyle">@style/prefs_title_background_light</item>
     </style>
 
     <style name="ThemePrefsLightBlueBase" parent="MainBlueLight">
-        <item name="android:textColor">@color/list_text_special_color_light</item>
+        <item name="android:textColor">@color/text_primary_color_light</item>
+        <item name="android:textColorSecondary">@color/text_secondary_color_light</item>
         <item name="android:windowNoTitle">false</item>
         <item name="android:windowTitleSize">@dimen/actionbar_prefs_height</item>
         <item name="android:windowTitleBackgroundStyle">@style/prefs_title_background_light</item>
     </style>
 
     <style name="ThemePrefsDarkPinkBase" parent="MainPinkDark">
-        <item name="android:textColor">@color/list_text_special_color_dark</item>
+        <item name="android:textColor">@color/text_primary_color_dark</item>
+        <item name="android:textColorSecondary">@color/text_secondary_color_dark</item>
         <item name="android:windowNoTitle">false</item>
         <item name="android:windowTitleSize">@dimen/actionbar_prefs_height</item>
         <item name="android:windowTitleBackgroundStyle">@style/prefs_title_background_dark</item>
     </style>
 
     <style name="ThemePrefsDarkGrayBase" parent="MainGrayDark">
-        <item name="android:textColor">@color/list_text_special_color_dark</item>
+        <item name="android:textColor">@color/text_primary_color_dark</item>
+        <item name="android:textColorSecondary">@color/text_secondary_color_dark</item>
         <item name="android:windowNoTitle">false</item>
         <item name="android:windowTitleSize">@dimen/actionbar_prefs_height</item>
         <item name="android:windowTitleBackgroundStyle">@style/prefs_title_background_dark</item>
     </style>
 
     <style name="ThemePrefsDarkBlueBase" parent="MainBlueDark">
-        <item name="android:textColor">@color/list_text_special_color_dark</item>
+        <item name="android:textColor">@color/text_primary_color_dark</item>
+        <item name="android:textColorSecondary">@color/text_secondary_color_dark</item>
         <item name="android:windowNoTitle">false</item>
         <item name="android:windowTitleSize">@dimen/actionbar_prefs_height</item>
         <item name="android:windowTitleBackgroundStyle">@style/prefs_title_background_dark</item>
     </style>
 
     <style name="ThemePrefsBlackPinkBase" parent="MainPinkBlack">
-        <item name="android:textColor">@color/list_text_special_color_dark</item>
+        <item name="android:textColor">@color/text_primary_color_dark</item>
+        <item name="android:textColorSecondary">@color/text_secondary_color_dark</item>
         <item name="android:windowNoTitle">false</item>
         <item name="android:windowTitleSize">@dimen/actionbar_prefs_height</item>
         <item name="android:windowTitleBackgroundStyle">@style/prefs_title_background_black</item>
     </style>
 
     <style name="ThemePrefsBlackGrayBase" parent="MainGrayBlack">
-        <item name="android:textColor">@color/list_text_special_color_dark</item>
+        <item name="android:textColor">@color/text_primary_color_dark</item>
+        <item name="android:textColorSecondary">@color/text_secondary_color_dark</item>
         <item name="android:windowNoTitle">false</item>
         <item name="android:windowTitleSize">@dimen/actionbar_prefs_height</item>
         <item name="android:windowTitleBackgroundStyle">@style/prefs_title_background_black</item>
     </style>
 
     <style name="ThemePrefsBlackBlueBase" parent="MainBlueBlack">
-        <item name="android:textColor">@color/list_text_special_color_dark</item>
+        <item name="android:textColor">@color/text_primary_color_dark</item>
+        <item name="android:textColorSecondary">@color/text_secondary_color_dark</item>
         <item name="android:windowNoTitle">false</item>
         <item name="android:windowTitleSize">@dimen/actionbar_prefs_height</item>
         <item name="android:windowTitleBackgroundStyle">@style/prefs_title_background_black</item>
