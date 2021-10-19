@@ -12,13 +12,13 @@ abstract class NoteDao {
         insertAll(*notes.toTypedArray())
     }
 
-    @Query("SELECT * FROM note")
+    @Query("SELECT * FROM note ORDER BY date DESC")
     abstract fun getAllFlow(): Flow<List<Note>>
 
-    @Query("SELECT * FROM note")
+    @Query("SELECT * FROM note ORDER BY date DESC")
     abstract suspend fun getAll(): List<Note>
 
-    @Query("SELECT * FROM note where topicId=:topicId")
+    @Query("SELECT * FROM note where topicId=:topicId  ORDER BY date DESC")
     abstract suspend fun getByTopicId(topicId: String): List<Note>
 
     @Query("SELECT * FROM note where id=:id")
