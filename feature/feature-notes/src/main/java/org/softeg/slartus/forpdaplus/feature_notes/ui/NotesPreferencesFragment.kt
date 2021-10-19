@@ -86,6 +86,10 @@ class NotesPreferencesFragment : BasePreferenceFragment() {
     private fun refreshRemoteEnabled() {
         findPreference<Preference>(KEY_REMOTE_URL)?.isEnabled = !notesPreferences.isLocal
         findPreference<Preference>(KEY_HELP)?.isEnabled = !notesPreferences.isLocal
+
+        // !TODO: backup/restore remote notes
+        findPreference<Preference>(KEY_BACKUP)?.isEnabled = notesPreferences.isLocal
+        findPreference<Preference>(KEY_RESTORE)?.isEnabled = notesPreferences.isLocal
     }
 
     override fun onPreferenceTreeClick(preference: Preference?): Boolean {
