@@ -40,9 +40,6 @@
         android:shadowRadius="5"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/date_textView"
-        app:layout_constraintHeight_max="wrap"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
         tools:text="Наушники JBL Reflect Mini BT работают до 8 часов по Bluetooth" />
 
     <TextView

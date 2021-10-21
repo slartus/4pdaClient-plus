@@ -4,7 +4,7 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
-import org.softeg.slartus.forpdaplus.core_api.http.NewsListService
+import org.softeg.slartus.forpdaplus.core_api.netwotk.NewsListService
 import timber.log.Timber
 
 class Test {
@@ -13,7 +13,7 @@ class Test {
             Timber.e(throwable)
         }
         MainScope().launch(Dispatchers.Default + handler) {
-            val res = newsListService.getNewsList(1)
+            val res = newsListService.all(1)
             Timber.d(res.toString())
         }
     }

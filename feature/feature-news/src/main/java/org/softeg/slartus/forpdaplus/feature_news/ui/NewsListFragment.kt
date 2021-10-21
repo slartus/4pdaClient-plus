@@ -4,7 +4,6 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -70,7 +69,6 @@ class NewsListFragment :
                             }
                             is UiState.Success -> {
                                 adapter.submitData(uiState.items)
-                                refreshUi(uiState.items)
                             }
                             is UiState.Error -> {
                                 Timber.e(uiState.exception)
@@ -96,10 +94,10 @@ class NewsListFragment :
     private fun setLoading(loading: Boolean) {
         binding.swipeLayout.isRefreshing = loading
     }
-
-    private fun refreshUi(items: List<Any>) {
-        binding.emptyTextView.isVisible = items.isEmpty()
-    }
+//
+//    private fun refreshUi(items: List<Any>) {
+//        binding.emptyTextView.isVisible = items.isEmpty()
+//    }
 
     private fun showError(exception: Throwable) {
         Toast.makeText(requireContext(), exception.uiMessage, Toast.LENGTH_SHORT).show()

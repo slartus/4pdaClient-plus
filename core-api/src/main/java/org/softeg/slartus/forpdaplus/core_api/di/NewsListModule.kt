@@ -6,8 +6,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import org.softeg.slartus.forpdaplus.core_api.converters.NewsListConverterFactory
-import org.softeg.slartus.forpdaplus.core_api.http.NewsListService
-import org.softeg.slartus.forpdaplus.core_api.http.buildRetrofit
+import org.softeg.slartus.forpdaplus.core_api.netwotk.NewsListService
+import org.softeg.slartus.forpdaplus.core_api.netwotk.buildRetrofit
 import retrofit2.Converter
 import retrofit2.Retrofit
 import javax.inject.Qualifier

@@ -11,9 +11,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import org.softeg.slartus.forpdacommon.fromHtml
-import org.softeg.slartus.forpdaplus.feature_news.data.NewsListItem
 import org.softeg.slartus.forpdaplus.feature_news.data.NewsListRepository
+import org.softeg.slartus.forpdaplus.feature_news.ui.UiNewsListItem.Companion.map
 import javax.inject.Inject
 
 class NewsListViewModel @Inject constructor(
@@ -28,27 +27,21 @@ class NewsListViewModel @Inject constructor(
     val uiState: StateFlow<UiState> = _uiState
 
     init {
-
         viewModelScope.launch(errorHandler) {
             repository
                 .getNewsList()
                 .catch { _uiState.value = UiState.Error(it) }
                 .cachedIn(viewModelScope)
                 .collectLatest { pagingData ->
-                    _uiState.value = UiState.Success(pagingData)
+                    _uiState.value = UiState.Success(pagingData.map { it.map() })
                 }
-
         }
-    }
-
-    fun reload() {
-
     }
 }
 
 sealed class UiState {
     object Initialize : UiState()
 
-    data class Success(val items: PagingData<NewsListItem>) : UiState()
+    data class Success(val items: PagingData<UiNewsListItem>) : UiState()
     data class Error(val exception: Throwable) : UiState()
 }

@@ -1,24 +1,16 @@
 package org.softeg.slartus.forpdaplus.feature_news.ui
 
-import android.view.ContextMenu
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import org.softeg.slartus.forpdacommon.fromHtml
-import org.softeg.slartus.forpdacommon.isToday
-import org.softeg.slartus.forpdacommon.isYesterday
-import org.softeg.slartus.forpdaplus.feature_news.data.NewsListItem
 import org.softeg.slartus.forpdaplus.feature_news.databinding.LayoutNewsListItemBinding
-import java.text.SimpleDateFormat
-import java.util.*
 
 class NewsListAdapter :
-    PagingDataAdapter<NewsListItem, NotesListViewHolder>(NewsListItemComparator) {
+    PagingDataAdapter<UiNewsListItem, NotesListViewHolder>(NewsListItemComparator) {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -36,75 +28,35 @@ class NewsListAdapter :
     }
 }
 
-object NewsListItemComparator : DiffUtil.ItemCallback<NewsListItem>() {
-    override fun areItemsTheSame(oldItem: NewsListItem, newItem: NewsListItem): Boolean {
+object NewsListItemComparator : DiffUtil.ItemCallback<UiNewsListItem>() {
+    override fun areItemsTheSame(oldItem: UiNewsListItem, newItem: UiNewsListItem): Boolean {
         return oldItem.id == newItem.id
     }
 
-    override fun areContentsTheSame(oldItem: NewsListItem, newItem: NewsListItem): Boolean {
+    override fun areContentsTheSame(oldItem: UiNewsListItem, newItem: UiNewsListItem): Boolean {
         return oldItem == newItem
     }
 }
 
 class NotesListViewHolder(private val binding: LayoutNewsListItemBinding) :
-    RecyclerView.ViewHolder(binding.root),
-    View.OnCreateContextMenuListener {
+    RecyclerView.ViewHolder(binding.root) {
 
-    private var currentItem: NewsListItem? = null
+    private var currentItem: UiNewsListItem? = null
 
-    fun bind(item: NewsListItem) {
+    fun bind(item: UiNewsListItem) {
         currentItem = item
 
         binding.titleTextView.text = item.title ?: ""
         binding.authorTextView.text = item.author ?: ""
-        binding.dateTextView.text = dateToDisplay(item.date)
-        binding.descriptionTextView.text = item.description.fromHtml()
-        val comments = item.commentsCount?.toString()
-        binding.commentsTextView.text = comments ?: ""
-        binding.commentsImage.isVisible = comments != null
+        binding.dateTextView.text = item.date
+        binding.descriptionTextView.text = item.description ?: ""
+        binding.commentsTextView.text = item.commentsCount ?: ""
+        binding.commentsImage.isVisible = item.commentsCount != null
         Glide
             .with(binding.posterImageView)
             .load(item.imgUrl)
             .centerCrop()
             .into(binding.posterImageView)
 
-    }
-
-    private fun dateToDisplay(date: Date?): String? {
-        return try {
-            when {
-                date == null -> null
-//                else->DateUtils.getRelativeTimeSpanString(date.time)?.toString()
-                date.isToday -> displayTodayTimeFormat.format(date)
-                date.isYesterday -> displayTodayTimeFormat.format(date)
-                else -> displayDateFormat.format(date)
-            }
-        } catch (ex: Exception) {
-            date.toString()
-        }
-    }
-
-    override fun onCreateContextMenu(
-        menu: ContextMenu?,
-        v: View?,
-        p2: ContextMenu.ContextMenuInfo?
-    ) {
-
-    }
-
-    companion object {
-        val displayDateFormat by lazy { SimpleDateFormat("dd.MM.yy", Locale.getDefault()) }
-        val displayTodayTimeFormat by lazy {
-            SimpleDateFormat(
-                "HH:mm",
-                Locale.getDefault()
-            )
-        }
-        val displayYesterdayTimeFormat by lazy {
-            SimpleDateFormat(
-                "'вчера в' HH:mm",
-                Locale.getDefault()
-            )
-        }
     }
 }

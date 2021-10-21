@@ -19,7 +19,7 @@ class NewsListPagingSource(
             // Start refresh at page 1 if undefined.
             val startPage = page ?: DEFAULT_START_PAGE
             val pageIndex = params.key ?: startPage
-            val response = backend.getNewsList(pageIndex)
+            val response = backend.all(pageIndex)
 
             val nextKey = if (response.isEmpty()) null else pageIndex + 1
             LoadResult.Page(

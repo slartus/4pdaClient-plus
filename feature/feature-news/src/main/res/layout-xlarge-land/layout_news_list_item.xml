@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:foreground="?android:attr/selectableItemBackground"
-    tools:ignore="UnusedAttribute">
+    tools:ignore="UnusedAttribute"
+    tools:layout_width="600dp">
 
     <ImageView
         android:id="@+id/poster_imageView"
@@ -27,17 +28,6 @@
         app:layout_constraintStart_toStartOf="@+id/poster_imageView"
         app:layout_constraintTop_toTopOf="@+id/poster_imageView" />
 
-    <!--    <View-->
-    <!--        android:id="@+id/barrier1"-->
-    <!--        android:layout_width="0dp"-->
-    <!--        android:layout_height="0dp"-->
-    <!--        android:layout_marginEnd="16dp"-->
-    <!--        android:background="#fff"-->
-    <!--        app:layout_constraintBottom_toBottomOf="@+id/date_textView"-->
-    <!--        app:layout_constraintEnd_toEndOf="@+id/author_textView"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="@+id/date_textView" />-->
-
     <TextView
         android:id="@+id/title_textView"
         style="?news_text_general_color"
@@ -51,9 +41,6 @@
         android:shadowRadius="5"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/date_textView"
-        app:layout_constraintHeight_max="wrap"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
         tools:text="Наушники JBL Reflect Mini BT работают до 8 часов по Bluetooth" />
 
     <TextView

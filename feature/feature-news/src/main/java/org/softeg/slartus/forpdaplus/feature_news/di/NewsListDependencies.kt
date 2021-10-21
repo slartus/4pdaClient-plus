@@ -7,5 +7,6 @@ interface NewsListDependencies {
 }
 
 interface NewsListService {
-    suspend fun getNewsList(page: Int = 1): List<NewsListItem>
+    suspend fun all(page: Int = 1): List<NewsListItem>
+    suspend fun categorized(category: String, page: Int = 1): List<NewsListItem>
 }

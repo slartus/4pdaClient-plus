@@ -5,7 +5,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
-import org.softeg.slartus.forpdaplus.core_api.http.buildOkHttpClient
+import org.softeg.slartus.forpdaplus.core_api.netwotk.buildOkHttpClient
 import javax.inject.Singleton
 
 @Module

@@ -1,13 +1,13 @@
 package org.softeg.slartus.forpdaplus.core_api.converters
 
 import okhttp3.ResponseBody
-import org.softeg.slartus.forpdaplus.core_api.model.NewsList
+import org.softeg.slartus.forpdaplus.core_api.model.ApiNewsListCategoryItem
 import org.softeg.slartus.forpdaplus.core_api.model.ApiNewsListItem
 import org.softeg.slartus.forpdaplus.core_api.utils.*
 import org.softeg.slartus.hosthelper.HostHelper.Companion.DEFAULT_CHARSET
 import retrofit2.Converter
 import retrofit2.Retrofit
-import java.lang.Exception
+import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 import java.nio.charset.Charset
 import java.text.SimpleDateFormat
@@ -18,8 +18,12 @@ class NewsListConverterFactory private constructor() : Converter.Factory() {
     override fun responseBodyConverter(
         type: Type, annotations: Array<Annotation>,
         retrofit: Retrofit
-    ): Converter<ResponseBody, NewsList> {
-        return NewsListConverter
+    ): Converter<ResponseBody, *>? {
+        val parameterizedType = type as? ParameterizedType? ?: return null
+        if (parameterizedType.actualTypeArguments.any { it === ApiNewsListItem::class.java }) return NewsListConverter
+        if (parameterizedType.actualTypeArguments.any { it === ApiNewsListCategoryItem::class.java }) return NewsListCategoriesConverter
+
+        return null
     }
 
     companion object {
@@ -29,14 +33,13 @@ class NewsListConverterFactory private constructor() : Converter.Factory() {
     }
 }
 
-object NewsListConverter : Converter<ResponseBody, NewsList> {
-    override fun convert(value: ResponseBody): NewsList? {
+object NewsListConverter : Converter<ResponseBody, List<ApiNewsListItem>> {
+    override fun convert(value: ResponseBody): List<ApiNewsListItem> {
         val source = value.source()
         try {
             val pageBody = source.readString(Charset.forName(DEFAULT_CHARSET))
 
-            val newsItems = parseBody(pageBody)
-            return NewsList(newsItems)
+            return parseBody(pageBody)
         } finally {
             source.closeQuietly()
         }
@@ -161,5 +164,4 @@ object NewsListConverter : Converter<ResponseBody, NewsList> {
         }
         Pattern.compile(pattern.toString())
     }
-
 }
