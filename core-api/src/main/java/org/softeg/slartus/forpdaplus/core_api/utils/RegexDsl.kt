@@ -56,6 +56,8 @@ class REGEX : GroupElement() {
         initTag(HtmlElement(name), init)
 
     fun multilinePattern() = addTag(MultilinePattern())
+
+    fun regex(init: REGEX.() -> Unit) = initTag(REGEX(), init)
 }
 
 class Tag(val name: String, val value: String? = null) : Element {
