@@ -35,8 +35,11 @@ android {
 dependencies {
     implementation project(':feature:feature-preferences')
     implementation project(':feature:feature-notes')
+    implementation project(':feature:feature-news')
     implementation project(':core-ui')
     implementation project(':core-db')
+    implementation project(':core-api')
+
 
     implementation 'androidx.core:core-ktx:1.6.0'
     implementation 'androidx.appcompat:appcompat:1.3.1'

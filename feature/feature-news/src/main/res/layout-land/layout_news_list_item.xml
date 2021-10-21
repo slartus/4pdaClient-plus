@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:foreground="?android:attr/selectableItemBackground"
+    tools:ignore="UnusedAttribute">
+
+    <ImageView
+        android:id="@+id/poster_imageView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="6dp"
+        android:adjustViewBounds="true"
+
+        android:scaleType="fitCenter"
+        app:layout_constraintDimensionRatio="400:300"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/news_list_item_title_bcg"
+        app:layout_constraintBottom_toBottomOf="@+id/poster_imageView"
+        app:layout_constraintEnd_toEndOf="@+id/poster_imageView"
+        app:layout_constraintStart_toStartOf="@+id/poster_imageView"
+        app:layout_constraintTop_toTopOf="@+id/poster_imageView" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.4" />
+
+    <!--    <View-->
+    <!--        android:id="@+id/barrier1"-->
+    <!--        android:layout_width="0dp"-->
+    <!--        android:layout_height="0dp"-->
+    <!--        android:layout_marginEnd="16dp"-->
+    <!--        android:background="#fff"-->
+    <!--        app:layout_constraintBottom_toBottomOf="@+id/date_textView"-->
+    <!--        app:layout_constraintEnd_toEndOf="@+id/author_textView"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="@+id/date_textView" />-->
+
+    <TextView
+        android:id="@+id/title_textView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="6dp"
+        android:textAppearance="@android:style/TextAppearance.Medium"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/guideline"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Наушники JBL Reflect Mini BT работают до 8 часов по Bluetooth" />
+
+    <TextView
+        android:id="@+id/date_textView"
+        style="?news_text_second_style"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="2dp"
+        app:layout_constraintBottom_toBottomOf="@+id/poster_imageView"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="1.08.14" />
+
+    <TextView
+        android:id="@+id/author_textView"
+        style="?news_text_second_style"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="2dp"
+        app:layout_constraintBottom_toBottomOf="@+id/poster_imageView"
+        app:layout_constraintEnd_toStartOf="@+id/comments_image"
+        app:layout_constraintStart_toEndOf="@+id/date_textView"
+        tools:text="News" />
+
+    <TextView
+        android:id="@+id/comments_textView"
+        style="?news_text_second_style"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="2dp"
+        app:layout_constraintBottom_toBottomOf="@+id/poster_imageView"
+        app:layout_constraintEnd_toEndOf="@+id/poster_imageView"
+        tools:text="1" />
+
+    <ImageView
+        android:id="@+id/comments_image"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="2dp"
+        android:adjustViewBounds="true"
+        android:src="@drawable/ic_comments"
+        app:layout_constraintEnd_toStartOf="@+id/comments_textView"
+        app:layout_constraintTop_toTopOf="@+id/comments_textView"
+        app:tint="?news_text_second_color" />
+
+    <TextView
+        android:id="@+id/description_textView"
+        style="?news_text_minor_color"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="6dp"
+        android:ellipsize="end"
+        android:textAppearance="@android:style/TextAppearance.Small"
+        app:layout_constraintBottom_toBottomOf="@+id/poster_imageView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/title_textView"
+        tools:text="@tools:sample/lorem/random" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -16,9 +16,9 @@ abstract class PreferencesModule {
 }
 
 class AppThemingPreferencesImpl @Inject constructor() : AppThemePreferences {
-    override val mainAccentColor: String = Preferences.Common.Overall.mainAccentColor
-    override val accentColor: Int = Preferences.Common.Overall.accentColor
-    override val accentColorPressed: Int = Preferences.Common.Overall.accentColorPressed
-    override val webViewFontName: String = Preferences.Common.Overall.webViewFontName
-    override val appstyle: String = Preferences.Common.Overall.appStyle
+    override val mainAccentColor: String get() = Preferences.Common.Overall.mainAccentColor
+    override val accentColor: Int get() = Preferences.Common.Overall.accentColor
+    override val accentColorPressed: Int get() = Preferences.Common.Overall.accentColorPressed
+    override val webViewFontName: String get() = Preferences.Common.Overall.webViewFontName
+    override val appstyle: String get() = Preferences.Common.Overall.appStyle
 }

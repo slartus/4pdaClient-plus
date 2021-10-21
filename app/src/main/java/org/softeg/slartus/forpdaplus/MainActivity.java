@@ -46,6 +46,7 @@ import com.google.android.material.navigation.NavigationView;
 import org.softeg.slartus.forpdaapi.search.SearchSettings;
 import org.softeg.slartus.forpdacommon.ExtPreferences;
 import org.softeg.slartus.forpdaplus.common.AppLog;
+import org.softeg.slartus.forpdaplus.core_api.http.NewsListService;
 import org.softeg.slartus.forpdaplus.core_ui.AppTheme;
 import org.softeg.slartus.forpdaplus.feature_preferences.Preferences;
 import org.softeg.slartus.forpdaplus.fragments.GeneralFragment;
@@ -90,6 +91,10 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
 
     @Inject
     NavigatorHolder navigatorHolder;
+
+
+    @Inject
+    NewsListService newsListService;
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -173,7 +178,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
         setTheme(AppTheme.getThemeStyleResID());
         super.onCreate(saveInstance);
 
-
+        new Test().run(newsListService);
         //BackgroundServiceUtils.requestBackgroundPermission(this);
         loadPreferences(App.getInstance().getPreferences());
         if (shortUserInfo != null)

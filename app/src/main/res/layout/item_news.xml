@@ -85,7 +85,7 @@
 
                 <TextView
                     android:id="@+id/textDate"
-                    style="?news_text_second_color"
+                    style="?news_text_second_style"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingRight="8dp"
@@ -95,7 +95,7 @@
 
                 <TextView
                     android:id="@+id/textAvtor"
-                    style="?news_text_second_color"
+                    style="?news_text_second_style"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingRight="8dp"
@@ -104,7 +104,7 @@
 
                 <TextView
                     android:id="@+id/textComments"
-                    style="?news_text_second_color"
+                    style="?news_text_second_style"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"

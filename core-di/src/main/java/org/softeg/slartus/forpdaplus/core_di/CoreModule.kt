@@ -4,11 +4,10 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import org.softeg.slartus.forpdaplus.core_di.implementations.AppDatabaseImpl
-import org.softeg.slartus.forpdaplus.core_di.implementations.HtmlStylePreferencesImpl
-import org.softeg.slartus.forpdaplus.core_di.implementations.NoteDaoImpl
-import org.softeg.slartus.forpdaplus.core_di.implementations.NotesPreferencesImpl
+import org.softeg.slartus.forpdaplus.core_di.implementations.*
 import org.softeg.slartus.forpdaplus.core_ui.html.HtmlStylePreferences
+import org.softeg.slartus.forpdaplus.feature_news.di.NewsListDependencies
+import org.softeg.slartus.forpdaplus.feature_news.di.NewsListService
 import org.softeg.slartus.forpdaplus.feature_notes.di.NotesPreferences
 
 @Suppress("unused")
@@ -31,4 +30,10 @@ abstract class CoreModule {
     @Binds
     abstract fun bindHtmlStylePreferences(htmlStylePreferencesImpl: HtmlStylePreferencesImpl):
             HtmlStylePreferences
+
+    @Binds
+    abstract fun bindNewsListService(newsListServiceImpl: NewsListServiceImpl): NewsListService
+
+    @Binds
+    abstract fun bindNewsListDependencies(newsListDependenciesImpl: NewsListDependenciesImpl): NewsListDependencies
 }

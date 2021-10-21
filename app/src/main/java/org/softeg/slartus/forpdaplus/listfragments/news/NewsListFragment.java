@@ -188,11 +188,6 @@ public class NewsListFragment extends BaseTaskListFragment implements ActionBar.
         return "news_" + mTag;
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
-
     public static Fragment newInstance(String tag) {
         NewsListFragment fragment = new NewsListFragment();
         fragment.setBrickInfo(new NewsBrickInfo());

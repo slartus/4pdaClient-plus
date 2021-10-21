@@ -12,7 +12,9 @@
     <attr name="list_text_special_color" format="reference" />
     <attr name="news_text_general_color" format="reference" />
     <attr name="news_text_minor_color" format="reference" />
-    <attr name="news_text_second_color" format="reference" />
+    <attr name="news_text_second_style" format="reference" />
+    <attr name="news_text_second_color" format="color" />
+
     <attr name="edit_text" format="reference" />
     <attr name="Divider" format="reference" />
     <attr name="fab_pressed" format="reference" />

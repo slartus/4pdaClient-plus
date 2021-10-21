@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="news_list_columns_count" type="integer">1</item>
+</resources>

@@ -154,6 +154,7 @@ public class App extends MultiDexApplication {
         Client.getInstance().checkLoginByCookies();
         InternetConnection.getInstance().subscribeInternetState();
         ForumsRepository.getInstance();
+
     }
 
     private void initTimber() {

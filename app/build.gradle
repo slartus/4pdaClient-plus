@@ -132,9 +132,11 @@ dependencies {
     api project(':hosthelper')
     implementation project(':feature:feature-preferences')
     implementation project(':feature:feature-notes')
+    implementation project(':feature:feature-news')
     implementation project(':core-ui')
     implementation project(':core-db')
     implementation project(':core-di')
+    implementation project(':core-api')
     api 'com.google.android.material:material:1.3.0'
     api 'androidx.appcompat:appcompat:1.2.0'
 //    api "com.android.support:preference-v7:$rootProject.supportLibraryVersion"
@@ -158,7 +160,7 @@ dependencies {
     implementation 'io.paperdb:paperdb:2.6'
     implementation "io.reactivex.rxjava2:rxandroid:$rootProject.rxjava2"
     implementation 'androidx.multidex:multidex:2.0.1'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.1'
     implementation 'com.github.pwittchen:reactivenetwork-rx2:3.0.8'
     implementation 'com.karumi:dexter:6.2.2'
     implementation 'androidx.preference:preference-ktx:1.1.1'

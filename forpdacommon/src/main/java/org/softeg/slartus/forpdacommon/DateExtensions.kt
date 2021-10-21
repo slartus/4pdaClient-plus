@@ -1,8 +1,14 @@
 package org.softeg.slartus.forpdacommon
 
+import android.text.format.DateUtils
 import java.util.*
 
 fun Date.toForumDate() = Functions.getForumDateTime(this)
+val Date.isToday: Boolean
+    get() = DateUtils.isToday(this.time)
+
+val Date.isYesterday: Boolean
+    get() = DateUtils.isToday(this.time + DateUtils.DAY_IN_MILLIS)
 
 /**
  * Created by slinkin on 17.12.13.

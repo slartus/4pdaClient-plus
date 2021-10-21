@@ -2,6 +2,7 @@ package org.softeg.slartus.forpdaplus.listfragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import org.softeg.slartus.forpdaplus.feature_news.ui.NewsListFragment
 import org.softeg.slartus.forpdaplus.feature_notes.ui.list.NotesListFragment
 
 class NotesListFragment : BaseBrickContainerFragment() {
@@ -12,7 +13,8 @@ class NotesListFragment : BaseBrickContainerFragment() {
 
     override fun getFragmentInstance(savedInstanceState: Bundle?): Fragment {
         val topicId = args?.getString(TOPIC_ID_KEY, null)
-        return NotesListFragment.newInstance(topicId)
+        return NewsListFragment()
+        //return NotesListFragment.newInstance(topicId)
     }
 
     override fun onResume() {

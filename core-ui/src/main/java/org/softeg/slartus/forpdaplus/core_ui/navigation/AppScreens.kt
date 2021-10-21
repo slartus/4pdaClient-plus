@@ -1,7 +1,7 @@
 package org.softeg.slartus.forpdaplus.core_ui.navigation
 
 sealed class AppScreen {
-//    object Preferences : AppScreen()
+    //    object Preferences : AppScreen()
     data class Topic(val topicId: String) : AppScreen()
     data class Note(val noteId: Int) : AppScreen()
     data class NewNote(
@@ -16,4 +16,6 @@ sealed class AppScreen {
     ) : AppScreen()
 
     data class ChooseFileDialog(val resultKey: String) : AppScreen()
+
+    object NewsList : AppScreen()
 }

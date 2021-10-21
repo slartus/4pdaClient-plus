@@ -1,21 +1,23 @@
 package org.softeg.slartus.forpdaplus.navigation
 
 import android.content.Context
-import android.content.Intent
 import android.os.Handler
 import android.os.Looper
+import androidx.fragment.app.Fragment
 import com.github.terrakok.cicerone.Router
-import com.github.terrakok.cicerone.androidx.ActivityScreen
+import dagger.Lazy
 import org.softeg.slartus.forpdaplus.IntentActivity
+import org.softeg.slartus.forpdaplus.MainActivity
 import org.softeg.slartus.forpdaplus.core_ui.navigation.*
 import org.softeg.slartus.forpdaplus.core_ui.ui.fragments.ChooseFileDialogFragment
+import org.softeg.slartus.forpdaplus.feature_news.ui.NewsListFragment
 import org.softeg.slartus.forpdaplus.feature_notes.ui.newNote.NewNoteDialogFragment
 import org.softeg.slartus.forpdaplus.feature_preferences.App
 import org.softeg.slartus.forpdaplus.fragments.NoteFragment
 import org.softeg.slartus.forpdaplus.fragments.topic.ThemeFragment
+
 import org.softeg.slartus.forpdaplus.mainnotifiers.ForPdaVersionNotifier
 import org.softeg.slartus.forpdaplus.mainnotifiers.NotifiersManager
-import org.softeg.slartus.forpdaplus.prefs.PreferencesActivity
 import java.lang.ref.WeakReference
 import javax.inject.Inject
 
@@ -23,6 +25,7 @@ class AppRouterImpl @Inject constructor(
     context: Context,
     private val router: ExtendedRouter
 ) : AppRouter {
+
     private val contextRef = WeakReference(context)
     override fun navigateTo(appScreen: AppScreen) {
         when (appScreen) {
@@ -30,6 +33,8 @@ class AppRouterImpl @Inject constructor(
             is AppScreen.Note -> NoteFragment.showNote(appScreen.noteId)
             is AppScreen.NewNote -> router.showDialog(getNewNoteScreen(appScreen))
             is AppScreen.ChooseFileDialog -> router.showDialog(getChooseFileDialog(appScreen))
+            //AppScreen.NewsList -> showFragment("Новости", "news_x_X") { NewsListFragment() }
+            //is AppScreen.Note -> showFragment("Новости", "news_x_X") { NewsListFragment() }
 //            AppScreen.Preferences -> ActivityScreen {
 //                Intent(
 //                    contextRef.get(),
@@ -91,6 +96,14 @@ class AppRouterImpl @Inject constructor(
 
     private fun getChooseFileDialog(appScreen: AppScreen.ChooseFileDialog) = DialogScreen {
         ChooseFileDialogFragment.newInstance(appScreen.resultKey)
+    }
+
+    private fun showFragment(title: String, id: String, fragment: () -> Fragment) {
+        MainActivity.addTab(
+            title,
+            id,
+            fragment()
+        )
     }
 }
 

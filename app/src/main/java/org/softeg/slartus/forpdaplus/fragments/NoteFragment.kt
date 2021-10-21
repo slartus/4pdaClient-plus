@@ -6,6 +6,7 @@ import org.softeg.slartus.forpdacommon.NotReportException
 import org.softeg.slartus.forpdaplus.App
 import org.softeg.slartus.forpdaplus.MainActivity
 import org.softeg.slartus.forpdaplus.R
+import org.softeg.slartus.forpdaplus.feature_news.ui.NewsListFragment
 import org.softeg.slartus.forpdaplus.listfragments.BaseGeneralContainerFragment
 
 class NoteFragment : BaseGeneralContainerFragment() {
@@ -22,6 +23,7 @@ class NoteFragment : BaseGeneralContainerFragment() {
     override fun getFragmentInstance(savedInstanceState: Bundle?): Fragment {
         val noteId = arguments?.getInt(ARG_NOTE_ID)
             ?: throw NotReportException("parameter $ARG_NOTE_ID not found")
+
         return org.softeg.slartus.forpdaplus.feature_notes.ui.note.NoteFragment.newInstance(noteId)
     }
 

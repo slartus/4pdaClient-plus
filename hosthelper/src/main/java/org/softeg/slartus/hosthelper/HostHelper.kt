@@ -5,16 +5,24 @@ fun String?.is4pdaHost() =
 
 class HostHelper {
     companion object {
+        const val DEFAULT_CHARSET="windows-1251"
+
+        const val SCHEMA = "https"
+        const val AUTHORITY="4pda.to"
+
         @JvmStatic
-        val host = "4pda.to"
+        val host = AUTHORITY
 
         @JvmStatic
         val hostPattern = "(?:^|.*[^a-zA-Z0-9])4pda\\.(?:to|ru)"
+
         @JvmStatic
         fun getTopicUrl(topicId: String) = "https://$host/forum/index.php?showtopic=$topicId"
+
         @JvmStatic
         fun getPostUrl(topicId: String, postId: String) =
-            "https://$host/forum/index.php?showtopic=$topicId&view=findpost&p=$postId"
+            "$SCHEMA://$host/forum/index.php?showtopic=$topicId&view=findpost&p=$postId"
+
         @JvmStatic
         fun getUserUrl(userId: String) = "https://$host/forum/index.php?showuser=$userId"
     }

@@ -59,7 +59,7 @@
 
             <TextView
                 android:id="@+id/textDate"
-                style="?news_text_second_color"
+                style="?news_text_second_style"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="2dp"
