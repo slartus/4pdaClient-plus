@@ -1142,14 +1142,6 @@
         "description": "\u041f\u0440\u043e\u0448\u0438\u0432\u043a\u0438 \u0434\u043b\u044f \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432"
     },
     {
-        "id": "600",
-        "title": "Highscreen",
-        "isHasTopics": true,
-        "parentId": "268",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObILxExAjpbK7ZRq2hLY7nz2sBUlA3QpxFqBARiyNz0m81Pbt6Xr.gif",
-        "description": "\u041f\u0440\u043e\u0448\u0438\u0432\u043a\u0438 \u0434\u043b\u044f \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432"
-    },
-    {
         "id": "314",
         "title": "HTC",
         "isHasTopics": true,
@@ -1227,22 +1219,6 @@
         "isHasTopics": true,
         "parentId": "268",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBEbrrBfpn0Qz0rjNDlqCHyn1v1Hbz2HwndNft8EE03Lvp.gif",
-        "description": "\u041f\u0440\u043e\u0448\u0438\u0432\u043a\u0438 \u0434\u043b\u044f \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432"
-    },
-    {
-        "id": "1067",
-        "title": "Oukitel",
-        "isHasTopics": true,
-        "parentId": "268",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBEbrgq86w6vr2vrOktgEiP5pmAz2ckQXl3hIn1MSLobb.gif",
-        "description": "\u041f\u0440\u043e\u0448\u0438\u0432\u043a\u0438 \u0434\u043b\u044f \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432"
-    },
-    {
-        "id": "586",
-        "title": "Prestigio",
-        "isHasTopics": true,
-        "parentId": "268",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObILxExEba2bxu3ySLjEXwRcXS1KOcnf9nA0O0hFeOcgwA2z0P.gif",
         "description": "\u041f\u0440\u043e\u0448\u0438\u0432\u043a\u0438 \u0434\u043b\u044f \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432"
     },
     {
@@ -4024,6 +4000,14 @@
         "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u043d\u043e\u0443\u0442\u0431\u0443\u043a\u043e\u0432 \u0438 Tablet PC \u0431\u0440\u0435\u043d\u0434\u043e\u0432 HP \u0438 Compaq"
     },
     {
+        "id": "1155",
+        "title": "Huawei",
+        "isHasTopics": true,
+        "parentId": "24",
+        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBEbrmTKBt6LeMR45z1qez1jz2Ez0Kp6pLCEdcgQQAfx.gif",
+        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u043d\u043e\u0443\u0442\u0431\u0443\u043a\u043e\u0432 \u0438 Tablet PC \u0431\u0440\u0435\u043d\u0434\u0430 Huawei"
+    },
+    {
         "id": "940",
         "title": "Irbis",
         "isHasTopics": true,
@@ -4118,6 +4102,14 @@
         "parentId": "24",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBEbrf3LDKAl1SW3r8XRz0wz1e9pymqYTnbpFsRk6u8469gpBf4Pdma1MDFCXfPL4l4pQ.gif",
         "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u043d\u043e\u0443\u0442\u0431\u0443\u043a\u043e\u0432 \u0438 Tablet PC \u0431\u0440\u0435\u043d\u0434\u0430 Voyo"
+    },
+    {
+        "id": "1156",
+        "title": "Xiaomi",
+        "isHasTopics": true,
+        "parentId": "24",
+        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObILxExMLT5jlL6uME9hy90NUffrVs6UhUuX3wphPyLvJ.gif",
+        "description": "\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u043d\u043e\u0443\u0442\u0431\u0443\u043a\u043e\u0432 \u0438 Tablet PC \u0431\u0440\u0435\u043d\u0434\u0430 Xiaomi"
     },
     {
         "id": "951",
@@ -5367,7 +5359,7 @@
     },
     {
         "id": "539",
-        "title": "Android - \u044d\u043c\u0443\u043b\u044f\u0442\u043e\u0440\u044b \u043f\u0440\u0438\u0441\u0442\u0430\u0432\u043e\u043a",
+        "title": "\u042d\u043c\u0443\u043b\u044f\u0442\u043e\u0440\u044b \u0438\u0433\u0440\u043e\u0432\u044b\u0445 \u043a\u043e\u043d\u0441\u043e\u043b\u0435\u0439",
         "isHasTopics": true,
         "parentId": "529",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBEbrYKmKlMz2aaf9XvMThpp9JUz26olz0z10JMBE0LBW4rhyiBtO5j.gif",
@@ -5375,7 +5367,7 @@
     },
     {
         "id": "540",
-        "title": "Android - \u044d\u043c\u0443\u043b\u044f\u0442\u043e\u0440\u044b \u043a\u043e\u043c\u043f\u044c\u044e\u0442\u0435\u0440\u043e\u0432 \u0438 \u041e\u0421",
+        "title": "\u042d\u043c\u0443\u043b\u044f\u0442\u043e\u0440\u044b \u043a\u043e\u043c\u043f\u044c\u044e\u0442\u0435\u0440\u043e\u0432 \u0438 \u041e\u0421",
         "isHasTopics": true,
         "parentId": "529",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBEbrYKmKlMz2aaf9XvMThpp9JUz26olz0z10JMBE0LBW4rhyiBtO5j.gif",
