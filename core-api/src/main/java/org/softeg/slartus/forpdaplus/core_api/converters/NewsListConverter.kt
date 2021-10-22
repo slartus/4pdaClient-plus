@@ -108,51 +108,52 @@ object NewsListConverter : Converter<ResponseBody, List<ApiNewsListItem>> {
         )
     }
 
-    private val articleRegex = regex {
+    private val articleRegex by lazy {
+        regex {
 
-        @Description("название")
-        htmlElement("a") {
-            tag("href", "([^\\\"]+)")
-            tag("title", "([^\\\"]+)")
-        }
-        multilinePattern()
+            @Description("название")
+            htmlElement("a") {
+                tag("href", "([^\\\"]+)")
+                tag("title", "([^\\\"]+)")
+            }
+            multilinePattern()
 
-        @Description("постер")
-        htmlElement("img") {
-            tag("itemprop", "image")
-            tag("src", "([^\"]+)")
-        }
-        multilinePattern()
+            @Description("постер")
+            htmlElement("img") {
+                tag("itemprop", "image")
+                tag("src", "([^\"]+)")
+            }
+            multilinePattern()
 
-        @Description("кол-во комментариев")
-        htmlElement("a") {
-            tag("class", "v-count")
-            +"(\\d+)"
-            close()
-        }
-        multilinePattern()
+            @Description("кол-во комментариев")
+            htmlElement("a") {
+                tag("class", "v-count")
+                +"(\\d+)"
+                close()
+            }
+            multilinePattern()
 
-        @Description("автор")
-        htmlElement("a") {
-            tag("href", "[^\"]+showuser=(\\d+)[^\"]*")
-            +"($MULTILINE_ANY_PATTERN)"
-            close()
-        }
-        multilinePattern()
+            @Description("автор")
+            htmlElement("a") {
+                tag("href", "[^\"]+showuser=(\\d+)[^\"]*")
+                +"($MULTILINE_ANY_PATTERN)"
+                close()
+            }
+            multilinePattern()
 
-        @Description("дата публикации")
-        htmlElement("meta") {
-            tag("itemprop", "datePublished")
-            tag("content", "([^\"]+)")
-        }
-        multilinePattern()
+            @Description("дата публикации")
+            htmlElement("meta") {
+                tag("itemprop", "datePublished")
+                tag("content", "([^\"]+)")
+            }
+            multilinePattern()
 
-        @Description("тело новости")
-        htmlElement("div") {
-            tag("itemprop", "description")
-            +"($MULTILINE_ANY_PATTERN)"
-            close()
+            @Description("тело новости")
+            htmlElement("div") {
+                tag("itemprop", "description")
+                +"($MULTILINE_ANY_PATTERN)"
+                close()
+            }
         }
     }
-
 }

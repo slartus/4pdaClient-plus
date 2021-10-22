@@ -58,6 +58,14 @@ class REGEX : GroupElement() {
     fun multilinePattern() = addTag(MultilinePattern())
 
     fun regex(init: REGEX.() -> Unit) = initTag(REGEX(), init)
+
+    operator fun String.unaryPlus() {
+        addTag(TextElement(this))
+    }
+
+    operator fun Element.unaryPlus() {
+        addTag(this)
+    }
 }
 
 class Tag(val name: String, val value: String? = null) : Element {
