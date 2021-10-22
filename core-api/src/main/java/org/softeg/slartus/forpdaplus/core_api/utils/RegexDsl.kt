@@ -105,6 +105,10 @@ class HtmlElement(val tag: String) : Element {
         children.add(TextElement(this))
     }
 
+    operator fun Element.unaryPlus() {
+        children.add(this)
+    }
+
     fun close(){
         children.add(TextElement("<\\/$tag>"))
     }
