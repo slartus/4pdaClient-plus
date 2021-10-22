@@ -1,0 +1,23 @@
+name: Test_on_push_feature
+
+on:
+  push:
+    branches:
+      - '*/*' # matches every branch containing a single '/'
+
+jobs:
+#based on https://gist.github.com/alexanderbazo/227476190ef5ab655795e34ec0d314d6          
+  apk:
+    name: Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8     
+      - name: Test
+        run: |
+          ./gradlew test
+          ./gradlew assembleRelease
