@@ -10,7 +10,7 @@ import retrofit2.Converter
 import retrofit2.Retrofit
 import java.io.File
 
-fun buildOkHttpClient(context: Context): OkHttpClient {
+fun buildOkHttpClient(): OkHttpClient {
     val interceptor = HttpLoggingInterceptor()
     if (BuildConfig.DEBUG)
         interceptor.level = HttpLoggingInterceptor.Level.BODY
@@ -18,13 +18,13 @@ fun buildOkHttpClient(context: Context): OkHttpClient {
         interceptor.level = HttpLoggingInterceptor.Level.BASIC
     return OkHttpClient
         .Builder()
-        .cache(
-            Cache(
-                File(context.cacheDir, "http_cache"),
-                // $0.05 worth of phone storage in 2020
-                50L * 1024L * 1024L // 50 MiB
-            )
-        )
+//        .cache(
+//            Cache(
+//                File(context.cacheDir, "http_cache"),
+//                // $0.05 worth of phone storage in 2020
+//                50L * 1024L * 1024L // 50 MiB
+//            )
+//        )
         .addInterceptor(interceptor)
         .build()
 }

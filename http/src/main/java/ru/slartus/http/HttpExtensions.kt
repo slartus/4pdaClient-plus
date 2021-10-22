@@ -1,6 +1,7 @@
 package ru.slartus.http
 
 import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaType
 import java.io.File
 
 
@@ -14,28 +15,28 @@ fun String.toMediaTypeOrNull(): MediaType? {
     }
 }
 
-fun String.toMediaType(): MediaType = MediaType.get(this)
+fun String.toMediaType(): MediaType = this.toMediaType()
 
 var Response.body: ResponseBody?
-    get() = this.body()
+    get() = this.body
     set(value) {}
 
 var Response.request: Request
-    get() = this.request()
+    get() = this.request
     set(value) {}
 
 var Response.headers: Headers
-    get() = this.headers()
+    get() = this.headers
     set(value) {}
 
 var Request.url: HttpUrl
-    get() = this.url()
+    get() = this.url
     set(value) {}
 
 var Request.body: RequestBody?
-    get() = this.body()
+    get() = this.body
     set(value) {}
 
 var Request.headers: Headers
-    get() = this.headers()
+    get() = this.headers
     set(value) {}

@@ -55,7 +55,7 @@ class ForPdaVersionNotifier(
                         .cacheControl(CacheControl.FORCE_NETWORK)// не исопльуем кеширование
                         .build()
 
-                val responseBody = client.newCall(request).execute().body()?.string()
+                val responseBody = client.newCall(request).execute().body?.string()
 
                 val updateInfo = Gson().fromJson(responseBody, UpdateInfo::class.java)
 

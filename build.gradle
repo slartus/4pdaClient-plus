@@ -31,7 +31,7 @@ ext {
     compileSdkVersion = 31
     targetSdkVersion = 29
     minSdk = 16
-    okhttp3 = "3.12.3"// увеличивать нельзя!!
+    okhttp3 = "5.0.0-alpha.2"// увеличивать нельзя!!
     jsoup = '1.13.1'
     rxjava2 = "2.1.1"
     hilt = "2.38.1"

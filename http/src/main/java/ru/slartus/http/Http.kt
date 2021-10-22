@@ -11,6 +11,8 @@ import android.util.Log
 import android.webkit.MimeTypeMap
 import android.webkit.MimeTypeMap.getFileExtensionFromUrl
 import okhttp3.*
+import okhttp3.Headers.Companion.headersOf
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okio.Buffer
 import org.softeg.slartus.hosthelper.HostHelper
 import java.io.BufferedInputStream
@@ -336,7 +338,7 @@ class Http private constructor(context: Context, appName: String, appVersion: St
     fun performPost(url: String, json: String): AppResponse {
         Log.i(TAG, "post: $url json: $json")
         val body =
-            RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json) // new
+            RequestBody.create("application/json; charset=utf-8".toMediaTypeOrNull(), json) // new
 
         val request = Request.Builder()
             .headers(buildRequestHeaders(userAgent))
@@ -375,10 +377,11 @@ class Http private constructor(context: Context, appName: String, appVersion: St
 
 
         if (progressListener != null) {
-            builder.addPart(Headers.of(
-                "Content-Disposition",
-                "form-data; name=\"$fileFormDataName\"; filename=\"$fileName\""
-            ),
+            builder.addPart(
+                headersOf(
+                    "Content-Disposition",
+                    "form-data; name=\"$fileFormDataName\"; filename=\"$fileName\""
+                ),
                 CountingFileRequestBody(file, mediaType) { num ->
                     val progress = num.toFloat() / totalSize.toFloat() * 100.0
                     progressListener.transferred(progress.toLong())
