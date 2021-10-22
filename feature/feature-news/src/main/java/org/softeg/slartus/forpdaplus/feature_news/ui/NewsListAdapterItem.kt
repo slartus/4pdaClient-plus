@@ -1,6 +1,5 @@
 package org.softeg.slartus.forpdaplus.feature_news.ui
 
-import android.text.Spanned
 import org.softeg.slartus.forpdacommon.fromHtml
 import org.softeg.slartus.forpdacommon.isToday
 import org.softeg.slartus.forpdacommon.isYesterday
@@ -12,7 +11,7 @@ data class UiNewsListItem(
     val id: String?,
     val url: String?,
     val title: String?,
-    val description: Spanned?,
+    val description: String?,
     val authorId: String?,
     val author: String?,
     val date: String?,
@@ -39,10 +38,10 @@ data class UiNewsListItem(
             return UiNewsListItem(
                 this.id,
                 this.url,
-                this.title,
-                this.description.fromHtml(),
+                this.title.fromHtml().toString(),
+                this.description.fromHtml().toString(),
                 this.authorId,
-                this.author,
+                this.author.fromHtml().toString(),
                 dateToDisplay(this.date),
                 this.imgUrl,
                 this.commentsCount?.toString()

@@ -2,7 +2,6 @@ package org.softeg.slartus.forpdaplus.core_api
 
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import org.softeg.slartus.forpdaplus.core_api.utils.MULTILINE_ANY_PATTERN
 import org.softeg.slartus.forpdaplus.core_api.utils.elementRegex
 import org.softeg.slartus.forpdaplus.core_api.utils.regex
 import timber.log.Timber
@@ -52,15 +51,14 @@ class RegexUtilsTests {
             multilinePattern()
             htmlElement("a") {
                 tag("href", "[^\"]+showuser=(\\d+)[^\"]*")
-                body("($MULTILINE_ANY_PATTERN)")
+
             }
             multilinePattern()
             htmlElement("div") {
                 tag("itemprop", "description")
-                body("($MULTILINE_ANY_PATTERN)")
+
             }
         }
-        val result = html.toString()
-        Timber.d(result)
     }
+
 }

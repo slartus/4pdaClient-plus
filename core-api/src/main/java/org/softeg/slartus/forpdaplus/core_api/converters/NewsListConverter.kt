@@ -45,7 +45,7 @@ object NewsListConverter : Converter<ResponseBody, List<ApiNewsListItem>> {
         }
     }
 
-    private fun parseBody(pageBody: String): List<ApiNewsListItem> {
+    fun parseBody(pageBody: String): List<ApiNewsListItem> {
         return articlePattern
             .matcher(pageBody)
             .map { matcher ->
@@ -62,12 +62,12 @@ object NewsListConverter : Converter<ResponseBody, List<ApiNewsListItem>> {
                 ApiNewsListItem(
                     id = id,
                     url = url,
-                    title = title.fromHtml().fromHtml(),
+                    title = title,
                     imgUrl = imgUrl,
                     authorId = authorId,
-                    author = author.fromHtml(),
+                    author = author,
                     date = parseDate(date),
-                    description = description.fromHtml(),
+                    description = description,
                     avatar = null,
                     commentsCount = commentsCount,
                     tags = emptyList()
