@@ -72,7 +72,7 @@ object NewsListConverter : Converter<ResponseBody, List<ApiNewsListItem>> {
             val authorId = matcher.group(group++)
             val author = matcher.group(group++)
             val date = matcher.group(group++)
-            val description = matcher.group(group++)
+            val description = matcher.group(group)
             return ApiNewsListItem(
                 id = id,
                 url = url,
