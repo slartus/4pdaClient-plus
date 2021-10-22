@@ -7,7 +7,7 @@ on:
 
 jobs:
 #based on https://gist.github.com/alexanderbazo/227476190ef5ab655795e34ec0d314d6          
-  apk:
+  tests:
     name: Tests
     runs-on: ubuntu-latest
     steps:
@@ -20,4 +20,3 @@ jobs:
       - name: Test
         run: |
           ./gradlew test
-          ./gradlew assembleRelease
