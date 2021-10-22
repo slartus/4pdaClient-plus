@@ -42,7 +42,6 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:2.9.0"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.coroutines"
     implementation "com.google.dagger:hilt-android:$rootProject.hilt"
-    implementation 'com.google.code.gson:gson:2.8.8'
     kapt "com.google.dagger:hilt-compiler:$rootProject.hilt"
 
     implementation "com.squareup.okhttp3:okhttp:$rootProject.okhttp3"
