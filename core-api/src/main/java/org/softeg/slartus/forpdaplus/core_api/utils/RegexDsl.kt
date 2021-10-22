@@ -73,23 +73,23 @@ class MultilinePattern : TextElement(MULTILINE_ANY_PATTERN)
 
 class HtmlElement(val tag: String) : Element {
     private val children = arrayListOf<Element>()
-    private var body: String? = null
+    private val tags = arrayListOf<Element>()
+
     private fun <T : Element> addTag(tag: T): T {
-        children.add(tag)
+        tags.add(tag)
         return tag
     }
 
     override fun render(builder: StringBuilder) {
         builder.append("<\\s*$tag")
-        for (c in children) {
+        for (c in tags) {
             builder.append("[^>]*")
             c.render(builder)
         }
         builder.append("[^>]*")
         builder.append(">")
-        if (body != null) {
-            builder.append(body)
-            builder.append("<\\/$tag>")
+        for (c in children) {
+            c.render(builder)
         }
     }
 
@@ -101,8 +101,12 @@ class HtmlElement(val tag: String) : Element {
 
     fun tag(name: String, value: String?) = addTag(Tag(name, value))
 
-    fun body(pattern: String) {
-        body = pattern
+    operator fun String.unaryPlus() {
+        children.add(TextElement(this))
+    }
+
+    fun close(){
+        children.add(TextElement("<\\/$tag>"))
     }
 }
 

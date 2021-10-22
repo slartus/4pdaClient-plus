@@ -112,7 +112,8 @@ object NewsListConverter : Converter<ResponseBody, List<ApiNewsListItem>> {
                     tag("class", "post[^\"]+")
                     tag("itemtype", "[^\"]*Article")
                     tag("itemid", "(\\d+)")
-                    body("($MULTILINE_ANY_PATTERN)")
+                    +"($MULTILINE_ANY_PATTERN)"
+                    close()
                 }
             }.toString(), Pattern.CASE_INSENSITIVE
         )
@@ -138,14 +139,16 @@ object NewsListConverter : Converter<ResponseBody, List<ApiNewsListItem>> {
             @Description("кол-во комментариев")
             htmlElement("a") {
                 tag("class", "v-count")
-                body("(\\d+)")
+                +"(\\d+)"
+                close()
             }
             multilinePattern()
 
             @Description("автор")
             htmlElement("a") {
                 tag("href", "[^\"]+showuser=(\\d+)[^\"]*")
-                body("($MULTILINE_ANY_PATTERN)")
+                +"($MULTILINE_ANY_PATTERN)"
+                close()
             }
             multilinePattern()
 
@@ -159,7 +162,8 @@ object NewsListConverter : Converter<ResponseBody, List<ApiNewsListItem>> {
             @Description("тело новости")
             htmlElement("div") {
                 tag("itemprop", "description")
-                body("($MULTILINE_ANY_PATTERN)")
+                +"($MULTILINE_ANY_PATTERN)"
+                close()
             }
         }
         Pattern.compile(pattern.toString())
