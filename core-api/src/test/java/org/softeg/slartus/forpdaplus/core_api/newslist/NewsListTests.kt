@@ -1,7 +1,6 @@
 package org.softeg.slartus.forpdaplus.core_api.newslist
 
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotNull
+import org.junit.Assert.*
 import org.junit.Test
 import org.softeg.slartus.forpdaplus.core_api.converters.NewsListConverter
 import java.util.*
@@ -57,22 +56,33 @@ class NewsListTests {
 
     @Test
     fun allNewsPageTest() {
-        val count = 62
+        testPage("news_list/all.html", 62)
+        testPage("news_list/tech_news.html", 62)
+        testPage("news_list/reviews.html", 63)
+        testPage("news_list/games.html", 62)
+    }
+
+    private fun testPage(resourcePath: String, newsCount: Int) {
         val page =
-            javaClass.classLoader?.getResource("news_list/all.html")?.readText() ?: ""
+            javaClass.classLoader?.getResource(resourcePath)?.readText() ?: ""
         val newsList = NewsListConverter.parseBody(page)
-        assertEquals(newsList.size, count)
+        assertEquals(newsList.size, newsCount)
 
         newsList.forEach {
-            assertNotNull(it.id)
-            assertNotNull(it.url)
-            assertNotNull(it.title)
-            assertNotNull(it.description)
-            assertNotNull(it.authorId)
-            assertNotNull(it.author)
+            assertNotNullOrEmpty(it.id)
+            assertNotNullOrEmpty(it.url)
+            assertNotNullOrEmpty(it.title)
+            assertNotNullOrEmpty(it.description)
+            assertNotNullOrEmpty(it.authorId)
+            assertNotNullOrEmpty(it.author)
             assertNotNull(it.date)
-            assertNotNull(it.imgUrl)
+            assertNotNullOrEmpty(it.imgUrl)
             assertNotNull(it.commentsCount)
         }
+    }
+
+    private fun assertNotNullOrEmpty(text: String?) {
+        assertNotNull(text)
+        assertNotEquals(text, "")
     }
 }
