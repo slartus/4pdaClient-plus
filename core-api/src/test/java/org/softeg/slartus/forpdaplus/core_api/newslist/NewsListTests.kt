@@ -4,11 +4,55 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Test
 import org.softeg.slartus.forpdaplus.core_api.converters.NewsListConverter
+import java.util.*
+import java.util.concurrent.TimeUnit
 
 class NewsListTests {
     @Test
     fun parseDateTests() {
-        assertNotNull(NewsListConverter.parseDate("2021-10-22T09:20:00+00:00"))
+        val offset = TimeUnit.HOURS.convert(
+            (Calendar.getInstance() as GregorianCalendar).timeZone.rawOffset.toLong(),
+            TimeUnit.MILLISECONDS
+        ).toInt()
+
+        var date = NewsListConverter.parseDate("2021-10-23T07:33:13+05:00")
+        assertNotNull(date)
+        var calendar = Calendar.getInstance().apply {
+            time = date!!
+        }
+
+        assertEquals(calendar.get(Calendar.YEAR), 2021)
+        assertEquals(calendar.get(Calendar.MONTH), 9)
+        assertEquals(calendar.get(Calendar.DAY_OF_MONTH), 23)
+        assertEquals(calendar.get(Calendar.HOUR_OF_DAY), 7 + (offset - 5))
+        assertEquals(calendar.get(Calendar.MINUTE), 33)
+        assertEquals(calendar.get(Calendar.SECOND), 13)
+
+        date = NewsListConverter.parseDate("2021-10-23T14:33:13+05:00")
+        assertNotNull(date)
+        calendar = Calendar.getInstance().apply {
+            time = date!!
+        }
+
+        assertEquals(calendar.get(Calendar.YEAR), 2021)
+        assertEquals(calendar.get(Calendar.MONTH), 9)
+        assertEquals(calendar.get(Calendar.DAY_OF_MONTH), 23)
+        assertEquals(calendar.get(Calendar.HOUR_OF_DAY), 14 + (offset - 5))
+        assertEquals(calendar.get(Calendar.MINUTE), 33)
+        assertEquals(calendar.get(Calendar.SECOND), 13)
+
+        date = NewsListConverter.parseDate("2021-10-23T14:33:13+00:00")
+        assertNotNull(date)
+        calendar = Calendar.getInstance().apply {
+            time = date!!
+        }
+
+        assertEquals(calendar.get(Calendar.YEAR), 2021)
+        assertEquals(calendar.get(Calendar.MONTH), 9)
+        assertEquals(calendar.get(Calendar.DAY_OF_MONTH), 23)
+        assertEquals(calendar.get(Calendar.HOUR_OF_DAY), 14 + (offset - 0))
+        assertEquals(calendar.get(Calendar.MINUTE), 33)
+        assertEquals(calendar.get(Calendar.SECOND), 13)
     }
 
     @Test
