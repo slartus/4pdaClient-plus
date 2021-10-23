@@ -12,7 +12,6 @@ data class ApiNewsListItem(
     val date: Date?,
     val imgUrl: String?,
     val commentsCount: Int?,
-    val avatar: String?,
     val tags: List<Tag>
 )
 

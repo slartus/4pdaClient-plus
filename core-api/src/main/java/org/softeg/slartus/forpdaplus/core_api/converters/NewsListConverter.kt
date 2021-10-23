@@ -68,7 +68,6 @@ object NewsListConverter : Converter<ResponseBody, List<ApiNewsListItem>> {
                     author = author,
                     date = parseDate(date),
                     description = description,
-                    avatar = null,
                     commentsCount = commentsCount,
                     tags = emptyList()
                 )
@@ -78,15 +77,12 @@ object NewsListConverter : Converter<ResponseBody, List<ApiNewsListItem>> {
     }
 
     private val dateFormat by lazy {
-        SimpleDateFormat(
-            "yyyy-MM-dd'T'HH:mm:ssZ",
-            Locale.getDefault()
-        )
+        SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.US)
     }
 
-    private fun parseDate(dateString: String?): Date? {
+    fun parseDate(dateString: String?): Date? {
         return if (dateString == null) null else try {
-            dateFormat.parse(dateString)
+            dateFormat.parse(dateString.filterIndexed { index, c -> !(index == dateString.length - 3 && c == ':') })
         } catch (ex: Exception) {
             return null
         }
@@ -110,7 +106,6 @@ object NewsListConverter : Converter<ResponseBody, List<ApiNewsListItem>> {
 
     private val articleRegex by lazy {
         regex {
-
             @Description("название")
             htmlElement("a") {
                 tag("href", "([^\\\"]+)")

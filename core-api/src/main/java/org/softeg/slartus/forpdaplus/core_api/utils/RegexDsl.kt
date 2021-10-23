@@ -89,7 +89,7 @@ class HtmlElement(val tag: String) : Element {
     }
 
     override fun render(builder: StringBuilder) {
-        builder.append("<\\s*$tag")
+        builder.append("<$tag")
         for (c in tags) {
             builder.append("[^>]*")
             c.render(builder)
@@ -115,6 +115,11 @@ class HtmlElement(val tag: String) : Element {
 
     operator fun Element.unaryPlus() {
         children.add(this)
+    }
+
+    fun smartBody(){
+        val regex="(?:(?:(?!<$tag[^>]*>|<\\/$tag>).)+|<$tag[^>]*>([\\s\\S]*?)<\\/$tag>)*"
+        children.add(TextElement(regex))
     }
 
     fun close(){
