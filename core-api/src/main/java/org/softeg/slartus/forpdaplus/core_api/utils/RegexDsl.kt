@@ -57,8 +57,6 @@ class REGEX : GroupElement() {
 
     fun multilinePattern() = addTag(MultilinePattern())
 
-    fun regex(init: REGEX.() -> Unit) = initTag(REGEX(), init)
-
     operator fun String.unaryPlus() {
         addTag(TextElement(this))
     }
@@ -82,6 +80,12 @@ class MultilinePattern : TextElement(MULTILINE_ANY_PATTERN)
 class HtmlElement(val tag: String) : Element {
     private val children = arrayListOf<Element>()
     private val tags = arrayListOf<Element>()
+
+    private fun <T : Element> initTag(tag: T, init: T.() -> Unit): T {
+        tag.init()
+        children.add(tag)
+        return tag
+    }
 
     private fun <T : Element> addTag(tag: T): T {
         tags.add(tag)
@@ -116,6 +120,13 @@ class HtmlElement(val tag: String) : Element {
     operator fun Element.unaryPlus() {
         children.add(this)
     }
+
+    operator fun REGEX.unaryPlus() {
+        children.add(this)
+    }
+
+    fun htmlElement(name: String, init: HtmlElement.() -> Unit) =
+        initTag(HtmlElement(name), init)
 
     fun smartBody(){
         val regex="(?:(?:(?!<$tag[^>]*>|<\\/$tag>).)+|<$tag[^>]*>([\\s\\S]*?)<\\/$tag>)*"

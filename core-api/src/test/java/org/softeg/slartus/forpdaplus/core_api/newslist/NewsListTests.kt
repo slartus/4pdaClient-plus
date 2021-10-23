@@ -2,6 +2,7 @@ package org.softeg.slartus.forpdaplus.core_api.newslist
 
 import org.junit.Assert.*
 import org.junit.Test
+import org.softeg.slartus.forpdaplus.core_api.converters.NewsListCategoriesConverter
 import org.softeg.slartus.forpdaplus.core_api.converters.NewsListConverter
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -60,6 +61,14 @@ class NewsListTests {
         testPage("news_list/tech_news.html", 62)
         testPage("news_list/reviews.html", 63)
         testPage("news_list/games.html", 62)
+    }
+
+    @Test
+    fun categoriesPageTest() {
+        val page =
+            javaClass.classLoader?.getResource("news_list/all.html")?.readText() ?: ""
+        val newsList = NewsListCategoriesConverter.parseBody(page)
+
     }
 
     private fun testPage(resourcePath: String, newsCount: Int) {
