@@ -702,76 +702,12 @@
         "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 Blackview \u043d\u0430 \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0435 Android "
     },
     {
-        "id": "653",
-        "title": "Cube\/Alldocube",
-        "isHasTopics": true,
-        "parentId": "269",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbL1FYosMXVBdKsfSidkNw6uxGopi0cEAfRHclKuvqn8io.gif",
-        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 Cube\/Alldocube \u043d\u0430 \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0435 Android"
-    },
-    {
-        "id": "711",
-        "title": "Cubot",
-        "isHasTopics": true,
-        "parentId": "269",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObILxExYSwKmpnAyHlu0cYd9ijz1x6p5yCCgz1P1fYmqhc.gif",
-        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 Cubot \u043d\u0430 \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0435 Android "
-    },
-    {
-        "id": "799",
-        "title": "DEXP",
-        "isHasTopics": true,
-        "parentId": "269",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObILxExoCFWbnduwrz0Pz0teEUsR3z1fn96MojusDpCmU.gif",
-        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 DEXP \u043d\u0430 \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0435 Android"
-    },
-    {
-        "id": "595",
-        "title": "Digma",
-        "isHasTopics": true,
-        "parentId": "269",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObILxExsLz0TL3mfgM3Mh4tcgQwwHd0RFolSfz0x0bSwGC.gif",
-        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 Digma \u043d\u0430 \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0435 Android "
-    },
-    {
-        "id": "715",
-        "title": "Doogee",
-        "isHasTopics": true,
-        "parentId": "269",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb0nnrWCmEAynz2mqqFA4nOFWSAAamgLz1vnnUsxpw.gif",
-        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 Doogee \u043d\u0430 \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0435 Android "
-    },
-    {
-        "id": "582",
-        "title": "Fly",
-        "isHasTopics": true,
-        "parentId": "269",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObILxEBgz0bP42hN9WKIXriypbQA9R6KtUX7p4KeXsRZo.gif",
-        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 Fly \u043d\u0430 \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0435 Android"
-    },
-    {
         "id": "863",
         "title": "Google",
         "isHasTopics": true,
         "parentId": "269",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObILxExcbD5HrTDbZz2In5ceJKu2tQz2nA9BPIz0vraXmBgz0.gif",
         "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 Google \u043d\u0430 \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0435 Android"
-    },
-    {
-        "id": "597",
-        "title": "Highscreen",
-        "isHasTopics": true,
-        "parentId": "269",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObILxEBgz0bEFo3g30B6msAcmYyqkrUajtELJ0ckwndtvViKNVJz0z0P.gif",
-        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 Highscreen \u043d\u0430 \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0435 Android "
-    },
-    {
-        "id": "1060",
-        "title": "HOMTOM",
-        "isHasTopics": true,
-        "parentId": "269",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbLpABz18DdGVF2CiIJ1KLR0Eff1oishfgnd6QYMKQ5.gif",
-        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 HOMTOM \u043d\u0430 \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0435 Android "
     },
     {
         "id": "867",
@@ -796,14 +732,6 @@
         "parentId": "269",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBEbrmTKBt6LeMR45z1qez1jz2Ez0Kp6pLCEdcgQQAfx.gif",
         "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 Huawei \u043d\u0430 \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0435 Android"
-    },
-    {
-        "id": "1063",
-        "title": "LeEco",
-        "isHasTopics": true,
-        "parentId": "269",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbLp2RLQeU7Sxz01pIhV2GJDkJ2PaFIVa5pWQSJYig.gif",
-        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 LeEco \u043d\u0430 \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0435 Android "
     },
     {
         "id": "581",
@@ -846,14 +774,6 @@
         "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 Nokia \u043d\u0430 \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0435 Android "
     },
     {
-        "id": "1059",
-        "title": "Nomi",
-        "isHasTopics": true,
-        "parentId": "269",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbLpQBkxoXliO0CYt6pqtH7r9TZahxz2mjtELpGk.gif",
-        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 Nomi \u043d\u0430 \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0435 Android "
-    },
-    {
         "id": "1061",
         "title": "OnePlus",
         "isHasTopics": true,
@@ -876,14 +796,6 @@
         "parentId": "269",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBEbrgq86w6vr2vrOktgEiP5pmAz2ckQXl3hIn1MSLobb.gif",
         "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 Oukitel  \u043d\u0430 \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0435 Android "
-    },
-    {
-        "id": "694",
-        "title": "Philips",
-        "isHasTopics": true,
-        "parentId": "269",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObILxEBgz0bJWnciBmjY6ruz1VEKLMTFsbtISd4syB2vraXmBgz0.gif",
-        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 Philips \u043d\u0430 \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0435 Android "
     },
     {
         "id": "588",
@@ -918,30 +830,6 @@
         "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 Sony \u043d\u0430 \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0435 Android"
     },
     {
-        "id": "698",
-        "title": "Teclast",
-        "isHasTopics": true,
-        "parentId": "269",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObILxExYSz0OBAz1uPsBs1VywhGK8HEtjrxS4R3JUc5pmAz26.gif",
-        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 Teclast \u043d\u0430 \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0435 Android "
-    },
-    {
-        "id": "572",
-        "title": "teXet",
-        "isHasTopics": true,
-        "parentId": "269",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObILxEBgz0bKxGvt1ADPfx6JiSgh79RZkX5RBhNq7Mz0hGcP.gif",
-        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 Texet \u043d\u0430 \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0435 Android "
-    },
-    {
-        "id": "809",
-        "title": "Ulefone",
-        "isHasTopics": true,
-        "parentId": "269",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBEbrZBEtDjNGYa09b5NhLMz0z2EffX2KQbI0m4GTk8d4M.gif",
-        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 Ulefone \u043d\u0430 \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0435 Android"
-    },
-    {
         "id": "822",
         "title": "Vivo",
         "isHasTopics": true,
@@ -966,12 +854,52 @@
         "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 ZTE \u043d\u0430 \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0435 Android"
     },
     {
-        "id": "748",
-        "title": "Amazon",
+        "id": "711",
+        "title": "Cubot",
         "isHasTopics": true,
         "parentId": "336",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbLp6J2WUHtgQ3FgThjwUfz0BWz1b8bXFpJUF2GJDkJI.gif",
-        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 Amazon \u043d\u0430 \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0435 Android "
+        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObILxExYSwKmpnAyHlu0cYd9ijz1x6p5yCCgz1P1fYmqhc.gif",
+        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 Cubot \u043d\u0430 \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0435 Android "
+    },
+    {
+        "id": "799",
+        "title": "DEXP",
+        "isHasTopics": true,
+        "parentId": "336",
+        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObILxExoCFWbnduwrz0Pz0teEUsR3z1fn96MojusDpCmU.gif",
+        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 DEXP \u043d\u0430 \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0435 Android"
+    },
+    {
+        "id": "595",
+        "title": "Digma",
+        "isHasTopics": true,
+        "parentId": "336",
+        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObILxExsLz0TL3mfgM3Mh4tcgQwwHd0RFolSfz0x0bSwGC.gif",
+        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 Digma \u043d\u0430 \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0435 Android "
+    },
+    {
+        "id": "715",
+        "title": "Doogee",
+        "isHasTopics": true,
+        "parentId": "336",
+        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb0nnrWCmEAynz2mqqFA4nOFWSAAamgLz1vnnUsxpw.gif",
+        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 Doogee \u043d\u0430 \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0435 Android "
+    },
+    {
+        "id": "698",
+        "title": "Teclast",
+        "isHasTopics": true,
+        "parentId": "336",
+        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObILxExYSz0OBAz1uPsBs1VywhGK8HEtjrxS4R3JUc5pmAz26.gif",
+        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 Teclast \u043d\u0430 \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0435 Android "
+    },
+    {
+        "id": "809",
+        "title": "Ulefone",
+        "isHasTopics": true,
+        "parentId": "336",
+        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBEbrZBEtDjNGYa09b5NhLMz0z2EffX2KQbI0m4GTk8d4M.gif",
+        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 Ulefone \u043d\u0430 \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0435 Android"
     },
     {
         "id": "824",
@@ -980,54 +908,6 @@
         "parentId": "336",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBEbrtJgz0X5LjHfLz0FTGaZEnjV1QCEE1Pn9PP.gif",
         "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 BQ-mobile \u043d\u0430 \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0435 Android"
-    },
-    {
-        "id": "709",
-        "title": "Chuwi",
-        "isHasTopics": true,
-        "parentId": "336",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbL1z2IdrysODGVKI1ba81ulRYPZDekvxLxqOPw5mS.gif",
-        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 Chuwi \u043d\u0430 \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0435 Android "
-    },
-    {
-        "id": "802",
-        "title": "Haier",
-        "isHasTopics": true,
-        "parentId": "336",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbLpsIp9mgq2eJgHdwqWb26yz1F4HUPjPWAFoufhxE.gif",
-        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 Haier \u043d\u0430 \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0435 Android"
-    },
-    {
-        "id": "800",
-        "title": "Irbis",
-        "isHasTopics": true,
-        "parentId": "336",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbLpoQadoO1JZ17yAt9biL2sFqEWbJS2Q3OsoOmXN.gif",
-        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 Irbis \u043d\u0430 \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0435 Android"
-    },
-    {
-        "id": "805",
-        "title": "Leagoo",
-        "isHasTopics": true,
-        "parentId": "336",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbLp2RMVmwNMQZVYfPmlVgx4u23NLP3jWWiqd7lxIn.gif",
-        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 Leagoo \u043d\u0430 \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0435 Android"
-    },
-    {
-        "id": "797",
-        "title": "Micromax",
-        "isHasTopics": true,
-        "parentId": "336",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbLpU2wQaqHK0o1JZXt4cvIV5oz1mWywoeE93vrFIeXz2Px.gif",
-        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 Micromax \u043d\u0430 \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0435 Android"
-    },
-    {
-        "id": "728",
-        "title": "Sharp",
-        "isHasTopics": true,
-        "parentId": "336",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbLpz1oz1z1aAww4z01JYJJSZjEeSQb2molyP5NkEz1lnV.gif",
-        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 Sharp \u043d\u0430 \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0435 Android"
     },
     {
         "id": "721",
@@ -3168,7 +3048,7 @@
         "title": "Windows Phone",
         "isHasTopics": true,
         "parentId": "442",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbLpgk31m2iSgVz2t3SCmAVMs6t8z2DDXfIsKnZA.gif",
+        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBEbrp60vKFlCk7AiS3z06yUViLqOkVF2x0bygOu.gif",
         "description": " "
     },
     {
