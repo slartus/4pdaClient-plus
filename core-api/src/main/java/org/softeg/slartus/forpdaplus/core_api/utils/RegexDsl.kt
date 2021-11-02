@@ -112,6 +112,7 @@ class HtmlElement(val tag: String) : Element {
     }
 
     fun tag(name: String, value: String?) = addTag(Tag(name, value))
+    fun tagAny(name: String, value: String?) = addTag(Tag(name, "[^\"]*$value[^\"]*"))
 
     operator fun String.unaryPlus() {
         children.add(TextElement(this))

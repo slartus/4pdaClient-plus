@@ -1,0 +1,1 @@
+docker run --rm -it -v e:/projects/4pdaClient-plus/:/data/project/ -p 8080:8080 jetbrains/qodana-jvm-android --show-report

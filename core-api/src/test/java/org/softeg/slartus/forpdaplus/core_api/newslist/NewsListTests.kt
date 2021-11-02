@@ -4,6 +4,8 @@ import org.junit.Assert.*
 import org.junit.Test
 import org.softeg.slartus.forpdaplus.core_api.converters.NewsListCategoriesConverter
 import org.softeg.slartus.forpdaplus.core_api.converters.NewsListConverter
+import org.softeg.slartus.hosthelper.HostHelper
+import java.nio.charset.Charset
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -66,7 +68,10 @@ class NewsListTests {
     @Test
     fun categoriesPageTest() {
         val page =
-            javaClass.classLoader?.getResource("news_list/all.html")?.readText() ?: ""
+            javaClass.classLoader?.getResource("news_list/all.html")?.readText(
+                Charset.forName(
+                    HostHelper.DEFAULT_CHARSET
+                )) ?: ""
         val newsList = NewsListCategoriesConverter.parseBody(page)
 
     }

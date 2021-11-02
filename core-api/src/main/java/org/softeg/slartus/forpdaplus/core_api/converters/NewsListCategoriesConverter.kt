@@ -31,15 +31,30 @@ object NewsListCategoriesConverter : Converter<ResponseBody, List<ApiNewsListCat
 
         val menuMainMobile = matcher.group(1)
 
-        return pattern
-            .matcher(pageBody)
-            .map { matcher ->
-                var group = 1
-                val title = matcher.group(group++)
-                val path = matcher.group(group)
+        return menuMainItemPattern
+            .matcher(menuMainMobile)
+            .map { itemMatcher ->
+                val title = itemMatcher.group(2) ?: return@map null
+                if (title.contains("<")) return@map null
+                val body = itemMatcher.group(3)
+                val path = if (body.isNullOrEmpty()) itemMatcher.group(1) else null
+                val children = if (!body.isNullOrEmpty()) {
+                    menuSubItemPattern
+                        .matcher(body)
+                        .map { subItemMatcher ->
+
+                            ApiNewsListCategoryItem(
+                                title = subItemMatcher.group(2),
+                                path = subItemMatcher.group(1),
+                                children = null
+                            )
+                        }.toList()
+                } else null
+
                 ApiNewsListCategoryItem(
                     title = title,
-                    path = path
+                    path = path,
+                    children = children
                 )
             }
             .filterNotNull()
@@ -52,45 +67,34 @@ object NewsListCategoriesConverter : Converter<ResponseBody, List<ApiNewsListCat
                 htmlElement("div") {
                     tag("class", "menu-main-mobile")
                     +"($MULTILINE_ANY_PATTERN)"
-                    close()
                 }
+                +"(?="
                 htmlElement("div") {
                     tag("class", "search-div-mobile")
                 }
+                +")"
             }.toString(), Pattern.CASE_INSENSITIVE
         )
+    }
+
+    private val menuMainItemPattern by lazy {
+        Pattern.compile(menuMainItemRegex.toString(), Pattern.CASE_INSENSITIVE)
+    }
+
+    private val menuSubItemPattern by lazy {
+        Pattern.compile(menuSubItemRegex.toString(), Pattern.CASE_INSENSITIVE)
     }
 
     private val menuMainItemRegex by lazy {
         regex {
             htmlElement("li") {
-                tag("class", "menu-main-item")
+                tagAny("class", "menu-main-item")
                 htmlElement("a") {
                     tag("href", "([^\"]+)")
-                    +"(.*?)"
-                    close()
-                }
-                close()
-            }
-        }
-    }
-
-    private val menuMainItemWSubRegex by lazy {
-        regex {
-            htmlElement("li") {
-                tag("class", "menu-main-item w-sub")
-                htmlElement("a") {
-                    tag("href", "[^\"]+")
                     +"($MULTILINE_ANY_PATTERN)"
                     close()
                 }
-                htmlElement("div") {
-                    tag("class", "menu-sub")
-                    +"("
-                    +menuSubItemRegex
-                    +")+"
-                    close()
-                }
+                +"($MULTILINE_ANY_PATTERN)"
 
                 close()
             }
@@ -102,18 +106,19 @@ object NewsListCategoriesConverter : Converter<ResponseBody, List<ApiNewsListCat
             htmlElement("a") {
                 tag("class", "menu-sub-item")
                 tag("href", "([^\"]+)")
-
+                +"\\s*"
                 htmlElement("div") {
                     tag("class", "sub-title")
                     +"(.*?)"
                     close()
                 }
+                +"\\s*"
                 htmlElement("div") {
                     tag("class", "sub-desc")
                     +".*?"
                     close()
                 }
-
+                +"\\s*"
                 close()
             }
         }
