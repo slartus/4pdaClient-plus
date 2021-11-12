@@ -1780,92 +1780,12 @@
         "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u043c\u043e\u0431\u0438\u043b\u044c\u043d\u043e\u0439 \u0441\u0438\u0441\u0442\u0435\u043c\u044b \u043e\u0442 Huawei "
     },
     {
-        "id": "424",
-        "title": "Bada - \u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435",
-        "isHasTopics": true,
-        "parentId": "446",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbL1VYZ9u8e0MRMRuUlYmz0fUh82Nr81Jxm2hG6f.gif",
-        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u043a\u043e\u043c\u043c\u0443\u043d\u0438\u043a\u0430\u0442\u043e\u0440\u043e\u0432 \u043d\u0430 Bada."
-    },
-    {
-        "id": "365",
-        "title": "Bada - \u041f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u044b",
-        "isHasTopics": true,
-        "parentId": "446",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbL1VYZ9u8e0MRMRuUlYmz0fUh82Nr81Jxm2hG6f.gif",
-        "description": "\u041f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u044b \u043f\u043e\u0434 OS Bada "
-    },
-    {
-        "id": "366",
-        "title": "Bada - \u0418\u0433\u0440\u044b",
-        "isHasTopics": true,
-        "parentId": "446",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbL1VYZ9u8e0MRMRuUlYmz0fUh82Nr81Jxm2hG6f.gif",
-        "description": "\u0418\u0433\u0440\u044b \u043f\u043e\u0434 OS Bada "
-    },
-    {
-        "id": "456",
-        "title": "\u041d\u043e\u0432\u0438\u043d\u043a\u0438 (\u0440\u0435\u0434\u0438\u0440\u0435\u043a\u0442)",
-        "isHasTopics": true,
-        "parentId": "446",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObMLEbfRWvz0P1CfGINA3e2q3z1VRNKz1vQ26yUF.gif",
-        "description": null
-    },
-    {
-        "id": "448",
-        "title": "\u0412\u044b\u0431\u043e\u0440 \u0438 \u0421\u0440\u0430\u0432\u043d\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 (\u0440\u0435\u0434\u0438\u0440\u0435\u043a\u0442)",
-        "isHasTopics": true,
-        "parentId": "446",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObMHcZIxMhz11HtUM29kpKq0HIuyp4msbtI.gif",
-        "description": null
-    },
-    {
         "id": "446",
         "title": "Bada",
         "isHasTopics": true,
         "parentId": "442",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb4z0D2vLx3Kz1z0gsWAhiy8ISd4syho1PgQQgPZ.gif",
-        "description": " "
-    },
-    {
-        "id": "560",
-        "title": "BlackBerry - \u041f\u0435\u0440\u0432\u0430\u044f \u043f\u043e\u043c\u043e\u0449\u044c",
-        "isHasTopics": true,
-        "parentId": "445",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbL1z235d6LcAz2cW2iAjfn7WCSa6byZwGGY3KJtX3paWz1nrt.gif",
-        "description": "\u041f\u043e\u043c\u043e\u0449\u044c \u043d\u043e\u0432\u0438\u0447\u043a\u0430\u043c"
-    },
-    {
-        "id": "564",
-        "title": "BlackBerry - \u041f\u043e\u043a\u0443\u043f\u043a\u0430",
-        "isHasTopics": true,
-        "parentId": "445",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbL1z235d6LcAz2cW2iAjfn7WCSa6byZwGGY3KJtX3paWz1nrt.gif",
-        "description": "\u041f\u043e\u043a\u0443\u043f\u043a\u0430 BlackBerry"
-    },
-    {
-        "id": "328",
-        "title": "BlackBerry - \u0423\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432\u0430",
-        "isHasTopics": true,
-        "parentId": "445",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbL1z235d6LcAz2cW2iAjfn7WCSa6byZwGGY3KJtX3paWz1nrt.gif",
-        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0441\u043c\u0430\u0440\u0442\u0444\u043e\u043d\u043e\u0432 BlackBerry"
-    },
-    {
-        "id": "189",
-        "title": "BlackBerry - \u041f\u0440\u043e\u0448\u0438\u0432\u043a\u0438",
-        "isHasTopics": true,
-        "parentId": "445",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbL1z235d6LcAz2cW2iAjfn7WCSa6byZwGGY3KJtX3paWz1nrt.gif",
-        "description": "\u041f\u0440\u043e\u0448\u0438\u0432\u043a\u0438 \u0434\u043b\u044f \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 \u043e\u0442 BlackBerry"
-    },
-    {
-        "id": "561",
-        "title": "BlackBerry - \u041f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u044b",
-        "isHasTopics": true,
-        "parentId": "445",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbL1z235d6LcAz2cW2iAjfn7WCSa6byZwGGY3KJtX3paWz1nrt.gif",
-        "description": "\u041f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u044b \u0434\u043b\u044f BlackBerry"
+        "description": null
     },
     {
         "id": "562",
@@ -1874,22 +1794,6 @@
         "parentId": "445",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbL1z235d6LcAz2cW2iAjfn7WCSa6byZwGGY3KJtX3paWz1nrt.gif",
         "description": "\u0418\u0433\u0440\u044b \u0434\u043b\u044f BlackBerry"
-    },
-    {
-        "id": "457",
-        "title": "\u041d\u043e\u0432\u0438\u043d\u043a\u0438 (\u0440\u0435\u0434\u0438\u0440\u0435\u043a\u0442)",
-        "isHasTopics": true,
-        "parentId": "445",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObMLEbfRWvz0P1CfGINA3e2q3z1VRNKz1vQ26yUF.gif",
-        "description": null
-    },
-    {
-        "id": "449",
-        "title": "\u0412\u044b\u0431\u043e\u0440 \u0438 \u0421\u0440\u0430\u0432\u043d\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 (\u0440\u0435\u0434\u0438\u0440\u0435\u043a\u0442)",
-        "isHasTopics": true,
-        "parentId": "445",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObMHcZIxMhz11HtUM29kpKq0HIuyp4msbtI.gif",
-        "description": null
     },
     {
         "id": "445",
@@ -1986,22 +1890,6 @@
         "parentId": "444",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBsLyReUglQZVYfPmFlINgJWs6UBkWTb5phPyLvJ.gif",
         "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u044f \u0438 \u0438\u0433\u0440\u044b \u0434\u043b\u044f SymbianOS"
-    },
-    {
-        "id": "458",
-        "title": "\u041d\u043e\u0432\u0438\u043d\u043a\u0438 (\u0440\u0435\u0434\u0438\u0440\u0435\u043a\u0442)",
-        "isHasTopics": true,
-        "parentId": "444",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObMLEbfRWvz0P1CfGINA3e2q3z1VRNKz1vQ26yUF.gif",
-        "description": null
-    },
-    {
-        "id": "450",
-        "title": "\u0412\u044b\u0431\u043e\u0440 \u0438 \u0421\u0440\u0430\u0432\u043d\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 (\u0440\u0435\u0434\u0438\u0440\u0435\u043a\u0442)",
-        "isHasTopics": true,
-        "parentId": "444",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObMHcZIxMhz11HtUM29kpKq0HIuyp4msbtI.gif",
-        "description": null
     },
     {
         "id": "547",
@@ -2650,22 +2538,6 @@
         "parentId": "443",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbL1NZeKz1ju3vM4NtEGPYQbT3QLz0dkNEz163z2u6PDCd9d9DdIVz1b.gif",
         "description": "\u0421\u043a\u0438\u043d\u044b, \u0442\u0435\u043c\u044b, \u043a\u0430\u0440\u0442\u0438\u043d\u043a\u0438.\u041f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u044b \u0434\u043b\u044f \u0438\u0437\u043c\u0435\u043d\u0435\u043d\u0438\u044f \u0438\u043d\u0442\u0435\u0440\u0444\u0435\u0439\u0441\u0430 \u0441\u043c\u0430\u0440\u0442\u0444\u043e\u043d\u043e\u0432."
-    },
-    {
-        "id": "460",
-        "title": "\u041d\u043e\u0432\u0438\u043d\u043a\u0438 (\u0440\u0435\u0434\u0438\u0440\u0435\u043a\u0442)",
-        "isHasTopics": true,
-        "parentId": "443",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObMLEbfRWvz0P1CfGINA3e2q3z1VRNKz1vQ26yUF.gif",
-        "description": null
-    },
-    {
-        "id": "451",
-        "title": "\u0412\u044b\u0431\u043e\u0440 \u0438 \u0421\u0440\u0430\u0432\u043d\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 (\u0440\u0435\u0434\u0438\u0440\u0435\u043a\u0442)",
-        "isHasTopics": true,
-        "parentId": "443",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObMHcZIxMhz11HtUM29kpKq0HIuyp4msbtI.gif",
-        "description": null
     },
     {
         "id": "548",
