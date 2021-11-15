@@ -62,6 +62,7 @@ import org.softeg.slartus.hosthelper.HostHelperKt;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -344,14 +345,29 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
     }
 
 
-    private static CharSequence getRedirect(CharSequence url) {
-        Matcher m = PatternExtensions.compile(HostHelper.getHostPattern() + "/pages/go/\\?u=(.*?)$").matcher(url);
-        if (m.find()) {
-            try {
-                return UrlExtensions.decodeUrl(m.group(1));
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
+    private static CharSequence getRedirect(String url) {
+        try {
+            Uri uri = Uri.parse(url);
+            CharSequence u = Uri.parse(url).getQueryParameter("u");
+            if (!TextUtils.isEmpty(u)) {
+                u = UrlExtensions.decodeUrl(u);
+                StringBuilder redirectUrl = new StringBuilder(u);
+                // for urls like: https://4pda.to/pages/go/?u=https%3A%2F%2Falreader.com%2Fdownloads%2FOTHER%2FAlReaderXPro.apk&e=83423404
+                boolean first = true;
+                for (String queryParameterName : uri.getQueryParameterNames()) {
+                    if ("u".equals(queryParameterName.toLowerCase(Locale.ENGLISH))) continue;
+                    if (first)
+                        redirectUrl.append("?").append(queryParameterName).append("=");
+                    else
+                        redirectUrl.append("&").append(queryParameterName).append("=");
+                    redirectUrl.append(uri.getQueryParameter(queryParameterName));
+                    first = false;
+                }
+                return redirectUrl.toString();
             }
+
+        } catch (Throwable e) {
+            e.printStackTrace();
         }
         return url;
     }
