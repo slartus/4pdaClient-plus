@@ -17,14 +17,13 @@ class ForumsRepository private constructor() {
     }
 
     companion object {
-        private val TAG = ForumsRepository::class.simpleName
-
         @JvmStatic
         val instance by lazy { Holder.INSTANCE }
     }
 
     val forumsSubject: BehaviorSubject<List<Forum>> = BehaviorSubject.createDefault(emptyList())
-    private fun load() {
+    private fun load(attemptCount: Int = 0) {
+        if (attemptCount == 5) return
         InternetConnection.instance.loadDataOnInternetConnected({
             GlobalScope.launch(Dispatchers.IO) {
                 try {
@@ -41,7 +40,7 @@ class ForumsRepository private constructor() {
                         AppLog.e(ex)
                     }
                     Thread.sleep(5000)
-                    load()
+                    load(attemptCount + 1)
                 }
             }
         })
