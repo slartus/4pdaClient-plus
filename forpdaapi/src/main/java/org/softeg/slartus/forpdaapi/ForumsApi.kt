@@ -8,22 +8,16 @@ import org.softeg.slartus.forpdacommon.URIUtils
 import org.softeg.slartus.hosthelper.HostHelper
 import ru.slartus.http.Http
 import java.util.*
-import javax.net.ssl.SSLHandshakeException
 
-/**
- * User: slinkin
- * Date: 08.06.12
- * Time: 13:41
- */
 class ForumsApi : ArrayList<Forum>() {
     companion object {
 
         fun loadForumsList(): List<Forum> {
-            val response =  try {
+            val response = try {
                 Http.instance
                     .performGet("https://raw.githubusercontent.com/slartus/4pdaClient-plus/master/forum_struct.json")
 
-            }catch(ex:SSLHandshakeException) {
+            } catch (ex: Throwable) {
                 Http.instance
                     .performGet("http://slartus.ru/4pda/forum_struct.json")
             }
@@ -49,11 +43,10 @@ class ForumsApi : ArrayList<Forum>() {
             qparams.add(BasicNameValuePair("f", forumId.toString()))
             qparams.add(BasicNameValuePair("fromforum", forumId.toString()))
 
-
             val uri =
                 URIUtils.createURI("http", HostHelper.host, "/forum/index.php", qparams, "UTF-8")
 
-            httpClient.performGet(uri.toString())
+            httpClient.performGet(uri)
         }
     }
 }
