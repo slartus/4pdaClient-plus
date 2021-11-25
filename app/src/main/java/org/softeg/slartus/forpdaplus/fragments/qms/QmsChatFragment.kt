@@ -252,12 +252,12 @@ class QmsChatFragment : WebViewFragment() {
     ) {
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == MY_INTENT_CLICK) {
-
-                if (null == data) return
-                val path = FilePath.getPath(App.getInstance(), data.data)
-                if (path != null) {
-                    if (path.matches("(?i)(.*)(7z|zip|rar|tar.gz|exe|cab|xap|txt|log|jpeg|jpg|png|gif|mp3|mp4|apk|ipa|img|.mtz)$".toRegex())) {
-                        AttachesTask(this, path).execute()
+                val uri = data?.data
+                if (uri == null) return
+                val fileName = FilePath.getFileName(App.getInstance(), uri)
+                if (fileName != null) {
+                    if (fileName.matches("(?i)(.*)(7z|zip|rar|tar.gz|exe|cab|xap|txt|log|jpeg|jpg|png|gif|mp3|mp4|apk|ipa|img|.mtz)$".toRegex())) {
+                        AttachesTask(this, uri).execute()
                     } else {
                         Toast.makeText(
                             activity,
@@ -487,7 +487,6 @@ class QmsChatFragment : WebViewFragment() {
 
     }
 
-
     private fun clearNotifTimer() {
         val preferences = PreferenceManager.getDefaultSharedPreferences(mainActivity)
         val editor = preferences.edit()
@@ -566,7 +565,7 @@ class QmsChatFragment : WebViewFragment() {
                 setSubtitle(contactNick)
                 wvChat?.loadDataWithBaseURL(
                     "https://" + App.Host + "/forum/",
-                    finalChatBody,
+                    finalChatBody ?: "",
                     "text/html",
                     "UTF-8",
                     null
@@ -745,7 +744,6 @@ class QmsChatFragment : WebViewFragment() {
         inflater.inflate(R.menu.qms_chat, menu)
     }
 
-
     private inner class MyWebViewClient : WebViewClient() {
 
         override fun onPageFinished(view: WebView, url: String) {
@@ -795,7 +793,6 @@ class QmsChatFragment : WebViewFragment() {
             .negativeText(R.string.ok)
             .show()
     }
-
 
     private fun startAddAttachment() {
         if (ContextCompat.checkSelfPermission(

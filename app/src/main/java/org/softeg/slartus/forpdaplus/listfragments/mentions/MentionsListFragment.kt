@@ -1,6 +1,5 @@
 package org.softeg.slartus.forpdaplus.listfragments.mentions
 
-
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ActivityNotFoundException
@@ -57,7 +56,6 @@ class MentionsListFragment : WebViewFragment() {
 
     private val mHandler = Handler()
 
-
     private var mWebviewexternals: WebViewExternals? = null
     private var buttonsPanel: FrameLayout? = null
 
@@ -65,7 +63,7 @@ class MentionsListFragment : WebViewFragment() {
         super.onCreate(savedInstanceState)
 
         mentionsResult = Paper.book().read(ARG_MENTIONS_RESULT, mentionsResult)
-        
+
     }
 
     @Suppress("unused")
@@ -88,17 +86,20 @@ class MentionsListFragment : WebViewFragment() {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int,
-                                  data: Intent?) {
+    override fun onActivityResult(
+        requestCode: Int, resultCode: Int,
+        data: Intent?
+    ) {
         if (resultCode == Activity.RESULT_OK && requestCode == FILECHOOSER_RESULTCODE) {
             val attachFilePath = FileUtils.getRealPathFromURI(mainActivity, data!!.data!!)
             val cssData = FileUtils.readFileText(attachFilePath)
-                    .replace("\\", "\\\\")
-                    .replace("'", "\\'").replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "")
+                .replace("\\", "\\\\")
+                .replace("'", "\\'").replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "")
             if (Build.VERSION.SDK_INT < 19)
                 body_webview.loadUrl("javascript:window['HtmlInParseLessContent']('$cssData');")
             else
-                body_webview.evaluateJavascript("window['HtmlInParseLessContent']('$cssData')"
+                body_webview.evaluateJavascript(
+                    "window['HtmlInParseLessContent']('$cssData')"
                 ) { }
         }
     }
@@ -111,8 +112,11 @@ class MentionsListFragment : WebViewFragment() {
 
     }
 
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         view = inflater.inflate(R.layout.fragment_mentions_list, container, false)
 
         return view
@@ -136,12 +140,17 @@ class MentionsListFragment : WebViewFragment() {
         body_webview.settings.useWideViewPort = true
         body_webview.settings.defaultFontSize = Preferences.Topic.getFontSize()
         body_webview.addJavascriptInterface(this, "HTMLOUT")
-        body_webview.loadDataWithBaseURL("https://${HostHelper.host}/forum/", "<html><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, user-scalable=no\">" +
-                "</head><body bgcolor=" + AppTheme.currentBackgroundColorHtml + "></body></html>", "text/html", "UTF-8", null)
+        body_webview.loadDataWithBaseURL(
+            "https://${HostHelper.host}/forum/",
+            "<html><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, user-scalable=no\">" +
+                    "</head><body bgcolor=" + AppTheme.currentBackgroundColorHtml + "></body></html>",
+            "text/html",
+            "UTF-8",
+            null
+        )
         registerForContextMenu(body_webview)
         buttonsPanel = findViewById(R.id.buttonsPanel) as FrameLayout
     }
-
 
     fun load(startNum: Int) {
         setLoading(true)
@@ -149,8 +158,8 @@ class MentionsListFragment : WebViewFragment() {
             GlobalScope.launch(Dispatchers.IO) {
                 try {
                     val pageBody = Client.getInstance()
-                            .performGet("${URL}&st=$startNum")
-                            .responseBody
+                        .performGet("${URL}&st=$startNum")
+                        .responseBody
                     Client.getInstance().check(pageBody)
 
                     val mentions = MentionsParser.instance.parseMentions(pageBody)
@@ -162,9 +171,11 @@ class MentionsListFragment : WebViewFragment() {
                             showHtmlBody(body)
                         }
                     }
-                    Client.getInstance().check(Client.getInstance()
+                    Client.getInstance().check(
+                        Client.getInstance()
                             .performGet(URL)
-                            .responseBody)
+                            .responseBody
+                    )
                 } catch (ex: Throwable) {
                     AppLog.e(ex)
                 }
@@ -202,12 +213,18 @@ class MentionsListFragment : WebViewFragment() {
 
     private fun showHtmlBody(body: String?) {
         try {
-            body_webview.loadDataWithBaseURL("https://${HostHelper.host}/forum/", body, "text/html", "UTF-8", null)
+            body_webview.loadDataWithBaseURL(
+                "https://${HostHelper.host}/forum/",
+                body ?: "",
+                "text/html",
+                "UTF-8",
+                null
+            )
             if (buttonsPanel!!.translationY != 0f)
                 ViewPropertyAnimator.animate(buttonsPanel)
-                        .setInterpolator(AccelerateDecelerateInterpolator())
-                        .setDuration(500)
-                        .translationY(0f)
+                    .setInterpolator(AccelerateDecelerateInterpolator())
+                    .setDuration(500)
+                    .translationY(0f)
         } catch (ex: Exception) {
             AppLog.e(context, ex)
         }
@@ -252,17 +269,18 @@ class MentionsListFragment : WebViewFragment() {
 
             val page = context!!.getString(R.string.page_short)
             for (p in 0 until mentionsResult!!.getPagesCount()) {
-                pages[p] = page + (p + 1) + " (" + ((p * postsPerPage + 1).toString() + "-" + (p + 1) * postsPerPage) + ")"
+                pages[p] =
+                    page + (p + 1) + " (" + ((p * postsPerPage + 1).toString() + "-" + (p + 1) * postsPerPage) + ")"
             }
 
             MaterialDialog.Builder(context!!)
-                    .title(R.string.jump_to_page)
-                    .items(*pages)
-                    .itemsCallbackSingleChoice(mentionsResult!!.getCurrentPage() - 1) { _, _, i, _ ->
-                        load(i * postsPerPage)
-                        true // allow selection
-                    }
-                    .show()
+                .title(R.string.jump_to_page)
+                .items(*pages)
+                .itemsCallbackSingleChoice(mentionsResult!!.getCurrentPage() - 1) { _, _, i, _ ->
+                    load(i * postsPerPage)
+                    true // allow selection
+                }
+                .show()
         }
     }
 
@@ -369,10 +387,10 @@ class MentionsListFragment : WebViewFragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         menu.add(R.string.link)
-                .setOnMenuItemClickListener {
-                    ExtUrl.showSelectActionDialog(mainActivity, getString(R.string.link), URL)
-                    true
-                }
+            .setOnMenuItemClickListener {
+                ExtUrl.showSelectActionDialog(mainActivity, getString(R.string.link), URL)
+                true
+            }
     }
 
     private var mentionsResult: MentionsResult? = null
