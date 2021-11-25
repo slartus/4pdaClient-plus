@@ -47,10 +47,8 @@ import org.softeg.slartus.forpdaplus.styles.CssStyle
 import org.softeg.slartus.forpdaplus.styles.StyleInfoActivity
 import org.softeg.slartus.hosthelper.HostHelper
 import ru.slartus.http.PersistentCookieStore.Companion.getInstance
-import java.io.BufferedReader
-import java.io.File
-import java.io.IOException
-import java.io.InputStreamReader
+import java.io.*
+import java.text.SimpleDateFormat
 import java.util.*
 
 /**
@@ -492,20 +490,43 @@ class PreferencesActivity : BasePreferencesActivity() {
                 .show()
         }
 
+        private fun createImageFile(): File {
+            val timeStamp: String =
+                SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+            return File.createTempFile(
+                "PHOTO_${timeStamp}_",
+                ".jpg",
+                App.getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+            )
+        }
+
+        private fun copyFileToTemp(uri: Uri): String {
+            val context = App.getContext()
+            val fileName = FilePath.getFileName(context, uri)
+            val tempFile = createImageFile()
+            context.contentResolver.openInputStream(uri)?.buffered()?.use { inputStream ->
+                FileOutputStream(tempFile, false).use { outputStream ->
+                    FileUtils.CopyStream(inputStream, outputStream)
+                }
+            }
+            return tempFile.absolutePath
+        }
+
         override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
             if (resultCode == RESULT_OK) {
                 if (requestCode == MY_INTENT_CLICK) {
-                    val selectedImageUri = data?.data
-                    val selectedImagePath = FilePath.getPath(App.getContext(), selectedImageUri)
-                    if (selectedImagePath != null) App.getInstance().preferences
-                        .edit()
-                        .putString("userInfoBg", selectedImagePath)
-                        .putBoolean("isUserBackground", true)
-                        .apply() else Toast.makeText(
-                        activity,
-                        "Не могу прикрепить файл",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    data?.data?.let { selectedImageUri ->
+                        val selectedImagePath =
+                            FilePath.getPath(App.getContext(), selectedImageUri) ?: copyFileToTemp(
+                                selectedImageUri
+                            )
+                        App.getInstance().preferences
+                            .edit()
+                            .putString("userInfoBg", selectedImagePath)
+                            .putBoolean("isUserBackground", true)
+                            .apply()
+                    }
+
                 }
             }
         }

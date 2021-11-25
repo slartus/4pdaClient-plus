@@ -9,10 +9,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Build
-import android.os.Bundle
-import android.os.Environment
-import android.os.Handler
+import android.os.*
 import android.provider.MediaStore
 import android.text.*
 import android.text.style.BackgroundColorSpan
@@ -49,11 +46,7 @@ import org.softeg.slartus.forpdaplus.tabs.TabsManager
 import org.softeg.slartus.hosthelper.HostHelper
 import java.util.*
 
-/**
- * Created by radiationx on 30.10.15.
- */
 class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
-
 
     private var txtPost: EditText? = null
     private var txtPostEditReason: EditText? = null
@@ -61,10 +54,10 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
     private var progressSearch: ProgressBar? = null
     private var mEditpost: EditPost? = null
 
-    private var mAttachfilepaths: ArrayList<String> = ArrayList()
+    private var mAttachfilepaths: ArrayList<Uri> = ArrayList()
     private var lastSelectDirPath: String? = Environment.getExternalStorageDirectory().path
 
-    internal val uiHandler = Handler()
+    internal val uiHandler = Handler(Looper.getMainLooper())
 
     private var parentTag: String? = ""
     private var emptyText = true
@@ -72,19 +65,16 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
     private var mBottompanel: View? = null
     private var mPopupPanelView: PopupPanelView? = null
 
-
     private val isNewPost: Boolean
         get() = PostApi.NEW_POST_ID == mEditpost!!.id
 
     private var mAttachesListDialog: Dialog? = null
-
 
     private val postText: String
         get() = if (txtPost!!.text == null) "" else txtPost!!.text.toString()
 
     private val editReasonText: String
         get() = if (txtPostEditReason!!.text == null) "" else txtPostEditReason!!.text.toString()
-
 
     private var mSearchTimer: Timer? = null
 
@@ -102,12 +92,12 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
     override fun closeTab(): Boolean {
         return if (!TextUtils.isEmpty(txtPost!!.text)) {
             MaterialDialog.Builder(mainActivity)
-                    .title(R.string.confirm_action)
-                    .content(R.string.text_not_empty)
-                    .positiveText(R.string.ok)
-                    .onPositive { _, _ -> mainActivity.tryRemoveTab(tag) }
-                    .negativeText(R.string.cancel)
-                    .show()
+                .title(R.string.confirm_action)
+                .content(R.string.text_not_empty)
+                .positiveText(R.string.ok)
+                .onPositive { _, _ -> mainActivity.tryRemoveTab(tag) }
+                .negativeText(R.string.cancel)
+                .show()
             true
         } else {
             false
@@ -132,11 +122,16 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
             mPopupPanelView!!.pause()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         view = inflater.inflate(R.layout.edit_post_plus, container, false)
 
         progressSearch = findViewById(R.id.progress_search) as ProgressBar
-        lastSelectDirPath = App.getInstance().preferences.getString("EditPost.AttachDirPath", lastSelectDirPath)
+        lastSelectDirPath =
+            App.getInstance().preferences.getString("EditPost.AttachDirPath", lastSelectDirPath)
 
         mBottompanel = findViewById(R.id.bottomPanel)
 
@@ -155,12 +150,22 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
             override fun afterTextChanged(s: Editable) {
                 if (s.toString().isEmpty()) {
                     if (!emptyText) {
-                        sendButton.setTextColor(ContextCompat.getColor(App.getContext(), R.color.accentGray))
+                        sendButton.setTextColor(
+                            ContextCompat.getColor(
+                                App.getContext(),
+                                R.color.accentGray
+                            )
+                        )
                         emptyText = true
                     }
                 } else {
                     if (emptyText) {
-                        sendButton.setTextColor(ContextCompat.getColor(App.getContext(), R.color.accent))
+                        sendButton.setTextColor(
+                            ContextCompat.getColor(
+                                App.getContext(),
+                                R.color.accent
+                            )
+                        )
                         emptyText = false
                     }
                 }
@@ -175,8 +180,13 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
         btnUpload.setOnClickListener { startAddAttachment() }
 
         if (mPopupPanelView == null)
-            mPopupPanelView = PopupPanelView(PopupPanelView.VIEW_FLAG_EMOTICS or PopupPanelView.VIEW_FLAG_BBCODES)
-        mPopupPanelView!!.createView(LayoutInflater.from(context), findViewById(R.id.advanced_button) as ImageButton, txtPost)
+            mPopupPanelView =
+                PopupPanelView(PopupPanelView.VIEW_FLAG_EMOTICS or PopupPanelView.VIEW_FLAG_BBCODES)
+        mPopupPanelView!!.createView(
+            LayoutInflater.from(context),
+            findViewById(R.id.advanced_button) as ImageButton,
+            txtPost
+        )
         mPopupPanelView!!.activityCreated(mainActivity, view)
 
 
@@ -214,16 +224,15 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
         return view
     }
 
-
     override fun onBackPressed(): Boolean {
         return if (!TextUtils.isEmpty(txtPost!!.text)) {
             MaterialDialog.Builder(mainActivity)
-                    .title(R.string.confirm_action)
-                    .content(getString(R.string.text_not_empty))
-                    .positiveText(R.string.ok)
-                    .onPositive { _, _ -> mainActivity.tryRemoveTab(tag) }
-                    .negativeText(R.string.cancel)
-                    .show()
+                .title(R.string.confirm_action)
+                .content(getString(R.string.text_not_empty))
+                .positiveText(R.string.ok)
+                .onPositive { _, _ -> mainActivity.tryRemoveTab(tag) }
+                .negativeText(R.string.cancel)
+                .show()
             true
         } else {
             false
@@ -237,7 +246,15 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
     private fun checkMail(): Single<Boolean> {
         if (emptyText) {
             val toast = Toast.makeText(context, R.string.enter_message, Toast.LENGTH_SHORT)
-            toast.setGravity(Gravity.TOP, 0, TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 64f, App.getInstance().resources.displayMetrics).toInt())
+            toast.setGravity(
+                Gravity.TOP,
+                0,
+                TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    64f,
+                    App.getInstance().resources.displayMetrics
+                ).toInt()
+            )
             toast.show()
             return Single.just(false)
         }
@@ -248,12 +265,12 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
         val result = SingleSubject.create<Boolean>()
         if (Preferences.Topic.getConfirmSend()) {
             val dialog = MaterialDialog.Builder(context!!)
-                    .title(R.string.is_sure)
-                    .content(R.string.confirm_sending)
-                    .positiveText(R.string.ok)
-                    .onPositive { _, _ -> result.onSuccess(true) }
-                    .negativeText(R.string.cancel)
-                    .show()
+                .title(R.string.is_sure)
+                .content(R.string.confirm_sending)
+                .positiveText(R.string.ok)
+                .onPositive { _, _ -> result.onSuccess(true) }
+                .negativeText(R.string.cancel)
+                .show()
             dialog.setOnDismissListener {
                 result.onSuccess(false)
             }
@@ -266,25 +283,26 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
     private fun sendMail() {
         val body = postText
         addToDisposable(
-                TrueQueue(
-                        { d: Disposable? -> addToDisposable(d) },
-                        listOf({ checkMail() }, { confirmSendMail() }))
-                        .subscribe(
-                                {
-                                    if (it)
-                                        sendPost(body, editReasonText)
-                                },
-                                {
-                                    AppLog.e(it)
-                                }
-                        ))
+            TrueQueue(
+                { d: Disposable? -> addToDisposable(d) },
+                listOf({ checkMail() }, { confirmSendMail() })
+            )
+                .subscribe(
+                    {
+                        if (it)
+                            sendPost(body, editReasonText)
+                    },
+                    {
+                        AppLog.e(it)
+                    }
+                ))
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         if (mEditpost != null)
             Paper.book().write("EditPost", mEditpost)
         if (mAttachfilepaths.any())
-            outState.putStringArray("AttachFilePaths", mAttachfilepaths.toTypedArray())
+            outState.putParcelableArray("AttachFilePaths", mAttachfilepaths.toTypedArray())
         outState.putString("lastSelectDirPath", lastSelectDirPath)
         outState.putString("postText", postText)
         outState.putString("txtpost_edit_reason", editReasonText)
@@ -299,22 +317,18 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
         if (extras.containsKey(Intent.EXTRA_STREAM)) {
             val attachesObject = extras.get(Intent.EXTRA_STREAM)
             if (attachesObject is Uri) {
-                val uri = extras.get(Intent.EXTRA_STREAM) as Uri
-                val path = FilePath.getPath(mainActivity.applicationContext, uri)
-                if (path != null)
-                    mAttachfilepaths = ArrayList(listOf(path))
+                val uri = extras.get(Intent.EXTRA_STREAM) as? Uri?
+
+                if (uri != null)
+                    mAttachfilepaths = arrayListOf(uri)
                 else
                     Toast.makeText(context, "Не могу прикрепить файл", Toast.LENGTH_SHORT).show()
             } else if (attachesObject is ArrayList<*>) {
                 mAttachfilepaths = ArrayList()
                 for (item in attachesObject) {
-                    val uri = item as Uri
-                    val path = FilePath.getPath(mainActivity.applicationContext, uri)
-                    if (path != null)
-                        mAttachfilepaths.add(FilePath.getPath(mainActivity.applicationContext, uri))
-                    else
-                        Toast.makeText(context, "Не могу прикрепить файл", Toast.LENGTH_SHORT).show()
-
+                    (item as? Uri?)?.let {
+                        mAttachfilepaths.add(it)
+                    }
                 }
             }
         }
@@ -355,10 +369,12 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.edit_post, menu)
         menu.findItem(R.id.find_in_text_item)?.setActionView(R.layout.action_collapsible_search)
-        searchEditText = menu.findItem(R.id.find_in_text_item)?.actionView?.findViewById(R.id.editText)
+        searchEditText =
+            menu.findItem(R.id.find_in_text_item)?.actionView?.findViewById(R.id.editText)
         searchEditText?.setOnKeyListener { _, keyCode, keyEvent ->
             if (keyEvent.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
-                val text = if (searchEditText?.text == null) "" else searchEditText?.text.toString().trim { it <= ' ' }
+                val text = if (searchEditText?.text == null) "" else searchEditText?.text.toString()
+                    .trim { it <= ' ' }
                 startSearch(text, true)
                 searchEditText?.requestFocus()
                 return@setOnKeyListener true
@@ -391,148 +407,167 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
     private fun showAttachesListDialog() {
         if (mEditpost!!.attaches.size == 0) {
             MaterialDialog.Builder(mainActivity)
-                    .content(R.string.no_attachments)
-                    .positiveText(R.string.do_download)
-                    .negativeText(R.string.cancel)
-                    .onPositive { _, _ -> startAddAttachment() }
-                    .show()
+                .content(R.string.no_attachments)
+                .positiveText(R.string.do_download)
+                .negativeText(R.string.cancel)
+                .onPositive { _, _ -> startAddAttachment() }
+                .show()
             return
         }
         val adapter = AttachesAdapter(mEditpost!!.attaches)
         mAttachesListDialog = MaterialDialog.Builder(mainActivity)
-                .cancelable(true)
-                .title(R.string.attachments)
-                //.setSingleChoiceItems(adapter, -1, null)
-                .adapter(adapter, LinearLayoutManager(activity))
-                .neutralText(R.string.in_spoiler)
+            .cancelable(true)
+            .title(R.string.attachments)
+            //.setSingleChoiceItems(adapter, -1, null)
+            .adapter(adapter, LinearLayoutManager(activity))
+            .neutralText(R.string.in_spoiler)
 
-                .onNeutral { _, _ ->
-                    val listItems = ArrayList<String>()
-                    var i = 0
-                    while (i <= mEditpost!!.attaches.size - 1) {
-                        listItems.add(mEditpost!!.attaches[i].name)
-                        i++
-                    }
-                    val items = listItems.toTypedArray<CharSequence>()
-                    val str = StringBuilder()
-                    MaterialDialog.Builder(context!!)
-                            .title(R.string.add_in_spoiler)
-                            .positiveText(R.string.add)
-                            .negativeText(R.string.cancel)
-                            .onPositive { _, _ ->
-                                var selectionStart = txtPost!!.selectionStart
-                                if (selectionStart == -1)
-                                    selectionStart = 0
-                                if (txtPost!!.text != null)
-                                //txtPost.getText().insert(selectionStart, "[attachment=" + attach.getId() + ":" + attach.getTitle() + "]");
-                                    txtPost!!.text.insert(selectionStart, "[spoiler]$str[/spoiler]")
-                            }
-                            .items(*items)
-                            .itemsCallbackMultiChoice(null) { _, which12, _ ->
-                                str.setLength(0)
-                                for (which1 in which12) {
-                                    str.append("[attachment=")
-                                            .append(mEditpost!!.attaches[which1!!].id)
-                                            .append(":")
-                                            .append(mEditpost!!.attaches[which1].name)
-                                            .append("]")
-                                }
-                                true // allow selection
-                            }
-                            .alwaysCallMultiChoiceCallback()
-                            .show()
+            .onNeutral { _, _ ->
+                val listItems = ArrayList<String>()
+                var i = 0
+                while (i <= mEditpost!!.attaches.size - 1) {
+                    listItems.add(mEditpost!!.attaches[i].name)
+                    i++
                 }
+                val items = listItems.toTypedArray<CharSequence>()
+                val str = StringBuilder()
+                MaterialDialog.Builder(context!!)
+                    .title(R.string.add_in_spoiler)
+                    .positiveText(R.string.add)
+                    .negativeText(R.string.cancel)
+                    .onPositive { _, _ ->
+                        var selectionStart = txtPost!!.selectionStart
+                        if (selectionStart == -1)
+                            selectionStart = 0
+                        if (txtPost!!.text != null)
+                        //txtPost.getText().insert(selectionStart, "[attachment=" + attach.getId() + ":" + attach.getTitle() + "]");
+                            txtPost!!.text.insert(selectionStart, "[spoiler]$str[/spoiler]")
+                    }
+                    .items(*items)
+                    .itemsCallbackMultiChoice(null) { _, which12, _ ->
+                        str.setLength(0)
+                        for (which1 in which12) {
+                            str.append("[attachment=")
+                                .append(mEditpost!!.attaches[which1!!].id)
+                                .append(":")
+                                .append(mEditpost!!.attaches[which1].name)
+                                .append("]")
+                        }
+                        true // allow selection
+                    }
+                    .alwaysCallMultiChoiceCallback()
+                    .show()
+            }
 
-                .negativeText(R.string.cancel)
-                .build()
+            .negativeText(R.string.cancel)
+            .build()
         mAttachesListDialog!!.show()
     }
 
     private fun startAddAttachment() {
-        if (ContextCompat.checkSelfPermission(activity!!, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(
+                activity!!,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
             Toast.makeText(activity, R.string.no_permission, Toast.LENGTH_SHORT).show()
             return
         }
         val items = arrayOf<CharSequence>(getString(R.string.file), getString(R.string.image))
         MaterialDialog.Builder(context!!)
-                .items(*items)
-                .itemsCallback { _, _, i, _ ->
-                    when (i) {
-                        0//файл
-                        -> try {
-                            val intent = Intent(Intent.ACTION_GET_CONTENT)
-                            intent.type = "*/*"
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-                                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-                                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                            }
-                            intent.addCategory(Intent.CATEGORY_OPENABLE)
-                            startActivityForResult(intent, MY_INTENT_CLICK_F)
+            .items(*items)
+            .itemsCallback { _, _, i, _ ->
+                when (i) {
+                    0//файл
+                    -> try {
+                        val intent = Intent(Intent.ACTION_GET_CONTENT)
+                        intent.type = "*/*"
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+                            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+                            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                        }
+                        intent.addCategory(Intent.CATEGORY_OPENABLE)
+                        startActivityForResult(intent, MY_INTENT_CLICK_F)
 
+                    } catch (ex: ActivityNotFoundException) {
+                        Toast.makeText(
+                            mainActivity,
+                            R.string.no_app_for_get_file,
+                            Toast.LENGTH_LONG
+                        ).show()
+                    } catch (ex: Exception) {
+                        AppLog.e(mainActivity, ex)
+                    }
+
+                    1// Изображение
+                    ->
+
+                        try {
+                            val imageintent = Intent(
+                                Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+                            )
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
+                                imageintent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+                            startActivityForResult(imageintent, MY_INTENT_CLICK_I)
                         } catch (ex: ActivityNotFoundException) {
-                            Toast.makeText(mainActivity, R.string.no_app_for_get_file, Toast.LENGTH_LONG).show()
+                            Toast.makeText(
+                                mainActivity,
+                                R.string.no_app_for_get_image_file,
+                                Toast.LENGTH_LONG
+                            ).show()
                         } catch (ex: Exception) {
                             AppLog.e(mainActivity, ex)
                         }
 
-                        1// Изображение
-                        ->
-
-                            try {
-                                val imageintent = Intent(
-                                        Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
-                                    imageintent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-                                startActivityForResult(imageintent, MY_INTENT_CLICK_I)
-                            } catch (ex: ActivityNotFoundException) {
-                                Toast.makeText(mainActivity, R.string.no_app_for_get_image_file, Toast.LENGTH_LONG).show()
-                            } catch (ex: Exception) {
-                                AppLog.e(mainActivity, ex)
-                            }
-
-                    }
                 }
-                .show()
+            }
+            .show()
     }
 
     private fun saveAttachDirPath(attachFilePath: String) {
         lastSelectDirPath = FileUtils.getDirPath(attachFilePath)
-        App.getInstance().preferences.edit().putString("EditPost.AttachDirPath", lastSelectDirPath).apply()
+        App.getInstance().preferences.edit().putString("EditPost.AttachDirPath", lastSelectDirPath)
+            .apply()
     }
 
-    private fun helperTask(path: String) {
-        saveAttachDirPath(path)
-        UpdateTask(this, mEditpost?.id ?: "", path).execute()
+    private fun helperTask(uri: Uri) {
+
+        UpdateTask(this, mEditpost?.id ?: "", uri).execute()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == MY_INTENT_CLICK_I) {
-                if (null == data) return
-                val selectedImageUri = data.data
-                val selectedImagePath = FilePath.getPath(mainActivity.applicationContext, selectedImageUri)
-                if (selectedImagePath != null)
-                    helperTask(selectedImagePath)
-                else
-                    Toast.makeText(context, "Не могу прикрепить файл", Toast.LENGTH_SHORT).show()
-
+                data?.data?.let {
+                    uploadFile(it)
+                }
 
             } else if (requestCode == MY_INTENT_CLICK_F) {
-                if (null == data) return
-                val path = FilePath.getPath(mainActivity.applicationContext, data.data)
-                if (path != null) {
-                    if (path.matches("(?i)(.*)(7z|zip|rar|tar.gz|exe|cab|xap|txt|log|jpeg|jpg|png|gif|mp3|mp4|apk|ipa|img|.mtz)$".toRegex())) {
-                        helperTask(path)
-                    } else {
-                        Toast.makeText(mainActivity, R.string.file_not_support_forum, Toast.LENGTH_SHORT).show()
-                    }
-                } else
-                    Toast.makeText(context, "Не могу прикрепить файл", Toast.LENGTH_SHORT).show()
-
-
+                data?.data?.let {
+                    uploadFile(it)
+                }
             }
         }
+    }
+
+    private fun uploadFile(uri: Uri) {
+        val fileName = FilePath.getFileName(requireContext(), uri)
+        if (fileName != null) {
+            val imageExt = "jpeg|jpg|png|gif"
+            val fileExt = "7z|zip|rar|tar.gz|exe|cab|xap|txt|log|mp3|mp4|apk|ipa|img|mtz"
+            if (fileName.matches("(?i)(.*)($imageExt|$fileExt)$".toRegex())) {
+                helperTask(uri)
+            } else {
+                Toast.makeText(
+                    mainActivity,
+                    R.string.file_not_support_forum,
+                    Toast.LENGTH_SHORT
+                )
+                    .show()
+            }
+        } else
+            Toast.makeText(context, "Не могу прикрепить файл", Toast.LENGTH_SHORT).show()
     }
 
     override fun onLoadTaskSuccess(editPost: EditPost?) {
@@ -540,7 +575,7 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
 
         if (mAttachfilepaths.any())
             UpdateTask(this, mEditpost?.id ?: "", mAttachfilepaths)
-                    .execute()
+                .execute()
         mAttachfilepaths = ArrayList()
     }
 
@@ -557,7 +592,12 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
     override fun onAcceptEditTaskSuccess(editPost: EditPost?) {
         if (TabsManager.instance.isContainsByTag(parentTag)) {
             (TabsManager.instance.getTabByTag(parentTag)?.fragment as ThemeFragment?)
-                    ?.showTheme(ThemeFragment.getThemeUrl(editPost?.topicId, "view=findpost&p=${editPost?.id}"), true)
+                ?.showTheme(
+                    ThemeFragment.getThemeUrl(
+                        editPost?.topicId,
+                        "view=findpost&p=${editPost?.id}"
+                    ), true
+                )
         }
         mainActivity.tryRemoveTab(tag)
     }
@@ -565,38 +605,64 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
     override fun onPostTaskSuccess(editPost: EditPost?, error: String?) {
 
         if (!TextUtils.isEmpty(error)) {
-            Toast.makeText(mainActivity, App.getContext().getString(R.string.error) + ": " + error, Toast.LENGTH_LONG).show()
+            Toast.makeText(
+                mainActivity,
+                App.getContext().getString(R.string.error) + ": " + error,
+                Toast.LENGTH_LONG
+            ).show()
             return
         }
         if (TabsManager.instance.isContainsByTag(parentTag)) {
             (TabsManager.instance.getTabByTag(parentTag)!!.fragment as ThemeFragment)
-                    .showTheme(String.format("https://${HostHelper.host}/forum/index.php?showtopic=%s&%s", editPost?.topicId,
-                            if (isNewPost) "view=getlastpost" else ("view=findpost&p=" + editPost?.id)), true)
+                .showTheme(
+                    String.format(
+                        "https://${HostHelper.host}/forum/index.php?showtopic=%s&%s",
+                        editPost?.topicId,
+                        if (isNewPost) "view=getlastpost" else ("view=findpost&p=" + editPost?.id)
+                    ), true
+                )
         }
         mainActivity.tryRemoveTab(tag)
     }
 
-    private fun startLoadPost(forumId: String, topicId: String, postId: String, authKey: String) {
+    private fun startLoadPost(
+        forumId: String,
+        topicId: String,
+        postId: String,
+        authKey: String
+    ) {
         LoadTask(this, forumId, topicId, postId, authKey).execute()
     }
 
     private fun sendPost(text: String, editPostReason: String) {
 
         if (isNewPost) {
-            PostTask(this, mEditpost, text, editPostReason,
-                    Preferences.Topic.Post.getEnableEmotics(), Preferences.Topic.Post.getEnableSign())
-                    .execute()
+            PostTask(
+                this,
+                mEditpost,
+                text,
+                editPostReason,
+                Preferences.Topic.Post.getEnableEmotics(),
+                Preferences.Topic.Post.getEnableSign()
+            )
+                .execute()
         } else {
-            AcceptEditTask(this, mEditpost, text, editPostReason,
-                    Preferences.Topic.Post.getEnableEmotics(), Preferences.Topic.Post.getEnableSign())
-                    .execute()
+            AcceptEditTask(
+                this,
+                mEditpost,
+                text,
+                editPostReason,
+                Preferences.Topic.Post.getEnableEmotics(),
+                Preferences.Topic.Post.getEnableSign()
+            )
+                .execute()
         }
     }
 
     private fun toggleEditReasonDialog() {
-        layout_edit_reason?.visibility = if (layout_edit_reason?.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+        layout_edit_reason?.visibility =
+            if (layout_edit_reason?.visibility == View.VISIBLE) View.GONE else View.VISIBLE
     }
-
 
     override fun onDestroy() {
         if (mPopupPanelView != null) {
@@ -607,7 +673,6 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
         if (tabItem != null) mainActivity.tryRemoveTab(tabItem.tag)
         super.onDestroy()
     }
-
 
     private fun setEditPost(editPost: EditPost?) {
         mEditpost = editPost
@@ -621,15 +686,16 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
         btnAttachments?.text = (mEditpost?.attaches?.size ?: 0).toString()
     }
 
-
-    inner class AttachesAdapter internal constructor(private val content: List<EditAttach>) : RecyclerView.Adapter<AttachesAdapter.AttachViewHolder>() {
+    inner class AttachesAdapter internal constructor(private val content: List<EditAttach>) :
+        RecyclerView.Adapter<AttachesAdapter.AttachViewHolder>() {
 
         fun getItem(i: Int): EditAttach {
             return content[i]
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AttachViewHolder {
-            val group = LayoutInflater.from(parent.context).inflate(R.layout.attachment_spinner_item, parent, false) as ViewGroup
+            val group = LayoutInflater.from(parent.context)
+                .inflate(R.layout.attachment_spinner_item, parent, false) as ViewGroup
             return AttachViewHolder(group)
         }
 
@@ -641,10 +707,12 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
 
             holder.btnDelete.setOnClickListener {
                 mAttachesListDialog!!.dismiss()
-                DeleteAttachTask(this@EditPostFragment,
-                        mEditpost?.id ?: "",
-                        attach.id)
-                        .execute()
+                DeleteAttachTask(
+                    this@EditPostFragment,
+                    mEditpost?.id ?: "",
+                    attach.id
+                )
+                    .execute()
             }
 
             holder.btnSpoiler.setOnClickListener {
@@ -654,7 +722,10 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
                 if (selectionStart == -1)
                     selectionStart = 0
                 if (txtPost!!.text != null)
-                    txtPost!!.text.insert(selectionStart, "[spoiler][attachment=" + attach.id + ":" + attach.name + "][/spoiler]")
+                    txtPost!!.text.insert(
+                        selectionStart,
+                        "[spoiler][attachment=" + attach.id + ":" + attach.name + "][/spoiler]"
+                    )
             }
 
             holder.txtFile.setOnClickListener {
@@ -663,7 +734,10 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
                 if (selectionStart == -1)
                     selectionStart = 0
                 if (txtPost!!.text != null)
-                    txtPost!!.text.insert(selectionStart, "[attachment=" + attach.id + ":" + attach.name + "]")
+                    txtPost!!.text.insert(
+                        selectionStart,
+                        "[attachment=" + attach.id + ":" + attach.name + "]"
+                    )
             }
         }
 
@@ -682,13 +756,14 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
         }
     }
 
-
     private fun clearPostHighlight(): Spannable {
         val startSearchSelection = txtPost!!.selectionStart
         val raw = SpannableString(if (txtPost!!.text == null) "" else txtPost!!.text)
-        val spans = raw.getSpans(0,
-                raw.length,
-                BackgroundColorSpan::class.java)
+        val spans = raw.getSpans(
+            0,
+            raw.length,
+            BackgroundColorSpan::class.java
+        )
 
         for (span in spans) {
             raw.removeSpan(span)
@@ -708,17 +783,17 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
         mSearchTimer!!.schedule(object : TimerTask() {
             override fun run() {
                 uiHandler.post {
-                    searchEditText?.error = if (search(searchText, fromSelection) == SEARCH_RESULT_NOTFOUND)
-                        getString(R.string.no_matches_found)
-                    else
-                        null
+                    searchEditText?.error =
+                        if (search(searchText, fromSelection) == SEARCH_RESULT_NOTFOUND)
+                            getString(R.string.no_matches_found)
+                        else
+                            null
 
                 }
                 mSearchTimer!!.cancel()
                 mSearchTimer!!.purge()
             }
         }, 1000, 5000)
-
 
     }
 
@@ -736,7 +811,6 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
                 startSearchSelection = txtPost!!.selectionStart + 1
             val text = raw.toString().toLowerCase(Locale.getDefault())
 
-
             var findedStartSelection = TextUtils.indexOf(text, searchText, startSearchSelection)
             if (findedStartSelection == -1 && startSearchSelection != 0)
                 findedStartSelection = TextUtils.indexOf(text, searchText)
@@ -744,7 +818,12 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
             if (findedStartSelection == -1)
                 return SEARCH_RESULT_NOTFOUND
 
-            raw.setSpan(BackgroundColorSpan(-0x74ff75), findedStartSelection, findedStartSelection + searchText.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            raw.setSpan(
+                BackgroundColorSpan(-0x74ff75),
+                findedStartSelection,
+                findedStartSelection + searchText.length,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
 
 
             txtPost?.setText(raw)
@@ -760,7 +839,6 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
         }
         return SEARCH_RESULT_EMPTYTEXT
     }
-
 
     override fun getListName(): String? {
         return null
@@ -786,7 +864,6 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
         const val TOPIC_BODY_KEY = "EditPostActivity.TOPIC_BODY_KEY"
         const val POST_URL_KEY = "EditPostActivity.POST_URL_KEY"
 
-
         private const val thisFragmentUrl = "EditPostFragment"
 
         fun newInstance(args: Bundle): EditPostFragment {
@@ -796,7 +873,14 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
             return fragment
         }
 
-        fun editPost(context: Activity, forumId: String, topicId: String, postId: String, authKey: String, tag: String) {
+        fun editPost(
+            context: Activity,
+            forumId: String,
+            topicId: String,
+            postId: String,
+            authKey: String,
+            tag: String
+        ) {
             val url = thisFragmentUrl + forumId + topicId + postId
             val args = Bundle()
             args.putString("forumId", forumId)
@@ -804,11 +888,17 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
             args.putString("postId", postId)
             args.putString("authKey", authKey)
             args.putString("parentTag", tag)
-            MainActivity.addTab(context.getString(R.string.edit_post_combined) + context.getString(R.string.combined_in) + TabsManager.instance.getTabByTag(tag)!!.title, url, newInstance(args))
+            MainActivity.addTab(
+                context.getString(R.string.edit_post_combined) + context.getString(R.string.combined_in) + TabsManager.instance.getTabByTag(
+                    tag
+                )!!.title, url, newInstance(args)
+            )
         }
 
-        fun newPost(context: Activity, forumId: String, topicId: String, authKey: String,
-                    body: String, tag: String) {
+        fun newPost(
+            context: Activity, forumId: String, topicId: String, authKey: String,
+            body: String, tag: String
+        ) {
             val url = thisFragmentUrl + forumId + topicId + PostApi.NEW_POST_ID
             val args = Bundle()
             args.putString("forumId", forumId)
@@ -817,11 +907,17 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
             args.putString("body", body)
             args.putString("authKey", authKey)
             args.putString("parentTag", tag)
-            MainActivity.addTab(context.getString(R.string.answer) + context.getString(R.string.combined_in) + TabsManager.instance.getTabByTag(tag)!!.title, url, newInstance(args))
+            MainActivity.addTab(
+                context.getString(R.string.answer) + context.getString(R.string.combined_in) + TabsManager.instance.getTabByTag(
+                    tag
+                )!!.title, url, newInstance(args)
+            )
         }
 
-        fun newPostWithAttach(context: Context, forumId: String?, topicId: String, authKey: String,
-                              extras: Bundle) {
+        fun newPostWithAttach(
+            context: Context, forumId: String?, topicId: String, authKey: String,
+            extras: Bundle
+        ) {
             val url = thisFragmentUrl + forumId + topicId + PostApi.NEW_POST_ID
             val args = Bundle()
             args.putString("forumId", forumId)
@@ -829,7 +925,11 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
             args.putString("postId", PostApi.NEW_POST_ID)
             args.putBundle("extras", extras)
             args.putString("authKey", authKey)
-            MainActivity.addTab(context.getString(R.string.edit_post_combined), url, newInstance(args))
+            MainActivity.addTab(
+                context.getString(R.string.edit_post_combined),
+                url,
+                newInstance(args)
+            )
         }
 
         private const val MY_INTENT_CLICK_I = 302

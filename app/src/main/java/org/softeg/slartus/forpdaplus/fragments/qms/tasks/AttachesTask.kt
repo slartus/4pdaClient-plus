@@ -1,6 +1,7 @@
 package org.softeg.slartus.forpdaplus.fragments.qms.tasks
 
 import android.annotation.TargetApi
+import android.net.Uri
 import android.os.AsyncTask
 import android.os.Build
 import android.util.Log
@@ -10,15 +11,19 @@ import com.afollestad.materialdialogs.MaterialDialog
 import org.softeg.slartus.forpdaapi.ProgressState
 import org.softeg.slartus.forpdaapi.post.EditAttach
 import org.softeg.slartus.forpdaapi.qms.QmsApi
+import org.softeg.slartus.forpdacommon.FileUtils
 import org.softeg.slartus.forpdaplus.App
 import org.softeg.slartus.forpdaplus.R
+import org.softeg.slartus.forpdaplus.classes.FilePath
 import org.softeg.slartus.forpdaplus.common.AppLog
 import org.softeg.slartus.forpdaplus.fragments.qms.QmsChatFragment
+import java.io.File
+import java.io.FileOutputStream
 import java.lang.ref.WeakReference
 import java.util.*
 
 class AttachesTask internal constructor(qmsChatFragment: QmsChatFragment,
-                                        private val attachFilePaths: List<String>) : AsyncTask<String, Pair<String, Long>, Boolean>() {
+                                        private val attachFilePaths: List<Uri>) : AsyncTask<String, Pair<String, Long>, Boolean>() {
     private val dialog: MaterialDialog = MaterialDialog.Builder(qmsChatFragment.context!!)
             .progress(true, 0)
             .content(R.string.sending_file)
@@ -35,12 +40,30 @@ class AttachesTask internal constructor(qmsChatFragment: QmsChatFragment,
 
     private var ex: Throwable? = null
 
-    constructor(qmsChatFragment: QmsChatFragment, newAttachFilePath: String) : this(qmsChatFragment, ArrayList<String>(listOf<String>(newAttachFilePath)))
+    constructor(qmsChatFragment: QmsChatFragment, newAttachFilePath: Uri) : this(qmsChatFragment, arrayListOf<Uri>(newAttachFilePath))
+
+    private fun copyFileToTemp(uri: Uri): String {
+        val context = App.getContext()
+        val fileName = FilePath.getFileName(context, uri)
+        val tempFile = File(context.cacheDir, fileName)
+        tempFile.createNewFile()
+        context.contentResolver.openInputStream(uri)?.buffered()?.use { inputStream ->
+            FileOutputStream(tempFile, false).use { outputStream ->
+                FileUtils.CopyStream(inputStream, outputStream)
+            }
+        }
+        return tempFile.absolutePath
+    }
 
     override fun doInBackground(vararg params: String): Boolean? {
         return try {
             for (newAttachFilePath in attachFilePaths) {
-                val editAttach = QmsApi.attachFile(newAttachFilePath, progressState)
+                val tempFilePath =
+                    FilePath.getPath(App.getContext(), newAttachFilePath) ?: copyFileToTemp(
+                        newAttachFilePath
+                    )
+
+                val editAttach = QmsApi.attachFile(tempFilePath, progressState)
                 attaches.add(editAttach)
             }
             true

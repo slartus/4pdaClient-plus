@@ -8,6 +8,7 @@ import android.provider.MediaStore;
 import android.widget.Toast;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -165,16 +166,26 @@ public class FileUtils {
     }
 
     public static void CopyStream(InputStream is, OutputStream os) {
-        final int buffer_size = 1024;
+        BufferedInputStream bis = null;
+        BufferedOutputStream bos = null;
+
         try {
-            byte[] bytes = new byte[buffer_size];
-            for (; ; ) {
-                int count = is.read(bytes, 0, buffer_size);
-                if (count == -1)
-                    break;
-                os.write(bytes, 0, count);
+            bis = new BufferedInputStream(is);
+            bos = new BufferedOutputStream(os);
+            byte[] buf = new byte[1024];
+            bis.read(buf);
+            do {
+                bos.write(buf);
+            } while(bis.read(buf) != -1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (bis != null) bis.close();
+                if (bos != null) bos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (Exception ex) {
         }
     }
 

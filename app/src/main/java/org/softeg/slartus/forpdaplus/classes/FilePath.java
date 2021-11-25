@@ -36,8 +36,7 @@ public class FilePath {
     public static String getPath(final Context context, final Uri uri) {
         if (uri == null)
             return null;
-        String absolutePath = getLocalPath(context, uri);
-        return absolutePath != null ? absolutePath : uri.toString();
+        return getLocalPath(context, uri);
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)

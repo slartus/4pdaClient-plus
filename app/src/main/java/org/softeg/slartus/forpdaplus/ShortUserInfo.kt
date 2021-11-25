@@ -34,6 +34,7 @@ import org.softeg.slartus.forpdaplus.prefs.Preferences
 import org.softeg.slartus.forpdaplus.repositories.UserInfo
 import org.softeg.slartus.forpdaplus.repositories.UserInfoRepository
 import org.softeg.slartus.hosthelper.HostHelper
+import ru.slartus.http.Http
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
@@ -64,18 +65,6 @@ class ShortUserInfo internal constructor(activity: MainActivity, private val vie
     private var avatarUrl = ""
 
     private fun getContext() = mActivity.get()
-
-
-    private val isOnline: Boolean
-        get() {
-            val cm = App.getInstance()
-                .getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-            val netInfo = cm.activeNetworkInfo
-            return (netInfo != null && netInfo.isConnectedOrConnecting
-                    && cm.activeNetworkInfo.isAvailable
-                    && cm.activeNetworkInfo.isConnected)
-        }
-
 
     init {
         userNick = findViewById(R.id.userNick) as TextView
@@ -143,11 +132,11 @@ class ShortUserInfo internal constructor(activity: MainActivity, private val vie
         }
         loginButton.setOnClickListener { LoginDialog.showDialog(getContext()) }
 
-        if (!isOnline) {
+        if (!Http.isOnline(App.getContext())) {
             loginButton.setText(R.string.check_connection)
         }
         infoRefresh.setOnClickListener {
-            if (isOnline and client.logined) {
+            if (Http.isOnline(App.getContext()) and client.logined) {
                 updateAsyncTask().execute()
             }
         }
