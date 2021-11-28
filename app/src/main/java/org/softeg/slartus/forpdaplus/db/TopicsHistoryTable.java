@@ -59,62 +59,6 @@ public class TopicsHistoryTable {
         return null;
     }
 
-    public static HistoryTopic getTopicHistory(CharSequence topicId) throws IOException {
-
-        SQLiteDatabase db = null;
-        Cursor c = null;
-        try {
-            DbHelper dbHelper = new DbHelper(App.getInstance());
-            db = dbHelper.getReadableDatabase();
-            assert db != null;
-
-            c = db.query("TopicsHistoryView", null, TopicsTable.COLUMN_ID + "=?", new String[]{topicId.toString()}, null, null, null);
-
-            if (c.moveToFirst()) {
-                int columnIdIndex = c.getColumnIndex(TopicsTable.COLUMN_ID);
-                int columnTitleIndex = c.getColumnIndex(TopicsTable.COLUMN_TITLE);
-                int columnDescriptionIndex = c.getColumnIndex(TopicsTable.COLUMN_DESCRIPTION);
-                int columnForumIdIndex = c.getColumnIndex(TopicsTable.COLUMN_FORUM_ID);
-                int columnDateTimeIndex = c.getColumnIndex(COLUMN_DATETIME);
-                int columnUrlIndex = c.getColumnIndex(COLUMN_URL);
-
-
-                String id = c.getString(columnIdIndex);
-                String title = c.getString(columnTitleIndex);
-                String description = c.getString(columnDescriptionIndex);
-                String forumId = c.getString(columnForumIdIndex);
-                String forumTitle = null;
-                String url = c.getString(columnUrlIndex);
-                Forum f = ForumsRepository.getInstance().findById(forumId);
-                if (f != null)
-                    forumTitle = f.getTitle();
-                Date dateTime = null;
-                try {
-                    dateTime = DbHelper.parseDate(c.getString(columnDateTimeIndex));
-                } catch (ParseException e) {
-                    AppLog.e(App.getContext(), e);
-                }
-
-                HistoryTopic topic = new HistoryTopic(id, title, url);
-                topic.setDescription(description);
-                topic.setForumId(forumId);
-                topic.setForumTitle(forumTitle);
-                topic.setLastMessageDate(dateTime);
-                return topic;
-
-
-            }
-
-        } finally {
-            if (db != null) {
-                if (c != null)
-                    c.close();
-                db.close();
-            }
-        }
-        return null;
-    }
-
     public static ArrayList<HistoryTopic> getTopicsHistory(ListInfo listInfo) throws IOException {
 
         ArrayList<HistoryTopic> res = new ArrayList<>();

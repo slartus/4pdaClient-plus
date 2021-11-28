@@ -1,14 +1,10 @@
 package org.softeg.slartus.forpdaplus.repositories
 
 import io.reactivex.subjects.BehaviorSubject
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import org.softeg.slartus.forpdaapi.Forum
 import org.softeg.slartus.forpdaapi.ForumsApi
 import org.softeg.slartus.forpdacommon.sameContentWith
-import org.softeg.slartus.forpdaplus.common.AppLog
 import org.softeg.slartus.forpdaplus.db.PaperDb
 
 class ForumsRepository private constructor() {
@@ -16,34 +12,37 @@ class ForumsRepository private constructor() {
         val INSTANCE = ForumsRepository()
     }
 
-    companion object {
-        @JvmStatic
-        val instance by lazy { Holder.INSTANCE }
+    init {
+        loadDb()
+
+        loadAsync()
     }
 
     val forumsSubject: BehaviorSubject<List<Forum>> = BehaviorSubject.createDefault(emptyList())
-    private fun load(attemptCount: Int = 0) {
-        if (attemptCount == 5) return
+    private fun loadAsync() {
         InternetConnection.instance.loadDataOnInternetConnected({
-            GlobalScope.launch(Dispatchers.IO) {
-                try {
-                    val response = ForumsApi.loadForumsList()
-                    response.forEach {
-                        it.isHasForums = response.any { r -> r.parentId == it.id }
-                    }
-                    if (!response.sameContentWith(forumsSubject.value)) {
-                        forumsSubject.onNext(response)
-                        saveDb(response)
-                    }
-                } catch (ex: Throwable) {
-                    withContext(Dispatchers.Main) {
-                        AppLog.e(ex)
-                    }
-                    Thread.sleep(5000)
-                    load(attemptCount + 1)
-                }
+            GlobalScope.launch {
+                load()
             }
         })
+    }
+
+    suspend fun load(): LoadResult {
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = ForumsApi.loadForumsList()
+                response.forEach {
+                    it.isHasForums = response.any { r -> r.parentId == it.id }
+                }
+                if (!response.sameContentWith(forumsSubject.value)) {
+                    forumsSubject.onNext(response)
+                    saveDb(response)
+                }
+                LoadResult.Success
+            } catch (ex: Throwable) {
+                LoadResult.Error(ex)
+            }
+        }
     }
 
     private fun loadDb() {
@@ -61,9 +60,13 @@ class ForumsRepository private constructor() {
         return forumsSubject.value?.firstOrNull { it.id == startForumId }
     }
 
-    init {
-        loadDb()
+    companion object {
+        @JvmStatic
+        val instance by lazy { Holder.INSTANCE }
+    }
 
-        load()
+    sealed class LoadResult {
+        object Success : LoadResult()
+        class Error(val error: Throwable) : LoadResult()
     }
 }
