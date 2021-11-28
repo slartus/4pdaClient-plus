@@ -17,7 +17,7 @@
             android:capitalize="sentences"
             android:singleLine="true"
             android:paddingRight="48dp"
-            android:hint="@string/EnterSubject_">
+            android:hint="@string/enter_subject">
 
             <requestFocus />
         </EditText>
@@ -36,7 +36,7 @@
         android:layout_height="fill_parent">
 
         <EditText
-            android:hint="@string/EnterMessage_"
+            android:hint="@string/enter_message"
             android:id="@+id/message"
             android:layout_width="fill_parent"
             android:layout_height="match_parent"

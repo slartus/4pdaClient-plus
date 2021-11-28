@@ -12,5 +12,5 @@
         android:layout_height="wrap_content"
         android:gravity="top"
         android:inputType="textCapSentences|textMultiLine"
-        android:hint="@string/Comment_" />
+        android:hint="@string/comment_hint" />
 </LinearLayout>

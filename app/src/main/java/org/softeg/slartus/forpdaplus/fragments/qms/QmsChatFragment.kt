@@ -648,7 +648,7 @@ class QmsChatFragment : WebViewFragment() {
 
     private fun startSendMessage() {
         if (emptyText) {
-            val toast = Toast.makeText(context, R.string.EnterMessage_, Toast.LENGTH_SHORT)
+            val toast = Toast.makeText(context, R.string.enter_message, Toast.LENGTH_SHORT)
             toast.setGravity(
                 Gravity.TOP,
                 0,

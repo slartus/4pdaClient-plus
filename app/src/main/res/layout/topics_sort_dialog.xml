@@ -13,26 +13,26 @@
 
         <RadioButton
             android:id="@+id/rbSortBySortOrder"
-            android:text="Как на сайте"
+            android:text="@string/sort_like_on_website"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true" />
 
         <RadioButton
             android:id="@+id/rbSortByDate"
-            android:text="По дате последнего поста"
+            android:text="@string/sort_by_date_of_last_post"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <RadioButton
             android:id="@+id/rbSortByDateAndNew"
-            android:text="По дате последнего поста и непрочитанности"
+            android:text="@string/sort_by_date_of_last_post_and_read_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <RadioButton
             android:id="@+id/rbSortByTitle"
-            android:text="По названию топика"
+            android:text="@string/sort_by_topic_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </RadioGroup>

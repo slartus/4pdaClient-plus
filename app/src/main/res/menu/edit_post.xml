@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/edit_reason_item"
-        android:title="@string/reason_for_editing"
+        android:title="@string/menu_edit_post_reason_for_editing"
         android:icon="@drawable/pencil"
         app:showAsAction="ifRoom"
         />
@@ -16,7 +16,7 @@
 
     <item
         android:id="@+id/find_in_text_item"
-        android:title="@string/find_in_text"
+        android:title="@string/menu_edit_post_find_in_text"
         android:icon="@drawable/pencil"
         android:actionLayout="@layout/action_collapsible_search"
         app:showAsAction="collapseActionView"

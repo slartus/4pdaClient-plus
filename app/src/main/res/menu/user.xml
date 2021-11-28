@@ -12,7 +12,7 @@
                 android:title="@string/login"/>
             <item
                 android:id="@+id/registration_item"
-                android:title="@string/Registration"/>
+                android:title="@string/registration"/>
         </menu>
     </item>
 
@@ -25,19 +25,19 @@
         <menu>
             <item
                 android:id="@+id/qms_item"
-                android:title="QMS"/>
+                android:title="@string/QMS"/>
             <item
                 android:id="@+id/mentions_item"
-                android:title="Упоминания"/>
+                android:title="@string/mentions"/>
             <item
                 android:id="@+id/profile_item"
-                android:title="@string/Profile"/>
+                android:title="@string/profile"/>
             <item
                 android:id="@+id/reputation_item"
                 android:title="@string/reputation"/>
             <item
                 android:id="@+id/logout_item"
-                android:title="@string/Logout"/>
+                android:title="@string/logout"/>
         </menu>
     </item>
 </menu>

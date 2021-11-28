@@ -114,7 +114,7 @@ public class ThemeCurator {
         });
 
         new MaterialDialog.Builder(activity)
-                .title(R.string.multi_moderation)
+                .title(R.string.multimoderation)
                 .customView(view,true)
                 .cancelable(true)
 

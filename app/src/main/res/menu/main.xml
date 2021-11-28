@@ -4,20 +4,20 @@
     <item
         android:id="@+id/tabs_item"
         android:icon="@drawable/checkbox_multiple_blank_outline"
-        android:title="@string/tabs"
+        android:title="@string/menu_main_tabs"
         android:visible="false"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/search_item"
         android:icon="@drawable/magnify"
-        android:title="@string/forum_search"
+        android:title="@string/menu_main_forum_search"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/exit_item"
         android:icon="@drawable/close_white"
-        android:title="@string/CloseApp"
+        android:title="@string/menu_main_close_app"
         android:orderInCategory="999"
         android:visible="false" />
 </menu>

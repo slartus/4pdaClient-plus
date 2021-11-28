@@ -23,7 +23,7 @@
             android:background="@android:color/transparent"
             android:paddingLeft="12dp"
             android:paddingRight="12dp"
-            android:text="ВСЁ"
+            android:text="@string/quote_editor_all"
             android:textColor="?attr/colorAccent" />
 
         <Button
@@ -35,7 +35,7 @@
             android:background="@android:color/transparent"
             android:paddingLeft="12dp"
             android:paddingRight="12dp"
-            android:text="КОД"
+            android:text="@string/quore_editor_code"
             android:textColor="?attr/colorAccent" />
 
         <Button
@@ -47,7 +47,7 @@
             android:background="@android:color/transparent"
             android:paddingLeft="12dp"
             android:paddingRight="12dp"
-            android:text="ТЕКСТ"
+            android:text="@string/quote_editor_text"
             android:textColor="?attr/colorAccent" />
 
         <Button
@@ -58,7 +58,7 @@
             android:background="@android:color/transparent"
             android:paddingLeft="12dp"
             android:paddingRight="12dp"
-            android:text="СТЕРЕТЬ"
+            android:text="@string/quote_editor_clear"
             android:textColor="?attr/colorAccent" />
     </LinearLayout>
 

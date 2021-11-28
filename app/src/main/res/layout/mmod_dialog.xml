@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Постов на страницу:"
+        android:text="@string/mmod_dialog_posts_per_page"
         android:singleLine="true" />
 
     <Spinner
@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:singleLine="true"
-        android:text="Рейтинг ниже:" />
+        android:text="@string/mmod_dialog_rating_less_then" />
 
     <Spinner
         android:layout_width="match_parent"
