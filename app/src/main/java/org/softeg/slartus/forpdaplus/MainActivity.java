@@ -44,7 +44,6 @@ import android.widget.Toast;
 
 import org.softeg.slartus.forpdaapi.search.SearchSettings;
 import org.softeg.slartus.forpdacommon.ExtPreferences;
-import org.softeg.slartus.forpdanotifyservice.BackgroundServiceUtils;
 import org.softeg.slartus.forpdaplus.activity.NewYear;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.fragments.GeneralFragment;
@@ -75,13 +74,6 @@ import java.util.List;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Admin
- * Date: 17.09.11
- * Time: 22:23
- * To change this template use File | Settings | File Templates.
- */
 public class MainActivity extends BaseActivity implements BricksListDialogFragment.IBricksListDialogCaller,
         MainDrawerMenu.SelectItemListener, TabDrawerMenu.SelectItemListener {
     // test commit to beta
@@ -171,7 +163,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
     public void onCreate(Bundle saveInstance) {
         setTheme(AppTheme.getThemeStyleResID());
         super.onCreate(saveInstance);
-        //BackgroundServiceUtils.requestBackgroundPermission(this);
+
         loadPreferences(App.getInstance().getPreferences());
         if (shortUserInfo != null)
             shortUserInfo.setMActivity(new WeakReference<>(this));
@@ -180,24 +172,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
             TabsManager.getInstance().setCurrentFragmentTag(saveInstance.getString("currentTag"));
         }
 
-        final List<Fragment> fragmentList = getSupportFragmentManager().getFragments();
-
-        if (fragmentList != null & TabsManager.getInstance().getTabItems().size() == 0) {
-            GeneralFragment frag;
-            TabItem item;
-            for (Fragment fragment : fragmentList) {
-                try {
-                    if (fragment instanceof GeneralFragment) {
-                        frag = (GeneralFragment) fragment;
-                        item = new TabItem(frag.getGeneralTitle(), frag.getGeneralUrl(), frag.getTag(), frag.getGeneralParentTag(), frag);
-                        frag.setThisTab(item);
-                        TabsManager.getInstance().getTabItems().add(item);
-                    }
-                } catch (ClassCastException ex) {
-                    AppLog.e(ex);
-                }
-            }
-        }
+        restoreTabsByFragments();
         try {
             if (!checkIntent()) {
                 if (saveInstance == null)
@@ -211,9 +186,8 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
             setIntent(intent);
             lastTheme = AppTheme.getThemeStyleResID();
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
-                getWindow().getDecorView()
-                        .setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+            getWindow().getDecorView()
+                    .setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
 
             if (getPreferences().getBoolean("coloredNavBar", true) && Build.VERSION.SDK_INT >= 21)
                 getWindow().setNavigationBarColor(App.getInstance().getResources().getColor(AppTheme.getNavBarColor()));
@@ -299,6 +273,26 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MainActivity.REQUEST_WRITE_STORAGE);
         } catch (Throwable ex) {
             AppLog.e(getApplicationContext(), ex);
+        }
+    }
+
+    private void restoreTabsByFragments() {
+        if (TabsManager.getInstance().getTabItems().size() == 0) {
+            GeneralFragment frag;
+            TabItem item;
+            final List<Fragment> fragmentList = getSupportFragmentManager().getFragments();
+            for (Fragment fragment : fragmentList) {
+                try {
+                    if (fragment instanceof GeneralFragment) {
+                        frag = (GeneralFragment) fragment;
+                        item = new TabItem(frag.getGeneralTitle(), frag.getGeneralUrl(), frag.getTag(), frag.getGeneralParentTag(), frag);
+                        frag.setThisTab(item);
+                        TabsManager.getInstance().getTabItems().add(item);
+                    }
+                } catch (ClassCastException ex) {
+                    AppLog.e(ex);
+                }
+            }
         }
     }
 
@@ -426,7 +420,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
             Toast.makeText(getContext(), "Данное действие временно не поддерживается", Toast.LENGTH_SHORT).show();
             return false;
         }
-        //intent.setData(Uri.parseCount("https://4pda.ru/forum/lofiversion/index.php?t365142-1650.html"));
+        // intent.setData(Uri.parse("https://4pda.to/forum/index.php?showtopic=271502&st=42420#entry111243233"));
         if (intent.getData() != null) {
 
             final String url = intent.getData().toString();

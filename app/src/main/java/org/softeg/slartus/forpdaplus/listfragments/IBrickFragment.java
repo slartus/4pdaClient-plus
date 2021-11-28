@@ -2,9 +2,6 @@ package org.softeg.slartus.forpdaplus.listfragments;
 
 import android.view.KeyEvent;
 
-/*
- * Created by slinkin on 21.02.14.
- */
 public interface IBrickFragment {
     String getListName();
     String getListTitle();

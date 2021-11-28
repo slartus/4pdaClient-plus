@@ -60,21 +60,11 @@ import org.softeg.slartus.forpdaplus.tabs.TabsManager;
 import org.softeg.slartus.hosthelper.HostHelper;
 import org.softeg.slartus.hosthelper.HostHelperKt;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-//import org.softeg.slartus.forpdaplus.utils.LogUtil;
-
-/**
- * Created by IntelliJ IDEA.
- * User: slartus
- * Date: 17.01.12
- * Time: 13:26
- * To change this template use File | Settings | File Templates.
- */
 public class IntentActivity extends MainActivity implements BricksListDialogFragment.IBricksListDialogCaller {
     @Override
     public void onBricksListDialogResult(DialogInterface dialog, String dialogId,
