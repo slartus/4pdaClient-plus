@@ -1,13 +1,8 @@
 package org.softeg.slartus.forpdaplus.db
 
 import io.paperdb.Paper
-import org.softeg.slartus.forpdaplus.listfragments.next.forum.ForumFragment
-
 
 object PaperDb {
-
-
-
     fun <T> write(key: String, value: T) {
         if (value == null)
             Paper.book().delete(key)
@@ -16,7 +11,7 @@ object PaperDb {
     }
 
     fun <T> read(key: String, defaultValue: T): T {
-        return Paper.book().read(key, defaultValue)
+        return Paper.book().read(key, defaultValue) ?: defaultValue
     }
 
     fun clear() {

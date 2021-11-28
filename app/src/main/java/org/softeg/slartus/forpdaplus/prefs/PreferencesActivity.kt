@@ -90,14 +90,12 @@ class PreferencesActivity : BasePreferencesActivity() {
             findPreference("mainAccentColor").onPreferenceClickListener = this
             findPreference("webViewFont").onPreferenceClickListener = this
             findPreference("userBackground").onPreferenceClickListener = this
-            findPreference("visibleMenuItems").onPreferenceClickListener = this
             findPreference("About.AppVersion").onPreferenceClickListener = this
             findPreference("cookies.delete").onPreferenceClickListener = this
             findPreference("About.History").onPreferenceClickListener = this
             findPreference("About.ShareIt").onPreferenceClickListener = this
             findPreference("About.ShowTheme").onPreferenceClickListener = this
             findPreference("About.CheckNewVersion").onPreferenceClickListener = this
-            findPreference("About.OpenThemeForPda").onPreferenceClickListener = this
             findPreference("notifiers.silent_mode.start_time")?.let { preference ->
                 preference.onPreferenceClickListener = this
                 val clndr = Preferences.Notifications.SilentMode.getStartTime()
@@ -377,10 +375,6 @@ class PreferencesActivity : BasePreferencesActivity() {
                     pickUserBackground()
                     return true
                 }
-                "visibleMenuItems" -> {
-                    setMenuItems()
-                    return true
-                }
                 "notifiers.service.sound" -> {
                     pickRingtone(Preferences.Notifications.getSound())
                     return true
@@ -405,10 +399,6 @@ class PreferencesActivity : BasePreferencesActivity() {
                 }
                 "About.CheckNewVersion" -> {
                     checkUpdates()
-                    return true
-                }
-                "About.OpenThemeForPda" -> {
-                    showTheme("820313")
                     return true
                 }
             }

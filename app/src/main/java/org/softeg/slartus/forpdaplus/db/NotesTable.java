@@ -3,10 +3,9 @@ package org.softeg.slartus.forpdaplus.db;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import androidx.annotation.NonNull;
 import android.text.TextUtils;
 
-import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
+import androidx.annotation.NonNull;
 
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.common.AppLog;
@@ -18,13 +17,6 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 
-/**
- * Created with IntelliJ IDEA.
- * User: slinkin
- * Date: 20.02.13
- * Time: 11:21
- * To change this template use File | Settings | File Templates.
- */
 public class NotesTable {
     public static final String TABLE_NAME = "Notes";
 
@@ -104,7 +96,7 @@ public class NotesTable {
     }
 
     public static ArrayList<Note> getNotes(SQLiteDatabase db, String topicId) throws ParseException {
-        ArrayList<Note> notes = new ArrayList<Note>();
+        ArrayList<Note> notes = new ArrayList<>();
 
         Cursor c = null;
         try {
@@ -209,7 +201,6 @@ public class NotesTable {
     public static void delete(String id) throws IOException {
 
         SQLiteDatabase db = null;
-        Cursor c = null;
         try {
 
             NotesDbHelper dbHelper = new NotesDbHelper(App.getInstance());
@@ -220,46 +211,16 @@ public class NotesTable {
 
         } finally {
             if (db != null) {
-                if (c != null)
-                    c.close();
                 db.close();
             }
         }
     }
 
-    public static void deleteAll(SQLiteAssetHelper helper) throws IOException {
+    public static ArrayList<Note> getNotesFromFile(String filePath) throws ParseException {
 
-        SQLiteDatabase db = null;
-        Cursor c = null;
-        try {
+        try (SQLiteDatabase backupDb = SQLiteDatabase.openOrCreateDatabase(new File(filePath), null)) {
 
-
-            db = helper.getWritableDatabase();
-
-            db.execSQL("delete from " + TABLE_NAME);
-
-
-        } finally {
-            if (db != null) {
-                if (c != null)
-                    c.close();
-                db.close();
-            }
-        }
-    }
-
-    public static ArrayList<Note> getNotesFromFile(String filePath) throws ParseException, IOException {
-        SQLiteDatabase backupDb = null;
-
-        try {
-
-            backupDb = SQLiteDatabase.openOrCreateDatabase(new File(filePath), null);
-            ArrayList<Note> notes = getNotes(backupDb, null);
-
-            return notes;
-        } finally {
-            if (backupDb != null)
-                backupDb.close();
+            return getNotes(backupDb, null);
         }
     }
 

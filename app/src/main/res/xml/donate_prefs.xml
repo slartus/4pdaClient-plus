@@ -8,8 +8,8 @@
 
     <Preference
         android:key="Yandex.money"
-        android:summary="Скопировать в буфер: 41001491859942"
-        android:title="Яндекс-кошелёк" />
+        android:summary="Перейти на сайт"
+        android:title="ЮMoney" />
 
     <Preference
         android:key="WebMoney.moneyZ"

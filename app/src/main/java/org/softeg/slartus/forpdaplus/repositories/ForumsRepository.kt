@@ -11,14 +11,13 @@ class ForumsRepository private constructor() {
     private object Holder {
         val INSTANCE = ForumsRepository()
     }
-
+    val forumsSubject: BehaviorSubject<List<Forum>> = BehaviorSubject.createDefault(emptyList())
     init {
         loadDb()
 
         loadAsync()
     }
 
-    val forumsSubject: BehaviorSubject<List<Forum>> = BehaviorSubject.createDefault(emptyList())
     private fun loadAsync() {
         InternetConnection.instance.loadDataOnInternetConnected({
             GlobalScope.launch {

@@ -1,5 +1,7 @@
 package org.softeg.slartus.forpdaplus;
 
+import static org.softeg.slartus.forpdaplus.prefs.PreferencesActivity.getPackageInfo;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -28,7 +30,6 @@ import org.softeg.slartus.forpdacommon.ExtPreferences;
 import org.softeg.slartus.forpdanotifyservice.favorites.FavoritesNotifier;
 import org.softeg.slartus.forpdanotifyservice.qms.QmsNotifier;
 import org.softeg.slartus.forpdaplus.acra.ACRAReportSenderFactory;
-import org.softeg.slartus.forpdaplus.classes.Forum;
 import org.softeg.slartus.forpdaplus.db.DbHelper;
 import org.softeg.slartus.forpdaplus.prefs.PreferencesActivity;
 import org.softeg.slartus.forpdaplus.repositories.ForumsRepository;
@@ -44,8 +45,6 @@ import io.paperdb.Paper;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import ru.slartus.http.Http;
-
-import static org.softeg.slartus.forpdaplus.prefs.PreferencesActivity.getPackageInfo;
 
 /**
  * User: slinkin

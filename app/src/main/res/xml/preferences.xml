@@ -58,14 +58,7 @@
                 android:key="userBackground"
                 android:summary="Требуется перезапуск приложения"
                 android:title="Изображение в боковом меню" />
-            <!--<CheckBoxPreference-->
-            <!--android:defaultValue="false"-->
-            <!--android:key="categoryLast"-->
-            <!--android:title="Отображать 'Последние'"-->
-            <!--android:summary="Меню 'Последние' в выезжающем меню"/>-->
-            <Preference
-                android:key="visibleMenuItems"
-                android:title="Пункты меню в боковой панели" />
+
             <CheckBoxPreference
                 android:defaultValue="true"
                 android:key="isShowShortUserInfo"
@@ -508,10 +501,7 @@
         <Preference
             android:key="About.CheckNewVersion"
             android:title="Проверить наличие новой версии" />
-        <Preference
-            android:key="About.OpenThemeForPda"
-            android:summary="Открыть тему"
-            android:title="Альтернативный клиент от Radiation15" />
+
     </PreferenceScreen>
 
     <PreferenceScreen android:title="Помочь проекту">
@@ -522,8 +512,8 @@
 
         <Preference
             android:key="Yandex.money"
-            android:summary="Скопировать в буфер: 41001491859942"
-            android:title="Яндекс-кошелёк" />
+            android:summary="Перейти на сайт"
+            android:title="ЮMoney" />
 
         <Preference
             android:key="WebMoney.moneyZ"

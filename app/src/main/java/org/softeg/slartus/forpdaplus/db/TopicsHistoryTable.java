@@ -12,19 +12,10 @@ import org.softeg.slartus.forpdaplus.classes.forum.HistoryTopic;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.repositories.ForumsRepository;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-/**
- * Created by IntelliJ IDEA.
- * User: slinkin
- * Date: 22.11.12
- * Time: 7:27
- * To change this template use File | Settings | File Templates.
- */
 public class TopicsHistoryTable {
 
     public static final String TABLE_NAME = "TopicsHistory";
@@ -33,7 +24,7 @@ public class TopicsHistoryTable {
     public static final String COLUMN_DATETIME = "DateTime";
     public static final String COLUMN_URL = "Url";
 
-    public static String getTopicHistoryUrl(CharSequence topicId) throws IOException {
+    public static String getTopicHistoryUrl(CharSequence topicId) {
         SQLiteDatabase db = null;
         Cursor c = null;
         try {
@@ -59,7 +50,7 @@ public class TopicsHistoryTable {
         return null;
     }
 
-    public static ArrayList<HistoryTopic> getTopicsHistory(ListInfo listInfo) throws IOException {
+    public static ArrayList<HistoryTopic> getTopicsHistory(ListInfo listInfo) {
 
         ArrayList<HistoryTopic> res = new ArrayList<>();
         SQLiteDatabase db = null;
@@ -71,7 +62,6 @@ public class TopicsHistoryTable {
 
             listInfo.setOutCount(BaseTable.getRowsCount(db, "TopicsHistoryView"));
 
-            assert db != null;
             c = db.query("TopicsHistoryView", null, null, null, null, null, null, listInfo.getFrom() + ", 20");
 
             if (c.moveToFirst()) {

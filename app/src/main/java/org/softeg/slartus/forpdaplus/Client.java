@@ -25,9 +25,6 @@ import org.softeg.slartus.forpdacommon.HttpHelper;
 import org.softeg.slartus.forpdacommon.NameValuePair;
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdacommon.PatternExtensions;
-import org.softeg.slartus.forpdaplus.classes.DownloadTask;
-import org.softeg.slartus.forpdaplus.classes.DownloadTasks;
-import org.softeg.slartus.forpdaplus.classes.Forum;
 import org.softeg.slartus.forpdaplus.classes.TopicBodyBuilder;
 import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
 import org.softeg.slartus.forpdaplus.common.AppLog;
@@ -184,16 +181,12 @@ public class Client implements IHttpClient {
         return INSTANCE;  //To change body of created methods use File | Settings | File Templates.
     }
 
-    public void likeNews(String postId) throws IOException {
+    public void likeNews(String postId) {
         NewsApi.like(this, postId);
     }
 
-    public void likeComment(final String id, final String comment) throws IOException {
+    public void likeComment(final String id, final String comment) {
         NewsApi.likeComment(this, id, comment);
-    }
-
-    public interface OnProgressPositionChangedListener {
-        void onProgressChanged(Context context, DownloadTask downloadTask, Exception ex);
     }
 
     private void doOnOnProgressChanged(OnProgressChangedListener listener, String state) {
@@ -431,12 +424,6 @@ public class Client implements IHttpClient {
 
     void markAllForumAsRead() throws Throwable {
         ForumsApi.Companion.markAllAsRead(this);
-    }
-
-    private final DownloadTasks m_DownloadTasks = new DownloadTasks();
-
-    public DownloadTasks getDownloadTasks() {
-        return m_DownloadTasks;
     }
 
 

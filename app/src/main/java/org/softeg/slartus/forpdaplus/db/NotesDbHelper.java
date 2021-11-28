@@ -8,9 +8,6 @@ import org.softeg.slartus.forpdaplus.prefs.Preferences;
 
 import java.io.IOException;
 
-/**
- * Created by slinkin on 07.08.13.
- */
 public class NotesDbHelper extends SQLiteAssetHelper {
 
     private static final int DATABASE_VERSION = 1;

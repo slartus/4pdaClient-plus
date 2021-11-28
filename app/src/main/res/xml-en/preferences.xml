@@ -58,14 +58,7 @@
                 android:key="userBackground"
                 android:summary="Requires application restart"
                 android:title="Image of the sidebar" />
-            <!--<CheckBoxPreference-->
-            <!--android:defaultValue="false"-->
-            <!--android:key="categoryLast"-->
-            <!--android:title="Отображать 'Последние'"-->
-            <!--android:summary="Меню 'Последние' в выезжающем меню"/>-->
-            <Preference
-                android:key="visibleMenuItems"
-                android:title="Image of the sidebar" />
+
             <CheckBoxPreference
                 android:defaultValue="true"
                 android:key="isShowShortUserInfo"
@@ -513,9 +506,6 @@
             android:key="About.CheckNewVersion"
             android:title="Check for new version" />
 
-        <Preference android:title="Альтернативный клиент от Radiation15"
-                    android:summary="Open topic"
-                    android:key="About.OpenThemeForPda"/>
     </PreferenceScreen>
 
     <PreferenceScreen android:title="Donate">
@@ -526,8 +516,8 @@
 
         <Preference
             android:key="Yandex.money"
-            android:summary="Copied to clipboard: 41001491859942"
-            android:title="Яндекс-кошелёк" />
+            android:summary="Open site"
+            android:title="Yoomoney" />
 
         <Preference
             android:key="WebMoney.moneyZ"
