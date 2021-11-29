@@ -39,7 +39,7 @@ import org.softeg.slartus.forpdaplus.prefs.Preferences
 import org.softeg.slartus.forpdaplus.prefs.TopicsListPreferencesActivity
 import org.softeg.slartus.forpdaplus.prefs.TopicsPreferenceFragment
 import org.softeg.slartus.forpdaplus.repositories.InternetConnection
-import org.softeg.slartus.forpdaplus.repositories.UserInfoRepository.Companion.instance
+import org.softeg.slartus.forpdaplus.repositories.UserInfoRepositoryImpl.Companion.instance
 import org.softeg.slartus.forpdaplus.tabs.ListViewMethodsBridge
 import java.io.IOException
 import java.net.URISyntaxException

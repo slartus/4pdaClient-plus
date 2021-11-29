@@ -1,3 +1,5 @@
 include ':app', ':forpdaapi', ':forpdacommon', ':forpdanotifyservice', ':sqliteannotations', ':4pdasources', ':http'
 include ':hosthelper'
 include ':core-db'
+include ':feature-forum'
+include ':core-lib'

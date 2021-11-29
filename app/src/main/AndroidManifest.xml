@@ -7,7 +7,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.READ_LOGS"
+    <uses-permission
+        android:name="android.permission.READ_LOGS"
         tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -18,31 +19,35 @@
     <uses-feature
         android:name="android.software.leanback"
         android:required="false" />
-    <uses-feature android:name="android.hardware.touchscreen"
+    <uses-feature
+        android:name="android.hardware.touchscreen"
         android:required="false" />
+
     <application
         android:name=".App"
         android:allowBackup="true"
+        android:banner="@drawable/tv_banner"
         android:description="@string/app_description"
         android:hardwareAccelerated="true"
         android:icon="@drawable/icon_mat"
         android:label="@string/app_name"
-        android:banner="@drawable/tv_banner"
         android:largeHeap="true"
+        android:requestLegacyExternalStorage="true"
         android:theme="@style/MainPinkBlack"
         android:usesCleartextTraffic="true"
-        android:requestLegacyExternalStorage="true"
         tools:ignore="UnusedAttribute"
         tools:replace="android:icon">
 
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|locale"
+            android:exported="true"
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
                 <category android:name="android.intent.category.LAUNCHER" />
                 <category android:name="android.intent.category.MULTIWINDOW_LAUNCHER" />
@@ -185,10 +190,12 @@
         </activity>
         <activity
             android:name=".FeatureActivity"
+            android:exported="false"
             android:label="kekos" />
         <activity
             android:name="org.acra.CrashReportDialog"
             android:excludeFromRecents="true"
+            android:exported="false"
             android:finishOnTaskLaunch="true"
             android:launchMode="singleInstance"
             android:theme="@android:style/Theme.Dialog" />
@@ -205,59 +212,71 @@
         <activity
             android:name=".prefs.PreferencesActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
+            android:exported="false"
             android:label="Настройки"
             android:launchMode="singleTop" />
         <activity
             android:name=".prefs.ForumTopicsPreferencesActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
+            android:exported="false"
             android:label="Фильтр и сортировка" />
         <activity
             android:name=".prefs.TopicsListPreferencesActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
+            android:exported="false"
             android:label="Настройки списка" />
         <activity
             android:name=".prefs.DonateActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
+            android:exported="false"
             android:label="Помощь проекту"
             android:launchMode="singleTop" />
         <activity
             android:name=".fragments.qms.QmsChatPreferencesActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
+            android:exported="false"
             android:label="Настройки чата QMS"
             android:launchMode="singleTop" />
         <activity
             android:name=".styles.StyleInfoActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
+            android:exported="false"
             android:label="Информация о стиле"
             android:launchMode="singleTop" />
         <activity
             android:name=".classes.TestActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
+            android:exported="false"
             android:label="Тестовая"
             android:launchMode="singleTop" />
 
         <activity
             android:name=".controls.imageview.ImgViewer"
+            android:exported="false"
             android:label="Изображения"
             android:launchMode="singleTask" />
 
         <activity
             android:name=".activity.NewYear"
+            android:exported="false"
             android:theme="@style/AppTheme.FullScreen" />
 
-        <receiver android:name="org.softeg.slartus.forpdanotifyservice.qms.AlarmReceiver"
-            android:exported="false" android:enabled="true">
+        <receiver
+            android:name="org.softeg.slartus.forpdanotifyservice.qms.AlarmReceiver"
+            android:enabled="true"
+            android:exported="false">
             <intent-filter>
                 <action android:name="QMS_ALARM" />
             </intent-filter>
         </receiver>
-        <receiver android:name="org.softeg.slartus.forpdanotifyservice.favorites.FavoritesAlarmReceiver"
-            android:exported="false" android:enabled="true" >
+        <receiver
+            android:name="org.softeg.slartus.forpdanotifyservice.favorites.FavoritesAlarmReceiver"
+            android:enabled="true"
+            android:exported="false">
             <intent-filter>
                 <action android:name="FAVORITES_ALARM" />
             </intent-filter>
         </receiver>
-
 
         <meta-data
             android:name="com.sec.android.support.multiwindow"
@@ -277,7 +296,6 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="2bfc2256dc145a09ab99f0a0d9bc1bc938bdeb2d" />
-
 
         <provider
             android:name="androidx.core.content.FileProvider"

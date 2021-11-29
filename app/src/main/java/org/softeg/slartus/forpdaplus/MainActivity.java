@@ -10,26 +10,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-
-import androidx.annotation.NonNull;
-
-import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.navigation.NavigationView;
-
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.core.content.ContextCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.Toolbar;
-
 import android.text.TextUtils;
 import android.view.ActionMode;
 import android.view.KeyEvent;
@@ -42,28 +26,38 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.navigation.NavigationView;
+
 import org.softeg.slartus.forpdaapi.search.SearchSettings;
 import org.softeg.slartus.forpdacommon.ExtPreferences;
 import org.softeg.slartus.forpdaplus.activity.NewYear;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.fragments.GeneralFragment;
-import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment;
+import org.softeg.slartus.forpdaplus.fragments.UserInfoMenuFragment;
 import org.softeg.slartus.forpdaplus.fragments.search.SearchPostFragment;
 import org.softeg.slartus.forpdaplus.fragments.search.SearchSettingsDialogFragment;
 import org.softeg.slartus.forpdaplus.fragments.search.SearchTopicsFragment;
 import org.softeg.slartus.forpdaplus.listfragments.BricksListDialogFragment;
 import org.softeg.slartus.forpdaplus.listfragments.IBrickFragment;
-import org.softeg.slartus.forpdaplus.listfragments.mentions.MentionsListFragment;
-import org.softeg.slartus.forpdaplus.listfragments.next.UserReputationFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.ListCore;
 import org.softeg.slartus.forpdaplus.listtemplates.NewsPagerBrickInfo;
-import org.softeg.slartus.forpdaplus.listtemplates.QmsContactsBrickInfo;
 import org.softeg.slartus.forpdaplus.mainnotifiers.DonateNotifier;
 import org.softeg.slartus.forpdaplus.mainnotifiers.ForPdaVersionNotifier;
 import org.softeg.slartus.forpdaplus.mainnotifiers.NotifiersManager;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
-import org.softeg.slartus.forpdaplus.repositories.UserInfoRepository;
 import org.softeg.slartus.forpdaplus.tabs.TabItem;
 import org.softeg.slartus.forpdaplus.tabs.TabsManager;
 
@@ -71,9 +65,9 @@ import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 import java.util.List;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
+import dagger.hilt.android.AndroidEntryPoint;
 
+@AndroidEntryPoint
 public class MainActivity extends BaseActivity implements BricksListDialogFragment.IBricksListDialogCaller,
         MainDrawerMenu.SelectItemListener, TabDrawerMenu.SelectItemListener {
     // test commit to beta
@@ -274,6 +268,18 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
         } catch (Throwable ex) {
             AppLog.e(getApplicationContext(), ex);
         }
+        addUserInfoFragment();
+    }
+
+    private void addUserInfoFragment() {
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        Fragment mFragment1 = fm.findFragmentByTag(UserInfoMenuFragment.TAG);
+        if (mFragment1 == null) {
+            mFragment1 = new UserInfoMenuFragment();
+            ft.add(mFragment1, UserInfoMenuFragment.TAG);
+        }
+        ft.commit();
     }
 
     private void restoreTabsByFragments() {
@@ -388,13 +394,6 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
             mMainDrawerMenu.getNavigationView().getHeaderView(0).setVisibility(View.GONE);
 
         Client.INSTANCE.checkLoginByCookies();
-
-        addToDisposable(UserInfoRepository
-                .Companion.getInstance()
-                .getUserInfo()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(userInfo -> invalidateOptionsMenu(), throwable -> AppLog.e(this, throwable)));
     }
 
     @Override
@@ -497,13 +496,12 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
     }
 
     private void hideFragments(FragmentTransaction transaction, boolean withAnimation) {
-        if (getSupportFragmentManager().getFragments() == null) return;
         if (withAnimation)
             transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
         else
             transaction.setTransition(FragmentTransaction.TRANSIT_NONE);
         for (Fragment fr : getSupportFragmentManager().getFragments()) {
-            if (fr != null) {
+            if (fr != null && !(fr instanceof UserInfoMenuFragment)) {
                 if (fr.isVisible())
                     fr.onPause();
                 transaction.hide(fr);
@@ -797,22 +795,9 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
         }
     }
 
-    private int getUserIconRes() {
-        Boolean logged = Client.getInstance().getLogined();
-        if (logged) {
-            if (Client.getInstance().getQmsCount() > 0 || UserInfoRepository.Companion.getInstance().getUserInfo().getValue().mentionsCountOrDefault(0) > 0) {
-                return R.drawable.message_text;
-            }
-            return R.drawable.account;
-        } else {
-            return R.drawable.account_outline;
-        }
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.user, menu);
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
@@ -831,32 +816,6 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
                 android.os.Process.killProcess(android.os.Process.myPid());
                 System.exit(1);
                 return true;
-            case R.id.qms_item:
-                QmsContactsBrickInfo brickInfo = new QmsContactsBrickInfo();
-                MainActivity.addTab(brickInfo.getTitle(), brickInfo.getName(), brickInfo.createFragment());
-                return true;
-            case R.id.mentions_item:
-                MainActivity.addTab("Упоминания", "https://" + App.Host + "/forum/index.php?act=mentions",
-                        MentionsListFragment.Companion.newFragment());
-                return true;
-            case R.id.profile_item:
-                ProfileFragment.showProfile(UserInfoRepository.Companion.getInstance().getId(), Client.getInstance().getUser());
-                return true;
-            case R.id.reputation_item:
-                UserReputationFragment.showActivity(UserInfoRepository.Companion.getInstance().getId(), false);
-                return true;
-            case R.id.logout_item:
-                LoginDialog.logout(MainActivity.this);
-                return true;
-            case R.id.login_item:
-                LoginDialog.showDialog(MainActivity.this);
-                return true;
-            case R.id.registration_item:
-                Intent marketIntent = new Intent(
-                        Intent.ACTION_VIEW,
-                        Uri.parse("https://" + App.Host + "/forum/index.php?act=Reg&CODE=00"));
-                MainActivity.this.startActivity(marketIntent);
-                return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -866,7 +825,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
 
-        refreshUserMenu(menu);
+
         menu.findItem(R.id.tabs_item).setVisible(getPreferences().getBoolean("openTabDrawerButton", false));
         menu.findItem(R.id.exit_item).setVisible(getPreferences().getBoolean("showExitButton", false));
         return super.onPrepareOptionsMenu(menu);
@@ -898,21 +857,6 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
         return null;
     }
 
-    private void refreshUserMenu(Menu menu) {
-        boolean logged = UserInfoRepository.Companion.getInstance().getLogined();
-        menu.findItem(R.id.guest_item).setVisible(!logged);
-        MenuItem userMenuItem = menu.findItem(R.id.user_item);
-        userMenuItem.setVisible(logged);
-        if (logged) {
-            userMenuItem.setTitle(UserInfoRepository.Companion.getInstance().getName());
-            userMenuItem.setIcon(getUserIconRes());
-            String qmsTitle = Client.getInstance().getQmsCount() > 0 ? ("QMS (" + Client.getInstance().getQmsCount() + ")") : "QMS";
-            menu.findItem(R.id.qms_item).setTitle(qmsTitle);
-            int mentionsCount = UserInfoRepository.Companion.getInstance().getUserInfo()
-                    .getValue().mentionsCountOrDefault(0);
-            menu.findItem(R.id.mentions_item).setTitle("Упоминания " + (mentionsCount > 0 ? ("(" + mentionsCount + ")") : ""));
-        }
-    }
 
     public static void startForumSearch(SearchSettings searchSettings) {
 

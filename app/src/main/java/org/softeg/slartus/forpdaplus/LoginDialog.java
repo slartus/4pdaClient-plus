@@ -99,7 +99,7 @@ public class LoginDialog {
         dialog.show();
     }
 
-    static void logout(Context context) {
+    public static void logout(Context context) {
         LogoutTask logoutTask = new LogoutTask(context);
         logoutTask.execute();
         App.getInstance().getPreferences().edit()

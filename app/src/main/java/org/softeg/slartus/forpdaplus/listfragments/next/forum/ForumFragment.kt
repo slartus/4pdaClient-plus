@@ -2,18 +2,22 @@ package org.softeg.slartus.forpdaplus.listfragments.next.forum
 
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.text.TextUtils
+import android.util.Log
 import android.view.*
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.materialdialogs.MaterialDialog
+import dagger.hilt.android.AndroidEntryPoint
 import io.paperdb.Paper
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import org.softeg.slartus.forpdaapi.Forum
 import org.softeg.slartus.forpdaapi.ForumsApi
 import org.softeg.slartus.forpdaapi.search.SearchSettings
@@ -22,6 +26,7 @@ import org.softeg.slartus.forpdaplus.MainActivity
 import org.softeg.slartus.forpdaplus.R
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl
 import org.softeg.slartus.forpdaplus.common.AppLog
+import org.softeg.slartus.forpdaplus.databinding.ForumFragmentBinding
 import org.softeg.slartus.forpdaplus.fragments.GeneralFragment
 import org.softeg.slartus.forpdaplus.fragments.search.SearchSettingsDialogFragment
 import org.softeg.slartus.forpdaplus.listfragments.ForumTopicsListFragment
@@ -29,33 +34,33 @@ import org.softeg.slartus.forpdaplus.listfragments.TopicsListFragment
 import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo
 import org.softeg.slartus.forpdaplus.listtemplates.ForumBrickInfo
 import org.softeg.slartus.forpdaplus.prefs.Preferences
-import org.softeg.slartus.forpdaplus.repositories.ForumsRepository
 import org.softeg.slartus.hosthelper.HostHelper
 import java.io.Serializable
 import java.util.*
 
-/*
- * Created by slartus on 24.02.2015.
- */
+@AndroidEntryPoint
 class ForumFragment : GeneralFragment() {
-    private var listView: RecyclerView? = null
-    private var mEmptyTextView: TextView? = null
+
     private var data = createListData()
     private var mSearchSetting = SearchSettingsDialogFragment.createForumSearchSettings()
-
-
+    private var _binding: ForumFragmentBinding? = null
+    private val binding get() = _binding!!
     private var mAdapter: ForumsAdapter? = null
-    private var mForumId: String? = null
+    private var forumId: String? = null
 
     private var lastImageDownload =
         MainActivity.getPreferences().getBoolean("forum.list.show_images", true)
-
 
     private var mTitle: String? = null
     private var mName: String? = null
     private var mNeedLogin: Boolean = false
 
-    private val mHandler = Handler()
+    private val mHandler = Handler(Looper.getMainLooper())
+    private val viewModel: ForumViewModel by lazy {
+        val viewModel: ForumViewModel by viewModels()
+        viewModel.forumId = forumId
+        viewModel
+    }
 
     override fun closeTab(): Boolean {
         return false
@@ -64,21 +69,74 @@ class ForumFragment : GeneralFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         removeArrow()
-        if (arguments != null)
-            mForumId = arguments?.getString(FORUM_ID_KEY, null)
+
         if (savedInstanceState != null) {
             mName = savedInstanceState.getString(NAME_KEY, mName)
             mTitle = savedInstanceState.getString(TITLE_KEY, mTitle)
             mNeedLogin = savedInstanceState.getBoolean(NEED_LOGIN_KEY, mNeedLogin)
-            mForumId = savedInstanceState.getString(FORUM_ID_KEY, mForumId)
-            loadCache()
+            forumId = savedInstanceState.getString(FORUM_ID_KEY, forumId)
 
+        } else if (arguments != null) {
+            forumId = arguments?.getString(FORUM_ID_KEY, null)
         }
-        if (mForumId == null) {
-            mForumId = Preferences.List.getStartForumId()
+        if (forumId == null) {
+            forumId = Preferences.List.getStartForumId()
         }
         setTitle(mTitle)
         initAdapter()
+    }
+
+    override fun getView(): View? {
+        return _binding?.root
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = ForumFragmentBinding.inflate(inflater, container, false)
+
+        return binding.root
+    }
+
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    viewModel.uiState.collect { uiState ->
+                        when (uiState) {
+                            ForumViewModel.ViewState.Initialize -> {
+                                setLoading(true)
+                            }
+                            is ForumViewModel.ViewState.Success -> {
+                                data.items.clear()
+                                data.items.addAll(uiState.items)
+                                data.crumbs.clear()
+                                data.crumbs.addAll(uiState.crumbs)
+
+                                notifyDataSetChanged()
+                                binding.list.refreshDrawableState()
+                                binding.list.scrollToPosition(0)
+                            }
+                            is ForumViewModel.ViewState.Error -> {
+                                AppLog.e(activity, uiState.exception)
+                            }
+                        }
+                    }
+                }
+                launch {
+                    viewModel.loading.collect {
+                        setLoading(it)
+                    }
+                }
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -103,65 +161,17 @@ class ForumFragment : GeneralFragment() {
 
     }
 
-    private var dataSubscriber: Disposable? = null
-    private fun subscribesData() {
-        dataSubscriber?.dispose()
-        setLoading(true)
-        dataSubscriber =
-            ForumsRepository.instance
-                .forumsSubject
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                    { items ->
-                        setLoading(false)
-                        val screenItems = items.filter { it.parentId == mForumId }
-
-                        val crumbs = ArrayList<Forum>()
-                        var f = mForumId
-                        while (true) {
-                            if (f == null) {
-                                crumbs.add(0, Forum(null, "4PDA"))
-                                break
-                            } else {
-                                val parent = items.firstOrNull { it.id == f }
-                                f = if (parent == null) {
-                                    crumbs.add(0, Forum(f, parent?.title ?: "Not Found"))
-                                    null
-                                } else {
-                                    crumbs.add(0, parent)
-                                    parent.parentId
-                                }
-                            }
-                        }
-
-                        this.data.items.clear()
-                        this.data.items.addAll(screenItems)
-                        this.data.crumbs.clear()
-                        this.data.crumbs.addAll(crumbs)
-
-                        notifyDataSetChanged()
-                        listView?.refreshDrawableState()
-                        listView?.scrollToPosition(0)
-
-                    },
-                    {
-                        setLoading(false)
-                        AppLog.e(activity, data.error)
-                    }
-                )
-
-    }
-
     override fun onPause() {
         super.onPause()
-        dataSubscriber?.dispose()
+
         MainActivity.searchSettings = SearchSettingsDialogFragment.createDefaultSearchSettings()
     }
 
     override fun onResume() {
         super.onResume()
-        subscribesData()
+
+        viewModel.load()
+
         removeArrow()
         MainActivity.searchSettings = mSearchSetting
 
@@ -169,7 +179,7 @@ class ForumFragment : GeneralFragment() {
                 .getBoolean("forum.list.show_images", true)
         ) {
             mAdapter?.notifyDataSetChangedWithLayout()
-            listView?.refreshDrawableState()
+            binding.list.refreshDrawableState()
             lastImageDownload =
                 MainActivity.getPreferences().getBoolean("forum.list.show_images", true)
         }
@@ -180,7 +190,7 @@ class ForumFragment : GeneralFragment() {
             Toast.makeText(activity, R.string.need_login, Toast.LENGTH_SHORT).show()
             return
         }
-        MaterialDialog.Builder(activity!!)
+        MaterialDialog.Builder(requireActivity())
             .title(R.string.confirm_action)
             .content(getString(R.string.mark_forum_as_read) + "?")
             .positiveText(R.string.yes)
@@ -214,7 +224,6 @@ class ForumFragment : GeneralFragment() {
                             AppLog.e(activity, ex1)
                         }
 
-
                     }
                 }.start()
             }
@@ -230,30 +239,12 @@ class ForumFragment : GeneralFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        val mLayoutManager = LinearLayoutManager(activity)
-        mLayoutManager.orientation = LinearLayoutManager.VERTICAL
-        listView?.layoutManager = mLayoutManager
         if (savedInstanceState != null && savedInstanceState.containsKey(SCROLL_POSITION_KEY)) {
-            listView?.scrollToPosition(savedInstanceState.getInt(SCROLL_POSITION_KEY))
+            binding.list.scrollToPosition(savedInstanceState.getInt(SCROLL_POSITION_KEY))
         }
         setListViewAdapter()
         if (data.items.size == 0)
             reloadData()
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        view = inflater.inflate(R.layout.forum_fragment, container, false)
-        assert(view != null)
-        listView = findViewById(android.R.id.list) as RecyclerView
-
-        registerForContextMenu(listView!!)
-        mEmptyTextView = findViewById(android.R.id.empty) as TextView?
-
-
-        return view
     }
 
     private fun reloadData() {
@@ -265,20 +256,18 @@ class ForumFragment : GeneralFragment() {
     }
 
     override fun loadData(isRefresh: Boolean) {
-        loadForum(mForumId)
+        loadForum(forumId)
     }
 
     fun loadForum(forumId: String?) {
-        mForumId = forumId
-        subscribesData()
+        this.forumId = forumId
+        viewModel.refreshDataState(forumId)
 
     }
-
 
     private fun setLoading(@Suppress("UNUSED_PARAMETER") loading: Boolean?) {
         try {
             if (activity == null) return
-
 
             //            if (loading) {
             //                setEmptyText("Загрузка..");
@@ -287,7 +276,7 @@ class ForumFragment : GeneralFragment() {
             //            }
         } catch (ignore: Throwable) {
 
-            android.util.Log.e("TAG", ignore.toString())
+            Log.e("TAG", ignore.toString())
         }
 
     }
@@ -297,15 +286,15 @@ class ForumFragment : GeneralFragment() {
         outState.putString(NAME_KEY, mName)
         outState.putString(TITLE_KEY, mTitle)
         outState.putBoolean(NEED_LOGIN_KEY, mNeedLogin)
-        outState.putString(FORUM_ID_KEY, mForumId)
+        outState.putString(FORUM_ID_KEY, forumId)
         saveCache()
         try {
-            if (listView != null) {
-                outState.putInt(
-                    SCROLL_POSITION_KEY,
-                    (listView?.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
-                )
-            }
+
+            outState.putInt(
+                SCROLL_POSITION_KEY,
+                (binding.list.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
+            )
+
         } catch (ex: Throwable) {
             AppLog.e(ex)
         }
@@ -317,14 +306,14 @@ class ForumFragment : GeneralFragment() {
     }
 
     private fun setListViewAdapter() {
-        listView?.adapter = mAdapter
+        binding.list.adapter = mAdapter
     }
 
     @Suppress("DEPRECATION")
     private fun initAdapter() {
         mAdapter = ForumsAdapter(data.crumbs, data.items, object : ForumsAdapter.OnClickListener {
             override fun onItemClick(v: View) {
-                val itemPosition = listView!!.getChildPosition(v)
+                val itemPosition = binding.list.getChildPosition(v)
                 val forum = data.items[itemPosition - data.crumbs.size]
                 if (forum.isHasForums) {
                     loadForum(forum.id)
@@ -339,17 +328,16 @@ class ForumFragment : GeneralFragment() {
             }
 
             override fun onHeaderClick(v: View) {
-                val itemPosition = listView!!.getChildPosition(v)
+                val itemPosition = binding.list.getChildPosition(v)
                 val forum = data.crumbs[itemPosition]
                 loadForum(forum.id)
             }
 
             override fun onHeaderTopicsClick(v: View) {
-                val itemPosition = listView!!.getChildPosition(v)
+                val itemPosition = binding.list.getChildPosition(v)
                 val forum = data.crumbs[itemPosition]
                 ForumTopicsListFragment.showForumTopicsList(forum.id, forum.title)
             }
-
 
         }, object : ForumsAdapter.OnLongClickListener {
             private fun show(id: String?) {
@@ -361,15 +349,15 @@ class ForumFragment : GeneralFragment() {
             }
 
             override fun onItemClick(v: View) {
-                show(data.items[listView!!.getChildPosition(v) - data.crumbs.size].id)
+                show(data.items[binding.list.getChildPosition(v) - data.crumbs.size].id)
             }
 
             override fun onHeaderClick(v: View) {
-                show(data.crumbs[listView!!.getChildPosition(v)].id)
+                show(data.crumbs[binding.list.getChildPosition(v)].id)
             }
 
             override fun onHeaderTopicsClick(v: View) {
-                show(data.crumbs[listView!!.getChildPosition(v)].id)
+                show(data.crumbs[binding.list.getChildPosition(v)].id)
             }
         })
     }
@@ -407,10 +395,7 @@ class ForumFragment : GeneralFragment() {
         return false
     }
 
-
     class ForumBranch : Serializable {
-        var error: Throwable? = null
-
         private var mCrumbs: MutableList<Forum>? = null
 
         val crumbs: MutableList<Forum>
@@ -442,7 +427,6 @@ class ForumFragment : GeneralFragment() {
         private const val SCROLL_POSITION_KEY = "SCROLL_POSITION_KEY"
         const val FORUM_ID_KEY = "FORUM_ID_KEY"
         const val FORUM_TITLE_KEY = "FORUM_TITLE_KEY"
-
 
         const val NAME_KEY = "NAME_KEY"
         const val TITLE_KEY = "TITLE_KEY"

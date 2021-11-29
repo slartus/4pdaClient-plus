@@ -41,6 +41,7 @@ import java.io.InputStream;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import dagger.hilt.android.HiltAndroidApp;
 import io.paperdb.Paper;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -66,7 +67,7 @@ import ru.slartus.http.Http;
         resDialogText = R.string.crash_dialog_text, resDialogIcon = android.R.drawable.ic_dialog_info,
         resDialogTitle = R.string.crash_dialog_title, resDialogCommentPrompt = R.string.crash_dialog_comment_prompt,
         reportSenderFactoryClasses = {ACRAReportSenderFactory.class})
-//optional. default is a warning sign
+@HiltAndroidApp
 public class App extends MultiDexApplication {
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 

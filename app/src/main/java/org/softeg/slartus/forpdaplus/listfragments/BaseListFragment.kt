@@ -14,17 +14,25 @@ import android.widget.AdapterView
 import android.widget.BaseAdapter
 import android.widget.ListView
 import android.widget.TextView
+import androidx.lifecycle.lifecycleScope
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.softeg.slartus.forpdaapi.IListItem
 import org.softeg.slartus.forpdaplus.App
 import org.softeg.slartus.forpdaplus.AppTheme
 import org.softeg.slartus.forpdaplus.R
+import org.softeg.slartus.forpdaplus.common.AppLog
 import org.softeg.slartus.forpdaplus.controls.ListViewLoadMoreFooter
 import org.softeg.slartus.forpdaplus.fragments.GeneralFragment
 import org.softeg.slartus.forpdaplus.listfragments.adapters.ListAdapter
 import org.softeg.slartus.forpdaplus.prefs.Preferences
-import org.softeg.slartus.forpdaplus.repositories.UserInfoRepository
+import org.softeg.slartus.forpdaplus.repositories.UserInfoRepositoryImpl
 import java.util.*
 import kotlin.math.max
 import kotlin.math.min
@@ -46,7 +54,6 @@ abstract class BaseListFragment : BaseBrickFragment(), AdapterView.OnItemClickLi
     protected open val viewId: Int
         get() = R.layout.list_fragment
 
-
     var adapter: BaseAdapter? = null
         protected set
     protected var mListViewLoadMoreFooter: ListViewLoadMoreFooter? = null
@@ -65,7 +72,11 @@ abstract class BaseListFragment : BaseBrickFragment(), AdapterView.OnItemClickLi
         }
     }
 
-    override fun onCreateView(inflater: android.view.LayoutInflater, container: android.view.ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: android.view.LayoutInflater,
+        container: android.view.ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         view = inflater.inflate(viewId, container, false)
         assert(view != null)
         listView = findViewById(android.R.id.list) as ListView
@@ -112,16 +123,23 @@ abstract class BaseListFragment : BaseBrickFragment(), AdapterView.OnItemClickLi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (needLogin() == true)
-            addToDisposable(UserInfoRepository.instance
-                    .userInfo
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe { userInfo ->
-                        setLoading(false)
-                        if (userInfo.logined)
-                            loadData(true)
-                    })
+        if (needLogin() == true) {
+            val coroutineExceptionHandler =
+                CoroutineExceptionHandler { _, throwable ->
+                    AppLog.e(throwable)
+                }
+            lifecycleScope.launch(Dispatchers.Default + coroutineExceptionHandler) {
+                UserInfoRepositoryImpl.instance.userInfo
+                    .distinctUntilChanged()
+                    .collect {
+                        if (it.logined) {
+                            withContext(Dispatchers.Main) {
+                                loadData(true)
+                            }
+                        }
+                    }
+            }
+        }
         mListViewLoadMoreFooter = ListViewLoadMoreFooter(view.context, listView!!)
         mListViewLoadMoreFooter?.setOnLoadMoreClickListener {
             mListViewLoadMoreFooter?.setState(ListViewLoadMoreFooter.STATE_LOADING)
@@ -139,7 +157,6 @@ abstract class BaseListFragment : BaseBrickFragment(), AdapterView.OnItemClickLi
         swipeRefreshLayout.setProgressBackgroundColorSchemeResource(AppTheme.swipeRefreshBackground)
         return swipeRefreshLayout
     }
-
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -169,7 +186,11 @@ abstract class BaseListFragment : BaseBrickFragment(), AdapterView.OnItemClickLi
     }
 
     protected open fun createAdapter(): BaseAdapter {
-        return ListAdapter(activity!!, mData, GeneralFragment.getPreferences().getBoolean("showSubMain", false))
+        return ListAdapter(
+            activity!!,
+            mData,
+            GeneralFragment.getPreferences().getBoolean("showSubMain", false)
+        )
     }
 
     protected fun setLoading(loading: Boolean?) {
@@ -191,7 +212,6 @@ abstract class BaseListFragment : BaseBrickFragment(), AdapterView.OnItemClickLi
     protected fun setEmptyText(s: String) {
         mEmptyTextView!!.text = s
     }
-
 
     override fun onItemClick(adapterView: AdapterView<*>, v: View, position: Int, id: Long) {
 
