@@ -3,6 +3,7 @@
         "id": "200",
         "title": "\u0410\u0434\u043c\u0438\u043d\u0438\u0441\u0442\u0440\u0430\u0442\u0438\u0432\u043d\u044b\u0439",
         "isHasTopics": false,
+        "isHasForums": false,
         "description": null,
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb0rOXz2odLpYhjQEX9vTRyt5HNlb9hO9CT6Nu.gif"
     },
@@ -64,6 +65,7 @@
         "id": "5",
         "title": "4PDA.ru - \u0440\u0430\u0431\u043e\u0442\u0430 \u0441\u0430\u0439\u0442\u0430",
         "isHasTopics": true,
+        "isHasForums": true,
         "parentId": "200",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb0rOXz2odLpYhjQEX9vTRyt5HNlb9hO9CT6Nu.gif",
         "description": "\u041f\u0440\u0435\u0434\u043b\u043e\u0436\u0435\u043d\u0438\u044f \u0438 \u043e\u0442\u0437\u044b\u0432\u044b \u043f\u043e \u0440\u0430\u0431\u043e\u0442\u0435 \u0441\u0430\u0439\u0442\u0430 \u0438 \u0444\u043e\u0440\u0443\u043c\u0430 4PDA.ru. \u0421\u0447\u0435\u0442\u0447\u0438\u043a \u0441\u043e\u043e\u0431\u0449\u0435\u043d\u0438\u0439 \u043e\u0442\u043a\u043b\u044e\u0447\u0435\u043d. "
@@ -72,6 +74,7 @@
         "id": "281",
         "title": "Android",
         "isHasTopics": false,
+        "isHasForums": false,
         "description": null,
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObLz1RaiH6uRbtNyxs8bq5jz0fXkvwoU0OGqfI7z1Nxm65ihkI9.gif"
     },
@@ -142,6 +145,7 @@
         "id": "282",
         "title": "Android - \u041f\u0435\u0440\u0432\u0430\u044f \u043f\u043e\u043c\u043e\u0449\u044c",
         "isHasTopics": true,
+        "isHasForums": true,
         "parentId": "281",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObLz1RaiH6uRbtNyxs8bq5jz0fXkvwoU0OGqfI7z1Nxm65ihkI9.gif",
         "description": "\u041f\u043e\u043c\u043e\u0449\u044c \u043d\u043e\u0432\u0438\u0447\u043a\u0430\u043c "
@@ -150,6 +154,7 @@
         "id": "283",
         "title": "FAQ \u043f\u043e \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432\u0430\u043c \u0438 Android OS",
         "isHasTopics": true,
+        "isHasForums": false,
         "parentId": "281",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObK95l9z2ePlW5V04eueo1lK0oXPQSQW8UbB3z2LnEX9vz0ha.gif",
         "description": "\u0412\u043e\u043f\u0440\u043e\u0441\u044b \u0438 \u043e\u0442\u0432\u0435\u0442\u044b \u043f\u043e Android OS \u0438 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432\u0430\u043c \u043f\u043e\u0434 \u0435\u0435 \u0443\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0438\u0435\u043c"
@@ -401,6 +406,7 @@
         "id": "212",
         "title": "Android - \u041f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u044b",
         "isHasTopics": true,
+        "isHasForums": true,
         "parentId": "281",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObHUz2CIVz0IwMf4Im4LmLsJz1Fz1z1HU8NNyAjMIdkz2Vgz2AqturL.gif",
         "description": "\u041f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u044b \u043f\u043e\u0434 OS Android  "
@@ -544,6 +550,7 @@
         "id": "213",
         "title": "Android - \u0418\u0433\u0440\u044b",
         "isHasTopics": true,
+        "isHasForums": true,
         "parentId": "281",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObMTVCWBSMQuz1lb7qs9CaJSgz2lz2NU9PDJ85uqk0jz0P5SDz1GGK.gif",
         "description": "\u0418\u0433\u0440\u044b \u043f\u043e\u0434 OS Android "
@@ -750,6 +757,7 @@
         "id": "264",
         "title": "Android - \u041c\u043e\u0434\u0438\u0444\u0438\u043a\u0430\u0446\u0438\u0438 \u0438 \u0443\u043a\u0440\u0430\u0448\u0430\u0442\u0435\u043b\u044c\u0441\u0442\u0432\u0430",
         "isHasTopics": true,
+        "isHasForums": true,
         "parentId": "281",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb6Dz2Lk0IEW8P8Z9viMwrkQKrr1FUEfocS5H7mZZyqcWAl2WLjK6.gif",
         "description": "\u0421\u043a\u0438\u043d\u044b, \u0442\u0435\u043c\u044b, \u043a\u0430\u0440\u0442\u0438\u043d\u043a\u0438 "
@@ -1100,6 +1108,7 @@
         "id": "269",
         "title": "Android - \u0423\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432\u0430",
         "isHasTopics": true,
+        "isHasForums": true,
         "parentId": "281",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb0fXEIrhK3kZBYz0mkxEPZIR63QxuG2WrTisT3Kpd9d9DdIVUL.gif",
         "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 \u043f\u043e\u0434 \u0443\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0438\u0435\u043c Android OS "
@@ -1306,6 +1315,7 @@
         "id": "268",
         "title": "Android - \u041f\u0440\u043e\u0448\u0438\u0432\u043a\u0438",
         "isHasTopics": true,
+        "isHasForums": true,
         "parentId": "281",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb0jeRp65gqfhY8rZwa4oP1Ocs5rFtZX9DpiWscEZAQKo1PgwgIrj.gif",
         "description": "\u041e\u0444\u0438\u0446\u0438\u0430\u043b\u044c\u043d\u044b\u0435 \u0438 \u043d\u0435\u043e\u0444\u0438\u0446\u0438\u0430\u043b\u044c\u043d\u044b\u0435 \u043f\u0440\u043e\u0448\u0438\u0432\u043a\u0438 \u0434\u043b\u044f Android \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 "
@@ -1377,6 +1387,7 @@
         "id": "284",
         "title": "Android - \u0420\u0430\u0437\u0440\u0430\u0431\u043e\u0442\u043a\u0430 \u0438 \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u0438\u0440\u043e\u0432\u0430\u043d\u0438\u0435",
         "isHasTopics": true,
+        "isHasForums": true,
         "parentId": "281",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb2P3xOfTgjVUVTRRQaxOmLz2OOYEXQBE5c83SCmAVs6z1R64diIt1OV3z1V.gif",
         "description": "\u0418\u043d\u0441\u0442\u0440\u0443\u043c\u0435\u043d\u0442\u044b \u0440\u0430\u0437\u0440\u0430\u0431\u043e\u0442\u043a\u0438, \u0438\u043d\u0441\u0442\u0440\u0443\u043a\u0446\u0438\u0438 \u043f\u043e \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u0438\u0440\u043e\u0432\u0430\u043d\u0438\u044e, \u0432\u043e\u043f\u0440\u043e\u0441\u044b \u043a \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u0438\u0441\u0442\u0430\u043c "
@@ -1385,6 +1396,7 @@
         "id": "295",
         "title": "Apple",
         "isHasTopics": false,
+        "isHasForums": false,
         "description": null,
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObMTz2FF3Biq3u5QT7GiO0CYt6Jaz2breSymgm1MNn1v1H5l.gif"
     },
@@ -1473,6 +1485,7 @@
         "id": "139",
         "title": "iOS - \u0423\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432\u0430",
         "isHasTopics": true,
+        "isHasForums": true,
         "parentId": "295",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObMTz2FF3Biq3u5QT7GiO0CYt6Jaz2breSymgm1MNn1v1H5l.gif",
         "description": "iPhone, iPod touch, iPad "
@@ -1508,6 +1521,7 @@
         "id": "142",
         "title": "iOS - \u041f\u0435\u0440\u0432\u0430\u044f \u043f\u043e\u043c\u043e\u0449\u044c",
         "isHasTopics": true,
+        "isHasForums": true,
         "parentId": "295",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObLz1RaiPXwwjVCwz2SwrJyQJBNeTDt2t5Gz0ra0wdErN.gif",
         "description": "\u041f\u043e\u043c\u043e\u0449\u044c \u043d\u043e\u0432\u0438\u0447\u043a\u0430\u043c, \u0447\u0430\u0441\u0442\u043e \u0437\u0430\u0434\u0430\u0432\u0430\u0435\u043c\u044b\u0435 \u0432\u043e\u043f\u0440\u043e\u0441\u044b \u0438 \u043e\u0442\u0432\u0435\u0442\u044b \u043f\u043e iPod Touch, iPhone, iPad. \u041d\u043e\u0432\u0438\u0447\u043a\u0430\u043c \u0447\u0438\u0442\u0430\u0442\u044c \u043e\u0431\u044f\u0437\u0430\u0442\u0435\u043b\u044c\u043d\u043e. "
@@ -1696,6 +1710,7 @@
         "id": "140",
         "title": "iOS - \u041f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u044b",
         "isHasTopics": true,
+        "isHasForums": true,
         "parentId": "295",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObMz0VlaeATOICoPDZBYOBMN8oW2GpTc70yTWQhMOc1fYGa3Y.gif",
         "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c \u0434\u043b\u044f iPod Touch, iPhone, iPad. "
@@ -1866,6 +1881,7 @@
         "id": "141",
         "title": "iOS - \u0418\u0433\u0440\u044b",
         "isHasTopics": true,
+        "isHasForums": true,
         "parentId": "295",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObMTVCWByALp0Tbq5jTv9AZZjkuKkNV5Z4z1yS8UM29Ez2.gif",
         "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0438\u0433\u0440 \u0434\u043b\u044f iPod Touch, iPhone, iPad. "
@@ -1874,6 +1890,7 @@
         "id": "144",
         "title": "iOS - FAQ",
         "isHasTopics": true,
+        "isHasForums": false,
         "parentId": "295",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbLpwAEZUqz1Lz1vcDXj2Iwp44uYpFfVibqYfz0mZr2z0v.gif",
         "description": "FAQ \u0438 \u0438\u043d\u0441\u0442\u0440\u0443\u043a\u0446\u0438\u0438 \u043f\u043e iPhone, iPod Touch, iPad"
@@ -1918,6 +1935,7 @@
         "id": "143",
         "title": "iOS - \u041f\u0440\u043e\u0448\u0438\u0432\u043a\u0438",
         "isHasTopics": true,
+        "isHasForums": true,
         "parentId": "295",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb0jeRpwC3z2m6cigpYnDXz2yaeOsoOGHpKKGvs2Lq8ELJWM.gif",
         "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u043f\u0440\u043e\u0448\u0438\u0432\u043e\u043a \u0434\u043b\u044f iPhone, iPod Touch, iPad. "
@@ -1926,6 +1944,7 @@
         "id": "193",
         "title": "iOS - \u0423\u043a\u0440\u0430\u0448\u0430\u0442\u0435\u043b\u044c\u0441\u0442\u0432\u0430",
         "isHasTopics": true,
+        "isHasForums": false,
         "parentId": "295",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb6Dz2Lk0IEW0z1A21HtGz1VSApC2lje8D5Z0oC7vz2LxmMLFz1.gif",
         "description": "\u0418\u0437\u043c\u0435\u043d\u0435\u043d\u0438\u0435 \u0438\u043d\u0442\u0435\u0440\u0444\u0435\u0439\u0441\u0430 iPhone, iPod Touch, iPad"
@@ -1934,6 +1953,7 @@
         "id": "816",
         "title": "iOS - \u0420\u0430\u0437\u0440\u0430\u0431\u043e\u0442\u043a\u0430 \u0438 \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u0438\u0440\u043e\u0432\u0430\u043d\u0438\u0435",
         "isHasTopics": true,
+        "isHasForums": false,
         "parentId": "295",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObJMT3rz0YPfusU1z2UyHSCaq0kjyNSAw4Qb3p5gILz0.gif",
         "description": "\u0418\u043d\u0441\u0442\u0440\u0443\u043c\u0435\u043d\u0442\u044b \u0440\u0430\u0437\u0440\u0430\u0431\u043e\u0442\u043a\u0438, \u0438\u043d\u0441\u0442\u0440\u0443\u043a\u0446\u0438\u0438 \u043f\u043e \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u0438\u0440\u043e\u0432\u0430\u043d\u0438\u044e, \u0432\u043e\u043f\u0440\u043e\u0441\u044b \u043a \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u0438\u0441\u0442\u0430\u043c"
@@ -1942,6 +1962,7 @@
         "id": "442",
         "title": "\u0414\u0440\u0443\u0433\u0438\u0435 \u043c\u043e\u0431\u0438\u043b\u044c\u043d\u044b\u0435 \u0441\u0438\u0441\u0442\u0435\u043c\u044b",
         "isHasTopics": false,
+        "isHasForums": false,
         "description": null,
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBEbrmTKBt6LeMR45z1qez1jz2Ez0Kp6pLCEdcgQQAfx.gif"
     },
@@ -1976,6 +1997,7 @@
         "id": "1126",
         "title": "\u042d\u043a\u043e\u0441\u0438\u0441\u0442\u0435\u043c\u0430 Huawei",
         "isHasTopics": true,
+        "isHasForums": true,
         "parentId": "442",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBEbrmTKBt6LeMR45z1qez1jz2Ez0Kp6pLCEdcgQQAfx.gif",
         "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u043c\u043e\u0431\u0438\u043b\u044c\u043d\u043e\u0439 \u0441\u0438\u0441\u0442\u0435\u043c\u044b \u043e\u0442 Huawei "
@@ -1984,6 +2006,7 @@
         "id": "446",
         "title": "Bada",
         "isHasTopics": true,
+        "isHasForums": false,
         "parentId": "442",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb4z0D2vLx3Kz1z0gsWAhiy8ISd4syho1PgQQgPZ.gif",
         "description": null
@@ -2001,6 +2024,7 @@
         "id": "445",
         "title": "BlackBerry",
         "isHasTopics": true,
+        "isHasForums": true,
         "parentId": "442",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObSLqHomyhUn9ZhO66T9feJvLx4uYpF9lKfAXFYWBneyQ.gif",
         "description": " "
@@ -2072,6 +2096,7 @@
         "id": "447",
         "title": "Maemo\/MeeGo\/Sailfish",
         "isHasTopics": true,
+        "isHasForums": true,
         "parentId": "442",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObA5p0V3yQz0p29BmADN16Zlmohmfz1sdfTl6TRy.gif",
         "description": " "
@@ -2116,6 +2141,7 @@
         "id": "444",
         "title": "SymbianOS",
         "isHasTopics": true,
+        "isHasForums": true,
         "parentId": "442",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBsLyReUglQZVYfPmFlINgJWs6UBkWTb5phPyLvJ.gif",
         "description": " "
@@ -2781,6 +2807,7 @@
         "id": "201",
         "title": "Windows Mobile",
         "isHasTopics": true,
+        "isHasForums": true,
         "parentId": "442",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbL1NZeKz1ju3vM4NtEGPYQbT3QLz0dkNEz163z2u6PDCd9d9DdIVz1b.gif",
         "description": " "
@@ -2843,6 +2870,7 @@
         "id": "443",
         "title": "WM Smartphones",
         "isHasTopics": true,
+        "isHasForums": true,
         "parentId": "442",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObMTliUpz1mmz0WFhlFaIz0z295LVz2t3SCmAVs6Uhz18PFaW5IEeyw.gif",
         "description": " "
@@ -3256,6 +3284,7 @@
         "id": "355",
         "title": "Windows Phone",
         "isHasTopics": true,
+        "isHasForums": true,
         "parentId": "442",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbLpgk31m2iSgVz2t3SCmAVMs6t8z2DDXfIsKnZA.gif",
         "description": " "
@@ -3264,6 +3293,7 @@
         "id": "798",
         "title": "\u0414\u0440\u0443\u0433\u0438\u0435 OS",
         "isHasTopics": true,
+        "isHasForums": false,
         "parentId": "442",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBEbrrZe8HnXcqZ88Gz1z2CYNsheXMhxIdA3Nz0menXf957A.gif",
         "description": "\u0414\u0440\u0443\u0433\u0438\u0435 \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u044b"
@@ -3272,6 +3302,7 @@
         "id": "103",
         "title": "\u041c\u0443\u043b\u044c\u0442\u0438\u043c\u0435\u0434\u0438\u0439\u043d\u044b\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432\u0430",
         "isHasTopics": false,
+        "isHasForums": false,
         "description": null,
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBEbrtEqRz2Itz0NuooAcbZuz1DRBZE771JItX8NNSg.gif"
     },
@@ -3279,6 +3310,7 @@
         "id": "1151",
         "title": "\u0413\u043b\u0430\u0432\u043d\u044b\u0439 \u0440\u0430\u0437\u0434\u0435\u043b",
         "isHasTopics": true,
+        "isHasForums": false,
         "parentId": "103",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBEbrtEqRz2Itz0NuooAcbZuz1DRBZE771JItX8NNSg.gif",
         "description": "\u0412\u0430\u0436\u043d\u044b\u0435 \u0442\u0435\u043c\u044b \u0438 \u043d\u043e\u0432\u043e\u0441\u0442\u0438 \u0440\u0430\u0437\u0434\u0435\u043b\u0430, \u043e\u0431\u044a\u044f\u0432\u043b\u0435\u043d\u0438\u044f"
@@ -3296,6 +3328,7 @@
         "id": "876",
         "title": "\u0422\u0435\u043b\u0435\u0432\u0438\u0437\u043e\u0440\u044b",
         "isHasTopics": true,
+        "isHasForums": true,
         "parentId": "103",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBEbrm4Zwjtz1CfyhSiz2z1z0NP50oXjY2odcn9v9cEZgASc3S3TMKQb.gif",
         "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435, \u043f\u0440\u043e\u0448\u0438\u0432\u043a\u0438 \u0438 \u0440\u0435\u0448\u0435\u043d\u0438\u0435 \u043f\u0440\u043e\u0431\u043b\u0435\u043c \u043c\u0443\u043b\u044c\u0442\u0438\u043c\u0435\u0434\u0438\u0439\u043d\u044b\u0445 \u0442\u0435\u043b\u0435\u0432\u0438\u0437\u043e\u0440\u043e\u0432 "
@@ -3304,6 +3337,7 @@
         "id": "640",
         "title": "\u041c\u0435\u0434\u0438\u0430-\u043f\u0440\u0438\u0441\u0442\u0430\u0432\u043a\u0438",
         "isHasTopics": true,
+        "isHasForums": false,
         "parentId": "103",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBEbreOYwsqGUeLxcR0gEC5aaW1z0RevL86pWVdBez1Dl6fs6t8z2jz0vr4nOlGq.gif",
         "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435, \u043f\u0440\u043e\u0448\u0438\u0432\u043a\u0438 \u0438 \u0440\u0435\u0448\u0435\u043d\u0438\u0435 \u043f\u0440\u043e\u0431\u043b\u0435\u043c \u043c\u0443\u043b\u044c\u0442\u0438\u043c\u0435\u0434\u0438\u0439\u043d\u044b\u0445 \u043f\u0440\u0438\u0441\u0442\u0430\u0432\u043e\u043a"
@@ -3312,6 +3346,7 @@
         "id": "1076",
         "title": "\u0426\u0438\u0444\u0440\u043e\u0432\u044b\u0435 \u0440\u0435\u0441\u0438\u0432\u0435\u0440\u044b",
         "isHasTopics": true,
+        "isHasForums": false,
         "parentId": "103",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBEbraadA29GsgZqmX670QC4MZ0SwL3Kz19I8uLPLNs6s2Lq8kbhie.gif",
         "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435, \u043f\u0440\u043e\u0448\u0438\u0432\u043a\u0438 \u0438 \u0440\u0435\u0448\u0435\u043d\u0438\u0435 \u043f\u0440\u043e\u0431\u043b\u0435\u043c \u0446\u0438\u0444\u0440\u043e\u0432\u044b\u0445 DVB \u0438 IPTV \u0440\u0435\u0441\u0438\u0432\u0435\u0440\u043e\u0432"
@@ -3320,6 +3355,7 @@
         "id": "891",
         "title": "\u041f\u0440\u043e\u0435\u043a\u0442\u043e\u0440\u044b",
         "isHasTopics": true,
+        "isHasForums": false,
         "parentId": "103",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBEbriGcyggZhvz1fxu0dYe6jFXcNez1Mz0PRC29h0o1f2WyV8z1LJV9YbiqegpmU.gif",
         "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435, \u043f\u0440\u043e\u0448\u0438\u0432\u043a\u0438 \u0438 \u0440\u0435\u0448\u0435\u043d\u0438\u0435 \u043f\u0440\u043e\u0431\u043b\u0435\u043c \u043c\u0443\u043b\u044c\u0442\u0438\u043c\u0435\u0434\u0438\u0439\u043d\u044b\u0445 \u043f\u0440\u043e\u0435\u043a\u0442\u043e\u0440\u043e\u0432"
@@ -3328,6 +3364,7 @@
         "id": "639",
         "title": "Hi-Fi \u0430\u0443\u0434\u0438\u043e\u043f\u043b\u0435\u0435\u0440\u044b",
         "isHasTopics": true,
+        "isHasForums": false,
         "parentId": "103",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBEbrq8z1QbkZbavjxnAhEz2QpHyz0ewpls9b4GX1z2z1iP8knLJ0cEgPZTOCYFjsq1xM.gif",
         "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435, \u043f\u0440\u043e\u0448\u0438\u0432\u043a\u0438 \u0438 \u0440\u0435\u0448\u0435\u043d\u0438\u0435 \u043f\u0440\u043e\u0431\u043b\u0435\u043c \u043f\u043e\u0440\u0442\u0430\u0442\u0438\u0432\u043d\u044b\u0445 Hi-Res \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432"
@@ -3336,6 +3373,7 @@
         "id": "1118",
         "title": "\u041f\u043e\u043a\u0443\u043f\u043a\u0430 \u043c\u0443\u043b\u044c\u0442\u0438\u043c\u0435\u0434\u0438\u0439\u043d\u044b\u0445 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432",
         "isHasTopics": true,
+        "isHasForums": false,
         "parentId": "103",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBEbrrBOJPaNQZdYB0LVhgaz1z2aC2fx86JaVLjKQJOkQ0r1sD7Y723.gif",
         "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0432\u043e\u043f\u0440\u043e\u0441\u043e\u0432 \u043f\u0440\u0438\u043e\u0431\u0440\u0435\u0442\u0435\u043d\u0438\u044f \u043c\u0443\u043b\u044c\u0442\u0438\u043c\u0435\u0434\u0438\u0439\u043d\u044b\u0445 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432"
@@ -3344,6 +3382,7 @@
         "id": "865",
         "title": "\u0410\u0440\u0445\u0438\u0432 \u043c\u0443\u043b\u044c\u0442\u0438\u043c\u0435\u0434\u0438\u0439\u043d\u044b\u0445 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432",
         "isHasTopics": true,
+        "isHasForums": false,
         "parentId": "103",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBEbrm0gynKqn6yu5G15qxItYcBeuSRDPFqKVY0x94IXlph86RbZ8z1cQre0.gif",
         "description": "\u0410\u0440\u0445\u0438\u0432 \u0442\u0435\u043c \u043c\u0443\u043b\u044c\u0442\u0438\u043c\u0435\u0434\u0438\u0439\u043d\u044b\u0445 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432"
@@ -3352,6 +3391,7 @@
         "id": "104",
         "title": "\u0412\u044b\u0431\u043e\u0440 \u0438 \u0421\u0440\u0430\u0432\u043d\u0435\u043d\u0438\u0435 (\u0440\u0435\u0434\u0438\u0440\u0435\u043a\u0442)",
         "isHasTopics": true,
+        "isHasForums": false,
         "parentId": "103",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObMHcZIxMhz11HtUM29kpKq0HIuyp4msbtI.gif",
         "description": null
@@ -3360,6 +3400,7 @@
         "id": "468",
         "title": "\u041d\u043e\u0432\u0438\u043d\u043a\u0438 (\u0440\u0435\u0434\u0438\u0440\u0435\u043a\u0442)",
         "isHasTopics": true,
+        "isHasForums": false,
         "parentId": "103",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObMLEbfRWvz0P1CfGINA3e2q3z1VRNKz1vQ26yUF.gif",
         "description": null
@@ -3368,6 +3409,7 @@
         "id": "763",
         "title": "\u041d\u043e\u0441\u0438\u043c\u044b\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432\u0430",
         "isHasTopics": false,
+        "isHasForums": false,
         "description": null,
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBEbrrAz1AKGIa88Az1KrhuY723t5HNl5vpaF35wn7.gif"
     },
@@ -3375,6 +3417,7 @@
         "id": "1153",
         "title": "\u0418\u043d\u0444\u043e\u0440\u043c\u0430\u0446\u0438\u043e\u043d\u043d\u044b\u0439 \u0440\u0430\u0437\u0434\u0435\u043b",
         "isHasTopics": true,
+        "isHasForums": false,
         "parentId": "763",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBEbrrAz1AKGIa88Az1KrhuY723t5HNl5vpaF35wn7.gif",
         "description": "\u041d\u043e\u0432\u043e\u0441\u0442\u0438, \u043f\u0440\u0430\u0432\u0438\u043b\u0430, \u043e\u0431\u044a\u044f\u0432\u043b\u0435\u043d\u0438\u044f"
@@ -3383,6 +3426,7 @@
         "id": "659",
         "title": "\u0423\u043c\u043d\u044b\u0435 \u0447\u0430\u0441\u044b",
         "isHasTopics": true,
+        "isHasForums": false,
         "parentId": "763",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBEbrz2Uiz1u1KcFqKz2IOdV3z1F4HUPD9ez1Tz2bSQWK.gif",
         "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0443\u043c\u043d\u044b\u0445 \u0447\u0430\u0441\u043e\u0432"
@@ -3391,6 +3435,7 @@
         "id": "1119",
         "title": "\u0414\u0435\u0442\u0441\u043a\u0438\u0435 \u0443\u043c\u043d\u044b\u0435 \u0447\u0430\u0441\u044b",
         "isHasTopics": true,
+        "isHasForums": false,
         "parentId": "763",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBEbrz2EyFT7sz1HtgEiP5pmAz26z1IrDMgHtEEWpD5r.gif",
         "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0434\u0435\u0442\u0441\u043a\u0438\u0445 \u0443\u043c\u043d\u044b\u0445 \u0447\u0430\u0441\u043e\u0432"
@@ -3399,6 +3444,7 @@
         "id": "862",
         "title": "\u0424\u0438\u0442\u043d\u0435\u0441-\u0431\u0440\u0430\u0441\u043b\u0435\u0442\u044b",
         "isHasTopics": true,
+        "isHasForums": false,
         "parentId": "763",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBEbrq5mRWTYHRMXE92z1W3Uz2yz0mIz2KTlMj8H7Lb.gif",
         "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0444\u0438\u0442\u043d\u0435\u0441-\u0431\u0440\u0430\u0441\u043b\u0435\u0442\u043e\u0432"
@@ -3407,6 +3453,7 @@
         "id": "1120",
         "title": "\u041d\u0430\u0443\u0448\u043d\u0438\u043a\u0438 \u0438 \u0433\u0430\u0440\u043d\u0438\u0442\u0443\u0440\u044b",
         "isHasTopics": true,
+        "isHasForums": false,
         "parentId": "763",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBEbrsHAu95pt6p0lV7sj3qSGPkJoMA1z2QirIz1R6.gif",
         "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0431\u0435\u0441\u043f\u0440\u043e\u0432\u043e\u0434\u043d\u044b\u0445 \u0438 \u043f\u0440\u043e\u0432\u043e\u0434\u043d\u044b\u0445 \u043d\u0430\u0443\u0448\u043d\u0438\u043a\u043e\u0432 \u0438 \u0433\u0430\u0440\u043d\u0438\u0442\u0443\u0440"
@@ -3415,6 +3462,7 @@
         "id": "1107",
         "title": "\u041f\u043e\u0440\u0442\u0430\u0442\u0438\u0432\u043d\u044b\u0435 \u043a\u043e\u043b\u043e\u043d\u043a\u0438",
         "isHasTopics": true,
+        "isHasForums": false,
         "parentId": "763",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBEbrnM2ihGoq0SehLMz0Vz1HbV1ILz0kcF4mjsKHJI.gif",
         "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u043f\u0435\u0440\u0435\u043d\u043e\u0441\u043d\u044b\u0445 \u0430\u043a\u0443\u0441\u0442\u0438\u0447\u0435\u0441\u043a\u0438\u0445 \u0441\u0438\u0441\u0442\u0435\u043c"
@@ -3423,6 +3471,7 @@
         "id": "1108",
         "title": "\u0414\u0440\u0443\u0433\u0438\u0435 \u043d\u043e\u0441\u0438\u043c\u044b\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432\u0430",
         "isHasTopics": true,
+        "isHasForums": false,
         "parentId": "763",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBEbrz19oKdkH2NuI2Iwp44u23t5n771pYlTk87Kz1.gif",
         "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u043f\u0440\u043e\u0447\u0438\u0445 \u043d\u043e\u0441\u0438\u043c\u044b\u0445 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432"
@@ -3431,6 +3480,7 @@
         "id": "810",
         "title": "\u041f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u044b \u0434\u043b\u044f \u043d\u043e\u0441\u0438\u043c\u044b\u0445 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432",
         "isHasTopics": true,
+        "isHasForums": false,
         "parentId": "763",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBEbrsT2cbqbz0LjBlQirIUhktlz0lQjItgBN1F17.gif",
         "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c \u0438 \u0438\u0445 \u043c\u043e\u0434\u0438\u0444\u0438\u043a\u0430\u0446\u0438\u0439 \u0434\u043b\u044f \u043d\u043e\u0441\u0438\u043c\u044b\u0445 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432"
@@ -3439,6 +3489,7 @@
         "id": "1123",
         "title": "\u0426\u0438\u0444\u0435\u0440\u0431\u043b\u0430\u0442\u044b \u0438 \u043f\u0440\u043e\u0448\u0438\u0432\u043a\u0438 \u0434\u043b\u044f \u0443\u043c\u043d\u044b\u0445 \u0447\u0430\u0441\u043e\u0432 \u0438 \u0431\u0440\u0430\u0441\u043b\u0435\u0442\u043e\u0432",
         "isHasTopics": true,
+        "isHasForums": false,
         "parentId": "763",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBEbrrM6cwxmHP3OJP8kHbBSGPkpYz1EBkHz1OV3z1z2.gif",
         "description": "\u041f\u0440\u043e\u0448\u0438\u0432\u043a\u0438, \u0446\u0438\u0444\u0435\u0440\u0431\u043b\u0430\u0442\u044b, \u043c\u043e\u0434\u0438\u0444\u0438\u043a\u0430\u0446\u0438\u0438 \u0434\u043b\u044f \u043d\u043e\u0441\u0438\u043c\u044b\u0445 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432"
@@ -3447,6 +3498,7 @@
         "id": "1121",
         "title": "\u041f\u043e\u043a\u0443\u043f\u043a\u0430 \u043d\u043e\u0441\u0438\u043c\u044b\u0445 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432",
         "isHasTopics": true,
+        "isHasForums": false,
         "parentId": "763",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBEbrtICtHvL86pWV7RWAz2oJ8b8ioMAXF2GJDkJI.gif",
         "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0432\u043e\u043f\u0440\u043e\u0441\u043e\u0432 \u043f\u0440\u0438\u043e\u0431\u0440\u0435\u0442\u0435\u043d\u0438\u044f \u043d\u043e\u0441\u0438\u043c\u044b\u0445 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432"
@@ -3455,6 +3507,7 @@
         "id": "1122",
         "title": "\u0410\u043a\u0441\u0435\u0441\u0441\u0443\u0430\u0440\u044b \u0434\u043b\u044f \u043d\u043e\u0441\u0438\u043c\u044b\u0445 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432",
         "isHasTopics": true,
+        "isHasForums": false,
         "parentId": "763",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBEbrqL0fY7MkP3uZ1KusPDJ8b8CYz1EhU92z10Jsh.gif",
         "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0430\u043a\u0441\u0435\u0441\u0441\u0443\u0430\u0440\u043e\u0432 \u0434\u043b\u044f \u043d\u043e\u0441\u0438\u043c\u044b\u0445 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432"
@@ -3463,6 +3516,7 @@
         "id": "1124",
         "title": "\u0410\u0440\u0445\u0438\u0432 \u043d\u043e\u0441\u0438\u043c\u044b\u0445 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432",
         "isHasTopics": true,
+        "isHasForums": false,
         "parentId": "763",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBEbroPUQS4mn9hy9Wdcbt61beLPZz08a6r4H8d4M.gif",
         "description": "\u0417\u0430\u043a\u0440\u044b\u0442\u044b\u0435 \u0442\u0435\u043c\u044b \u0443\u0441\u0442\u0430\u0440\u0435\u0432\u0448\u0438\u0445 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 \u0440\u0430\u0437\u0434\u0435\u043b\u0430"
@@ -3471,6 +3525,7 @@
         "id": "899",
         "title": "\u041d\u043e\u0432\u0438\u043d\u043a\u0438 (\u0440\u0435\u0434\u0438\u0440\u0435\u043a\u0442)",
         "isHasTopics": true,
+        "isHasForums": false,
         "parentId": "763",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObMLEbfRWvz0P1CfGINA3e2q3z1VRNKz1vQ26yUF.gif",
         "description": null
@@ -3479,6 +3534,7 @@
         "id": "900",
         "title": "\u0412\u044b\u0431\u043e\u0440 \u0438 \u0441\u0440\u0430\u0432\u043d\u0435\u043d\u0438\u0435 (\u0440\u0435\u0434\u0438\u0440\u0435\u043a\u0442)",
         "isHasTopics": true,
+        "isHasForums": false,
         "parentId": "763",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObMHcZIxMhz11HtUM29kpKq0HIuyp4msbtI.gif",
         "description": null
@@ -3487,6 +3543,7 @@
         "id": "202",
         "title": "\u0414\u0440\u0443\u0433\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432\u0430",
         "isHasTopics": false,
+        "isHasForums": false,
         "description": null,
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBEbrpUWWBz2N0GayxuvK1GG4MyJ4O8huIdPQreW.gif"
     },
@@ -3584,6 +3641,7 @@
         "id": "635",
         "title": "\u0410\u0432\u0442\u043e\u043c\u043e\u0431\u0438\u043b\u044c\u043d\u044b\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432\u0430",
         "isHasTopics": true,
+        "isHasForums": true,
         "parentId": "202",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBEbrpUWWBz2N0GayxuvK1GG4MyJ4O8huIdPQreW.gif",
         "description": "\u0413\u043e\u043b\u043e\u0432\u043d\u044b\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432\u0430, \u041c\u0424\u0423, \u0430\u0432\u0442\u043e\u043c\u0430\u0433\u043d\u0438\u0442\u043e\u043b\u044b, \u0432\u0438\u0434\u0435\u043e\u0440\u0435\u0433\u0438\u0441\u0442\u0440\u0430\u0442\u043e\u0440\u044b \u0438 \u0437\u0435\u0440\u043a\u0430\u043b\u0430 \u0437\u0430\u0434\u043d\u0435\u0433\u043e \u0432\u0438\u0434\u0430 "
@@ -3664,6 +3722,7 @@
         "id": "645",
         "title": "\u0418\u0433\u0440\u043e\u0432\u044b\u0435 \u043a\u043e\u043d\u0441\u043e\u043b\u0438",
         "isHasTopics": true,
+        "isHasForums": true,
         "parentId": "202",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBEbrp2OCbKrr1lkMr4HeNSQ5IucjPWAFIe1lHl.gif",
         "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0438\u0433\u0440\u043e\u0432\u044b\u0445 \u043a\u043e\u043d\u0441\u043e\u043b\u0435\u0439, \u043f\u0440\u0438\u0441\u0442\u0430\u0432\u043e\u043a, \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c \u0438 \u0438\u0433\u0440 \u043a \u043d\u0438\u043c "
@@ -3708,6 +3767,7 @@
         "id": "4",
         "title": "\u041a\u043d\u043e\u043f\u043e\u0447\u043d\u044b\u0435 \u0442\u0435\u043b\u0435\u0444\u043e\u043d\u044b",
         "isHasTopics": true,
+        "isHasForums": true,
         "parentId": "202",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBEbrojNjz2yu3niqeA38oiz2umppEd6woU0uG.gif",
         "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u043a\u043d\u043e\u043f\u043e\u0447\u043d\u044b\u0445 \u0442\u0435\u043b\u0435\u0444\u043e\u043d\u043e\u0432 (\u0440\u0430\u0441\u043a\u043b\u0430\u0434\u0443\u0448\u0435\u043a, \u0441\u043b\u0430\u0439\u0434\u0435\u0440\u043e\u0432, \u043c\u043e\u043d\u043e\u0431\u043b\u043e\u043a\u043e\u0432), \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c, \u0438\u0433\u0440. "
@@ -3788,6 +3848,7 @@
         "id": "910",
         "title": "\u0423\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432\u0430 \u0434\u043b\u044f \u0434\u043e\u043c\u0430 \u0438 \u0440\u0430\u0437\u0432\u043b\u0435\u0447\u0435\u043d\u0438\u0439",
         "isHasTopics": true,
+        "isHasForums": true,
         "parentId": "202",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBEbrsTI6rynV0i8fLq9qXBz1z2RFolSfz0xWLaskl.gif",
         "description": "\u0423\u043c\u043d\u044b\u0439 \u0434\u043e\u043c, \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432\u0430 \u0441 \u0434\u0438\u0441\u0442\u0430\u043d\u0446\u0438\u043e\u043d\u043d\u044b\u043c \u0443\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0438\u0435\u043c, \u0441\u043a\u0443\u0442\u0435\u0440\u044b \u0438 \u043a\u0432\u0430\u0434\u0440\u043e\u043a\u043e\u043f\u0442\u0435\u0440\u044b, \u043f\u044b\u043b\u0435\u0441\u043e\u0441\u044b, \u0432\u0435\u0441\u044b \u0438 \u043f\u0440. \u0433\u0430\u0434\u0436\u0435\u0442\u044b. "
@@ -3886,6 +3947,7 @@
         "id": "48",
         "title": "\u0424\u043e\u0442\u043e \u0438 \u0412\u0438\u0434\u0435\u043e",
         "isHasTopics": true,
+        "isHasForums": true,
         "parentId": "202",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBEbrz1Po32p2fROkNkEUz2P7cfr0PgHUfz0hmM1.gif",
         "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0444\u043e\u0442\u043e \u0438 \u0432\u0438\u0434\u0435\u043e\u043a\u0430\u043c\u0435\u0440. \u0414\u0435\u043b\u0438\u043c\u0441\u044f \u043e\u043f\u044b\u0442\u043e\u043c \u0441\u044a\u0435\u043c\u043a\u0438 "
@@ -3948,6 +4010,7 @@
         "id": "279",
         "title": "\u042d\u043b\u0435\u043a\u0442\u0440\u043e\u043d\u043d\u044b\u0435 \u043a\u043d\u0438\u0433\u0438",
         "isHasTopics": true,
+        "isHasForums": true,
         "parentId": "202",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBEbrz2MyNz2jQTbLdXX6K1m0C2z1Mjz2Kz0VEnz1cJN0.gif",
         "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 \u0434\u043b\u044f \u0447\u0442\u0435\u043d\u0438\u044f \u044d\u043b\u0435\u043a\u0442\u0440\u043e\u043d\u043d\u044b\u0445 \u043a\u043d\u0438\u0433. "
@@ -3956,6 +4019,7 @@
         "id": "607",
         "title": "\u041a\u043e\u043c\u043f\u044c\u044e\u0442\u0435\u0440\u044b \u0438 \u043f\u0435\u0440\u0438\u0444\u0435\u0440\u0438\u044f",
         "isHasTopics": false,
+        "isHasForums": false,
         "description": null,
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObILxExz1LoEMmS630T7vK1mWyQY0gpgUfPrqtO5D.gif"
     },
@@ -4080,6 +4144,7 @@
         "id": "609",
         "title": "\u041c\u043e\u0439 \u043a\u043e\u043c\u043f\u044c\u044e\u0442\u0435\u0440 (\u0434\u0435\u0441\u043a\u0442\u043e\u043f)",
         "isHasTopics": true,
+        "isHasForums": true,
         "parentId": "607",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObILxExz1LoEMmS630T7vK1mWyQY0gpgUfPrqtO5D.gif",
         "description": "\u0421\u0442\u0430\u0446\u0438\u043e\u043d\u0430\u0440\u043d\u044b\u0435 \u041f\u041a, \u043e\u043f\u0435\u0440\u0430\u0446\u0438\u043e\u043d\u043d\u044b\u0435 \u0441\u0438\u0441\u0442\u0435\u043c\u044b \u0438 \u041f\u041e, \u043d\u0430\u0441\u0442\u0440\u043e\u0439\u043a\u0430, \u044d\u043a\u0441\u043f\u043b\u0443\u0430\u0442\u0430\u0446\u0438\u044f, \u0432\u044b\u0431\u043e\u0440 \u043a\u043e\u043c\u043f\u043b\u0435\u043a\u0442\u0443\u044e\u0449\u0438\u0445 "
@@ -4313,6 +4378,7 @@
         "id": "24",
         "title": "\u041d\u043e\u0443\u0442\u0431\u0443\u043a\u0438 \u0438 Tablet PC",
         "isHasTopics": true,
+        "isHasForums": true,
         "parentId": "607",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObE5N8fLR8d4sBs1z2ioz2InnUsR3UPfrW92Lq8k5Rqq.gif",
         "description": "\u0412\u043e\u043f\u0440\u043e\u0441\u044b, \u043e\u0442\u0432\u0435\u0442\u044b \u0438 \u0441\u043e\u0432\u0435\u0442\u044b \u043f\u043e \u043d\u043e\u0443\u0442\u0431\u0443\u043a\u0430\u043c \u0438 Tablet PC. "
@@ -4474,6 +4540,7 @@
         "id": "1138",
         "title": "\u0421\u0432\u044f\u0437\u044c, \u0438\u043d\u0442\u0435\u0440\u043d\u0435\u0442, \u0442\u0435\u043b\u0435\u043a\u043e\u043c\u043c\u0443\u043d\u0438\u043a\u0430\u0446\u0438\u0438",
         "isHasTopics": true,
+        "isHasForums": true,
         "parentId": "607",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbLpUccQJ99JOWywhGqOPw5GG2JytjuypaWz1nrt.png",
         "description": "\u041d\u0430\u0441\u0442\u0440\u043e\u0439\u043a\u0430 \u0438 \u043a\u043e\u043d\u0444\u0438\u0433\u0443\u0440\u0430\u0446\u0438\u044f \u0441\u0435\u0442\u0435\u0439. \u0412\u044b\u0431\u043e\u0440 \u0438 \u043e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432. "
@@ -4482,6 +4549,7 @@
         "id": "1145",
         "title": "\u041a\u043e\u043c\u043f\u044c\u044e\u0442\u0435\u0440\u044b \u0438 \u043f\u0435\u0440\u0438\u0444\u0435\u0440\u0438\u044f - \u0430\u0440\u0445\u0438\u0432",
         "isHasTopics": true,
+        "isHasForums": false,
         "parentId": "607",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBEbrZhlLsuwAiz0RIDrMEWT2X3gd1nkmRfz2CYEEn9Z9jpK7fhxE.gif",
         "description": "\u041f\u043e\u043b\u0435\u0437\u043d\u0430\u044f, \u043d\u043e \u0443\u0441\u0442\u0430\u0440\u0435\u0432\u0448\u0430\u044f \u0438\u043d\u0444\u043e\u0440\u043c\u0430\u0446\u0438\u044f"
@@ -4490,6 +4558,7 @@
         "id": "622",
         "title": "\u0422\u0435\u0445\u043d\u043e\u0442\u0440\u0435\u043f\u0430\u043b\u043a\u0430 (\u0440\u0435\u0434\u0438\u0440\u0435\u043a\u0442)",
         "isHasTopics": true,
+        "isHasForums": false,
         "parentId": "607",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObA9xVgKhz1dgz0fROEdsIe8jrxyKJNnBdcbt6Xr.gif",
         "description": "\u0418\u043d\u0442\u0435\u043b\u043b\u0435\u043a\u0442\u0443\u0430\u043b\u044c\u043d\u044b\u0435 \u0431\u0435\u0441\u0435\u0434\u044b \u043d\u0430 \u043e\u043a\u043e\u043b\u043e\u0442\u0435\u0445\u043d\u0438\u0447\u0435\u0441\u043a\u0438\u0435 \u0442\u0435\u043c\u044b"
@@ -4498,6 +4567,7 @@
         "id": "236",
         "title": "\u041d\u0430\u0432\u0438\u0433\u0430\u0446\u0438\u044f",
         "isHasTopics": false,
+        "isHasForums": false,
         "description": null,
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBE5fmaa6T8gEQbRO1SAjfHN88sb5Zpx6slY3qZlz0LKOcnf9H.gif"
     },
@@ -4505,6 +4575,7 @@
         "id": "880",
         "title": "\u041e\u0431\u0449\u0438\u0439 \u0440\u0430\u0437\u0434\u0435\u043b",
         "isHasTopics": true,
+        "isHasForums": false,
         "parentId": "236",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBE5fmaa6T8gEQbRO1SAjfHN88sb5Zpx6slY3qZlz0LKOcnf9H.gif",
         "description": "\u041e\u0431\u0449\u0438\u0435 \u0441\u0432\u0435\u0434\u0435\u043d\u0438\u044f, FAQ, \u043f\u0435\u0440\u0432\u0430\u044f \u043f\u043e\u043c\u043e\u0449\u044c"
@@ -4513,6 +4584,7 @@
         "id": "237",
         "title": "\u041f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u044b",
         "isHasTopics": true,
+        "isHasForums": false,
         "parentId": "236",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBE5fjNUCol6ZRK3cFZxLndcsb5txz0o7MfLFU2qAjcITfTWhXWeO.gif",
         "description": "\u041d\u0430\u0432\u0438\u0433\u0430\u0446\u0438\u043e\u043d\u043d\u044b\u0435 \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u044b"
@@ -4539,6 +4611,7 @@
         "id": "881",
         "title": "\u041a\u0430\u0440\u0442\u044b \u0438 \u043a\u043e\u043d\u0442\u0435\u043d\u0442",
         "isHasTopics": true,
+        "isHasForums": true,
         "parentId": "236",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBE5fjZthHsgz0Cs5jz08ZoDnTeMIsqXhktFj7z1NR0z19I8ObT.gif",
         "description": "\u041a\u0430\u0440\u0442\u044b, \u0441\u043a\u0438\u043d\u044b, POI, \u0440\u0430\u0434\u0430\u0440\u044b "
@@ -4610,6 +4683,7 @@
         "id": "135",
         "title": "\u041d\u0430\u0432\u0438\u0433\u0430\u0442\u043e\u0440\u044b",
         "isHasTopics": true,
+        "isHasForums": true,
         "parentId": "236",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBE5ftFrEBkMRpsbz0LCfZcJePD8FRfz2iocgBW4LxK8HEtDP.gif",
         "description": "\u0412\u0441\u0435 \u043e \u043d\u0430\u0432\u0438\u0433\u0430\u0446\u0438\u0438 \u0432 \u0430\u0432\u0442\u043e: \u0413\u0423, PNA\/PND \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432\u0430 \u0438 \u0438\u0445 \u043c\u043e\u0434\u0438\u0444\u0438\u043a\u0430\u0446\u0438\u044f "
@@ -4618,6 +4692,7 @@
         "id": "136",
         "title": "\u041f\u0440\u043e\u0447\u0435\u0435 \u043d\u0430\u0432\u0438\u0433\u0430\u0446\u0438\u043e\u043d\u043d\u043e\u0435 \u043e\u0431\u043e\u0440\u0443\u0434\u043e\u0432\u0430\u043d\u0438\u0435",
         "isHasTopics": true,
+        "isHasForums": false,
         "parentId": "236",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBE5fjhd2Jz0CoTfbxNxshcfx6JCCYz25Coa2lz1ngOfNnX9PDpO.gif",
         "description": "\u041f\u0440\u0438\u0435\u043c\u043d\u0438\u043a\u0438, \u0442\u0440\u0435\u043a\u0435\u0440\u044b, \u0432\u043d\u0435\u0448\u043d\u0438\u0435 \u043c\u043e\u0434\u0443\u043b\u0438, \u0430\u043a\u0442\u0438\u0432\u043d\u044b\u0435 \u0430\u043d\u0442\u0435\u043d\u043d\u044b \u0438 \u0442.\u0434."
@@ -4626,6 +4701,7 @@
         "id": "138",
         "title": "\u0410\u0440\u0445\u0438\u0432 \u043d\u0430\u0448\u0438\u0445 \u0437\u043d\u0430\u043d\u0438\u0439",
         "isHasTopics": true,
+        "isHasForums": false,
         "parentId": "236",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbL1FYtXGuZw34gnWTgHtEolqiX4TFYR8wFfsF41kxsD8FR9F4.gif",
         "description": "\u041d\u0430\u043a\u043e\u043f\u043b\u0435\u043d\u043d\u044b\u0435 \u0437\u043d\u0430\u043d\u0438\u044f \u043e \u043d\u0430\u0432\u0438\u0433\u0430\u0446\u0438\u0438. \u041f\u043e\u0434\u0440\u0430\u0437\u0434\u0435\u043b \u0434\u043e\u0441\u0442\u0443\u043f\u0435\u043d \u0442\u043e\u043b\u044c\u043a\u043e \u0434\u043b\u044f \u0447\u0442\u0435\u043d\u0438\u044f."
@@ -4634,6 +4710,7 @@
         "id": "203",
         "title": "\u041f\u0440\u043e\u0447\u0435\u0435",
         "isHasTopics": false,
+        "isHasForums": false,
         "description": null,
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBEbrr3fvz2qCtlbEz2G4ipCBfa9l4siRGQjod2lDuWf3.gif"
     },
@@ -4677,6 +4754,7 @@
         "id": "1",
         "title": "\u041d\u043e\u0432\u0438\u043d\u043a\u0438",
         "isHasTopics": true,
+        "isHasForums": true,
         "parentId": "203",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBEbrr3fvz2qCtlbEz2G4ipCBfa9l4siRGQjod2lDuWf3.gif",
         "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u044f \u043d\u043e\u0432\u0438\u043d\u043e\u043a \u0438 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 \u0435\u0449\u0435 \u043d\u0435 \u043f\u043e\u044f\u0432\u0438\u0432\u0448\u0438\u0445\u0441\u044f \u0432 \u043f\u0440\u043e\u0434\u0430\u0436\u0435. \u041d\u043e\u0432\u043e\u0441\u0442\u0438 \u043f\u0443\u0431\u043b\u0438\u043a\u0443\u0439\u0442\u0435 \u043f\u043e\u0436\u0430\u043b\u0443\u0439\u0441\u0442\u0430 \u043d\u0430 \u0441\u0430\u0439\u0442\u0435. \u0421\u0447\u0435\u0442\u0447\u0438\u043a \u0441\u043e\u043e\u0431\u0449\u0435\u043d\u0438\u0439 \u043e\u0442\u043a\u043b\u044e\u0447\u0435\u043d. "
@@ -5558,6 +5636,7 @@
         "id": "18",
         "title": "K\u043d\u0438\u0436\u043d\u0430\u044f \u043b\u0430\u0432\u043a\u0430",
         "isHasTopics": true,
+        "isHasForums": true,
         "parentId": "203",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObE5N8fz0z2fLThjwz1vLlwdwuTjnGb9huvKXW8e.gif",
         "description": "\u0425\u0443\u0434\u043e\u0436\u0435\u0441\u0442\u0432\u0435\u043d\u043d\u0430\u044f, \u043d\u0430\u0443\u0447\u043d\u0430\u044f, \u0443\u0447\u0435\u0431\u043d\u0430\u044f \u043b\u0438\u0442\u0435\u0440\u0430\u0442\u0443\u0440\u0430. \u0421\u043e\u0437\u0434\u0430\u043d\u0438\u0435, \u043e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0438 \u043f\u043e\u0438\u0441\u043a \u043a\u043d\u0438\u0433. \u0410\u0443\u0434\u0438\u043e\u043a\u043d\u0438\u0433\u0438. \u041a\u043d\u0438\u0436\u043d\u044b\u0435 \u0438\u0433\u0440\u044b \u0438 \u0432\u0438\u043a\u0442\u043e\u0440\u0438\u043d\u044b. \u041e\u043f\u0440\u043e\u0441\u044b. \u041a\u043d\u0438\u0433\u043e\u0445\u0440\u0430\u043d\u0438\u043b\u0438\u0449\u0435. "
@@ -5665,6 +5744,7 @@
         "id": "93",
         "title": "\u0412\u044b\u0431\u043e\u0440 \u0438 \u0441\u0440\u0430\u0432\u043d\u0435\u043d\u0438\u0435",
         "isHasTopics": true,
+        "isHasForums": true,
         "parentId": "203",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObMHcZIxMhz11HtUM29kpKq0HIuyp4msbtI.gif",
         "description": "\u041f\u043e\u043c\u043e\u0449\u044c \u0432 \u0432\u044b\u0431\u043e\u0440\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 \u0438 \u0438\u0445 \u0441\u0440\u0430\u0432\u043d\u0435\u043d\u0438\u0435. "
@@ -5799,6 +5879,7 @@
         "id": "537",
         "title": "\u042d\u043c\u0443\u043b\u044f\u0442\u043e\u0440\u044b",
         "isHasTopics": true,
+        "isHasForums": true,
         "parentId": "203",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb9Yz1z2wmYSac1C9Wgxa8QV1ob5YuSABd7lRYf.gif",
         "description": " "
@@ -5906,6 +5987,7 @@
         "id": "10",
         "title": "\u0422\u0440\u0435\u043f\u0430\u043b\u043a\u0430",
         "isHasTopics": true,
+        "isHasForums": true,
         "parentId": "203",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObH2t1VAhhGqCniPb3eM9HwO4sSRgz0Vb2cish.gif",
         "description": "\u0417\u0434\u0435\u0441\u044c \u043c\u043e\u0436\u043d\u043e \u043f\u043e\u0433\u043e\u0432\u043e\u0440\u0438\u0442\u044c \u043d\u0430 \u043b\u044e\u0431\u044b\u0435 \u0432\u043e\u043b\u043d\u0443\u044e\u0449\u0438\u0435 \u0442\u0435\u043c\u044b \u0438\u043b\u0438 \u043f\u0440\u043e\u0441\u0442\u043e \u043f\u043e\u0431\u043e\u043b\u0442\u0430\u0442\u044c (\u0441\u0447\u0435\u0442\u0447\u0438\u043a \u0441\u043e\u043e\u0431\u0449\u0435\u043d\u0438\u0439 \u0432 \u044d\u0442\u043e\u043c \u0444\u043e\u0440\u0443\u043c\u0435 \u043e\u0442\u043a\u043b\u044e\u0447\u0435\u043d). "
@@ -5995,6 +6077,7 @@
         "id": "89",
         "title": "\u0422\u0435\u0445\u043d\u043e\u0442\u0440\u0435\u043f\u0430\u043b\u043a\u0430",
         "isHasTopics": true,
+        "isHasForums": true,
         "parentId": "203",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObA9xVgKhz1dgz0fROEdsIe8jrxyKJNnBdcbt6Xr.gif",
         "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u043e\u0431\u0449\u0438\u0445 \u0442\u0435\u0445\u043d\u0438\u0447\u0435\u0441\u043a\u0438\u0445 \u0432\u043e\u043f\u0440\u043e\u0441\u043e\u0432. "
@@ -6012,6 +6095,7 @@
         "id": "340",
         "title": "\u041c\u044f\u0441\u043e\u0440\u0443\u0431\u043a\u0430",
         "isHasTopics": true,
+        "isHasForums": true,
         "parentId": "203",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObNU9asaqd0IZ6IUvpEsWKoHDW2Gpz0sFqEW5Zakq8gBtntDP.gif",
         "description": "\u0420\u0430\u0437\u0434\u0435\u043b \u043a\u043e\u043d\u0441\u0442\u0440\u0443\u043a\u0442\u0438\u0432\u043d\u044b\u0445 \u0445\u043e\u043b\u0438\u0432\u0430\u0440\u043e\u0432 (\u0441\u0447\u0435\u0442\u0447\u0438\u043a \u0441\u043e\u043e\u0431\u0449\u0435\u043d\u0438\u0439 \u0432 \u044d\u0442\u043e\u043c \u0444\u043e\u0440\u0443\u043c\u0435 \u043e\u0442\u043a\u043b\u044e\u0447\u0435\u043d). "
@@ -6074,6 +6158,7 @@
         "id": "20",
         "title": "\u0411\u0430\u0440\u0430\u0445\u043e\u043b\u043a\u0430",
         "isHasTopics": true,
+        "isHasForums": true,
         "parentId": "203",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb0LP0jz2wW2vnq5U9j3KierWeu71JINHGBXhU.gif",
         "description": "\u0422\u0443\u0442 \u043c\u044b \u043f\u0440\u043e\u0434\u0430\u0451\u043c, \u043f\u043e\u043a\u0443\u043f\u0430\u0435\u043c \u0438 \u043c\u0435\u043d\u044f\u0435\u043c \u0434\u0435\u0432\u0430\u0439\u0441\u044b.\r"
@@ -6082,6 +6167,7 @@
         "id": "130",
         "title": "\u0420\u0430\u0437\u0440\u0430\u0431\u043e\u0442\u0447\u0438\u043a\u0438",
         "isHasTopics": true,
+        "isHasForums": false,
         "parentId": "203",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObM1cXTcHz2QatABB8Td0z1C9WgRqWz1b8b1Vx7ywJR1WZkt.gif",
         "description": "\u0414\u0430\u043d\u043d\u044b\u0439 \u0440\u0430\u0437\u0434\u0435\u043b \u0434\u043e\u0441\u0442\u0443\u043f\u0435\u043d \u0438\u0441\u043a\u043b\u044e\u0447\u0438\u0442\u0435\u043b\u044c\u043d\u043e \u0440\u0430\u0437\u0440\u0430\u0431\u043e\u0442\u0447\u0438\u043a\u0430\u043c \u0438 \u0430\u0434\u043c\u0438\u043d\u0438\u0441\u0442\u0440\u0430\u0446\u0438\u0438 \u0438 \u043f\u0440\u0435\u0434\u043d\u0430\u0437\u043d\u0430\u0447\u0435\u043d \u0434\u043b\u044f \u0432\u0435\u0434\u0435\u043d\u0438\u044f \u0440\u0430\u0437\u0433\u043e\u0432\u043e\u0440\u043e\u0432 \u0431\u0435\u0437 \u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u0442\u0435\u043b\u0435\u0439."
@@ -6090,6 +6176,7 @@
         "id": "256",
         "title": "\u041a\u043e\u043c\u043c\u0435\u0440\u0447\u0435\u0441\u043a\u0438\u0435 \u0443\u0441\u043b\u0443\u0433\u0438",
         "isHasTopics": false,
+        "isHasForums": false,
         "description": null,
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbL1F2n5YIHvIpHw4z01pIhV2mZLIrz0P4VQB6Go3CxFqBs.gif"
     },
@@ -6097,6 +6184,7 @@
         "id": "258",
         "title": "\u041a\u043e\u043c\u043c\u0435\u0440\u0447\u0435\u0441\u043a\u0438\u0435 \u043e\u0431\u044a\u044f\u0432\u043b\u0435\u043d\u0438\u044f",
         "isHasTopics": true,
+        "isHasForums": false,
         "parentId": "256",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbL1F2n5YIHvIpHw4z01pIhV2mZLIrz0P4VQB6Go3CxFqBs.gif",
         "description": "\u041a\u043e\u043c\u043c\u0435\u0440\u0447\u0435\u0441\u043a\u0438\u0435 \u043e\u0431\u044a\u044f\u0432\u043b\u0435\u043d\u0438\u044f \u043e\u0442 \u0447\u0430\u0441\u0442\u043d\u044b\u0445 \u043f\u0440\u043e\u0434\u0430\u0432\u0446\u043e\u0432, \u043a\u043e\u043c\u043f\u0430\u043d\u0438\u0439 \u0438 \u043c\u0430\u0433\u0430\u0437\u0438\u043d\u043e\u0432"
@@ -6105,6 +6193,7 @@
         "id": "257",
         "title": "\u0420\u0435\u043c\u043e\u043d\u0442 \u0438 \u0421\u0435\u0440\u0432\u0438\u0441\u043d\u043e\u0435 \u043e\u0431\u0441\u043b\u0443\u0436\u0438\u0432\u0430\u043d\u0438\u0435",
         "isHasTopics": true,
+        "isHasForums": false,
         "parentId": "256",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb0fXEIf2RNsj4um6WdhO6X1DRB3z1VRtac5yTs4In.gif",
         "description": "\u041f\u043e\u0434\u0434\u0435\u0440\u0436\u043a\u0430 \u043a\u043e\u043c\u043f\u0430\u043d\u0438\u0439, \u043e\u0441\u0443\u0449\u0435\u0441\u0442\u0432\u043b\u044f\u044e\u0449\u0438\u0445 \u0440\u0435\u043c\u043e\u043d\u0442 \u0438 \u0441\u0435\u0440\u0432\u0438\u0441\u043d\u043e\u0435 \u043e\u0431\u0441\u043b\u0443\u0436\u0438\u0432\u0430\u043d\u0438\u0435"
