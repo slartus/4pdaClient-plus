@@ -2012,85 +2012,31 @@
         "description": null
     },
     {
-        "id": "562",
-        "title": "BlackBerry - \u0418\u0433\u0440\u044b",
-        "isHasTopics": true,
-        "isHasForums": false,
-        "parentId": "445",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbL1z235d6LcAz2cW2iAjfn7WCSa6byZwGGY3KJtX3paWz1nrt.gif",
-        "description": "\u0418\u0433\u0440\u044b \u0434\u043b\u044f BlackBerry"
-    },
-    {
         "id": "445",
         "title": "BlackBerry",
         "isHasTopics": true,
-        "isHasForums": true,
+        "isHasForums": false,
         "parentId": "442",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObSLqHomyhUn9ZhO66T9feJvLx4uYpF9lKfAXFYWBneyQ.gif",
-        "description": " "
+        "description": null
     },
     {
         "id": "453",
-        "title": "Maemo\/MeeGo\/Sailfish - \u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435",
+        "title": "Maemo\/MeeGo\/Sailfish - \u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0438 \u041f\u0440\u043e\u0448\u0438\u0432\u043a\u0438",
         "isHasTopics": true,
         "isHasForums": false,
         "parentId": "447",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbL1d2P58Mxw4THRM1z1nEWpDbLTEk1Hz2z2Q7cwCIqs.gif",
-        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 \u043d\u0430 Maemo\/MeeGo."
+        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 \u043d\u0430 Maemo\/MeeGo\/Sailfish."
     },
     {
         "id": "454",
-        "title": "Maemo\/MeeGo\/Sailfish - \u041f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u044b",
+        "title": "Maemo\/MeeGo\/Sailfish - \u041f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u044b \u0438 \u0418\u0433\u0440\u044b",
         "isHasTopics": true,
         "isHasForums": false,
         "parentId": "447",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbL1d2P58Mxw4THRM1z1nEWpDbLTEk1Hz2z2Q7cwCIqs.gif",
-        "description": "\u041f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u044b \u0434\u043b\u044f Maemo\/MeeGo."
-    },
-    {
-        "id": "455",
-        "title": "Maemo\/MeeGo\/Sailfish - \u0418\u0433\u0440\u044b",
-        "isHasTopics": true,
-        "isHasForums": false,
-        "parentId": "447",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbL1d2P58Mxw4THRM1z1nEWpDbLTEk1Hz2z2Q7cwCIqs.gif",
-        "description": "\u0418\u0433\u0440\u044b \u0434\u043b\u044f Maemo\/MeeGo."
-    },
-    {
-        "id": "485",
-        "title": "Maemo\/MeeGo\/Sailfish - \u0423\u043a\u0440\u0430\u0448\u0430\u0442\u0435\u043b\u044c\u0441\u0442\u0432\u0430",
-        "isHasTopics": true,
-        "isHasForums": false,
-        "parentId": "447",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbL1d2P58Mxw4THRM1z1nEWpDbLTEk1Hz2z2Q7cwCIqs.gif",
-        "description": "\u0421\u043a\u0438\u043d\u044b, \u0442\u0435\u043c\u044b, \u043a\u0430\u0440\u0442\u0438\u043d\u043a\u0438.\u041f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u044b \u0434\u043b\u044f \u0438\u0437\u043c\u0435\u043d\u0435\u043d\u0438\u044f \u0438\u043d\u0442\u0435\u0440\u0444\u0435\u0439\u0441\u0430 \u0441\u043c\u0430\u0440\u0442\u0444\u043e\u043d\u043e\u0432. "
-    },
-    {
-        "id": "486",
-        "title": "Maemo\/MeeGo\/Sailfish - \u041f\u0440\u043e\u0448\u0438\u0432\u043a\u0438",
-        "isHasTopics": true,
-        "isHasForums": false,
-        "parentId": "447",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbL1d2P58Mxw4THRM1z1nEWpDbLTEk1Hz2z2Q7cwCIqs.gif",
-        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u044f \u043f\u0440\u043e\u0448\u0438\u0432\u043e\u043a "
-    },
-    {
-        "id": "459",
-        "title": "\u041d\u043e\u0432\u0438\u043d\u043a\u0438 (\u0440\u0435\u0434\u0438\u0440\u0435\u043a\u0442)",
-        "isHasTopics": true,
-        "isHasForums": false,
-        "parentId": "447",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObMLEbfRWvz0P1CfGINA3e2q3z1VRNKz1vQ26yUF.gif",
-        "description": null
-    },
-    {
-        "id": "452",
-        "title": "\u0412\u044b\u0431\u043e\u0440 \u0438 \u0421\u0440\u0430\u0432\u043d\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 (\u0440\u0435\u0434\u0438\u0440\u0435\u043a\u0442)",
-        "isHasTopics": true,
-        "isHasForums": false,
-        "parentId": "447",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObMHcZIxMhz11HtUM29kpKq0HIuyp4msbtI.gif",
-        "description": null
+        "description": "\u041f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u044b \u0438 \u0438\u0433\u0440\u044b \u0434\u043b\u044f Maemo\/MeeGo\/Sailfish."
     },
     {
         "id": "447",
