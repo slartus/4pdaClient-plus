@@ -80,7 +80,7 @@ class ForumFragment : GeneralFragment() {
             forumId = arguments?.getString(FORUM_ID_KEY, null)
         }
         if (forumId == null) {
-            forumId = Preferences.List.getStartForumId()
+            forumId = Preferences.List.startForumId
         }
         setTitle(mTitle)
         initAdapter()

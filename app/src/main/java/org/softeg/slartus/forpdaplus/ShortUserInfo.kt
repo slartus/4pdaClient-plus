@@ -315,7 +315,7 @@ class ShortUserInfo internal constructor(activity: MainActivity, private val vie
     private fun getOutputMediaFile(url: String): File? {
         // To be safe, you should check that the SDCard is mounted
         // using Environment.getExternalStorageState() before doing this.
-        val mediaStorageDir = File(Preferences.System.getSystemDir())
+        val mediaStorageDir = File(Preferences.System.systemDir)
 
         // This location works best if you want the created images to be shared
         // between applications and persist after your app has been uninstalled.

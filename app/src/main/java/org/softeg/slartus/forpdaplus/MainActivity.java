@@ -42,7 +42,6 @@ import com.google.android.material.navigation.NavigationView;
 
 import org.softeg.slartus.forpdaapi.search.SearchSettings;
 import org.softeg.slartus.forpdacommon.ExtPreferences;
-import org.softeg.slartus.forpdaplus.activity.NewYear;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.fragments.GeneralFragment;
 import org.softeg.slartus.forpdaplus.fragments.UserInfoMenuFragment;
@@ -233,7 +232,6 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
                 getWindow().getDecorView().post(setStatusBarHeight);
             }
 
-            NewYear.check(this);
             NavigationView leftDrawer = findViewById(R.id.left_drawer);
             int scale = (int) getResources().getDisplayMetrics().density;
             boolean bottom = getPreferences().getBoolean("isMarginBottomNav", false);

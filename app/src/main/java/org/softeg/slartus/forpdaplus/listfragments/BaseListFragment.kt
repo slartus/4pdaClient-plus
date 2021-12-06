@@ -218,7 +218,7 @@ abstract class BaseListFragment : BaseBrickFragment(), AdapterView.OnItemClickLi
     }
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
-        if (!Preferences.Lists.getScrollByButtons())
+        if (!Preferences.Lists.scrollByButtons)
             return false
 
         val action = event.action

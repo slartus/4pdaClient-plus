@@ -262,7 +262,7 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
 
     private fun confirmSendMail(): Single<Boolean> {
         val result = SingleSubject.create<Boolean>()
-        if (Preferences.Topic.getConfirmSend()) {
+        if (Preferences.Topic.confirmSend) {
             val dialog = MaterialDialog.Builder(context!!)
                 .title(R.string.is_sure)
                 .content(R.string.confirm_sending)
@@ -635,8 +635,8 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
                 mEditpost,
                 text,
                 editPostReason,
-                Preferences.Topic.Post.getEnableEmotics(),
-                Preferences.Topic.Post.getEnableSign()
+                Preferences.Topic.Post.enableEmotics,
+                Preferences.Topic.Post.enableSign
             )
                 .execute()
         } else {
@@ -645,8 +645,8 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
                 mEditpost,
                 text,
                 editPostReason,
-                Preferences.Topic.Post.getEnableEmotics(),
-                Preferences.Topic.Post.getEnableSign()
+                Preferences.Topic.Post.enableEmotics,
+                Preferences.Topic.Post.enableSign
             )
                 .execute()
         }

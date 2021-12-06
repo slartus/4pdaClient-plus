@@ -29,7 +29,7 @@ internal constructor(private val mHeaderset: List<Forum>, private val mDataset: 
         private const val DATA_VIEW_TYPE = 3
     }
 
-    private val mIsShowImages: Boolean? = Preferences.Forums.isShowImages()
+    private val mIsShowImages: Boolean? = Preferences.Forums.isShowImages
 
     interface OnClickListener {
         fun onItemClick(v: View)

@@ -62,7 +62,7 @@ class TopicBodyBuilder(context: Context?, logined: Boolean, topic: ExtTopic?, ur
             addButtons(m_Body, topic!!.currentPage, topic!!.pagesCount,
                     m_IsWebviewAllowJavascriptInterface, useSelectTextAsNumbers = false, top = false)
         }
-        if (Preferences.Topic.getReadersAndWriters()) {
+        if (Preferences.Topic.readersAndWriters) {
             m_Body.append("<div class=\"who\"><a id=\"viewers\" ").append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "showReadingUsers"))
                     .append("><span>Кто читает тему</span></a>\n")
             m_Body.append("<a id=\"writers\" ").append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "showWriters"))
@@ -263,6 +263,6 @@ class TopicBodyBuilder(context: Context?, logined: Boolean, topic: ExtTopic?, ur
         m_UrlParams = urlParams
         this.topic = topic
         m_IsLoadImages = WebViewExternals.isLoadImages("theme")
-        m_IsShowAvatars = Preferences.Topic.isShowAvatars()
+        m_IsShowAvatars = Preferences.Topic.isShowAvatars
     }
 }
