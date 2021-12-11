@@ -171,10 +171,10 @@ class Http private constructor(context: Context, appName: String, appVersion: St
         val builder = newClientBuiler(context)
             .cookieJar(JavaNetCookieJar(cookieHandler))
 
-//        if (BuildConfig.DEBUG)
-//            builder.addInterceptor(DebugLoggingInterceptor())
-//        else
-//            builder.addInterceptor(LoggingInterceptor())
+        if (BuildConfig.DEBUG)
+            builder.addInterceptor(DebugLoggingInterceptor())
+        else
+            builder.addInterceptor(LoggingInterceptor())
 
         client = builder
             .build()    // socket timeout

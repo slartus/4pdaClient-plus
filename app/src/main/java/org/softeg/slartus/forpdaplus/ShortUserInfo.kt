@@ -6,6 +6,7 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.os.AsyncTask
 import android.os.Handler
+import android.os.Looper
 import android.text.InputType
 import android.text.TextUtils
 import android.util.Log
@@ -14,6 +15,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.Group
+import coil.load
 import com.afollestad.materialdialogs.MaterialDialog
 import com.nostra13.universalimageloader.core.ImageLoader
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener
@@ -57,7 +59,7 @@ class ShortUserInfo internal constructor(activity: MainActivity, private val vie
 
     private val profileGroup: Group
     private val avatarsGroup: Group
-    var mHandler = Handler()
+    var mHandler = Handler(Looper.getMainLooper())
     var client: Client = Client.getInstance()
     private val isSquare: Boolean
     private var avatarUrl = ""
@@ -119,7 +121,7 @@ class ShortUserInfo internal constructor(activity: MainActivity, private val vie
 
         val imgFile = File(prefs.getString("userInfoBg", "")!!)
         if (imgFile.exists()) {
-            ImageLoader.getInstance().displayImage("file://" + imgFile.path, userBackground)
+//            ImageLoader.getInstance().displayImage("file://" + imgFile.path, userBackground)
         }
 
         avatarsGroup.setAllOnClickListener {
@@ -218,8 +220,7 @@ class ShortUserInfo internal constructor(activity: MainActivity, private val vie
                     if (prefs.getBoolean("isUserBackground", false)) {
                         val imgFile = File(prefs.getString("userInfoBg", "")!!)
                         if (imgFile.exists()) {
-                            ImageLoader.getInstance()
-                                .displayImage("file:///" + imgFile.path, userBackground)
+                            userBackground.load(imgFile)
                         }
                     } else {
                         if ((avatarUrl != prefs.getString("userAvatarUrl", "")) or (prefs.getString(

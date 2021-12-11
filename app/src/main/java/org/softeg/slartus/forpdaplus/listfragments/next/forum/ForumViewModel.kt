@@ -1,23 +1,28 @@
 package org.softeg.slartus.forpdaplus.listfragments.next.forum
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.reactivex.schedulers.Schedulers
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 import org.softeg.slartus.forpdaapi.Forum
+import org.softeg.slartus.forpdaplus.core_lib.ui.adapter.Item
+import org.softeg.slartus.forpdaplus.feature_forum.di.ForumService
 import org.softeg.slartus.forpdaplus.feature_forum.repository.ForumRepository
-import org.softeg.slartus.forpdaplus.repositories.UserInfo
+import org.softeg.slartus.forpdaplus.listfragments.next.forum.fingerprints.ForumCurrentHeaderItem
+import org.softeg.slartus.forpdaplus.listfragments.next.forum.fingerprints.ForumDataItem
+import org.softeg.slartus.forpdaplus.listfragments.next.forum.fingerprints.ForumHeaderItem
+import org.softeg.slartus.forpdaplus.listfragments.next.forum.fingerprints.ForumNoTopicsHeaderItem
 import org.softeg.slartus.forpdaplus.repositories.UserInfoRepository
 import javax.inject.Inject
 
 @HiltViewModel
 class ForumViewModel @Inject constructor(
+    private val state: SavedStateHandle,
+    private val userInfoRepository: UserInfoRepository,
     private val forumRepository: ForumRepository,
-    private val userInfoRepository: UserInfoRepository
+    private val forumService: ForumService
 ) : ViewModel() {
     private val errorHandler = CoroutineExceptionHandler { _, ex ->
         _uiState.value = ViewState.Error(ex)
@@ -28,15 +33,22 @@ class ForumViewModel @Inject constructor(
 
     private val _loading = MutableStateFlow(true)
     val loading: StateFlow<Boolean> = _loading
+
     private var items = emptyList<Forum>()
-    var forumId: String? = null
-    var userInfo: UserInfo? = null
-        private set
+    private var crumbs = emptyList<Forum>()
+    var forumId: String? = state.get(ForumFragment.FORUM_ID_KEY)
+        set(value) {
+            field = value
+            state[ForumFragment.FORUM_ID_KEY] = value
+        }
 
     init {
         _loading.value = true
 
         viewModelScope.launch(Dispatchers.Default + errorHandler) {
+            launch {
+                forumRepository.load()
+            }
             launch {
                 forumRepository.forum
                     .distinctUntilChanged()
@@ -52,7 +64,8 @@ class ForumViewModel @Inject constructor(
                                 parentId = it.parentId
                             }
                         }
-                        refreshDataState()
+
+                        refreshDataState(false)
 
                         _loading.value = false
                     }
@@ -60,10 +73,44 @@ class ForumViewModel @Inject constructor(
         }
     }
 
-    private fun refreshDataState() {
+    fun reload() {
+        viewModelScope.launch(Dispatchers.Default + errorHandler) {
+            _loading.value = true
+            forumRepository.load()
+            _loading.value = false
+        }
+    }
+
+    fun isLogined(): Boolean {
+        var logined: Boolean
+        runBlocking(Dispatchers.Default) {
+            logined = userInfoRepository.userInfo.firstOrNull()?.logined == true
+        }
+        return logined
+    }
+
+    private fun refreshDataState(scrollToTop: Boolean) {
+        crumbs = buildCrumbs(items)
+
+        val headerItems = crumbs.dropLast(1).map { ForumHeaderItem(it.id, it.title) }
+        val currentHeaderItems = listOfNotNull(crumbs.lastOrNull()).map {
+            if (it.isHasTopics)
+                ForumCurrentHeaderItem(it.id, it.title)
+            else
+                ForumNoTopicsHeaderItem(it.id, it.title)
+        }
         val currentItems = items.filter { it.parentId == forumId }
-        val crumbs = buildCrumbs(items)
-        _uiState.value = ViewState.Success(currentItems, crumbs)
+            .map {
+                ForumDataItem(
+                    it.id,
+                    it.title,
+                    it.description,
+                    it.iconUrl,
+                    it.isHasForums
+                )
+            }
+        val items = headerItems + currentHeaderItems + currentItems
+        _uiState.value = ViewState.Success(items, scrollToTop)
     }
 
     private fun buildCrumbs(items: List<Forum>): List<Forum> {
@@ -89,7 +136,7 @@ class ForumViewModel @Inject constructor(
 
     fun refreshDataState(forumId: String?) {
         this.forumId = forumId
-        refreshDataState()
+        refreshDataState(true)
     }
 
     fun load() {
@@ -98,10 +145,22 @@ class ForumViewModel @Inject constructor(
         }
     }
 
+    fun onBack(): Boolean {
+        if (crumbs.size > 1) {
+            refreshDataState(crumbs.dropLast(1).last().id)
+            return true
+        }
+        return false
+    }
+
+    fun getCurrentForum(): Forum? = items.firstOrNull { it.id == forumId }
+    fun markForumRead(forumId: String) {
+        forumService.markAsRead(forumId)
+    }
+
     sealed class ViewState {
         object Initialize : ViewState()
-
-        data class Success(val items: List<Forum>, val crumbs: List<Forum>) : ViewState()
+        data class Success(val items: List<Item>, val scrollToTop: Boolean) : ViewState()
         data class Error(val exception: Throwable) : ViewState()
     }
 }

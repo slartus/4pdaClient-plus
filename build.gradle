@@ -29,14 +29,16 @@ allprojects {
 
 ext {
     compileSdkVersion = 31
-    targetSdkVersion = 31
+    targetSdkVersion = 30
     minSdk = 16
 
     appcompat = '1.4.0'
     coroutines = '1.5.2'
+    coil = '1.4.0'
     hilt = "2.38.1"
     jsoup = '1.13.1'
     lifecycle='2.4.0'
+    recyclerview='1.2.1'
     material='1.4.0'
     okhttp3 = "3.12.3"// увеличивать нельзя!!
     room = "2.3.0"

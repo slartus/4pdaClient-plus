@@ -7,6 +7,7 @@ import org.softeg.slartus.forpdaapi.ForumsApi
 import org.softeg.slartus.forpdacommon.sameContentWith
 import org.softeg.slartus.forpdaplus.db.PaperDb
 
+@Deprecated("use org.softeg.slartus.forpdaplus.feature_forum.repository.ForumRepository instead")
 class ForumsRepository private constructor() {
     private object Holder {
         val INSTANCE = ForumsRepository()

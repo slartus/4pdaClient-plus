@@ -127,6 +127,7 @@ android {
     }
 }
 dependencies {
+    implementation project(':core-res')
     api project(':forpdacommon')
     api project(':forpdanotifyservice')
     api project(':4pdasources')
@@ -139,8 +140,8 @@ dependencies {
     implementation "androidx.appcompat:appcompat:$rootProject.appcompat"
     implementation "com.google.android.material:material:$rootProject.material"
 //    api "com.android.support:preference-v7:$rootProject.supportLibraryVersion"
-    api 'androidx.cardview:cardview:1.0.0'
-    api 'androidx.recyclerview:recyclerview:1.2.1'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation "androidx.recyclerview:recyclerview:$rootProject.recyclerview"
     api 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     api 'com.readystatesoftware.sqliteasset:sqliteassethelper:2.0.1'
     api 'com.github.chrisbanes.photoview:library:1.2.4'
@@ -171,6 +172,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$rootProject.lifecycle"
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.5'
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
+    implementation("io.coil-kt:coil:$rootProject.coil")
 
     // implementation 'com.gu.android:toolargetool:0.3.0' логирование saveinstancestate
     testImplementation 'junit:junit:4.13.2'

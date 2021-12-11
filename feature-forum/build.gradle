@@ -37,7 +37,8 @@ android {
 }
 
 dependencies {
-
+    implementation project(':core-res')
+    implementation project(":core-lib")
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation "androidx.appcompat:appcompat:$rootProject.appcompat"
     implementation "com.google.android.material:material:$rootProject.material"

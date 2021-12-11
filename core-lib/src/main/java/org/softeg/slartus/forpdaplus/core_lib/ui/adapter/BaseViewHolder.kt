@@ -1,4 +1,4 @@
-package org.softeg.slartus.forpdaplus.core_lib.adapter
+package org.softeg.slartus.forpdaplus.core_lib.ui.adapter
 
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
@@ -13,6 +13,5 @@ abstract class BaseViewHolder<out V : ViewBinding, I : Item>(
         this.item = item
     }
 }
-
 
 interface Item

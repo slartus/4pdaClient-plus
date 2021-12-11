@@ -36,7 +36,6 @@ class ForumsApi : ArrayList<Forum>() {
 
         @Throws(Throwable::class)
         fun markForumAsRead(httpClient: IHttpClient, forumId: CharSequence) {
-
             val qparams = ArrayList<NameValuePair>()
             qparams.add(BasicNameValuePair("act", "login"))
             qparams.add(BasicNameValuePair("CODE", "04"))

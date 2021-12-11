@@ -7,20 +7,28 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.view.menu.ActionMenuItemView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import com.nostra13.universalimageloader.core.ImageLoader
 import com.nostra13.universalimageloader.core.assist.FailReason
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener
 import org.softeg.slartus.forpdaapi.Forum
 import org.softeg.slartus.forpdaplus.R
+import org.softeg.slartus.forpdaplus.core_lib.ui.adapter.BaseViewHolder
+import org.softeg.slartus.forpdaplus.core_lib.ui.adapter.Item
+import org.softeg.slartus.forpdaplus.core_lib.ui.adapter.ItemFingerprint
+import org.softeg.slartus.forpdaplus.databinding.ForumHeaderItemBinding
 import org.softeg.slartus.forpdaplus.prefs.Preferences
 
-/*
- * Created by slinkin on 04.02.2019.
- */
 internal class ForumsAdapter// Provide a suitable constructor (depends on the kind of dataset)
-internal constructor(private val mHeaderset: List<Forum>, private val mDataset: List<Forum>,
-                     private val mOnClickListener: OnClickListener, private val mOnLongClickListener: OnLongClickListener) :
-        RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+internal constructor(
+    private val mHeaderset: List<Forum>,
+    private val mDataset: List<Forum>,
+    private val mOnClickListener: OnClickListener,
+    private val mOnLongClickListener: OnLongClickListener
+) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
         private const val HEADER_VIEW_TYPE = 0
@@ -56,7 +64,7 @@ internal constructor(private val mHeaderset: List<Forum>, private val mDataset: 
         // each data item is just a string in this case
         internal var mText1: TextView = v.findViewById(android.R.id.text1)
         internal var mText2: TextView = v.findViewById(android.R.id.text2)
-        internal var mImageView: ImageView = v.findViewById(R.id.imageView3)
+        internal var mImageView: ImageView = v.findViewById(R.id.icon_imageView)
 
     }
 
@@ -64,7 +72,6 @@ internal constructor(private val mHeaderset: List<Forum>, private val mDataset: 
         // each data item is just a string in this case
         var mText: TextView = v.findViewById(R.id.textView3)
     }
-
 
     private fun getItem(position: Int): Forum? {
         when (getItemViewType(position)) {
@@ -84,20 +91,20 @@ internal constructor(private val mHeaderset: List<Forum>, private val mDataset: 
         } else DATA_VIEW_TYPE
     }
 
-
     internal fun notifyDataSetChangedWithLayout() {
         // mIsShowImages = Preferences.Forums.isShowImages();
         notifyDataSetChanged()
     }
 
-
     // Create new views (invoked by the layout manager)
-    override fun onCreateViewHolder(parent: ViewGroup,
-                                    viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): RecyclerView.ViewHolder {
         return when (viewType) {
             DATA_VIEW_TYPE -> {
                 val v = LayoutInflater.from(parent.context)
-                        .inflate(R.layout.forum_item, parent, false)
+                    .inflate(R.layout.forum_item, parent, false)
 
                 val viewHolder = ViewHolder(v)
                 if (mIsShowImages != true)
@@ -111,8 +118,7 @@ internal constructor(private val mHeaderset: List<Forum>, private val mDataset: 
             }
             HEADER_VIEW_TYPE -> {
                 val headerV = LayoutInflater.from(parent.context)
-                        .inflate(R.layout.forum_header_item, parent, false)
-
+                    .inflate(R.layout.forum_header_item, parent, false)
 
                 val headerViewHolder = HeaderViewHolder(headerV)
                 headerV.setOnClickListener { v13 -> mOnClickListener.onHeaderClick(v13) }
@@ -124,8 +130,7 @@ internal constructor(private val mHeaderset: List<Forum>, private val mDataset: 
             }
             HEADER_CURRENT_VIEW_TYPE -> {
                 val headerCV = LayoutInflater.from(parent.context)
-                        .inflate(R.layout.forum_header_current_item, parent, false)
-
+                    .inflate(R.layout.forum_header_current_item, parent, false)
 
                 val headerCViewHolder = HeaderViewHolder(headerCV)
                 headerCV.setOnClickListener { v15 -> mOnClickListener.onHeaderTopicsClick(v15) }
@@ -138,8 +143,7 @@ internal constructor(private val mHeaderset: List<Forum>, private val mDataset: 
             }
             HEADER_CURRENT_NOTOPICS_VIEW_TYPE -> {
                 val headerCNV = LayoutInflater.from(parent.context)
-                        .inflate(R.layout.forum_header_notopics_item, parent, false)
-
+                    .inflate(R.layout.forum_header_notopics_item, parent, false)
 
                 val headerCNViewHolder = HeaderViewHolder(headerCNV)
                 headerCNV.setOnClickListener { v17 -> mOnClickListener.onHeaderClick(v17) }
@@ -170,27 +174,27 @@ internal constructor(private val mHeaderset: List<Forum>, private val mDataset: 
 
                 if (forum.iconUrl != null && mIsShowImages == true) {
                     ImageLoader.getInstance().displayImage(forum.iconUrl,
-                            holder.mImageView,
-                            object : ImageLoadingListener {
+                        holder.mImageView,
+                        object : ImageLoadingListener {
 
-                                override fun onLoadingStarted(p1: String?, p2: View?) {
-                                    p2?.visibility = View.INVISIBLE
-                                    //holder.mProgressBar.setVisibility(View.VISIBLE);
-                                }
+                            override fun onLoadingStarted(p1: String?, p2: View?) {
+                                p2?.visibility = View.INVISIBLE
+                                //holder.mProgressBar.setVisibility(View.VISIBLE);
+                            }
 
-                                override fun onLoadingFailed(p1: String?, p2: View?, p3: FailReason?) {
-                                    // holder.mProgressBar.setVisibility(View.INVISIBLE);
-                                }
+                            override fun onLoadingFailed(p1: String?, p2: View?, p3: FailReason?) {
+                                // holder.mProgressBar.setVisibility(View.INVISIBLE);
+                            }
 
-                                override fun onLoadingComplete(p1: String?, p2: View?, p3: Bitmap?) {
-                                    p2?.visibility = View.VISIBLE
-                                    // holder.mProgressBar.setVisibility(View.INVISIBLE);
-                                }
+                            override fun onLoadingComplete(p1: String?, p2: View?, p3: Bitmap?) {
+                                p2?.visibility = View.VISIBLE
+                                // holder.mProgressBar.setVisibility(View.INVISIBLE);
+                            }
 
-                                override fun onLoadingCancelled(p1: String?, p2: View?) {
+                            override fun onLoadingCancelled(p1: String?, p2: View?) {
 
-                                }
-                            })
+                            }
+                        })
                 }
             }
             HEADER_VIEW_TYPE -> {

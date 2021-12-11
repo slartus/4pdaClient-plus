@@ -10,6 +10,7 @@ interface ForumDependencies {
 interface ForumService {
     suspend fun getGithubForum(): List<Forum>
     suspend fun getSlartusForum(): List<Forum>
+    fun markAsRead(forumId: String)
 }
 
 interface ForumDb {

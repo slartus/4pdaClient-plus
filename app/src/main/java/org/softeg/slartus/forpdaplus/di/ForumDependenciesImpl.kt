@@ -2,21 +2,23 @@ package org.softeg.slartus.forpdaplus.di
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import org.softeg.slartus.forpdacommon.URIUtils
 import org.softeg.slartus.forpdaplus.core_db.forum.ForumDao
 import org.softeg.slartus.forpdaplus.feature_forum.di.ForumDb
 import org.softeg.slartus.forpdaplus.feature_forum.di.ForumDependencies
 import org.softeg.slartus.forpdaplus.feature_forum.di.ForumService
+import org.softeg.slartus.hosthelper.HostHelper
 import ru.slartus.http.Http
 import javax.inject.Inject
-import org.softeg.slartus.forpdaplus.feature_forum.entity.Forum as FeatureForum
 import org.softeg.slartus.forpdaplus.core_db.forum.Forum as DbForum
+import org.softeg.slartus.forpdaplus.feature_forum.entity.Forum as FeatureForum
 
 class ForumDependenciesImpl @Inject constructor(
     override val forumsService: ForumService,
     override val forumsDb: ForumDb
 ) : ForumDependencies
 
-class ForumServiceImpl @Inject constructor(): ForumService {
+class ForumServiceImpl @Inject constructor() : ForumService {
     override suspend fun getGithubForum(): List<FeatureForum> {
         val response = Http.instance
             .performGet("https://raw.githubusercontent.com/slartus/4pdaClient-plus/master/forum_struct.json")
@@ -31,6 +33,17 @@ class ForumServiceImpl @Inject constructor(): ForumService {
 
         val itemsListType = object : TypeToken<List<FeatureForum>>() {}.type
         return Gson().fromJson(response.responseBody, itemsListType)
+    }
+
+    override fun markAsRead(forumId: String) {
+        val queryParams =
+            mapOf("act" to "login", "CODE" to "04", "f" to forumId, "fromforum" to forumId)
+
+        val uri =
+            URIUtils.createURI("http", HostHelper.host, "/forum/index.php", queryParams, "UTF-8")
+
+
+        Http.instance.performGet(uri)
     }
 }
 

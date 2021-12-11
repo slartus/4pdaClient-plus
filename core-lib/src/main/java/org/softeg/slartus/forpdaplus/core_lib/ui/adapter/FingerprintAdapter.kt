@@ -1,4 +1,4 @@
-package org.softeg.slartus.forpdaplus.core_lib.adapter
+package org.softeg.slartus.forpdaplus.core_lib.ui.adapter
 
 
 import android.view.LayoutInflater
