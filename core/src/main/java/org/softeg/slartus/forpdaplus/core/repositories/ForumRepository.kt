@@ -1,4 +1,12 @@
-package org.softeg.slartus.forpdaplus.feature_forum.entity
+package org.softeg.slartus.forpdaplus.core.repositories
+
+import kotlinx.coroutines.flow.Flow
+
+interface ForumRepository {
+    val forum: Flow<List<Forum>>
+    suspend fun load()
+    suspend fun getAll(): List<Forum>
+}
 
 data class Forum(
     val id: String?,

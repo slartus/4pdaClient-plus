@@ -1,6 +1,6 @@
 package org.softeg.slartus.forpdaplus.feature_forum.di
 
-import org.softeg.slartus.forpdaplus.feature_forum.entity.Forum
+import org.softeg.slartus.forpdaplus.core.repositories.Forum
 
 interface ForumDependencies {
     val forumsService: ForumService

@@ -30,6 +30,7 @@ import org.softeg.slartus.forpdacommon.ExtPreferences;
 import org.softeg.slartus.forpdanotifyservice.favorites.FavoritesNotifier;
 import org.softeg.slartus.forpdanotifyservice.qms.QmsNotifier;
 import org.softeg.slartus.forpdaplus.acra.ACRAReportSenderFactory;
+import org.softeg.slartus.forpdaplus.core.repositories.ForumRepository;
 import org.softeg.slartus.forpdaplus.db.DbHelper;
 import org.softeg.slartus.forpdaplus.prefs.PreferencesActivity;
 import org.softeg.slartus.forpdaplus.repositories.ForumsRepository;
@@ -40,6 +41,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import javax.inject.Inject;
 
 import dagger.hilt.android.HiltAndroidApp;
 import io.paperdb.Paper;
@@ -69,6 +72,8 @@ import ru.slartus.http.Http;
         reportSenderFactoryClasses = {ACRAReportSenderFactory.class})
 @HiltAndroidApp
 public class App extends MultiDexApplication {
+    @Inject
+    ForumRepository forumRepository;
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     public static String Host = HostHelper.getHost();
@@ -137,7 +142,7 @@ public class App extends MultiDexApplication {
         Http.Companion.init(this, getString(R.string.app_name), getPackageInfo().versionName);
         Client.getInstance().checkLoginByCookies();
         InternetConnection.getInstance().subscribeInternetState();
-        ForumsRepository.getInstance();
+        ForumsRepository.getInstance().init(forumRepository);
     }
 
     @Override

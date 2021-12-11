@@ -1,15 +1,15 @@
 package org.softeg.slartus.forpdaplus.feature_forum.repository
 
 import kotlinx.coroutines.flow.MutableStateFlow
+import org.softeg.slartus.forpdaplus.core.repositories.Forum
 import org.softeg.slartus.forpdaplus.feature_forum.di.ForumDb
 import org.softeg.slartus.forpdaplus.feature_forum.di.ForumService
-import org.softeg.slartus.forpdaplus.feature_forum.entity.Forum
 import javax.inject.Inject
 
 class ForumRepositoryImpl @Inject constructor(
     private val forumService: ForumService,
     private val forumDb: ForumDb
-) : ForumRepository {
+) : org.softeg.slartus.forpdaplus.core.repositories.ForumRepository {
 
     private val _forum = MutableStateFlow<List<Forum>>(emptyList())
     override val forum

@@ -11,7 +11,7 @@ import org.softeg.slartus.hosthelper.HostHelper
 import ru.slartus.http.Http
 import javax.inject.Inject
 import org.softeg.slartus.forpdaplus.core_db.forum.Forum as DbForum
-import org.softeg.slartus.forpdaplus.feature_forum.entity.Forum as FeatureForum
+import org.softeg.slartus.forpdaplus.core.repositories.Forum as FeatureForum
 
 class ForumDependenciesImpl @Inject constructor(
     override val forumsService: ForumService,

@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.*
 import org.softeg.slartus.forpdaapi.Forum
 import org.softeg.slartus.forpdaplus.core_lib.ui.adapter.Item
 import org.softeg.slartus.forpdaplus.feature_forum.di.ForumService
-import org.softeg.slartus.forpdaplus.feature_forum.repository.ForumRepository
+import org.softeg.slartus.forpdaplus.core.repositories.ForumRepository
 import org.softeg.slartus.forpdaplus.listfragments.next.forum.fingerprints.ForumCurrentHeaderItem
 import org.softeg.slartus.forpdaplus.listfragments.next.forum.fingerprints.ForumDataItem
 import org.softeg.slartus.forpdaplus.listfragments.next.forum.fingerprints.ForumHeaderItem
@@ -21,7 +21,7 @@ import javax.inject.Inject
 class ForumViewModel @Inject constructor(
     private val state: SavedStateHandle,
     private val userInfoRepository: UserInfoRepository,
-    private val forumRepository: ForumRepository,
+    private val forumRepository: org.softeg.slartus.forpdaplus.core.repositories.ForumRepository,
     private val forumService: ForumService
 ) : ViewModel() {
     private val errorHandler = CoroutineExceptionHandler { _, ex ->

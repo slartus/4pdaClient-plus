@@ -127,6 +127,7 @@ android {
     }
 }
 dependencies {
+    implementation project(':core')
     implementation project(':core-res')
     api project(':forpdacommon')
     api project(':forpdanotifyservice')
