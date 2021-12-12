@@ -175,6 +175,8 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
     implementation("io.coil-kt:coil:$rootProject.coil")
 
+    implementation "com.jakewharton.timber:timber:$rootProject.timber"
+
     // implementation 'com.gu.android:toolargetool:0.3.0' логирование saveinstancestate
     testImplementation 'junit:junit:4.13.2'
     implementation 'com.evernote:android-job:1.4.2'

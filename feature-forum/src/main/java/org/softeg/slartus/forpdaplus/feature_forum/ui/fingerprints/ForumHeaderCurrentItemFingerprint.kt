@@ -1,14 +1,16 @@
-package org.softeg.slartus.forpdaplus.listfragments.next.forum.fingerprints
+package org.softeg.slartus.forpdaplus.feature_forum.ui.fingerprints
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
-import org.softeg.slartus.forpdaplus.R
+
 import org.softeg.slartus.forpdaplus.core_lib.ui.adapter.BaseViewHolder
 import org.softeg.slartus.forpdaplus.core_lib.ui.adapter.Item
 import org.softeg.slartus.forpdaplus.core_lib.ui.adapter.ItemFingerprint
-import org.softeg.slartus.forpdaplus.databinding.ForumHeaderCurrentItemBinding
+
+import org.softeg.slartus.forpdaplus.feature_forum.R
+import org.softeg.slartus.forpdaplus.feature_forum.databinding.ForumHeaderCurrentItemBinding
 
 class ForumHeaderCurrentItemFingerprint(
     private val onClickListener: (view: View?, item: ForumCurrentHeaderItem) -> Unit,
@@ -42,9 +44,11 @@ class ForumHeaderCurrentItemFingerprint(
     override fun getDiffUtil() = diffUtil
 }
 
-class ForumCurrentHeaderViewHolder(binding: ForumHeaderCurrentItemBinding,
-                                   private val onClickListener: (view: View?, item: ForumCurrentHeaderItem) -> Unit,
-                                   private val onLongClickListener: (view: View?, item: ForumCurrentHeaderItem) -> Boolean) :
+class ForumCurrentHeaderViewHolder(
+    binding: ForumHeaderCurrentItemBinding,
+    private val onClickListener: (view: View?, item: ForumCurrentHeaderItem) -> Unit,
+    private val onLongClickListener: (view: View?, item: ForumCurrentHeaderItem) -> Boolean
+) :
     BaseViewHolder<ForumHeaderCurrentItemBinding, ForumCurrentHeaderItem>(binding) {
     override fun onBind(item: ForumCurrentHeaderItem) {
         super.onBind(item)
@@ -56,4 +60,4 @@ class ForumCurrentHeaderViewHolder(binding: ForumHeaderCurrentItemBinding,
     }
 }
 
-data class ForumCurrentHeaderItem(val id: String?, val title: String) : Item
+data class ForumCurrentHeaderItem(val id: String?, val title: String?) : Item

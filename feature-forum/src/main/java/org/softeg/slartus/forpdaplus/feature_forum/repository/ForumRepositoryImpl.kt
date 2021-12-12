@@ -1,6 +1,10 @@
 package org.softeg.slartus.forpdaplus.feature_forum.repository
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.softeg.slartus.forpdaplus.core.repositories.Forum
 import org.softeg.slartus.forpdaplus.feature_forum.di.ForumDb
 import org.softeg.slartus.forpdaplus.feature_forum.di.ForumService
@@ -16,17 +20,29 @@ class ForumRepositoryImpl @Inject constructor(
         get() = _forum
 
     override suspend fun load() {
-        _forum.value = forumDb.getAll()
-        val forums = try {
-            forumService.getGithubForum()
-        } catch (ex: Throwable) {
-            forumService.getSlartusForum()
+        withContext(Dispatchers.IO) {
+            withContext(Dispatchers.Main) {
+                _forum.value = forumDb.getAll()
+            }
+            val forums = try {
+                forumService.getGithubForum()
+            } catch (ex: Throwable) {
+                forumService.getSlartusForum()
+            }
+            forumDb.merge(forums)
+            withContext(Dispatchers.Main) {
+                _forum.value = forumDb.getAll()
+            }
         }
-        forumDb.merge(forums)
-        _forum.value = forumDb.getAll()
     }
 
     override suspend fun getAll(): List<Forum> {
         return forumDb.getAll()
+    }
+
+    override suspend fun markAsRead(forumId: String) {
+        withContext(Dispatchers.IO) {
+            forumService.markAsRead(forumId)
+        }
     }
 }

@@ -49,6 +49,7 @@ import io.paperdb.Paper;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import ru.slartus.http.Http;
+import timber.log.Timber;
 
 /**
  * User: slinkin
@@ -108,6 +109,7 @@ public class App extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+        initTimber();
         //TooLargeTool.startLogging(this);//логирование saveinstancestate
         org.softeg.slartus.forpdacommon.FACTORY.init(this);
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
@@ -143,6 +145,12 @@ public class App extends MultiDexApplication {
         Client.getInstance().checkLoginByCookies();
         InternetConnection.getInstance().subscribeInternetState();
         ForumsRepository.getInstance().init(forumRepository);
+    }
+
+    private void initTimber() {
+        if (BuildConfig.DEBUG) {
+            Timber.plant(new Timber.DebugTree());
+        }
     }
 
     @Override

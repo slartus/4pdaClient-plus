@@ -4,7 +4,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import org.softeg.slartus.forpdaplus.repositories.UserInfoRepository
+import org.softeg.slartus.forpdaplus.core.repositories.UserInfoRepository
 import org.softeg.slartus.forpdaplus.repositories.UserInfoRepositoryImpl
 import javax.inject.Singleton
 

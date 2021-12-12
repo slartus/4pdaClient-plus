@@ -1,14 +1,16 @@
-package org.softeg.slartus.forpdaplus.listfragments.next.forum.fingerprints
+package org.softeg.slartus.forpdaplus.feature_forum.ui.fingerprints
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
-import org.softeg.slartus.forpdaplus.R
+
 import org.softeg.slartus.forpdaplus.core_lib.ui.adapter.BaseViewHolder
 import org.softeg.slartus.forpdaplus.core_lib.ui.adapter.Item
 import org.softeg.slartus.forpdaplus.core_lib.ui.adapter.ItemFingerprint
-import org.softeg.slartus.forpdaplus.databinding.ForumHeaderItemBinding
+import org.softeg.slartus.forpdaplus.feature_forum.R
+
+import org.softeg.slartus.forpdaplus.feature_forum.databinding.ForumHeaderItemBinding
 
 class ForumHeaderItemFingerprint(
     private val onClickListener: (view: View?, item: ForumHeaderItem) -> Unit,
@@ -60,4 +62,4 @@ class ForumHeaderViewHolder(
     }
 }
 
-data class ForumHeaderItem(val id: String?, val title: String) : Item
+data class ForumHeaderItem(val id: String?, val title: String?) : Item

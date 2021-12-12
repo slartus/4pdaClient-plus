@@ -1,29 +1,31 @@
-package org.softeg.slartus.forpdaplus.listfragments.next.forum
+package org.softeg.slartus.forpdaplus.feature_forum.ui
 
+import android.os.Bundle
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
-import org.softeg.slartus.forpdaapi.Forum
-import org.softeg.slartus.forpdaplus.core_lib.ui.adapter.Item
-import org.softeg.slartus.forpdaplus.feature_forum.di.ForumService
+import org.softeg.slartus.forpdaplus.core.repositories.Forum
 import org.softeg.slartus.forpdaplus.core.repositories.ForumRepository
-import org.softeg.slartus.forpdaplus.listfragments.next.forum.fingerprints.ForumCurrentHeaderItem
-import org.softeg.slartus.forpdaplus.listfragments.next.forum.fingerprints.ForumDataItem
-import org.softeg.slartus.forpdaplus.listfragments.next.forum.fingerprints.ForumHeaderItem
-import org.softeg.slartus.forpdaplus.listfragments.next.forum.fingerprints.ForumNoTopicsHeaderItem
-import org.softeg.slartus.forpdaplus.repositories.UserInfoRepository
+import org.softeg.slartus.forpdaplus.core.repositories.UserInfoRepository
+import org.softeg.slartus.forpdaplus.core_lib.ui.adapter.Item
+import org.softeg.slartus.forpdaplus.feature_forum.di.ForumPreferences
+import org.softeg.slartus.forpdaplus.feature_forum.ui.fingerprints.ForumCurrentHeaderItem
+import org.softeg.slartus.forpdaplus.feature_forum.ui.fingerprints.ForumDataItem
+import org.softeg.slartus.forpdaplus.feature_forum.ui.fingerprints.ForumHeaderItem
+import org.softeg.slartus.forpdaplus.feature_forum.ui.fingerprints.ForumNoTopicsHeaderItem
 import javax.inject.Inject
 
 @HiltViewModel
 class ForumViewModel @Inject constructor(
     private val state: SavedStateHandle,
     private val userInfoRepository: UserInfoRepository,
-    private val forumRepository: org.softeg.slartus.forpdaplus.core.repositories.ForumRepository,
-    private val forumService: ForumService
+    private val forumRepository: ForumRepository,
+    private val forumPreferences: ForumPreferences,
 ) : ViewModel() {
+    val showImages: Boolean = forumPreferences.showImages
     private val errorHandler = CoroutineExceptionHandler { _, ex ->
         _uiState.value = ViewState.Error(ex)
     }
@@ -45,7 +47,7 @@ class ForumViewModel @Inject constructor(
     init {
         _loading.value = true
 
-        viewModelScope.launch(Dispatchers.IO + errorHandler) {
+        viewModelScope.launch(errorHandler) {
             launch {
                 forumRepository.load()
             }
@@ -53,17 +55,7 @@ class ForumViewModel @Inject constructor(
                 forumRepository.forum
                     .distinctUntilChanged()
                     .collect { rawItems ->
-                        items = rawItems.map {
-                            Forum(
-                                it.id, it.title ?: "no title"
-                            ).apply {
-                                description = it.description
-                                isHasTopics = it.isHasTopics
-                                isHasForums = it.isHasForums
-                                iconUrl = it.iconUrl
-                                parentId = it.parentId
-                            }
-                        }
+                        items = rawItems.map { it.copy() }
 
                         refreshDataState(false)
 
@@ -71,6 +63,11 @@ class ForumViewModel @Inject constructor(
                     }
             }
         }
+    }
+
+    fun setArguments(arguments: Bundle?) {
+        forumId = this.forumId ?: arguments?.getString(ForumFragment.FORUM_ID_KEY, null)
+                ?: forumPreferences.startForumId
     }
 
     fun reload() {
@@ -140,7 +137,7 @@ class ForumViewModel @Inject constructor(
     }
 
     fun load() {
-        viewModelScope.launch(Dispatchers.IO + errorHandler) {
+        viewModelScope.launch(errorHandler) {
             forumRepository.load()
         }
     }
@@ -155,7 +152,13 @@ class ForumViewModel @Inject constructor(
 
     fun getCurrentForum(): Forum? = items.firstOrNull { it.id == forumId }
     fun markForumRead(forumId: String) {
-        forumService.markAsRead(forumId)
+        viewModelScope.launch {
+            forumRepository.markAsRead(forumId)
+        }
+    }
+
+    fun setStartForum(id: String?, title: String?) {
+        forumPreferences.setStartForum(id, title)
     }
 
     sealed class ViewState {

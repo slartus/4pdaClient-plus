@@ -21,12 +21,12 @@ import kotlinx.coroutines.launch
 import org.softeg.slartus.forpdaplus.*
 import org.softeg.slartus.forpdaplus.R
 import org.softeg.slartus.forpdaplus.common.AppLog
+import org.softeg.slartus.forpdaplus.core.repositories.UserInfo
+import org.softeg.slartus.forpdaplus.core.repositories.UserInfoRepository
 import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment
 import org.softeg.slartus.forpdaplus.listfragments.mentions.MentionsListFragment.Companion.newFragment
 import org.softeg.slartus.forpdaplus.listfragments.next.UserReputationFragment.Companion.showActivity
 import org.softeg.slartus.forpdaplus.listtemplates.QmsContactsBrickInfo
-import org.softeg.slartus.forpdaplus.repositories.UserInfo
-import org.softeg.slartus.forpdaplus.repositories.UserInfoRepository
 import javax.inject.Inject
 
 @AndroidEntryPoint

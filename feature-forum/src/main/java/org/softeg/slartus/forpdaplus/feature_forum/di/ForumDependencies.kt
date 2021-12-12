@@ -5,6 +5,14 @@ import org.softeg.slartus.forpdaplus.core.repositories.Forum
 interface ForumDependencies {
     val forumsService: ForumService
     val forumsDb: ForumDb
+    val forumPreferences: ForumPreferences
+}
+
+interface ForumPreferences {
+    fun setStartForum(id: String?, title: String?)
+
+    val showImages: Boolean
+    val startForumId: String?
 }
 
 interface ForumService {

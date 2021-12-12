@@ -4,27 +4,22 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.runBlocking
-import org.softeg.slartus.forpdaapi.users.User
 import org.softeg.slartus.forpdaplus.App
 import org.softeg.slartus.forpdaplus.R
+import org.softeg.slartus.forpdaplus.core.repositories.UserInfo
+import org.softeg.slartus.forpdaplus.core.repositories.UserInfoRepository
 import ru.slartus.http.Http
 import ru.slartus.http.PersistentCookieStore
-
-interface UserInfoRepository {
-    val userInfo: Flow<UserInfo>
-}
 
 class UserInfoRepositoryImpl(cookieStore: PersistentCookieStore) : UserInfoRepository {
     private object Holder {
         val INSTANCE = UserInfoRepositoryImpl(Http.instance.cookieStore)
     }
 
-    private val _userInfo = MutableStateFlow(UserInfo())
+    private val _userInfo = MutableStateFlow(UserInfo(name = App.getInstance().getString(R.string.guest)))
     override val userInfo: Flow<UserInfo>
         get() = _userInfo
-    private var tempUserInfo: UserInfo = UserInfo()
+    private var tempUserInfo: UserInfo = UserInfo(name = App.getInstance().getString(R.string.guest))
 
     init {
         App.getInstance().addToDisposable(
@@ -35,7 +30,7 @@ class UserInfoRepositoryImpl(cookieStore: PersistentCookieStore) : UserInfoRepos
                 .subscribe { memberId ->
                     setNewUserInfo(
                         if (memberId == "deleted" || memberId.isNullOrEmpty())
-                            UserInfo()
+                            UserInfo(name = App.getInstance().getString(R.string.guest))
                         else
                             _userInfo.value.copy(
                                 id = memberId,
@@ -70,7 +65,7 @@ class UserInfoRepositoryImpl(cookieStore: PersistentCookieStore) : UserInfoRepos
     }
 
     fun clear() {
-        setNewUserInfo(UserInfo())
+        setNewUserInfo(UserInfo(name = App.getInstance().getString(R.string.guest)))
     }
 
     companion object {
@@ -82,15 +77,3 @@ class UserInfoRepositoryImpl(cookieStore: PersistentCookieStore) : UserInfoRepos
     }
 }
 
-/**
- * Информация о текущем пользователе
- */
-data class UserInfo(
-    val id: String = "",
-    val name: String = App.getInstance().getString(R.string.guest),
-    val mentionsCount: Int? = 0,
-    val qmsCount: Int? = 0,
-    val logined: Boolean = false,
-    val reputation: String = "",
-    val avatarUrl: String = ""
-)

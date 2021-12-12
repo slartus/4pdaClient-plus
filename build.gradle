@@ -43,4 +43,6 @@ ext {
     okhttp3 = "3.12.3"// увеличивать нельзя!!
     room = "2.3.0"
     rxjava2 = "2.1.1"
+    swiperefreshlayout="1.1.0"
+    timber="5.0.1"
 }

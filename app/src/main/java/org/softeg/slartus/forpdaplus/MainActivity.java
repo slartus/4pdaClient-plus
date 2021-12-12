@@ -65,6 +65,7 @@ import java.lang.reflect.Field;
 import java.util.List;
 
 import dagger.hilt.android.AndroidEntryPoint;
+import timber.log.Timber;
 
 @AndroidEntryPoint
 public class MainActivity extends BaseActivity implements BricksListDialogFragment.IBricksListDialogCaller,
@@ -156,7 +157,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
     public void onCreate(Bundle saveInstance) {
         setTheme(AppTheme.getThemeStyleResID());
         super.onCreate(saveInstance);
-
+        Timber.plant(new TimberTree(new WeakReference<>(this)));
         loadPreferences(App.getInstance().getPreferences());
         if (shortUserInfo != null)
             shortUserInfo.setMActivity(new WeakReference<>(this));

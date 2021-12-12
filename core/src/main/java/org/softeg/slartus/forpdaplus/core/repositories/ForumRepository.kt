@@ -6,6 +6,7 @@ interface ForumRepository {
     val forum: Flow<List<Forum>>
     suspend fun load()
     suspend fun getAll(): List<Forum>
+    suspend fun markAsRead(forumId: String)
 }
 
 data class Forum(

@@ -1,4 +1,4 @@
-package org.softeg.slartus.forpdaplus.listfragments.next.forum.fingerprints
+package org.softeg.slartus.forpdaplus.feature_forum.ui.fingerprints
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,12 +6,14 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import coil.load
-import org.softeg.slartus.forpdaplus.R
+
 import org.softeg.slartus.forpdaplus.core_lib.ui.adapter.BaseViewHolder
 import org.softeg.slartus.forpdaplus.core_lib.ui.adapter.Item
 import org.softeg.slartus.forpdaplus.core_lib.ui.adapter.ItemFingerprint
 
-import org.softeg.slartus.forpdaplus.databinding.ForumItemBinding
+
+import org.softeg.slartus.forpdaplus.feature_forum.R
+import org.softeg.slartus.forpdaplus.feature_forum.databinding.ForumItemBinding
 
 class ForumDataItemFingerprint(
     private val showImages: Boolean,
@@ -74,7 +76,7 @@ class ForumDataViewHolder(
 
 data class ForumDataItem(
     val id: String?,
-    val title: String,
+    val title: String?,
     val description: String?,
     val iconUrl: String?,
     val isHasForums: Boolean

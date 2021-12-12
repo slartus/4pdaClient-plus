@@ -6,7 +6,9 @@ import org.softeg.slartus.forpdacommon.URIUtils
 import org.softeg.slartus.forpdaplus.core_db.forum.ForumDao
 import org.softeg.slartus.forpdaplus.feature_forum.di.ForumDb
 import org.softeg.slartus.forpdaplus.feature_forum.di.ForumDependencies
+import org.softeg.slartus.forpdaplus.feature_forum.di.ForumPreferences
 import org.softeg.slartus.forpdaplus.feature_forum.di.ForumService
+import org.softeg.slartus.forpdaplus.prefs.Preferences
 import org.softeg.slartus.hosthelper.HostHelper
 import ru.slartus.http.Http
 import javax.inject.Inject
@@ -15,7 +17,8 @@ import org.softeg.slartus.forpdaplus.core.repositories.Forum as FeatureForum
 
 class ForumDependenciesImpl @Inject constructor(
     override val forumsService: ForumService,
-    override val forumsDb: ForumDb
+    override val forumsDb: ForumDb,
+    override val forumPreferences: ForumPreferences
 ) : ForumDependencies
 
 class ForumServiceImpl @Inject constructor() : ForumService {
@@ -57,6 +60,19 @@ class ForumDbImpl @Inject constructor(
     override suspend fun merge(forums: List<FeatureForum>) {
         return forumDao.merge(forums.map { it.map() })
     }
+}
+
+class ForumPreferencesImpl @Inject constructor(
+) : ForumPreferences {
+    override fun setStartForum(id: String?, title: String?) {
+        Preferences.List.setStartForum(id, title)
+    }
+
+    override val showImages: Boolean
+        get() = Preferences.Forums.isShowImages
+    override val startForumId: String?
+        get() = Preferences.List.startForumId
+
 }
 
 private fun DbForum.map(): FeatureForum = FeatureForum(
