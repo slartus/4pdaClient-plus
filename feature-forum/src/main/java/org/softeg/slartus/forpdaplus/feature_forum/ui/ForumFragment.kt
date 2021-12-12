@@ -31,14 +31,21 @@ import timber.log.Timber
 class ForumFragment : BaseFragment<ForumFragmentBinding>(ForumFragmentBinding::inflate),
     IOnBackPressed {
 
-    private var mAdapter: FingerprintAdapter? = createAdapter().apply {
-        this.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
-    }
-
     private val viewModel: ForumViewModel by lazy {
         val viewModel: ForumViewModel by viewModels()
         viewModel.setArguments(arguments)
         viewModel
+    }
+
+    private var mAdapter: FingerprintAdapter? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+        mAdapter = createAdapter().apply {
+            this.stateRestorationPolicy =
+                RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -108,6 +115,7 @@ class ForumFragment : BaseFragment<ForumFragmentBinding>(ForumFragmentBinding::i
     }
 
     private fun createAdapter() = FingerprintAdapter(
+
         listOf(
             ForumHeaderItemFingerprint(
                 { _, item -> loadForum(item.id) },
@@ -132,16 +140,16 @@ class ForumFragment : BaseFragment<ForumFragmentBinding>(ForumFragmentBinding::i
             ForumDataItemFingerprint(
                 viewModel.showImages,
                 { _, item ->
-//                    if (item.isHasForums) {
-//                        loadForum(item.id)
+                    if (item.isHasForums) {
+                        loadForum(item.id)
 //                        val searchSettings = SearchSettings()
 //                        searchSettings.source = "all"
 //                        searchSettings.forumsIds.add(item.id + "")
 //                        mSearchSetting = searchSettings
 //                        MainActivity.searchSettings = mSearchSetting
-//                    } else {
+                    } else {
 //                        ForumTopicsListFragment.showForumTopicsList(item.id, item.title)
-//                    }
+                    }
                 },
                 { _, item ->
                     show(item.id)

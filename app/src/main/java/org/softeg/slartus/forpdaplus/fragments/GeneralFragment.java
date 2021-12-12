@@ -47,11 +47,11 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
     private String generalParentTag = "DefaultParentTag";
     private Menu menu;
 
-    public GeneralFragment(){
+    public GeneralFragment() {
         super();
     }
 
-    public GeneralFragment(@LayoutRes int contentLayoutId){
+    public GeneralFragment(@LayoutRes int contentLayoutId) {
         super(contentLayoutId);
     }
 
@@ -72,7 +72,7 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
     @Nullable
     @Override
     public View getView() {
-        return view;
+        return view == null ? super.getView() : view;
     }
 
     public View findViewById(int id) {

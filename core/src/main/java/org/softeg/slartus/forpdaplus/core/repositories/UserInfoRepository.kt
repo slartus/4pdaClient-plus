@@ -4,8 +4,8 @@ import kotlinx.coroutines.flow.Flow
 
 interface UserInfoRepository {
     val userInfo: Flow<UserInfo>
+    suspend fun isLogined(): Boolean
 }
-
 
 /**
  * Информация о текущем пользователе

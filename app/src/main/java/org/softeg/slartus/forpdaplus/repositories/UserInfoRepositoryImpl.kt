@@ -16,10 +16,17 @@ class UserInfoRepositoryImpl(cookieStore: PersistentCookieStore) : UserInfoRepos
         val INSTANCE = UserInfoRepositoryImpl(Http.instance.cookieStore)
     }
 
-    private val _userInfo = MutableStateFlow(UserInfo(name = App.getInstance().getString(R.string.guest)))
+    private val _userInfo =
+        MutableStateFlow(UserInfo(name = App.getInstance().getString(R.string.guest)))
     override val userInfo: Flow<UserInfo>
         get() = _userInfo
-    private var tempUserInfo: UserInfo = UserInfo(name = App.getInstance().getString(R.string.guest))
+
+    override suspend fun isLogined(): Boolean {
+        return _userInfo.value.logined
+    }
+
+    private var tempUserInfo: UserInfo =
+        UserInfo(name = App.getInstance().getString(R.string.guest))
 
     init {
         App.getInstance().addToDisposable(

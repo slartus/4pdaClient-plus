@@ -153,11 +153,13 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
         hack = true;
     }
 
+    private final TimberTree timberTree = new TimberTree(new WeakReference<>(this));
+
     @Override
     public void onCreate(Bundle saveInstance) {
         setTheme(AppTheme.getThemeStyleResID());
         super.onCreate(saveInstance);
-        Timber.plant(new TimberTree(new WeakReference<>(this)));
+        Timber.plant(timberTree);
         loadPreferences(App.getInstance().getPreferences());
         if (shortUserInfo != null)
             shortUserInfo.setMActivity(new WeakReference<>(this));
@@ -268,6 +270,12 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
             AppLog.e(getApplicationContext(), ex);
         }
         addUserInfoFragment();
+    }
+
+    @Override
+    protected void onDestroy() {
+        Timber.uproot(timberTree);
+        super.onDestroy();
     }
 
     private void addUserInfoFragment() {
