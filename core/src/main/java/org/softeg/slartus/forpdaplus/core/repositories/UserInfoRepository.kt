@@ -1,21 +1,9 @@
 package org.softeg.slartus.forpdaplus.core.repositories
 
 import kotlinx.coroutines.flow.Flow
+import org.softeg.slartus.forpdaplus.core.entities.UserInfo
 
 interface UserInfoRepository {
     val userInfo: Flow<UserInfo>
     suspend fun isLogined(): Boolean
 }
-
-/**
- * Информация о текущем пользователе
- */
-data class UserInfo(
-    val id: String = "",
-    val name: String,
-    val mentionsCount: Int? = 0,
-    val qmsCount: Int? = 0,
-    val logined: Boolean = false,
-    val reputation: String = "",
-    val avatarUrl: String = ""
-)

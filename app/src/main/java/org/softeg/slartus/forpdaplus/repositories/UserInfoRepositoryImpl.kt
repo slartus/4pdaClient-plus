@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.softeg.slartus.forpdaplus.App
 import org.softeg.slartus.forpdaplus.R
-import org.softeg.slartus.forpdaplus.core.repositories.UserInfo
+import org.softeg.slartus.forpdaplus.core.entities.UserInfo
 import org.softeg.slartus.forpdaplus.core.repositories.UserInfoRepository
 import ru.slartus.http.Http
 import ru.slartus.http.PersistentCookieStore

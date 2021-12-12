@@ -1,11 +1,9 @@
 package org.softeg.slartus.forpdaplus.feature_forum.repository
 
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.softeg.slartus.forpdaplus.core.repositories.Forum
+import org.softeg.slartus.forpdaplus.core.entities.Forum
 import org.softeg.slartus.forpdaplus.feature_forum.di.ForumDb
 import org.softeg.slartus.forpdaplus.feature_forum.di.ForumService
 import javax.inject.Inject

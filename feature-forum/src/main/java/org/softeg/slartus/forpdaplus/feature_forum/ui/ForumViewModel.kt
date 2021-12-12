@@ -7,11 +7,12 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
-import org.softeg.slartus.forpdaplus.core.repositories.Forum
+import org.softeg.slartus.forpdaplus.core.entities.Forum
 import org.softeg.slartus.forpdaplus.core.repositories.ForumRepository
 import org.softeg.slartus.forpdaplus.core.repositories.UserInfoRepository
 import org.softeg.slartus.forpdaplus.core_lib.ui.adapter.Item
 import org.softeg.slartus.forpdaplus.feature_forum.di.ForumPreferences
+import org.softeg.slartus.forpdaplus.feature_forum.entities.ForumItem
 import org.softeg.slartus.forpdaplus.feature_forum.ui.fingerprints.ForumCurrentHeaderItem
 import org.softeg.slartus.forpdaplus.feature_forum.ui.fingerprints.ForumDataItem
 import org.softeg.slartus.forpdaplus.feature_forum.ui.fingerprints.ForumHeaderItem
@@ -55,7 +56,17 @@ class ForumViewModel @Inject constructor(
                 forumRepository.forum
                     .distinctUntilChanged()
                     .collect { rawItems ->
-                        items = rawItems.map { it.copy() }
+                        items = rawItems.map {
+                            ForumItem(
+                                id = it.id,
+                                title = it.title,
+                                description = it.description,
+                                isHasTopics = it.isHasTopics,
+                                isHasForums = it.isHasForums,
+                                iconUrl = it.iconUrl,
+                                parentId = it.parentId
+                            )
+                        }
 
                         refreshDataState(false)
 
@@ -115,12 +126,12 @@ class ForumViewModel @Inject constructor(
         var f = forumId
         while (true) {
             if (f == null) {
-                crumbs.add(0, Forum(null, "4PDA"))
+                crumbs.add(0, ForumItem(null, "4PDA"))
                 break
             } else {
                 val parent = items.firstOrNull { it.id == f }
                 f = if (parent == null) {
-                    crumbs.add(0, Forum(f, parent?.title ?: "Not Found"))
+                    crumbs.add(0, ForumItem(f, parent?.title ?: "Not Found"))
                     null
                 } else {
                     crumbs.add(0, parent)
@@ -152,7 +163,7 @@ class ForumViewModel @Inject constructor(
 
     fun getCurrentForum(): Forum? = items.firstOrNull { it.id == forumId }
     fun markForumRead(forumId: String) {
-        viewModelScope.launch {
+        runBlocking {
             forumRepository.markAsRead(forumId)
         }
     }
@@ -167,3 +178,4 @@ class ForumViewModel @Inject constructor(
         data class Error(val exception: Throwable) : ViewState()
     }
 }
+

@@ -8,33 +8,38 @@ import org.softeg.slartus.forpdaplus.feature_forum.di.ForumDb
 import org.softeg.slartus.forpdaplus.feature_forum.di.ForumDependencies
 import org.softeg.slartus.forpdaplus.feature_forum.di.ForumPreferences
 import org.softeg.slartus.forpdaplus.feature_forum.di.ForumService
+import org.softeg.slartus.forpdaplus.feature_forum.entities.ForumItem
+import org.softeg.slartus.forpdaplus.listfragments.ForumTopicsListFragment
 import org.softeg.slartus.forpdaplus.prefs.Preferences
 import org.softeg.slartus.hosthelper.HostHelper
 import ru.slartus.http.Http
 import javax.inject.Inject
 import org.softeg.slartus.forpdaplus.core_db.forum.Forum as DbForum
-import org.softeg.slartus.forpdaplus.core.repositories.Forum as FeatureForum
 
 class ForumDependenciesImpl @Inject constructor(
     override val forumsService: ForumService,
     override val forumsDb: ForumDb,
     override val forumPreferences: ForumPreferences
-) : ForumDependencies
+) : ForumDependencies {
+    override fun showForumTopicsList(forumId: String?, forumTitle: String?) {
+        ForumTopicsListFragment.showForumTopicsList(forumId, forumTitle)
+    }
+}
 
 class ForumServiceImpl @Inject constructor() : ForumService {
-    override suspend fun getGithubForum(): List<FeatureForum> {
+    override suspend fun getGithubForum(): List<ForumItem> {
         val response = Http.instance
             .performGet("https://raw.githubusercontent.com/slartus/4pdaClient-plus/master/forum_struct.json")
 
-        val itemsListType = object : TypeToken<List<FeatureForum>>() {}.type
+        val itemsListType = object : TypeToken<List<ForumItem>>() {}.type
         return Gson().fromJson(response.responseBody, itemsListType)
     }
 
-    override suspend fun getSlartusForum(): List<FeatureForum> {
+    override suspend fun getSlartusForum(): List<ForumItem> {
         val response = Http.instance
             .performGet("http://slartus.ru/4pda/forum_struct.json")
 
-        val itemsListType = object : TypeToken<List<FeatureForum>>() {}.type
+        val itemsListType = object : TypeToken<List<ForumItem>>() {}.type
         return Gson().fromJson(response.responseBody, itemsListType)
     }
 
@@ -53,11 +58,11 @@ class ForumServiceImpl @Inject constructor() : ForumService {
 class ForumDbImpl @Inject constructor(
     private val forumDao: ForumDao
 ) : ForumDb {
-    override suspend fun getAll(): List<FeatureForum> {
+    override suspend fun getAll(): List<ForumItem> {
         return forumDao.getAll().map { it.map() }
     }
 
-    override suspend fun merge(forums: List<FeatureForum>) {
+    override suspend fun merge(forums: List<ForumItem>) {
         return forumDao.merge(forums.map { it.map() })
     }
 }
@@ -75,7 +80,7 @@ class ForumPreferencesImpl @Inject constructor(
 
 }
 
-private fun DbForum.map(): FeatureForum = FeatureForum(
+private fun DbForum.map(): ForumItem = ForumItem(
     this.id,
     this.title,
     this.description,
@@ -85,7 +90,7 @@ private fun DbForum.map(): FeatureForum = FeatureForum(
     this.parentId
 )
 
-private fun FeatureForum.map(): DbForum = DbForum(
+private fun ForumItem.map(): DbForum = DbForum(
     null,
     this.id,
     this.title,

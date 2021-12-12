@@ -1,11 +1,13 @@
 package org.softeg.slartus.forpdaplus.feature_forum.di
 
-import org.softeg.slartus.forpdaplus.core.repositories.Forum
+import org.softeg.slartus.forpdaplus.feature_forum.entities.ForumItem
 
 interface ForumDependencies {
     val forumsService: ForumService
     val forumsDb: ForumDb
     val forumPreferences: ForumPreferences
+
+    fun showForumTopicsList(forumId: String?, forumTitle: String?)
 }
 
 interface ForumPreferences {
@@ -16,12 +18,12 @@ interface ForumPreferences {
 }
 
 interface ForumService {
-    suspend fun getGithubForum(): List<Forum>
-    suspend fun getSlartusForum(): List<Forum>
+    suspend fun getGithubForum(): List<ForumItem>
+    suspend fun getSlartusForum(): List<ForumItem>
     fun markAsRead(forumId: String)
 }
 
 interface ForumDb {
-    suspend fun getAll(): List<Forum>
-    suspend fun merge(forums: List<Forum>)
+    suspend fun getAll(): List<ForumItem>
+    suspend fun merge(forums: List<ForumItem>)
 }

@@ -1,6 +1,7 @@
 package org.softeg.slartus.forpdaplus.core.repositories
 
 import kotlinx.coroutines.flow.Flow
+import org.softeg.slartus.forpdaplus.core.entities.Forum
 
 interface ForumRepository {
     val forum: Flow<List<Forum>>
@@ -9,12 +10,3 @@ interface ForumRepository {
     suspend fun markAsRead(forumId: String)
 }
 
-data class Forum(
-    val id: String?,
-    val title: String?,
-    val description: String? = null,
-    val isHasTopics: Boolean = false,
-    val isHasForums: Boolean = false,
-    val iconUrl: String? = null,
-    val parentId: String? = null
-)

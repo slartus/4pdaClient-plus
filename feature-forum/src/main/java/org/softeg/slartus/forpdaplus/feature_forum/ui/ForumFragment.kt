@@ -1,6 +1,5 @@
 package org.softeg.slartus.forpdaplus.feature_forum.ui
 
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -21,15 +20,20 @@ import org.softeg.slartus.forpdaplus.core_lib.ui.adapter.FingerprintAdapter
 import org.softeg.slartus.forpdaplus.core_lib.ui.fragments.BaseFragment
 import org.softeg.slartus.forpdaplus.feature_forum.R
 import org.softeg.slartus.forpdaplus.feature_forum.databinding.ForumFragmentBinding
+import org.softeg.slartus.forpdaplus.feature_forum.di.ForumDependencies
 import org.softeg.slartus.forpdaplus.feature_forum.ui.fingerprints.ForumDataItemFingerprint
 import org.softeg.slartus.forpdaplus.feature_forum.ui.fingerprints.ForumHeaderCurrentItemFingerprint
 import org.softeg.slartus.forpdaplus.feature_forum.ui.fingerprints.ForumHeaderItemFingerprint
 import org.softeg.slartus.forpdaplus.feature_forum.ui.fingerprints.ForumHeaderNoTopicsItemFingerprint
 import timber.log.Timber
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class ForumFragment : BaseFragment<ForumFragmentBinding>(ForumFragmentBinding::inflate),
     IOnBackPressed {
+
+    @Inject
+    lateinit var forumDependencies: ForumDependencies
 
     private val viewModel: ForumViewModel by lazy {
         val viewModel: ForumViewModel by viewModels()
@@ -124,9 +128,7 @@ class ForumFragment : BaseFragment<ForumFragmentBinding>(ForumFragmentBinding::i
                     true
                 }),
             ForumHeaderCurrentItemFingerprint(
-                { _, item ->
-                    //ForumTopicsListFragment.showForumTopicsList(item.id, item.title)
-                },
+                { _, item -> forumDependencies.showForumTopicsList(item.id, item.title) },
                 { _, item ->
                     show(item.id)
                     true
@@ -148,7 +150,7 @@ class ForumFragment : BaseFragment<ForumFragmentBinding>(ForumFragmentBinding::i
 //                        mSearchSetting = searchSettings
 //                        MainActivity.searchSettings = mSearchSetting
                     } else {
-//                        ForumTopicsListFragment.showForumTopicsList(item.id, item.title)
+                        forumDependencies.showForumTopicsList(item.id, item.title)
                     }
                 },
                 { _, item ->
@@ -166,11 +168,9 @@ class ForumFragment : BaseFragment<ForumFragmentBinding>(ForumFragmentBinding::i
         AlertDialog.Builder(requireActivity())
             .setTitle(R.string.confirm_action)
             .setMessage(getString(R.string.mark_forum_as_read) + "?")
-            .setPositiveButton(R.string.yes, object : DialogInterface.OnClickListener {
-                override fun onClick(p0: DialogInterface?, p1: Int) {
-                    markForumRead()
-                }
-            })
+            .setPositiveButton(
+                R.string.yes
+            ) { _, _ -> markForumRead() }
             .setNegativeButton(R.string.cancel, null)
             .show()
     }
@@ -178,23 +178,21 @@ class ForumFragment : BaseFragment<ForumFragmentBinding>(ForumFragmentBinding::i
     private fun markForumRead() {
         Toast.makeText(activity, R.string.request_sent, Toast.LENGTH_SHORT).show()
 
-        lifecycleScope.launch {
-            try {
-                viewModel.getCurrentForum()?.let { f ->
-                    viewModel.markForumRead(f.id ?: "-1")
-                }
-                Toast.makeText(
-                    activity,
-                    R.string.forum_setted_read,
-                    Toast.LENGTH_SHORT
-                ).show()
-
-            } catch (e: Throwable) {
-                Toast.makeText(activity, R.string.error, Toast.LENGTH_SHORT).show()
-                Timber.e(e)
+        try {
+            viewModel.getCurrentForum()?.let { f ->
+                viewModel.markForumRead(f.id ?: "-1")
             }
+            Toast.makeText(
+                activity,
+                R.string.forum_setted_read,
+                Toast.LENGTH_SHORT
+            ).show()
 
+        } catch (e: Throwable) {
+            Toast.makeText(activity, R.string.error, Toast.LENGTH_SHORT).show()
+            Timber.e(e)
         }
+
     }
 
     private fun reloadData() {
