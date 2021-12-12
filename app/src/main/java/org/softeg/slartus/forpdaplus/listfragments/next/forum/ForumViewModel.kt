@@ -45,7 +45,7 @@ class ForumViewModel @Inject constructor(
     init {
         _loading.value = true
 
-        viewModelScope.launch(Dispatchers.Default + errorHandler) {
+        viewModelScope.launch(Dispatchers.IO + errorHandler) {
             launch {
                 forumRepository.load()
             }
@@ -74,7 +74,7 @@ class ForumViewModel @Inject constructor(
     }
 
     fun reload() {
-        viewModelScope.launch(Dispatchers.Default + errorHandler) {
+        viewModelScope.launch(Dispatchers.IO + errorHandler) {
             _loading.value = true
             forumRepository.load()
             _loading.value = false
@@ -83,7 +83,7 @@ class ForumViewModel @Inject constructor(
 
     fun isLogined(): Boolean {
         var logined: Boolean
-        runBlocking(Dispatchers.Default) {
+        runBlocking(Dispatchers.IO) {
             logined = userInfoRepository.userInfo.firstOrNull()?.logined == true
         }
         return logined
@@ -140,7 +140,7 @@ class ForumViewModel @Inject constructor(
     }
 
     fun load() {
-        viewModelScope.launch(Dispatchers.Default + errorHandler) {
+        viewModelScope.launch(Dispatchers.IO + errorHandler) {
             forumRepository.load()
         }
     }

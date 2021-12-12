@@ -128,7 +128,7 @@ abstract class BaseListFragment : BaseBrickFragment(), AdapterView.OnItemClickLi
                 CoroutineExceptionHandler { _, throwable ->
                     AppLog.e(throwable)
                 }
-            lifecycleScope.launch(Dispatchers.Default + coroutineExceptionHandler) {
+            lifecycleScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
                 UserInfoRepositoryImpl.instance.userInfo
                     .distinctUntilChanged()
                     .collect {

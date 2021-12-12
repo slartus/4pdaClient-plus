@@ -141,7 +141,7 @@ class ShortUserInfo internal constructor(activity: MainActivity, private val vie
             }
         }
 
-        GlobalScope.launch(Dispatchers.Default) {
+        GlobalScope.launch(Dispatchers.IO) {
             UserInfoRepositoryImpl.instance.userInfo
                 .distinctUntilChanged()
                 .collect { userInfo ->

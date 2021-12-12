@@ -179,7 +179,7 @@ class UserInfoMenuViewModel @Inject constructor(
     }
 
     init {
-        viewModelScope.launch(Dispatchers.Default + errorHandler) {
+        viewModelScope.launch(Dispatchers.IO + errorHandler) {
             launch {
                 userInfoRepository.userInfo
                     .distinctUntilChanged()

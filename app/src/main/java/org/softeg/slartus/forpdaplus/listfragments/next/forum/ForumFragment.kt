@@ -225,7 +225,7 @@ class ForumFragment : GeneralFragment() {
     private fun markForumRead() {
         Toast.makeText(activity, R.string.request_sent, Toast.LENGTH_SHORT).show()
 
-        lifecycleScope.launch(Dispatchers.Default) {
+        lifecycleScope.launch(Dispatchers.IO) {
             try {
                 viewModel.getCurrentForum()?.let { f ->
                     viewModel.markForumRead(f.id ?: "-1")
