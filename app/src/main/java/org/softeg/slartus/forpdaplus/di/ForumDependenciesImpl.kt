@@ -53,6 +53,10 @@ class ForumServiceImpl @Inject constructor() : ForumService {
 
         Http.instance.performGet(uri)
     }
+
+    override fun getForumUrl(forumId: String?): String {
+        return "https://${HostHelper.host}/forum/index.php?showforum=$forumId"
+    }
 }
 
 class ForumDbImpl @Inject constructor(

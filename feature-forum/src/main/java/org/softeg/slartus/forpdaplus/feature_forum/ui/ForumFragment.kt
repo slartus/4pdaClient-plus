@@ -15,9 +15,11 @@ import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import org.softeg.slartus.forpdaplus.core.LinkManager
 import org.softeg.slartus.forpdaplus.core.entities.SearchSettings
 import org.softeg.slartus.forpdaplus.core.interfaces.IOnBackPressed
 import org.softeg.slartus.forpdaplus.core.interfaces.SearchSettingsListener
+import org.softeg.slartus.forpdaplus.core.repositories.ForumRepository
 import org.softeg.slartus.forpdaplus.core_lib.ui.adapter.FingerprintAdapter
 import org.softeg.slartus.forpdaplus.core_lib.ui.fragments.BaseFragment
 import org.softeg.slartus.forpdaplus.feature_forum.R
@@ -36,6 +38,12 @@ class ForumFragment : BaseFragment<ForumFragmentBinding>(ForumFragmentBinding::i
 
     @Inject
     lateinit var forumDependencies: ForumDependencies
+
+    @Inject
+    lateinit var linkManager: LinkManager
+
+    @Inject
+    lateinit var forumRepository: ForumRepository
 
     private val viewModel: ForumViewModel by lazy {
         val viewModel: ForumViewModel by viewModels()
@@ -214,12 +222,11 @@ class ForumFragment : BaseFragment<ForumFragmentBinding>(ForumFragmentBinding::i
     }
 
     private fun show(id: String?) {
-//        ExtUrl.showSelectActionDialog(
-//            mainActivity,
-//            getString(R.string.link),
-//            "https://${HostHelper.host}/forum/index.php?showforum=$id"
-//        )
-
+        linkManager.showUrlActions(
+            requireContext(),
+            R.string.link,
+            forumRepository.getForumUrl(id)
+        )
     }
 
     override fun onBackPressed(): Boolean {

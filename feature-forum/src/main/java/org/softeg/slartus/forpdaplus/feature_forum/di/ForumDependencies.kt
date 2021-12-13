@@ -21,6 +21,7 @@ interface ForumService {
     suspend fun getGithubForum(): List<ForumItem>
     suspend fun getSlartusForum(): List<ForumItem>
     fun markAsRead(forumId: String)
+    fun getForumUrl(forumId: String?): String
 }
 
 interface ForumDb {

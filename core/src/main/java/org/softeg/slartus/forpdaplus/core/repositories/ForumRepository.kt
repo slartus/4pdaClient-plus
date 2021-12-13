@@ -8,5 +8,6 @@ interface ForumRepository {
     suspend fun load()
     suspend fun getAll(): List<Forum>
     suspend fun markAsRead(forumId: String)
+    fun getForumUrl(forumId: String?): String
 }
 

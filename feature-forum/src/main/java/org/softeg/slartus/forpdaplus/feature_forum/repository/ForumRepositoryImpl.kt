@@ -43,4 +43,9 @@ class ForumRepositoryImpl @Inject constructor(
             forumService.markAsRead(forumId)
         }
     }
+
+    override fun getForumUrl(forumId: String?): String {
+        return forumService.getForumUrl(forumId)
+    }
+
 }
