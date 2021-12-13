@@ -8,10 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.softeg.slartus.forpdaplus.core.entities.Forum
 import org.softeg.slartus.forpdaplus.core.repositories.ForumRepository
@@ -39,13 +36,13 @@ class ForumViewModel @Inject constructor(
     }
 
     private val _events = MutableStateFlow<Event>(Event.Initialize)
-    val events: StateFlow<Event> = _events
+    val events: StateFlow<Event> = _events.asStateFlow()
 
     private val _uiState = MutableStateFlow<UiState>(UiState.Initialize)
-    val uiState: StateFlow<UiState> = _uiState
+    val uiState: StateFlow<UiState> = _uiState.asStateFlow()
 
     private val _loading = MutableStateFlow(true)
-    val loading: StateFlow<Boolean> = _loading
+    val loading: StateFlow<Boolean> = _loading.asStateFlow()
 
     private var items = emptyList<Forum>()
     private var crumbs = emptyList<Forum>()
