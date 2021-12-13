@@ -41,6 +41,9 @@ class ForumViewModel @Inject constructor(
     private val _events = MutableStateFlow<Event>(Event.Initialize)
     val events: StateFlow<Event> = _events
 
+    private val _uiState = MutableStateFlow<UiState>(UiState.Initialize)
+    val uiState: StateFlow<UiState> = _uiState
+
     private val _loading = MutableStateFlow(true)
     val loading: StateFlow<Boolean> = _loading
 
@@ -127,7 +130,7 @@ class ForumViewModel @Inject constructor(
                 )
             }
         val items = headerItems + currentHeaderItems + currentItems
-        _events.value = Event.Items(items, scrollToTop)
+        _uiState.value = UiState.Items(items, scrollToTop)
     }
 
     private fun buildCrumbs(items: List<Forum>): List<Forum> {
@@ -183,9 +186,13 @@ class ForumViewModel @Inject constructor(
         _events.value = Event.ShowToast(R.string.forum_setted_to_start)
     }
 
+    sealed class UiState {
+        object Initialize : UiState()
+        data class Items(val items: List<Item>, val scrollToTop: Boolean) : UiState()
+    }
+
     sealed class Event {
         object Initialize : Event()
-        data class Items(val items: List<Item>, val scrollToTop: Boolean) : Event()
         data class Error(val exception: Throwable) : Event()
         data class ShowToast(
             @StringRes val resId: Int,

@@ -15,7 +15,9 @@ import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import org.softeg.slartus.forpdaplus.core.entities.SearchSettings
 import org.softeg.slartus.forpdaplus.core.interfaces.IOnBackPressed
+import org.softeg.slartus.forpdaplus.core.interfaces.SearchSettingsListener
 import org.softeg.slartus.forpdaplus.core_lib.ui.adapter.FingerprintAdapter
 import org.softeg.slartus.forpdaplus.core_lib.ui.fragments.BaseFragment
 import org.softeg.slartus.forpdaplus.feature_forum.R
@@ -30,7 +32,7 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class ForumFragment : BaseFragment<ForumFragmentBinding>(ForumFragmentBinding::inflate),
-    IOnBackPressed {
+    IOnBackPressed, SearchSettingsListener {
 
     @Inject
     lateinit var forumDependencies: ForumDependencies
@@ -60,6 +62,11 @@ class ForumFragment : BaseFragment<ForumFragmentBinding>(ForumFragmentBinding::i
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
+                    viewModel.uiState.collect { state ->
+                        onUiState(state)
+                    }
+                }
+                launch {
                     viewModel.events.collect { event ->
                         onEvent(event)
                     }
@@ -75,16 +82,24 @@ class ForumFragment : BaseFragment<ForumFragmentBinding>(ForumFragmentBinding::i
         setListViewAdapter()
     }
 
+    private fun onUiState(state: ForumViewModel.UiState) {
+        when (state) {
+            ForumViewModel.UiState.Initialize -> {
+                // nothing
+            }
+            is ForumViewModel.UiState.Items -> {
+                mAdapter?.submitList(state.items) {
+                    if (state.scrollToTop)
+                        binding.list.scrollToPosition(0)
+                }
+            }
+        }
+    }
+
     private fun onEvent(event: ForumViewModel.Event) {
         when (event) {
             ForumViewModel.Event.Initialize -> {
-                setLoading(true)
-            }
-            is ForumViewModel.Event.Items -> {
-                mAdapter?.submitList(event.items) {
-                    if (event.scrollToTop)
-                        binding.list.scrollToPosition(0)
-                }
+                // nothing
             }
             is ForumViewModel.Event.Error -> {
                 Timber.e(event.exception)
@@ -142,11 +157,7 @@ class ForumFragment : BaseFragment<ForumFragmentBinding>(ForumFragmentBinding::i
                 { _, item ->
                     if (item.isHasForums) {
                         loadForum(item.id)
-//                        val searchSettings = SearchSettings()
-//                        searchSettings.source = "all"
-//                        searchSettings.forumsIds.add(item.id + "")
-//                        mSearchSetting = searchSettings
-//                        MainActivity.searchSettings = mSearchSetting
+
                     } else {
                         forumDependencies.showForumTopicsList(item.id, item.title)
                     }
@@ -217,5 +228,13 @@ class ForumFragment : BaseFragment<ForumFragmentBinding>(ForumFragmentBinding::i
 
     companion object {
         const val FORUM_ID_KEY = "FORUM_ID_KEY"
+    }
+
+    override fun getSearchSettings(): SearchSettings? {
+        val forumIds = viewModel.forumId?.let { setOf(it) } ?: emptySet()
+        return SearchSettings(
+            sourceType = SearchSettings.SourceType.All,
+            forumIds = forumIds
+        )
     }
 }

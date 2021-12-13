@@ -43,6 +43,8 @@ import com.google.android.material.navigation.NavigationView;
 import org.softeg.slartus.forpdaapi.search.SearchSettings;
 import org.softeg.slartus.forpdacommon.ExtPreferences;
 import org.softeg.slartus.forpdaplus.common.AppLog;
+import org.softeg.slartus.forpdaplus.common.SearchSettingsMapperKt;
+import org.softeg.slartus.forpdaplus.core.interfaces.SearchSettingsListener;
 import org.softeg.slartus.forpdaplus.fragments.GeneralFragment;
 import org.softeg.slartus.forpdaplus.fragments.UserInfoMenuFragment;
 import org.softeg.slartus.forpdaplus.fragments.search.SearchPostFragment;
@@ -817,7 +819,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
                 mTabDraweMenu.toggleOpenState();
                 return true;
             case R.id.search_item:
-                SearchSettingsDialogFragment.showSearchSettingsDialog(MainActivity.this, searchSettings);
+                SearchSettingsDialogFragment.showSearchSettingsDialog(MainActivity.this, getSearchSettings());
                 return true;
             case R.id.exit_item:
                 android.os.Process.killProcess(android.os.Process.myPid());
@@ -836,6 +838,17 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
         menu.findItem(R.id.tabs_item).setVisible(getPreferences().getBoolean("openTabDrawerButton", false));
         menu.findItem(R.id.exit_item).setVisible(getPreferences().getBoolean("showExitButton", false));
         return super.onPrepareOptionsMenu(menu);
+    }
+
+    private SearchSettings getSearchSettings() {
+        Fragment currentFragment = getCurrentFragment();
+        if (currentFragment instanceof SearchSettingsListener) {
+            org.softeg.slartus.forpdaplus.core.entities.SearchSettings searchSettings = ((SearchSettingsListener) currentFragment).getSearchSettings();
+            if (searchSettings != null) {
+                return SearchSettingsMapperKt.map(searchSettings);
+            }
+        }
+        return MainActivity.searchSettings;
     }
 
     @Override

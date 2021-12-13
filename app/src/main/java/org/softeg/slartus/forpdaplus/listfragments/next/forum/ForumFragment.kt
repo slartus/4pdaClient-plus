@@ -6,7 +6,9 @@ import android.view.KeyEvent
 import androidx.fragment.app.Fragment
 import dagger.hilt.android.AndroidEntryPoint
 import org.softeg.slartus.forpdaplus.MainActivity
+import org.softeg.slartus.forpdaplus.core.entities.SearchSettings
 import org.softeg.slartus.forpdaplus.core.interfaces.IOnBackPressed
+import org.softeg.slartus.forpdaplus.core.interfaces.SearchSettingsListener
 import org.softeg.slartus.forpdaplus.feature_forum.ui.ForumFragment
 import org.softeg.slartus.forpdaplus.fragments.BaseGeneralContainerFragment
 import org.softeg.slartus.forpdaplus.fragments.search.SearchSettingsDialogFragment
@@ -15,7 +17,7 @@ import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo
 import org.softeg.slartus.forpdaplus.listtemplates.ForumBrickInfo
 
 @AndroidEntryPoint
-class ForumFragment : BaseGeneralContainerFragment() {
+class ForumFragment : BaseGeneralContainerFragment(), SearchSettingsListener {
     private var mSearchSetting = SearchSettingsDialogFragment.createForumSearchSettings()
 
     private var mTitle: String? = null
@@ -119,5 +121,11 @@ class ForumFragment : BaseGeneralContainerFragment() {
                 args.putString(TopicsListFragment.KEY_TOPIC_ID, topicId)
             MainActivity.showListFragment(forumId + topicId, ForumBrickInfo().name, args)
         }
+    }
+
+    override fun getSearchSettings(): SearchSettings? {
+        return childFragmentManager.fragments.filterIsInstance<SearchSettingsListener>()
+            .mapNotNull { it.getSearchSettings() }
+            .firstOrNull()
     }
 }

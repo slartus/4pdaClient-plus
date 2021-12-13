@@ -51,7 +51,7 @@ public class SearchSettings implements Parcelable {
     /*
    Искать везде
     */
-    private static final String SOURCE_ALL = "all";
+    public static final String SOURCE_ALL = "all";
     /*
    Искать Только в заголовках тем
     */
