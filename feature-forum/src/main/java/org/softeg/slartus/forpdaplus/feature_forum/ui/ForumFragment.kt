@@ -60,21 +60,8 @@ class ForumFragment : BaseFragment<ForumFragmentBinding>(ForumFragmentBinding::i
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    viewModel.uiState.collect { uiState ->
-                        when (uiState) {
-                            ForumViewModel.ViewState.Initialize -> {
-                                setLoading(true)
-                            }
-                            is ForumViewModel.ViewState.Success -> {
-                                mAdapter?.submitList(uiState.items) {
-                                    if (uiState.scrollToTop)
-                                        binding.list.scrollToPosition(0)
-                                }
-                            }
-                            is ForumViewModel.ViewState.Error -> {
-                                Timber.e(uiState.exception)
-                            }
-                        }
+                    viewModel.events.collect { event ->
+                        onEvent(event)
                     }
                 }
                 launch {
@@ -86,6 +73,26 @@ class ForumFragment : BaseFragment<ForumFragmentBinding>(ForumFragmentBinding::i
         }
 
         setListViewAdapter()
+    }
+
+    private fun onEvent(event: ForumViewModel.Event) {
+        when (event) {
+            ForumViewModel.Event.Initialize -> {
+                setLoading(true)
+            }
+            is ForumViewModel.Event.Items -> {
+                mAdapter?.submitList(event.items) {
+                    if (event.scrollToTop)
+                        binding.list.scrollToPosition(0)
+                }
+            }
+            is ForumViewModel.Event.Error -> {
+                Timber.e(event.exception)
+            }
+            is ForumViewModel.Event.ShowToast -> {
+                Toast.makeText(requireContext(), event.resId, event.duration).show()
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -100,22 +107,13 @@ class ForumFragment : BaseFragment<ForumFragmentBinding>(ForumFragmentBinding::i
                 true
             }
             R.id.set_forum_starting -> {
-
                 viewModel.getCurrentForum()?.let { f ->
                     viewModel.setStartForum(f.id, f.title)
-                    Toast.makeText(
-                        requireContext(),
-                        R.string.forum_setted_to_start,
-                        Toast.LENGTH_SHORT
-                    )
-                        .show()
                 }
-
                 true
             }
             else -> return super.onOptionsItemSelected(item)
         }
-
     }
 
     private fun createAdapter() = FingerprintAdapter(
@@ -161,7 +159,7 @@ class ForumFragment : BaseFragment<ForumFragmentBinding>(ForumFragmentBinding::i
     )
 
     private fun markAsRead() {
-        if (!viewModel.isLogined()) {
+        if (!viewModel.userLogined) {
             Toast.makeText(activity, R.string.need_login, Toast.LENGTH_SHORT).show()
             return
         }
@@ -177,22 +175,9 @@ class ForumFragment : BaseFragment<ForumFragmentBinding>(ForumFragmentBinding::i
 
     private fun markForumRead() {
         Toast.makeText(activity, R.string.request_sent, Toast.LENGTH_SHORT).show()
-
-        try {
-            viewModel.getCurrentForum()?.let { f ->
-                viewModel.markForumRead(f.id ?: "-1")
-            }
-            Toast.makeText(
-                activity,
-                R.string.forum_setted_read,
-                Toast.LENGTH_SHORT
-            ).show()
-
-        } catch (e: Throwable) {
-            Toast.makeText(activity, R.string.error, Toast.LENGTH_SHORT).show()
-            Timber.e(e)
+        viewModel.getCurrentForum()?.let { f ->
+            viewModel.markForumRead(f.id ?: "-1")
         }
-
     }
 
     private fun reloadData() {

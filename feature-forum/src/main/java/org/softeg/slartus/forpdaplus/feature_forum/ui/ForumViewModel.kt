@@ -1,16 +1,23 @@
 package org.softeg.slartus.forpdaplus.feature_forum.ui
 
 import android.os.Bundle
+import android.widget.Toast
+import androidx.annotation.StringRes
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.launch
 import org.softeg.slartus.forpdaplus.core.entities.Forum
 import org.softeg.slartus.forpdaplus.core.repositories.ForumRepository
 import org.softeg.slartus.forpdaplus.core.repositories.UserInfoRepository
 import org.softeg.slartus.forpdaplus.core_lib.ui.adapter.Item
+import org.softeg.slartus.forpdaplus.feature_forum.R
 import org.softeg.slartus.forpdaplus.feature_forum.di.ForumPreferences
 import org.softeg.slartus.forpdaplus.feature_forum.entities.ForumItem
 import org.softeg.slartus.forpdaplus.feature_forum.ui.fingerprints.ForumCurrentHeaderItem
@@ -28,17 +35,21 @@ class ForumViewModel @Inject constructor(
 ) : ViewModel() {
     val showImages: Boolean = forumPreferences.showImages
     private val errorHandler = CoroutineExceptionHandler { _, ex ->
-        _uiState.value = ViewState.Error(ex)
+        _events.value = Event.Error(ex)
     }
 
-    private val _uiState = MutableStateFlow<ViewState>(ViewState.Initialize)
-    val uiState: StateFlow<ViewState> = _uiState
+    private val _events = MutableStateFlow<Event>(Event.Initialize)
+    val events: StateFlow<Event> = _events
 
     private val _loading = MutableStateFlow(true)
     val loading: StateFlow<Boolean> = _loading
 
     private var items = emptyList<Forum>()
     private var crumbs = emptyList<Forum>()
+    private var _userLogined = false
+    val userLogined: Boolean
+        get() = _userLogined
+
     var forumId: String? = state.get(ForumFragment.FORUM_ID_KEY)
         set(value) {
             field = value
@@ -73,6 +84,12 @@ class ForumViewModel @Inject constructor(
                         _loading.value = false
                     }
             }
+            launch {
+                userInfoRepository.userInfo.distinctUntilChanged()
+                    .collect {
+                        _userLogined = it.logined
+                    }
+            }
         }
     }
 
@@ -87,14 +104,6 @@ class ForumViewModel @Inject constructor(
             forumRepository.load()
             _loading.value = false
         }
-    }
-
-    fun isLogined(): Boolean {
-        var logined: Boolean
-        runBlocking {
-            logined = userInfoRepository.isLogined()
-        }
-        return logined
     }
 
     private fun refreshDataState(scrollToTop: Boolean) {
@@ -118,7 +127,7 @@ class ForumViewModel @Inject constructor(
                 )
             }
         val items = headerItems + currentHeaderItems + currentItems
-        _uiState.value = ViewState.Success(items, scrollToTop)
+        _events.value = Event.Items(items, scrollToTop)
     }
 
     private fun buildCrumbs(items: List<Forum>): List<Forum> {
@@ -163,19 +172,25 @@ class ForumViewModel @Inject constructor(
 
     fun getCurrentForum(): Forum? = items.firstOrNull { it.id == forumId }
     fun markForumRead(forumId: String) {
-        runBlocking {
+        viewModelScope.launch(errorHandler) {
             forumRepository.markAsRead(forumId)
+            _events.value = Event.ShowToast(R.string.forum_setted_read)
         }
     }
 
     fun setStartForum(id: String?, title: String?) {
         forumPreferences.setStartForum(id, title)
+        _events.value = Event.ShowToast(R.string.forum_setted_to_start)
     }
 
-    sealed class ViewState {
-        object Initialize : ViewState()
-        data class Success(val items: List<Item>, val scrollToTop: Boolean) : ViewState()
-        data class Error(val exception: Throwable) : ViewState()
+    sealed class Event {
+        object Initialize : Event()
+        data class Items(val items: List<Item>, val scrollToTop: Boolean) : Event()
+        data class Error(val exception: Throwable) : Event()
+        data class ShowToast(
+            @StringRes val resId: Int,
+            val duration: Int = Toast.LENGTH_SHORT
+        ) : Event()
     }
 }
 
