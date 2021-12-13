@@ -50,10 +50,14 @@ class ForumCurrentHeaderViewHolder(
     private val onLongClickListener: (view: View?, item: ForumCurrentHeaderItem) -> Boolean
 ) :
     BaseViewHolder<ForumHeaderCurrentItemBinding, ForumCurrentHeaderItem>(binding) {
-    override fun onBind(item: ForumCurrentHeaderItem) {
-        super.onBind(item)
+    init {
         itemView.setOnClickListener { v -> onClickListener(v, item) }
         itemView.setOnLongClickListener { v -> onLongClickListener(v, item) }
+    }
+
+    override fun onBind(item: ForumCurrentHeaderItem) {
+        super.onBind(item)
+
         with(binding) {
             titleTextView.text = item.title
         }

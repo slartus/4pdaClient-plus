@@ -57,12 +57,13 @@ class ForumDataViewHolder(
     BaseViewHolder<ForumItemBinding, ForumDataItem>(binding) {
     init {
         binding.iconImageView.isVisible = showImages
+        itemView.setOnClickListener { v -> onClickListener(v, item) }
+        itemView.setOnLongClickListener { v -> onLongClickListener(v, item) }
     }
 
     override fun onBind(item: ForumDataItem) {
         super.onBind(item)
-        itemView.setOnClickListener { v -> onClickListener(v, item) }
-        itemView.setOnLongClickListener { v -> onLongClickListener(v, item) }
+
         with(binding) {
             titleTextView.text = item.title
             descriptionTextView.text = item.description

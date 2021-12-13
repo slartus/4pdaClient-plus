@@ -50,10 +50,14 @@ class ForumNoTopicsHeaderViewHolder(
     private val onLongClickListener: (view: View?, item: ForumNoTopicsHeaderItem) -> Boolean
 ) :
     BaseViewHolder<ForumHeaderNotopicsItemBinding, ForumNoTopicsHeaderItem>(binding) {
-    override fun onBind(item: ForumNoTopicsHeaderItem) {
-        super.onBind(item)
+    init {
         itemView.setOnClickListener { v -> onClickListener(v, item) }
         itemView.setOnLongClickListener { v -> onLongClickListener(v, item) }
+    }
+
+    override fun onBind(item: ForumNoTopicsHeaderItem) {
+        super.onBind(item)
+
         with(binding) {
             titleTextView.text = item.title
         }
