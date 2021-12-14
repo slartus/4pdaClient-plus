@@ -10,12 +10,12 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import org.softeg.slartus.forpdaplus.core.ForumPreferences
 import org.softeg.slartus.forpdaplus.core.entities.Forum
 import org.softeg.slartus.forpdaplus.core.repositories.ForumRepository
 import org.softeg.slartus.forpdaplus.core.repositories.UserInfoRepository
 import org.softeg.slartus.forpdaplus.core_lib.ui.adapter.Item
 import org.softeg.slartus.forpdaplus.feature_forum.R
-import org.softeg.slartus.forpdaplus.feature_forum.di.ForumPreferences
 import org.softeg.slartus.forpdaplus.feature_forum.entities.ForumItem
 import org.softeg.slartus.forpdaplus.feature_forum.ui.fingerprints.ForumCurrentHeaderItem
 import org.softeg.slartus.forpdaplus.feature_forum.ui.fingerprints.ForumDataItem
@@ -96,6 +96,7 @@ class ForumViewModel @Inject constructor(
     fun setArguments(arguments: Bundle?) {
         forumId = this.forumId ?: arguments?.getString(ForumFragment.FORUM_ID_KEY, null)
                 ?: forumPreferences.startForumId
+        refreshDataState(false)
     }
 
     fun reload() {

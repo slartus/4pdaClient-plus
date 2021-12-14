@@ -137,12 +137,23 @@ dependencies {
     implementation project(":core-db")
     implementation project(":feature-forum")
 
-    implementation 'androidx.core:core-ktx:1.7.0'
     implementation "androidx.appcompat:appcompat:$rootProject.appcompat"
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.2'
+
+    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$rootProject.lifecycle"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$rootProject.lifecycle"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$rootProject.lifecycle"
+    implementation 'androidx.multidex:multidex:2.0.1'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.3.5'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
+    implementation "androidx.preference:preference-ktx:1.1.1"
+    implementation "androidx.recyclerview:recyclerview:$rootProject.recyclerview"
+
     implementation "com.google.android.material:material:$rootProject.material"
 //    api "com.android.support:preference-v7:$rootProject.supportLibraryVersion"
-    implementation 'androidx.cardview:cardview:1.0.0'
-    implementation "androidx.recyclerview:recyclerview:$rootProject.recyclerview"
+
     api 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     api 'com.readystatesoftware.sqliteasset:sqliteassethelper:2.0.1'
     api 'com.github.chrisbanes.photoview:library:1.2.4'
@@ -168,19 +179,13 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.coroutines"
     implementation 'io.paperdb:paperdb:2.6'
     implementation "io.reactivex.rxjava2:rxandroid:$rootProject.rxjava2"
-    implementation 'androidx.multidex:multidex:2.0.1'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.2'
+
     implementation 'com.github.pwittchen:reactivenetwork-rx2:3.0.8'
     implementation 'com.karumi:dexter:6.2.2'
 
     implementation "com.google.dagger:hilt-android:$rootProject.hilt"
     kapt "com.google.dagger:hilt-compiler:$rootProject.hilt"
 
-    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$rootProject.lifecycle"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$rootProject.lifecycle"
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$rootProject.lifecycle"
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.3.5'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
     implementation("io.coil-kt:coil:$rootProject.coil")
 
     implementation "com.jakewharton.timber:timber:$rootProject.timber"

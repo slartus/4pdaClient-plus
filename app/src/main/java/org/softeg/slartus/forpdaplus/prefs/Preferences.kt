@@ -50,14 +50,6 @@ object Preferences {
             .apply()
     }
 
-    @JvmStatic
-    fun NYDone() {
-        App.getInstance().preferences.edit().putBoolean("NYDone", true).apply()
-    }
-
-    val isNYDone: Boolean
-        get() = App.getInstance().preferences.getBoolean("NYDone", false)
-
     object Lists {
         @JvmStatic
         val scrollByButtons: Boolean

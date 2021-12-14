@@ -41,7 +41,7 @@
             <enum name="number" value="0" />
             <enum name="numberDecimal" value="1" />
         </attr>
-        <attr name="defaultValue" format="string" />
+        <attr name="appDefaultValue" format="string" />
 
     </declare-styleable>
 
