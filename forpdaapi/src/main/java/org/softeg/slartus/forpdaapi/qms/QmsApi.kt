@@ -135,10 +135,11 @@ object QmsApi {
         additionalHeaders["message"] = message
         if (attachs.any())
             additionalHeaders["attaches"] = attachs.joinToString { it.id }
-        httpClient.performPost(
+        val response = httpClient.performPost(
             "https://${HostHelper.host}/forum/index.php?act=qms-xhr",
             additionalHeaders, encoding
         )
+        parseError(response.responseBody)
         return getChat(httpClient, mid, tid, daysCount)
     }
 
