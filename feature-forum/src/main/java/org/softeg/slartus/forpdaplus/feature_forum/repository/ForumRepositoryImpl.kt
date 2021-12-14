@@ -18,24 +18,20 @@ class ForumRepositoryImpl @Inject constructor(
         get() = _forum
 
     override suspend fun load() {
+        withContext(Dispatchers.Main) {
+            _forum.value = forumDb.getAll()
+        }
         withContext(Dispatchers.IO) {
-            withContext(Dispatchers.Main) {
-                _forum.value = forumDb.getAll()
-            }
             val forums = try {
                 forumService.getGithubForum()
             } catch (ex: Throwable) {
                 forumService.getSlartusForum()
             }
             forumDb.merge(forums)
-            withContext(Dispatchers.Main) {
-                _forum.value = forumDb.getAll()
-            }
         }
-    }
-
-    override suspend fun getAll(): List<Forum> {
-        return forumDb.getAll()
+        withContext(Dispatchers.Main) {
+            _forum.value = forumDb.getAll()
+        }
     }
 
     override suspend fun markAsRead(forumId: String) {

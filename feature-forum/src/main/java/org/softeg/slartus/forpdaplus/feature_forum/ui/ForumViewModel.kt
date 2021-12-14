@@ -132,6 +132,7 @@ class ForumViewModel @Inject constructor(
     }
 
     private fun buildCrumbs(items: List<Forum>): List<Forum> {
+        if (items.isEmpty()) return emptyList()
         val crumbs = ArrayList<Forum>()
         var f = forumId
         while (true) {
