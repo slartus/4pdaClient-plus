@@ -6,7 +6,7 @@ import androidx.room.TypeConverters
 import org.softeg.slartus.forpdaplus.core_db.forum.Forum
 import org.softeg.slartus.forpdaplus.core_db.forum.ForumDao
 
-@Database(entities = [Forum::class], version = 1)
+@Database(entities = [Forum::class], version = 2)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun forumDao(): ForumDao

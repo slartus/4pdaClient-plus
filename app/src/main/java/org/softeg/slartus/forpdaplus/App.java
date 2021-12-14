@@ -22,14 +22,10 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 
-import org.acra.ACRA;
-import org.acra.ReportField;
-import org.acra.ReportingInteractionMode;
-import org.acra.annotation.ReportsCrashes;
 import org.softeg.slartus.forpdacommon.ExtPreferences;
 import org.softeg.slartus.forpdanotifyservice.favorites.FavoritesNotifier;
 import org.softeg.slartus.forpdanotifyservice.qms.QmsNotifier;
-import org.softeg.slartus.forpdaplus.acra.ACRAReportSenderFactory;
+import org.softeg.slartus.forpdaplus.acra.AcraExtensionsKt;
 import org.softeg.slartus.forpdaplus.core.repositories.ForumRepository;
 import org.softeg.slartus.forpdaplus.db.DbHelper;
 import org.softeg.slartus.forpdaplus.prefs.PreferencesActivity;
@@ -51,26 +47,6 @@ import io.reactivex.disposables.Disposable;
 import ru.slartus.http.Http;
 import timber.log.Timber;
 
-/**
- * User: slinkin
- * Date: 05.08.11
- * Time: 8:03
- */
-
-@ReportsCrashes(
-        mode = ReportingInteractionMode.TOAST,
-        customReportContent = {ReportField.APP_VERSION_CODE,
-                ReportField.APP_VERSION_NAME, ReportField.USER_COMMENT, ReportField.IS_SILENT, ReportField.PACKAGE_NAME,
-                ReportField.ANDROID_VERSION, ReportField.PHONE_MODEL, ReportField.AVAILABLE_MEM_SIZE, ReportField.SHARED_PREFERENCES,
-                ReportField.APPLICATION_LOG, ReportField.STACK_TRACE, ReportField.LOGCAT},
-        resNotifTitle = R.string.crash_dialog_title,
-        resNotifText = R.string.crash_dialog_text,
-        resNotifIcon = R.drawable.notify_icon,
-        resToastText = R.string.crash_dialog_text,
-        resDialogOkToast = R.string.crash_dialog_ok_toast,
-        resDialogText = R.string.crash_dialog_text, resDialogIcon = android.R.drawable.ic_dialog_info,
-        resDialogTitle = R.string.crash_dialog_title, resDialogCommentPrompt = R.string.crash_dialog_comment_prompt,
-        reportSenderFactoryClasses = {ACRAReportSenderFactory.class})
 @HiltAndroidApp
 public class App extends MultiDexApplication {
     @Inject
@@ -156,11 +132,7 @@ public class App extends MultiDexApplication {
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
-        if (!ACRA.isACRASenderServiceProcess()) {
-            ACRA.DEV_LOGGING = true;
-            ACRA.init(this);
-
-        }
+        AcraExtensionsKt.configureAcra(this);
     }
 
     @Override

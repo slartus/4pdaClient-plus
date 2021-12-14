@@ -4,12 +4,11 @@ package ru.slartus.http
 import android.annotation.SuppressLint
 import android.content.Context
 import android.net.ConnectivityManager
-import android.net.http.SslCertificate
 import android.os.Build
-import androidx.core.util.Pair
 import android.util.Log
 import android.webkit.MimeTypeMap
 import android.webkit.MimeTypeMap.getFileExtensionFromUrl
+import androidx.core.util.Pair
 import okhttp3.*
 import okio.Buffer
 import org.softeg.slartus.hosthelper.HostHelper
@@ -30,7 +29,6 @@ import java.util.concurrent.TimeUnit
 import javax.net.ssl.SSLContext
 import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
-
 
 @Suppress("unused")
 /*

@@ -1,40 +1,27 @@
 package org.softeg.slartus.forpdaplus.acra
 
-/*
- * Created by slinkin on 05.06.2017.
- */
-
-
-import android.content.Context
-import androidx.core.util.Pair
-import org.acra.ACRA
 import org.acra.ReportField
-import org.acra.collector.CrashReportData
-import org.acra.config.ACRAConfiguration
-import org.acra.sender.ReportSender
-import org.acra.sender.ReportSenderException
-import org.acra.sender.ReportSenderFactory
+import org.acra.data.CrashReportData
 import org.softeg.slartus.forpdaplus.App
-
 import java.math.BigInteger
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 import java.util.*
+import androidx.core.util.Pair
 
-class ACRAReportSenderFactory : ReportSenderFactory {
-    override fun create(context: Context, config: ACRAConfiguration): ReportSender =
-            ACRAPostSender()
-}
-
-class ACRAPostSender : ReportSender {
-    private fun addNotNullParameter(parameters: ArrayList<Pair<String, String>>, report: CrashReportData, key: ReportField) {
-        val value = report[key]
+object ACRAPostSender {
+    private fun addNotNullParameter(
+        parameters: ArrayList<Pair<String, String>>,
+        report: CrashReportData,
+        key: ReportField
+    ) {
+        val value = report[key.name]
         if (value != null)
             parameters.add(Pair(key.name, value.toString()))
     }
 
-    @Throws(ReportSenderException::class)
-    override fun send(context: Context, report: CrashReportData) {
+    @JvmStatic
+    fun send(report: CrashReportData) {
 
         try {
             val parameters = ArrayList<Pair<String, String>>()
@@ -57,7 +44,12 @@ class ACRAPostSender : ReportSender {
             addNotNullParameter(parameters, report, ReportField.INITIAL_CONFIGURATION)
             addNotNullParameter(parameters, report, ReportField.CRASH_CONFIGURATION)
             addNotNullParameter(parameters, report, ReportField.DISPLAY)
-            parameters.add(Pair(ReportField.USER_COMMENT.name, App.getInstance().preferences.getString("Login", "empty")?:""))
+            parameters.add(
+                Pair(
+                    ReportField.USER_COMMENT.name,
+                    App.getInstance().preferences.getString("Login", "empty") ?: ""
+                )
+            )
             addNotNullParameter(parameters, report, ReportField.USER_APP_START_DATE)
             addNotNullParameter(parameters, report, ReportField.USER_CRASH_DATE)
             addNotNullParameter(parameters, report, ReportField.DUMPSYS_MEMINFO)
@@ -85,6 +77,9 @@ class ACRAPostSender : ReportSender {
         }
     }
 
+    private const val BASE_URL = "http://slartus.ru/acra.php?email=slartus@gmail.com"
+    private const val SHARED_SECRET = "jj8EOkcJLJkTBUAaRJ0BaZDLZQCcwrTc"
+
     private val url: String
         get() {
             val token = token
@@ -97,21 +92,16 @@ class ACRAPostSender : ReportSender {
     private val token: String
         get() = md5(UUID.randomUUID().toString())
 
-    companion object {
-        private const val BASE_URL = "http://slartus.ru/acra.php?email=slartus@gmail.com"
-        private const val SHARED_SECRET = "jj8EOkcJLJkTBUAaRJ0BaZDLZQCcwrTc"
-
-        private fun md5(s: String): String {
-            var m: MessageDigest? = null
-            try {
-                m = MessageDigest.getInstance("MD5")
-            } catch (e: NoSuchAlgorithmException) {
-                e.printStackTrace()
-            }
-
-            m!!.update(s.toByteArray(), 0, s.length)
-            return BigInteger(1, m.digest()).toString(16)
+    private fun md5(s: String): String {
+        var m: MessageDigest? = null
+        try {
+            m = MessageDigest.getInstance("MD5")
+        } catch (e: NoSuchAlgorithmException) {
+            e.printStackTrace()
         }
+
+        m!!.update(s.toByteArray(), 0, s.length)
+        return BigInteger(1, m.digest()).toString(16)
     }
 }
 

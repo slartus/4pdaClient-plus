@@ -151,7 +151,15 @@ dependencies {
     api 'de.hdodenhof:circleimageview:3.1.0'
     api 'com.dmitriy-tarasov:android-intents:1.1.0'
     api 'com.squareup.picasso:picasso:2.71828'
-    api 'ch.acra:acra:4.9.2'
+
+    def acraVersion = '5.8.4'
+    implementation "ch.acra:acra-http:$acraVersion"
+    implementation "ch.acra:acra-notification:$acraVersion"
+    implementation "ch.acra:acra-toast:$acraVersion"
+    implementation "ch.acra:acra-limiter:$acraVersion"
+    kapt("com.google.auto.service:auto-service:1.0")
+    compileOnly("com.google.auto.service:auto-service-annotations:1.0")
+
     api 'com.google.code.gson:gson:2.8.6'
     api "com.squareup.okhttp3:okhttp:$rootProject.okhttp3"
     api 'com.github.armcha:Vertical-Intro:2.0.0'

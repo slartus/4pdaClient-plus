@@ -41,7 +41,6 @@ class AcraJob : Job() {
                             while (AcraReportContainer.instance().reports.size > 0) {
                                 val report = AcraReportContainer.instance().reports[0]
                                 ru.slartus.http.Http.instance.performPost(report.url, report.params)
-
                                 AcraReportContainer.instance().reports.removeAt(0)
                             }
                         }
