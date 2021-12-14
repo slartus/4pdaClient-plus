@@ -47,7 +47,7 @@ public class DonateActivity extends PreferenceActivity {
         fragment.findPreference("Qiwi").setOnPreferenceClickListener(preference -> {
             Intent marketIntent = new Intent(
                     Intent.ACTION_VIEW,
-                    Uri.parse("https://qiwi.me/aae4cc12-6926-4c0e-a171-bb98e2eb5cc0"));
+                    Uri.parse("https://my.qiwi.com/Artem-Sy0u6mkcdM"));
             fragment.startActivity(Intent.createChooser(marketIntent, fragment.getString(R.string.Choice)));
             return true;
         });

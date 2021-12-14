@@ -4,40 +4,42 @@
     <item
         android:id="@+id/guest_item"
         android:icon="@drawable/account_outline"
+        android:orderInCategory="0"
         android:title="@string/guest"
-        app:showAsAction="always" >
+        app:showAsAction="always">
         <menu>
             <item
                 android:id="@+id/login_item"
-                android:title="@string/login"/>
+                android:title="@string/login" />
             <item
                 android:id="@+id/registration_item"
-                android:title="@string/registration"/>
+                android:title="@string/registration" />
         </menu>
     </item>
 
     <item
         android:id="@+id/user_item"
         android:icon="@drawable/account"
+        android:orderInCategory="0"
         android:title="@string/guest"
         android:visible="false"
-        app:showAsAction="always" >
+        app:showAsAction="always">
         <menu>
             <item
                 android:id="@+id/qms_item"
-                android:title="@string/QMS"/>
+                android:title="@string/QMS" />
             <item
                 android:id="@+id/mentions_item"
-                android:title="@string/mentions"/>
+                android:title="@string/mentions" />
             <item
                 android:id="@+id/profile_item"
-                android:title="@string/profile"/>
+                android:title="@string/profile" />
             <item
                 android:id="@+id/reputation_item"
-                android:title="@string/reputation"/>
+                android:title="@string/reputation" />
             <item
                 android:id="@+id/logout_item"
-                android:title="@string/logout"/>
+                android:title="@string/logout" />
         </menu>
     </item>
 </menu>

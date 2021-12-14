@@ -27,11 +27,6 @@ import java.net.HttpCookie;
 
 import ru.slartus.http.Http;
 
-/**
- * User: slinkin
- * Date: 16.07.12
- * Time: 9:58
- */
 public class DownloadsService {
 
     public static void download(final Activity context1, final String url, final Boolean finish) {

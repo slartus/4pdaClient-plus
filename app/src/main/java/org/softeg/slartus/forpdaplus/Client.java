@@ -25,13 +25,10 @@ import org.softeg.slartus.forpdacommon.HttpHelper;
 import org.softeg.slartus.forpdacommon.NameValuePair;
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdacommon.PatternExtensions;
-import org.softeg.slartus.forpdaplus.classes.DownloadTask;
-import org.softeg.slartus.forpdaplus.classes.DownloadTasks;
-import org.softeg.slartus.forpdaplus.classes.Forum;
 import org.softeg.slartus.forpdaplus.classes.TopicBodyBuilder;
 import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
 import org.softeg.slartus.forpdaplus.common.AppLog;
-import org.softeg.slartus.forpdaplus.repositories.UserInfoRepository;
+import org.softeg.slartus.forpdaplus.repositories.UserInfoRepositoryImpl;
 import org.softeg.slartus.forpdaplus.utils.UploadUtils;
 import org.softeg.slartus.hosthelper.HostHelper;
 
@@ -66,7 +63,7 @@ public class Client implements IHttpClient {
     }
 
 
-    static final Client INSTANCE = new Client();
+    public static final Client INSTANCE = new Client();
 
     public URI getRedirectUri() {
         return HttpHelper.getRedirectUri();
@@ -184,16 +181,12 @@ public class Client implements IHttpClient {
         return INSTANCE;  //To change body of created methods use File | Settings | File Templates.
     }
 
-    public void likeNews(String postId) throws IOException {
+    public void likeNews(String postId) {
         NewsApi.like(this, postId);
     }
 
-    public void likeComment(final String id, final String comment) throws IOException {
+    public void likeComment(final String id, final String comment) {
         NewsApi.likeComment(this, id, comment);
-    }
-
-    public interface OnProgressPositionChangedListener {
-        void onProgressChanged(Context context, DownloadTask downloadTask, Exception ex);
     }
 
     private void doOnOnProgressChanged(OnProgressChangedListener listener, String state) {
@@ -225,11 +218,11 @@ public class Client implements IHttpClient {
     }
 
     public String getUser() {
-        return UserInfoRepository.Companion.getInstance().getName();
+        return UserInfoRepositoryImpl.getInstance().getName();
     }
 
     public Boolean getLogined() {
-        return UserInfoRepository.Companion.getInstance().getUserInfo().getValue().getLogined();
+        return UserInfoRepositoryImpl.getInstance().getLogined();
     }
 
     private CharSequence m_LoginFailedReason;
@@ -249,15 +242,15 @@ public class Client implements IHttpClient {
         Http.Companion.getInstance().getCookieStore().removeAll();
 
         LoginResult loginResult = ProfileApi.login(login, password, privacy, capVal, capTime, capSig);
-        boolean logined = UserInfoRepository.Companion.getInstance().getLogined();
+        boolean logined = UserInfoRepositoryImpl.Companion.getInstance().getLogined();
 
         m_LoginFailedReason = logined ? null : loginResult.getLoginError();
 
         if (logined)
-            UserInfoRepository.Companion.getInstance().setName(loginResult.getUserLogin().toString());
+            UserInfoRepositoryImpl.Companion.getInstance().setName(loginResult.getUserLogin().toString());
         m_K = loginResult.getK().toString();
 
-        Http.Companion.getInstance().getCookieStore().addCustom("4pda.User", UserInfoRepository.Companion.getInstance().getName());
+        Http.Companion.getInstance().getCookieStore().addCustom("4pda.User", UserInfoRepositoryImpl.Companion.getInstance().getName());
         Http.Companion.getInstance().getCookieStore().addCustom("4pda.K", m_K);
 
 
@@ -277,7 +270,7 @@ public class Client implements IHttpClient {
     private void checkLogin() {
         for (HttpCookie cookie : Http.Companion.getInstance().getCookieStore().getCookies()) {
             if ("4pda.User".equals(cookie.getName())) {
-                UserInfoRepository.Companion.getInstance().setName(cookie.getValue());
+                UserInfoRepositoryImpl.Companion.getInstance().setName(cookie.getValue());
             } else if ("4pda.K".equals(cookie.getName())) {
                 m_K = cookie.getValue();
             }
@@ -295,12 +288,8 @@ public class Client implements IHttpClient {
         }
     }
 
-    int getQmsCount() {
-        return UserInfoRepository.Companion.getInstance().getQmsCount();
-    }
-
     public void setQmsCount(int count) {
-        UserInfoRepository.Companion.getInstance()
+        UserInfoRepositoryImpl.Companion.getInstance()
                 .setQmsCount(count);
     }
 
@@ -311,7 +300,7 @@ public class Client implements IHttpClient {
 
     private void checkMentions(String page) {
         Integer mentionsCount = MentionsParser.Companion.getInstance().parseCount(page);
-        UserInfoRepository.Companion.getInstance()
+        UserInfoRepositoryImpl.Companion.getInstance()
                 .setMentionsCount(mentionsCount);
     }
 
@@ -325,10 +314,10 @@ public class Client implements IHttpClient {
         Http.Companion.getInstance().getCookieStore().removeAll();
 
         checkLogin(res);
-        if (UserInfoRepository.Companion.getInstance().getUserInfo().getValue().getLogined())
+        if (UserInfoRepositoryImpl.Companion.getInstance().getLogined())
             m_LoginFailedReason = App.getContext().getString(R.string.bad_logout);
 
-        return !UserInfoRepository.Companion.getInstance().getUserInfo().getValue().getLogined();
+        return !UserInfoRepositoryImpl.Companion.getInstance().getLogined();
     }
 
     public AppResponse preformGetWithProgress(String url, OnProgressChangedListener progressChangedListener) throws IOException {
@@ -365,7 +354,7 @@ public class Client implements IHttpClient {
         }
 
         return TopicParser.loadTopic(context, topicId, topicPageBody, spoilFirstPost,
-                UserInfoRepository.Companion.getInstance().getUserInfo().getValue().getLogined(),
+                UserInfoRepositoryImpl.Companion.getInstance().getLogined(),
                 urlParams);
     }
 
@@ -431,12 +420,6 @@ public class Client implements IHttpClient {
 
     void markAllForumAsRead() throws Throwable {
         ForumsApi.Companion.markAllAsRead(this);
-    }
-
-    private final DownloadTasks m_DownloadTasks = new DownloadTasks();
-
-    public DownloadTasks getDownloadTasks() {
-        return m_DownloadTasks;
     }
 
 

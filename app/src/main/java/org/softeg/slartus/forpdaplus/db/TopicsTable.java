@@ -8,13 +8,6 @@ import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 
-/**
- * Created by IntelliJ IDEA.
- * User: slinkin
- * Date: 22.11.12
- * Time: 7:25
- * To change this template use File | Settings | File Templates.
- */
 public class TopicsTable {
     public static final String TABLE_NAME = "Topics";
     public static final String COLUMN_ID = "_id";
@@ -24,7 +17,6 @@ public class TopicsTable {
     public static final String COLUMN_LAST_MESSAGE_DATE = "LastMessageDate";
     public static final String COLUMN_LAST_MESSAGE_Author = "LastMessageAuthor";
     public static final String COLUMN_HASNEW = "HasNew";
-    public static final String COLUMN_NUMBER = "Number";
 
     public static void addTopic(ExtTopic topic, Boolean ifNotExists) {
         SQLiteDatabase db = null;

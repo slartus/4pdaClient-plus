@@ -12,19 +12,10 @@ import org.softeg.slartus.forpdaplus.classes.forum.HistoryTopic;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.repositories.ForumsRepository;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-/**
- * Created by IntelliJ IDEA.
- * User: slinkin
- * Date: 22.11.12
- * Time: 7:27
- * To change this template use File | Settings | File Templates.
- */
 public class TopicsHistoryTable {
 
     public static final String TABLE_NAME = "TopicsHistory";
@@ -33,7 +24,7 @@ public class TopicsHistoryTable {
     public static final String COLUMN_DATETIME = "DateTime";
     public static final String COLUMN_URL = "Url";
 
-    public static String getTopicHistoryUrl(CharSequence topicId) throws IOException {
+    public static String getTopicHistoryUrl(CharSequence topicId) {
         SQLiteDatabase db = null;
         Cursor c = null;
         try {
@@ -59,63 +50,7 @@ public class TopicsHistoryTable {
         return null;
     }
 
-    public static HistoryTopic getTopicHistory(CharSequence topicId) throws IOException {
-
-        SQLiteDatabase db = null;
-        Cursor c = null;
-        try {
-            DbHelper dbHelper = new DbHelper(App.getInstance());
-            db = dbHelper.getReadableDatabase();
-            assert db != null;
-
-            c = db.query("TopicsHistoryView", null, TopicsTable.COLUMN_ID + "=?", new String[]{topicId.toString()}, null, null, null);
-
-            if (c.moveToFirst()) {
-                int columnIdIndex = c.getColumnIndex(TopicsTable.COLUMN_ID);
-                int columnTitleIndex = c.getColumnIndex(TopicsTable.COLUMN_TITLE);
-                int columnDescriptionIndex = c.getColumnIndex(TopicsTable.COLUMN_DESCRIPTION);
-                int columnForumIdIndex = c.getColumnIndex(TopicsTable.COLUMN_FORUM_ID);
-                int columnDateTimeIndex = c.getColumnIndex(COLUMN_DATETIME);
-                int columnUrlIndex = c.getColumnIndex(COLUMN_URL);
-
-
-                String id = c.getString(columnIdIndex);
-                String title = c.getString(columnTitleIndex);
-                String description = c.getString(columnDescriptionIndex);
-                String forumId = c.getString(columnForumIdIndex);
-                String forumTitle = null;
-                String url = c.getString(columnUrlIndex);
-                Forum f = ForumsRepository.getInstance().findById(forumId);
-                if (f != null)
-                    forumTitle = f.getTitle();
-                Date dateTime = null;
-                try {
-                    dateTime = DbHelper.parseDate(c.getString(columnDateTimeIndex));
-                } catch (ParseException e) {
-                    AppLog.e(App.getContext(), e);
-                }
-
-                HistoryTopic topic = new HistoryTopic(id, title, url);
-                topic.setDescription(description);
-                topic.setForumId(forumId);
-                topic.setForumTitle(forumTitle);
-                topic.setLastMessageDate(dateTime);
-                return topic;
-
-
-            }
-
-        } finally {
-            if (db != null) {
-                if (c != null)
-                    c.close();
-                db.close();
-            }
-        }
-        return null;
-    }
-
-    public static ArrayList<HistoryTopic> getTopicsHistory(ListInfo listInfo) throws IOException {
+    public static ArrayList<HistoryTopic> getTopicsHistory(ListInfo listInfo) {
 
         ArrayList<HistoryTopic> res = new ArrayList<>();
         SQLiteDatabase db = null;
@@ -127,7 +62,6 @@ public class TopicsHistoryTable {
 
             listInfo.setOutCount(BaseTable.getRowsCount(db, "TopicsHistoryView"));
 
-            assert db != null;
             c = db.query("TopicsHistoryView", null, null, null, null, null, null, listInfo.getFrom() + ", 20");
 
             if (c.moveToFirst()) {

@@ -84,6 +84,8 @@ import org.softeg.slartus.forpdaplus.listfragments.TopicsListFragment;
 import org.softeg.slartus.forpdaplus.listfragments.next.UserReputationFragment;
 import org.softeg.slartus.forpdaplus.listfragments.next.forum.ForumFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
+import org.softeg.slartus.forpdaplus.listtemplates.ListCore;
+import org.softeg.slartus.forpdaplus.listtemplates.NewsPagerBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.NotesBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.TopicReadersBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.TopicWritersBrickInfo;
@@ -107,9 +109,6 @@ import ru.slartus.http.Http;
 
 import static org.softeg.slartus.forpdaplus.utils.Utils.getS;
 
-/**
- * Created by radiationx on 28.10.15.
- */
 @SuppressWarnings("unused")
 public class ThemeFragment extends WebViewFragment implements BricksListDialogFragment.IBricksListDialogCaller, QuickPostFragment.PostSendListener {
     LinearLayout mQuickPostPanel;
@@ -234,6 +233,15 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             return true;
         } else {
             clear();
+            if (TabsManager.getInstance().getTabItems().size() == 1) {
+                // если фрагмент с топиком - последний, то покажем главный экран
+                // такое происходит, если клиент открылся по прямой ссылке на топик
+                BrickInfo brickInfo = ListCore.getRegisteredBrick(Preferences.Lists.getLastSelectedList());
+                if (brickInfo == null)
+                    brickInfo = new NewsPagerBrickInfo();
+                ((MainActivity)requireActivity()).selectItem(brickInfo);
+                return true;
+            }
             return false;
         }
     }
@@ -710,13 +718,15 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
     }
 
-    @Override
-    public boolean onBackPressed() {
+    private boolean tryCloseSearch() {
         if (pnlSearch.getVisibility() == View.VISIBLE) {
             closeSearch();
             return true;
         }
+        return false;
+    }
 
+    private boolean tryBackByHistory() {
         if (m_History.size() > 1) {
             m_History.remove(m_History.size() - 1);
             SessionHistory sessionHistory = m_History.get(m_History.size() - 1);
@@ -739,7 +749,10 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             }
             return true;
         }
+        return false;
+    }
 
+    private boolean trySkipPostBodyChanges() {
         getPostBody();
         if (!TextUtils.isEmpty(m_PostBody)) {
             new MaterialDialog.Builder(getMainActivity())
@@ -757,6 +770,25 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             clear();
             return false;
         }
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        if (tryCloseSearch()) {
+            return true;
+        }
+
+        if (tryBackByHistory()) {
+            return true;
+        }
+
+        if (trySkipPostBodyChanges()) {
+            return true;
+        }
+
+        clear();
+
+        return false;
     }
 
     public void clear() {

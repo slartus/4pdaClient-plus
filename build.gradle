@@ -12,7 +12,8 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.1.3'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.0'
+        classpath 'com.google.dagger:hilt-android-gradle-plugin:2.38.1'
     }
 }
 
@@ -27,10 +28,21 @@ allprojects {
 }
 
 ext {
-    compileSdkVersion = 29
-    targetSdkVersion = 29
+    compileSdkVersion = 31
+    targetSdkVersion = 30
     minSdk = 16
-    okhttp3 = "3.12.3"// увеличивать нельзя!!
+
+    appcompat = '1.4.0'
+    coroutines = '1.5.2'
+    coil = '1.4.0'
+    hilt = "2.38.1"
     jsoup = '1.13.1'
+    lifecycle='2.4.0'
+    recyclerview='1.2.1'
+    material='1.4.0'
+    okhttp3 = "3.12.3"// увеличивать нельзя!!
+    room = "2.3.0"
     rxjava2 = "2.1.1"
+    swiperefreshlayout="1.1.0"
+    timber="5.0.1"
 }

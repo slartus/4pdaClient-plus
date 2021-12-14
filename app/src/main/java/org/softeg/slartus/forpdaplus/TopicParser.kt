@@ -17,7 +17,7 @@ import org.softeg.slartus.forpdaplus.classes.Post
 import org.softeg.slartus.forpdaplus.classes.TopicBodyBuilder
 import org.softeg.slartus.forpdaplus.classes.common.Functions
 import org.softeg.slartus.forpdaplus.fragments.topic.ForPdaWebInterface
-import org.softeg.slartus.forpdaplus.repositories.UserInfoRepository.Companion.instance
+import org.softeg.slartus.forpdaplus.repositories.UserInfoRepositoryImpl.Companion.instance
 import java.io.IOException
 import java.util.regex.Matcher
 import java.util.regex.Pattern

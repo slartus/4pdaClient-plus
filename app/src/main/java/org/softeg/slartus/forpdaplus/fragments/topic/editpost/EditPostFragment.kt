@@ -29,7 +29,6 @@ import kotlinx.android.synthetic.main.edit_post_plus.*
 import org.softeg.slartus.forpdaapi.post.EditAttach
 import org.softeg.slartus.forpdaapi.post.EditPost
 import org.softeg.slartus.forpdaapi.post.PostApi
-import org.softeg.slartus.forpdacommon.FileUtils
 import org.softeg.slartus.forpdaplus.App
 import org.softeg.slartus.forpdaplus.MainActivity
 import org.softeg.slartus.forpdaplus.R
@@ -196,7 +195,7 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
             val topicId = args.getString("themeId")!!
             val postId = args.getString("postId")!!
             val authKey = args.getString("authKey")!!
-            parentTag = args.getString("parentTag")
+            parentTag = args.getString("parentTag", null)
             mEditpost = EditPost().apply {
                 this.id = postId
                 this.forumId = forumId
@@ -263,7 +262,7 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
 
     private fun confirmSendMail(): Single<Boolean> {
         val result = SingleSubject.create<Boolean>()
-        if (Preferences.Topic.getConfirmSend()) {
+        if (Preferences.Topic.confirmSend) {
             val dialog = MaterialDialog.Builder(context!!)
                 .title(R.string.is_sure)
                 .content(R.string.confirm_sending)
@@ -524,12 +523,6 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
             .show()
     }
 
-    private fun saveAttachDirPath(attachFilePath: String) {
-        lastSelectDirPath = FileUtils.getDirPath(attachFilePath)
-        App.getInstance().preferences.edit().putString("EditPost.AttachDirPath", lastSelectDirPath)
-            .apply()
-    }
-
     private fun helperTask(uri: Uri) {
 
         UpdateTask(this, mEditpost?.id ?: "", uri).execute()
@@ -613,8 +606,8 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
             return
         }
         if (TabsManager.instance.isContainsByTag(parentTag)) {
-            (TabsManager.instance.getTabByTag(parentTag)!!.fragment as ThemeFragment)
-                .showTheme(
+            (TabsManager.instance.getTabByTag(parentTag)?.fragment as? ThemeFragment?)
+                ?.showTheme(
                     String.format(
                         "https://${HostHelper.host}/forum/index.php?showtopic=%s&%s",
                         editPost?.topicId,
@@ -642,8 +635,8 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
                 mEditpost,
                 text,
                 editPostReason,
-                Preferences.Topic.Post.getEnableEmotics(),
-                Preferences.Topic.Post.getEnableSign()
+                Preferences.Topic.Post.enableEmotics,
+                Preferences.Topic.Post.enableSign
             )
                 .execute()
         } else {
@@ -652,8 +645,8 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
                 mEditpost,
                 text,
                 editPostReason,
-                Preferences.Topic.Post.getEnableEmotics(),
-                Preferences.Topic.Post.getEnableSign()
+                Preferences.Topic.Post.enableEmotics,
+                Preferences.Topic.Post.enableSign
             )
                 .execute()
         }
@@ -879,7 +872,7 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
             topicId: String,
             postId: String,
             authKey: String,
-            tag: String
+            tag: String?
         ) {
             val url = thisFragmentUrl + forumId + topicId + postId
             val args = Bundle()

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.fragment.app.Fragment;
@@ -46,6 +47,14 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
     private String generalParentTag = "DefaultParentTag";
     private Menu menu;
 
+    public GeneralFragment() {
+        super();
+    }
+
+    public GeneralFragment(@LayoutRes int contentLayoutId) {
+        super(contentLayoutId);
+    }
+
     public Menu getMenu() {
         return menu;
     }
@@ -63,7 +72,7 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
     @Nullable
     @Override
     public View getView() {
-        return view;
+        return view == null ? super.getView() : view;
     }
 
     public View findViewById(int id) {

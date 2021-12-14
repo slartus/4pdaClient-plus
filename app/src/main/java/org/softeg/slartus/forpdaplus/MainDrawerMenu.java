@@ -25,7 +25,6 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.fragments.ForumRulesFragment;
 import org.softeg.slartus.forpdaplus.fragments.topic.ThemeFragment;
-import org.softeg.slartus.forpdaplus.listtemplates.AppAndGame;
 import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.FaqBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.ForumRulesBrick;
@@ -194,16 +193,6 @@ public class MainDrawerMenu implements NavigationView.OnNavigationItemSelectedLi
 
         switcha:
         switch (selectedBrick.getName()) {
-            case AppAndGame.NAME:
-                final List<ApplicationInfo> packages = getContext().getPackageManager().getInstalledApplications(PackageManager.GET_META_DATA);
-                for (ApplicationInfo packageInfo : packages) {
-                    if (packageInfo.packageName.equals("ru.freeman42.app4pda")) {
-                        getContext().startActivity(getContext().getPackageManager().getLaunchIntentForPackage(packageInfo.packageName));
-                        break switcha;
-                    }
-                }
-                ThemeFragment.showTopicById("275433");
-                break;
             case PreferencesBrickInfo.NAME:
                 mActivity.startActivityForResult(new Intent(mActivity, PreferencesActivity.class), 0);
                 break;

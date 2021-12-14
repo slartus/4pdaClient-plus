@@ -66,13 +66,13 @@ class NotesRepository private constructor() {
 
     private val local: Boolean
         get() {
-            return Preferences.Notes.isLocal()
+            return Preferences.Notes.isLocal
         }
 
 
     private val apiUrl: String
         get() {
-            return Preferences.Notes.getRemoteUrl() ?: ""
+            return Preferences.Notes.remoteUrl ?: ""
         }
 
     private fun getUrl(action: String): String {

@@ -138,7 +138,7 @@ class MentionsListFragment : WebViewFragment() {
 
         body_webview.settings.loadWithOverviewMode = false
         body_webview.settings.useWideViewPort = true
-        body_webview.settings.defaultFontSize = Preferences.Topic.getFontSize()
+        body_webview.settings.defaultFontSize = Preferences.Topic.fontSize
         body_webview.addJavascriptInterface(this, "HTMLOUT")
         body_webview.loadDataWithBaseURL(
             "https://${HostHelper.host}/forum/",

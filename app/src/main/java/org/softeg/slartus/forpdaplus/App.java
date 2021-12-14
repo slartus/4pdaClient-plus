@@ -1,5 +1,7 @@
 package org.softeg.slartus.forpdaplus;
 
+import static org.softeg.slartus.forpdaplus.prefs.PreferencesActivity.getPackageInfo;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -20,15 +22,11 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 
-import org.acra.ACRA;
-import org.acra.ReportField;
-import org.acra.ReportingInteractionMode;
-import org.acra.annotation.ReportsCrashes;
 import org.softeg.slartus.forpdacommon.ExtPreferences;
 import org.softeg.slartus.forpdanotifyservice.favorites.FavoritesNotifier;
 import org.softeg.slartus.forpdanotifyservice.qms.QmsNotifier;
-import org.softeg.slartus.forpdaplus.acra.ACRAReportSenderFactory;
-import org.softeg.slartus.forpdaplus.classes.Forum;
+import org.softeg.slartus.forpdaplus.acra.AcraExtensionsKt;
+import org.softeg.slartus.forpdaplus.core.repositories.ForumRepository;
 import org.softeg.slartus.forpdaplus.db.DbHelper;
 import org.softeg.slartus.forpdaplus.prefs.PreferencesActivity;
 import org.softeg.slartus.forpdaplus.repositories.ForumsRepository;
@@ -40,35 +38,19 @@ import java.io.InputStream;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.HiltAndroidApp;
 import io.paperdb.Paper;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import ru.slartus.http.Http;
+import timber.log.Timber;
 
-import static org.softeg.slartus.forpdaplus.prefs.PreferencesActivity.getPackageInfo;
-
-/**
- * User: slinkin
- * Date: 05.08.11
- * Time: 8:03
- */
-
-@ReportsCrashes(
-        mode = ReportingInteractionMode.TOAST,
-        customReportContent = {ReportField.APP_VERSION_CODE,
-                ReportField.APP_VERSION_NAME, ReportField.USER_COMMENT, ReportField.IS_SILENT, ReportField.PACKAGE_NAME,
-                ReportField.ANDROID_VERSION, ReportField.PHONE_MODEL, ReportField.AVAILABLE_MEM_SIZE, ReportField.SHARED_PREFERENCES,
-                ReportField.APPLICATION_LOG, ReportField.STACK_TRACE, ReportField.LOGCAT},
-        resNotifTitle = R.string.crash_dialog_title,
-        resNotifText = R.string.crash_dialog_text,
-        resNotifIcon = R.drawable.notify_icon,
-        resToastText = R.string.crash_dialog_text,
-        resDialogOkToast = R.string.crash_dialog_ok_toast,
-        resDialogText = R.string.crash_dialog_text, resDialogIcon = android.R.drawable.ic_dialog_info,
-        resDialogTitle = R.string.crash_dialog_title, resDialogCommentPrompt = R.string.crash_dialog_comment_prompt,
-        reportSenderFactoryClasses = {ACRAReportSenderFactory.class})
-//optional. default is a warning sign
+@HiltAndroidApp
 public class App extends MultiDexApplication {
+    @Inject
+    ForumRepository forumRepository;
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     public static String Host = HostHelper.getHost();
@@ -103,6 +85,7 @@ public class App extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+        initTimber();
         //TooLargeTool.startLogging(this);//логирование saveinstancestate
         org.softeg.slartus.forpdacommon.FACTORY.init(this);
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
@@ -137,17 +120,19 @@ public class App extends MultiDexApplication {
         Http.Companion.init(this, getString(R.string.app_name), getPackageInfo().versionName);
         Client.getInstance().checkLoginByCookies();
         InternetConnection.getInstance().subscribeInternetState();
-        ForumsRepository.getInstance();
+        ForumsRepository.getInstance().init(forumRepository);
+    }
+
+    private void initTimber() {
+        if (BuildConfig.DEBUG) {
+            Timber.plant(new Timber.DebugTree());
+        }
     }
 
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
-        if (!ACRA.isACRASenderServiceProcess()) {
-            ACRA.DEV_LOGGING = true;
-            ACRA.init(this);
-
-        }
+        AcraExtensionsKt.configureAcra(this);
     }
 
     @Override

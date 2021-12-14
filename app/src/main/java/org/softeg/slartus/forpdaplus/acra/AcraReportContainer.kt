@@ -1,11 +1,8 @@
 package org.softeg.slartus.forpdaplus.acra
 
+import java.util.*
 import androidx.core.util.Pair
-import java.util.ArrayList
 
-/*
- * Created by slinkin on 07.02.2018.
- */
 class AcraReportContainer {
 
     companion object {
@@ -25,7 +22,6 @@ class AcraReportContainer {
         }
         AcraJob.scheduleJob()
     }
-
 
 }
 

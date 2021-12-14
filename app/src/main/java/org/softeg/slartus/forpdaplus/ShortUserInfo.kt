@@ -1,14 +1,12 @@
 package org.softeg.slartus.forpdaplus
 
-import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
-import android.net.ConnectivityManager
 import android.os.AsyncTask
 import android.os.Handler
-import androidx.constraintlayout.widget.Group
+import android.os.Looper
 import android.text.InputType
 import android.text.TextUtils
 import android.util.Log
@@ -16,12 +14,15 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.constraintlayout.widget.Group
+import coil.load
 import com.afollestad.materialdialogs.MaterialDialog
 import com.nostra13.universalimageloader.core.ImageLoader
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener
 import de.hdodenhof.circleimageview.CircleImageView
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.distinctUntilChanged
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 import org.softeg.slartus.forpdacommon.setAllOnClickListener
@@ -31,8 +32,7 @@ import org.softeg.slartus.forpdaplus.common.AppLog
 import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment
 import org.softeg.slartus.forpdaplus.listtemplates.QmsContactsBrickInfo
 import org.softeg.slartus.forpdaplus.prefs.Preferences
-import org.softeg.slartus.forpdaplus.repositories.UserInfo
-import org.softeg.slartus.forpdaplus.repositories.UserInfoRepository
+import org.softeg.slartus.forpdaplus.repositories.UserInfoRepositoryImpl
 import org.softeg.slartus.hosthelper.HostHelper
 import ru.slartus.http.Http
 import java.io.File
@@ -59,7 +59,7 @@ class ShortUserInfo internal constructor(activity: MainActivity, private val vie
 
     private val profileGroup: Group
     private val avatarsGroup: Group
-    var mHandler = Handler()
+    var mHandler = Handler(Looper.getMainLooper())
     var client: Client = Client.getInstance()
     private val isSquare: Boolean
     private var avatarUrl = ""
@@ -121,12 +121,12 @@ class ShortUserInfo internal constructor(activity: MainActivity, private val vie
 
         val imgFile = File(prefs.getString("userInfoBg", "")!!)
         if (imgFile.exists()) {
-            ImageLoader.getInstance().displayImage("file://" + imgFile.path, userBackground)
+//            ImageLoader.getInstance().displayImage("file://" + imgFile.path, userBackground)
         }
 
         avatarsGroup.setAllOnClickListener {
             ProfileFragment.showProfile(
-                UserInfoRepository.instance.getId(),
+                UserInfoRepositoryImpl.instance.getId(),
                 client.user
             )
         }
@@ -141,20 +141,21 @@ class ShortUserInfo internal constructor(activity: MainActivity, private val vie
             }
         }
 
-        App.getInstance().addToDisposable(
-            UserInfoRepository.instance
-                .userInfo
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { userInfo ->
-                    avatarsGroup.visibility = if (userInfo.logined) View.VISIBLE else View.GONE
-                    profileGroup.visibility = if (userInfo.logined) View.VISIBLE else View.GONE
-                    loginButton.visibility = if (userInfo.logined) View.GONE else View.VISIBLE
-                    if (userInfo.logined && !TextUtils.isEmpty(userInfo.id)) {
-                        updateAsyncTask().execute()
+        GlobalScope.launch(Dispatchers.IO) {
+            UserInfoRepositoryImpl.instance.userInfo
+                .distinctUntilChanged()
+                .collect { userInfo ->
+                    withContext(Dispatchers.Main) {
+                        avatarsGroup.visibility = if (userInfo.logined) View.VISIBLE else View.GONE
+                        profileGroup.visibility = if (userInfo.logined) View.VISIBLE else View.GONE
+                        loginButton.visibility = if (userInfo.logined) View.GONE else View.VISIBLE
+                        if (userInfo.logined && !TextUtils.isEmpty(userInfo.id)) {
+                            updateAsyncTask().execute()
+                        }
+                        refreshQms(userInfo.qmsCount ?: 0)
                     }
-                    refreshQms(userInfo)
-                })
+                }
+        }
     }
 
     private fun findViewById(id: Int): View {
@@ -162,14 +163,10 @@ class ShortUserInfo internal constructor(activity: MainActivity, private val vie
     }
 
     private fun refreshQms() {
-        UserInfoRepository.instance.userInfo.value?.let {
-            refreshQms(it)
-        }
-
+        refreshQms(UserInfoRepositoryImpl.instance.getQmsCount() ?: 0)
     }
 
-    private fun refreshQms(userInfo: UserInfo) {
-        val qmsCount = userInfo.qmsCount
+    private fun refreshQms(qmsCount: Int) {
         if (qmsCount != 0) {
             qmsMessages.text =
                 String.format(App.getInstance().getString(R.string.new_qms_messages), qmsCount)
@@ -184,7 +181,7 @@ class ShortUserInfo internal constructor(activity: MainActivity, private val vie
         override fun doInBackground(vararg urls: String): Boolean? {
             try {
                 val doc =
-                    Jsoup.parse(client.performGet("https://" + HostHelper.host + "/forum/index.php?showuser=" + UserInfoRepository.instance.getId()).responseBody)
+                    Jsoup.parse(client.performGet("https://" + HostHelper.host + "/forum/index.php?showuser=" + UserInfoRepositoryImpl.instance.getId()).responseBody)
                 var el: Element? = doc.selectFirst("div.user-box > div.photo > img")
                 if (el != null)
                     avatarUrl = el.attr("src")
@@ -196,7 +193,6 @@ class ShortUserInfo internal constructor(activity: MainActivity, private val vie
                         reputation = repa
                     }
                 }
-
 
             } catch (e: IOException) {
                 AppLog.e(getContext(), e)
@@ -224,8 +220,7 @@ class ShortUserInfo internal constructor(activity: MainActivity, private val vie
                     if (prefs.getBoolean("isUserBackground", false)) {
                         val imgFile = File(prefs.getString("userInfoBg", "")!!)
                         if (imgFile.exists()) {
-                            ImageLoader.getInstance()
-                                .displayImage("file:///" + imgFile.path, userBackground)
+                            userBackground.load(imgFile)
                         }
                     } else {
                         if ((avatarUrl != prefs.getString("userAvatarUrl", "")) or (prefs.getString(
@@ -321,7 +316,7 @@ class ShortUserInfo internal constructor(activity: MainActivity, private val vie
     private fun getOutputMediaFile(url: String): File? {
         // To be safe, you should check that the SDCard is mounted
         // using Environment.getExternalStorageState() before doing this.
-        val mediaStorageDir = File(Preferences.System.getSystemDir())
+        val mediaStorageDir = File(Preferences.System.systemDir)
 
         // This location works best if you want the created images to be shared
         // between applications and persist after your app has been uninstalled.
@@ -348,6 +343,5 @@ class ShortUserInfo internal constructor(activity: MainActivity, private val vie
         return Pattern.compile(HostHelper.host + "/([^/$?&]+)", Pattern.CASE_INSENSITIVE)
             .matcher(url).find()
     }
-
 
 }

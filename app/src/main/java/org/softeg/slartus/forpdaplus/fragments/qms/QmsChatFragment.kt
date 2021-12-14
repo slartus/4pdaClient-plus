@@ -182,7 +182,7 @@ class QmsChatFragment : WebViewFragment() {
             settings.setAppCacheEnabled(true)
             settings.allowFileAccess = true
             settings.cacheMode = WebSettings.LOAD_DEFAULT
-            settings.defaultFontSize = Preferences.Topic.getFontSize()
+            settings.defaultFontSize = Preferences.Topic.fontSize
         }
         wvChat?.addJavascriptInterface(this, "HTMLOUT")
 

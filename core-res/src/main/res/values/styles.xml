@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="PopupMenuToolbarBlack" parent="ThemeOverlay.AppCompat">
+        <item name="android:colorBackground">@color/dialog_background_black</item>
+
+    </style>
+
+    <style name="ImageViewThemeBase" parent="Theme.AppCompat">
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="windowActionBarOverlay">true</item>
+        <item name="android:actionBarStyle">@style/actionbar_trans</item>
+        <item name="actionBarStyle">@style/actionbar_trans</item>
+        <item name="panelMenuListTheme">@style/bottom_menu_dark</item>
+        <item name="actionOverflowButtonStyle">@style/overflow_button</item>
+        <item name="android:windowBackground">@color/app_background_black</item>
+    </style>
+
+    <style name="ImageViewTheme" parent="ImageViewThemeBase">
+        <item name="actionBarStyle">@style/actionbar_trans</item>
+    </style>
+
+    <style name="actionbar_trans_base" parent="@style/Widget.AppCompat.ActionBar">
+        <item name="background">@color/background_toolbar</item>
+        <item name="displayOptions">homeAsUp|showTitle</item>
+        <item name="subtitleTextStyle">@style/actionbar_subtitle</item>
+        <item name="contentInsetStartWithNavigation">0dp</item>
+        <item name="contentInsetEndWithActions">0dp</item>
+    </style>
+
+    <style name="actionbar_trans" parent="actionbar_trans_base" />
+
+    <style name="list_divider_style_light" parent="@style/Widget.AppCompat.ListView">
+        <item name="android:divider">@color/divider_light</item>
+        <item name="android:dividerHeight">1dp</item>
+    </style>
+
+    <style name="list_divider_style_dark" parent="@style/Widget.AppCompat.ListView">
+        <item name="android:divider">@color/divider_dark</item>
+        <item name="android:dividerHeight">1dp</item>
+    </style>
+
+    <style name="list_divider_style_black" parent="@style/Widget.AppCompat.ListView">
+        <item name="android:divider">@color/divider_black</item>
+        <item name="android:dividerHeight">1dp</item>
+    </style>
+
+    <style name="bottom_menu_light" parent="@style/Theme.AppCompat.CompactMenu">
+        <item name="android:itemTextAppearance">@style/bottom_menu_light_ta</item>
+    </style>
+
+    <style name="bottom_menu_light_ta" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">@color/list_text_special_color_light</item>
+    </style>
+
+    <style name="bottom_menu_dark" parent="@style/Theme.AppCompat.CompactMenu">
+        <item name="android:itemTextAppearance">@style/bottom_menu_dark_ta</item>
+    </style>
+
+    <style name="bottom_menu_dark_ta" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">@color/list_text_special_color_dark</item>
+    </style>
+
+    <style name="actionbar_subtitle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="overflow_button" parent="@style/Widget.AppCompat.ActionButton.Overflow">
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:paddingLeft">-2dp</item>
+    </style>
+
+    <style name="QmsNew">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="QmsOld">
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="Divider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+    </style>
+
+    <style name="Divider_light" parent="Divider">
+        <item name="android:background">@color/divider_light</item>
+    </style>
+
+    <style name="Divider_dark" parent="Divider">
+        <item name="android:background">@color/divider_dark</item>
+    </style>
+
+    <style name="Divider_black" parent="Divider">
+        <item name="android:background">@color/divider_dark</item>
+    </style>
+
+    <style name="prefs_title_background_light">
+        <item name="android:background">@color/actionbar_background_light</item>
+    </style>
+
+    <style name="prefs_title_background_dark">
+        <item name="android:background">@color/actionbar_background_dark</item>
+    </style>
+
+    <style name="prefs_title_background_black">
+        <item name="android:background">@color/actionbar_background_black</item>
+    </style>
+
+    <style name="prefs_title_style">
+        <item name="android:paddingLeft">24dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="prefs_title_style_kitkat" parent="prefs_title_style">
+        <item name="android:paddingTop">24dp</item>
+        <item name="android:fitsSystemWindows">false</item>
+    </style>
+
+    <style name="prefs_title_style_prekitkat" parent="prefs_title_style">
+        <item name="android:fitsSystemWindows">false</item>
+    </style>
+
+    <style name="right_separator_light">
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+    </style>
+
+    <style name="right_separator_dark">
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+    </style>
+
+    <style name="right_separator_black">
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+    </style>
+
+    <style name="news_light">
+        <item name="android:background">@color/news_background_light</item>
+    </style>
+
+    <style name="news_dark">
+        <item name="android:background">@color/news_background_dark</item>
+    </style>
+
+    <style name="news_black">
+        <item name="android:background">@color/news_background_black</item>
+    </style>
+
+    <style name="drawer_menu_light">
+        <item name="android:background">@color/drawer_menu_background_light</item>
+        <item name="itemIconTint">@color/nav_icon_light</item>
+        <item name="itemTextColor">@color/nav_text_light</item>
+    </style>
+
+    <style name="drawer_menu_dark">
+        <item name="android:background">@color/drawer_menu_background_dark</item>
+        <item name="itemIconTint">@color/nav_icon_dark</item>
+        <item name="itemTextColor">@color/nav_text_dark</item>
+    </style>
+
+    <style name="drawer_menu_black">
+        <item name="android:background">@color/drawer_menu_background_black</item>
+        <item name="itemIconTint">@color/nav_icon_dark</item>
+        <item name="itemTextColor">@color/nav_text_dark</item>
+    </style>
+
+    <style name="list_text_general_color_light">
+        <item name="android:textColor">@color/list_text_general_color_light</item>
+    </style>
+
+    <style name="list_text_general_color_dark">
+        <item name="android:textColor">@color/list_text_general_color_dark</item>
+    </style>
+
+    <style name="list_text_minor_color_light">
+        <item name="android:textColor">@color/list_text_minor_color_light</item>
+    </style>
+
+    <style name="list_text_minor_color_dark">
+        <item name="android:textColor">@color/list_text_minor_color_dark</item>
+    </style>
+
+    <style name="list_text_second_color_light">
+        <item name="android:textColor">@color/list_text_second_color_light</item>
+    </style>
+
+    <style name="list_text_second_color_dark">
+        <item name="android:textColor">@color/list_text_second_color_dark</item>
+    </style>
+
+    <style name="list_text_special_color_light">
+        <item name="android:textColor">@color/list_text_special_color_light</item>
+    </style>
+
+    <style name="list_text_special_color_dark">
+        <item name="android:textColor">@color/list_text_special_color_dark</item>
+    </style>
+
+    <style name="news_text_general_color_light">
+        <item name="android:textColor">@color/news_text_general_color_light</item>
+    </style>
+
+    <style name="news_text_general_color_dark">
+        <item name="android:textColor">@color/news_text_general_color_dark</item>
+    </style>
+
+    <style name="news_text_minor_color_light">
+        <item name="android:textColor">@color/news_text_minor_color_light</item>
+    </style>
+
+    <style name="news_text_minor_color_dark">
+        <item name="android:textColor">@color/news_text_minor_color_dark</item>
+    </style>
+
+    <style name="news_text_second_color_light">
+        <item name="android:textColor">@color/news_text_second_color_light</item>
+    </style>
+
+    <style name="news_text_second_color_dark">
+        <item name="android:textColor">@color/news_text_second_color_dark</item>
+    </style>
+
+    <style name="edit_text_light">
+        <item name="android:background">@color/edit_text_light</item>
+    </style>
+
+    <style name="edit_text_dark">
+        <item name="android:background">@color/edit_text_dark</item>
+    </style>
+
+    <style name="edit_text_black">
+        <item name="android:background">@color/edit_text_black</item>
+    </style>
+
+    <style name="post_panel_light">
+        <item name="android:background">@color/post_panel_light</item>
+    </style>
+
+    <style name="post_panel_dark">
+        <item name="android:background">@color/post_panel_dark</item>
+    </style>
+
+    <style name="post_panel_black">
+        <item name="android:background">@color/post_panel_black</item>
+    </style>
+
+    <style name="floating_action_button">
+        <item name="android:layout_marginLeft">0dp</item>
+        <item name="android:layout_marginTop">0dp</item>
+        <item name="android:layout_marginRight">0dp</item>
+        <item name="android:layout_marginBottom">0dp</item>
+    </style>
+
+
+    <style name="AppTheme.FullScreen" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:background">@color/white</item>
+    </style>
+
+    <style name="ProgressDialogTheme" parent="ThemeOverlay.AppCompat.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+</resources>

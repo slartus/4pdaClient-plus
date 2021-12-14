@@ -2,11 +2,6 @@ package org.softeg.slartus.forpdaapi
 
 import java.io.Serializable
 
-/**
- * User: slinkin
- * Date: 08.06.12
- * Time: 13:37
- */
 class Forum(var id: String?, val title: String) : Serializable {
     var description: String? = null
     var isHasTopics = false
