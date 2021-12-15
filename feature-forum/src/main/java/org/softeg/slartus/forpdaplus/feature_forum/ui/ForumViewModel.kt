@@ -57,13 +57,9 @@ class ForumViewModel @Inject constructor(
         }
 
     init {
-        _loading.value = true
-
-        viewModelScope.launch(errorHandler) {
-            launch {
-                forumRepository.load()
-            }
-            launch {
+        reload()
+        viewModelScope.launch {
+            launch(errorHandler) {
                 forumRepository.forum
                     .distinctUntilChanged()
                     .collect { rawItems ->
@@ -80,18 +76,18 @@ class ForumViewModel @Inject constructor(
                         }
 
                         refreshDataState(false)
-
-                        _loading.value = false
                     }
             }
-            launch {
-                userInfoRepository.userInfo.distinctUntilChanged()
+            launch(errorHandler) {
+                userInfoRepository.userInfo
+                    .distinctUntilChanged()
                     .collect {
                         _userLogined = it.logined
                     }
             }
         }
     }
+
 
     fun setArguments(arguments: Bundle?) {
         forumId = this.forumId ?: arguments?.getString(ForumFragment.FORUM_ID_KEY, null)
@@ -102,8 +98,11 @@ class ForumViewModel @Inject constructor(
     fun reload() {
         viewModelScope.launch(errorHandler) {
             _loading.value = true
-            forumRepository.load()
-            _loading.value = false
+            try {
+                forumRepository.load()
+            } finally {
+                _loading.value = false
+            }
         }
     }
 

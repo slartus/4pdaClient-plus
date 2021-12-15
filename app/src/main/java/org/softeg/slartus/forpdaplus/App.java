@@ -45,6 +45,7 @@ import dagger.hilt.android.HiltAndroidApp;
 import io.paperdb.Paper;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import okhttp3.ResponseBody;
 import ru.slartus.http.Http;
 import timber.log.Timber;
 
@@ -56,7 +57,6 @@ public class App extends MultiDexApplication {
     AppPreferences appPreferences;
 
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
-
     public static String Host = HostHelper.getHost();
     private Locale locale;
     private String lang;
@@ -84,8 +84,6 @@ public class App extends MultiDexApplication {
     }
 
     private MyActivityLifecycleCallbacks m_MyActivityLifecycleCallbacks;
-    @SuppressWarnings("FieldCanBeLocal")
-    private static final boolean isNewYear = false;
 
     @Override
     public void onCreate() {
@@ -153,10 +151,6 @@ public class App extends MultiDexApplication {
         getResources().updateConfiguration(config, null);
     }
 
-
-    public boolean isNewYear() {
-        return isNewYear;
-    }
 
     public void exit() {
         m_MyActivityLifecycleCallbacks.finishActivities();
@@ -231,7 +225,8 @@ public class App extends MultiDexApplication {
 
                     @Override
                     protected InputStream getStreamFromNetwork(String imageUri, Object extra) {
-                        return Http.Companion.getInstance().response(imageUri).body().byteStream();
+                        ResponseBody responseBody = Http.Companion.getInstance().response(imageUri).body();
+                        return responseBody != null ? responseBody.byteStream() : null;
                     }
                 })
                 .threadPoolSize(5)

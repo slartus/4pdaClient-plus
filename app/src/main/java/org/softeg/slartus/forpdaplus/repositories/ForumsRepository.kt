@@ -1,24 +1,31 @@
 package org.softeg.slartus.forpdaplus.repositories
 
 import io.reactivex.subjects.BehaviorSubject
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.launch
 import org.softeg.slartus.forpdaapi.Forum
-import org.softeg.slartus.forpdaapi.ForumsApi
-import org.softeg.slartus.forpdacommon.sameContentWith
+import org.softeg.slartus.forpdaplus.common.AppLog
 import org.softeg.slartus.forpdaplus.core.repositories.ForumRepository
-import org.softeg.slartus.forpdaplus.db.PaperDb
 
 @Deprecated("use org.softeg.slartus.forpdaplus.core.repositories.ForumRepository instead.")
 class ForumsRepository private constructor() {
     private object Holder {
         val INSTANCE = ForumsRepository()
     }
+
+    private val errorHandler = CoroutineExceptionHandler { _, ex ->
+        MainScope().launch {
+            AppLog.e(ex)
+        }
+    }
     val forumsSubject: BehaviorSubject<List<Forum>> = BehaviorSubject.createDefault(emptyList())
 
     fun init(forumRepository: ForumRepository) {
-        GlobalScope.launch {
+        GlobalScope.launch(errorHandler) {
             forumRepository.forum
                 .distinctUntilChanged()
                 .collect { rawItems ->
@@ -35,7 +42,7 @@ class ForumsRepository private constructor() {
         }
 
         InternetConnection.instance.loadDataOnInternetConnected({
-            GlobalScope.launch {
+            GlobalScope.launch(errorHandler) {
                 forumRepository.load()
             }
         })

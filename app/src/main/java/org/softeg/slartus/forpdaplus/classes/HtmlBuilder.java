@@ -82,7 +82,6 @@ public class HtmlBuilder{
     public void beginBody(String id, CharSequence bodyScript, boolean isImage) {
         m_Body.append("<body id=\"").append(id).append("\" class=\"modification ")
                 .append(isImage ? "" : "noimages ")
-                .append(App.getInstance().isNewYear() ? "newyear " : "")
                 .append(App.getInstance().getPreferences().getBoolean("isAccelerateGif", false) ? "ongpuimg \" " : "\" ");
         if(AppTheme.getWebViewFont().equals("")) {
             m_Body.append(" ");
