@@ -3,10 +3,11 @@ package org.softeg.slartus.forpdaplus.feature_forum.ui
 import android.os.Bundle
 import android.widget.Toast
 import androidx.annotation.StringRes
-import androidx.lifecycle.*
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.softeg.slartus.forpdaplus.core.ForumPreferences

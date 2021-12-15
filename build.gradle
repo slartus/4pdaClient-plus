@@ -35,6 +35,7 @@ ext {
     appcompat = '1.4.0'
     coroutines = '1.5.2'
     coil = '1.4.0'
+    coreCtx='1.7.0'
     hilt = "2.38.1"
     jsoup = '1.13.1'
     lifecycle='2.4.0'
