@@ -75,11 +75,13 @@ class ForumFragment : BaseFragment<ForumFragmentBinding>(ForumFragmentBinding::i
                         setLoading(it)
                     }
                 }
+                launch {
+                    viewModel.events.collect {
+                        onEvent(it)
+                    }
+                }
             }
         }
-        viewModel.events.observe(this, {
-            onEvent(it)
-        })
     }
 
     private fun onUiState(state: ForumViewModel.UiState) {
@@ -97,6 +99,7 @@ class ForumFragment : BaseFragment<ForumFragmentBinding>(ForumFragmentBinding::i
     }
 
     private fun onEvent(event: ForumViewModel.Event) {
+        viewModel.onEventReceived()
         when (event) {
             is ForumViewModel.Event.Error -> {
                 Timber.e(event.exception)
@@ -110,6 +113,9 @@ class ForumFragment : BaseFragment<ForumFragmentBinding>(ForumFragmentBinding::i
                 R.string.link,
                 event.url
             )
+            ForumViewModel.Event.Empty -> {
+                // ignore
+            }
         }
     }
 

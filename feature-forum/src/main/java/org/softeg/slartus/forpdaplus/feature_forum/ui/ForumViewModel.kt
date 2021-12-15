@@ -37,8 +37,8 @@ class ForumViewModel @Inject constructor(
         _events.value = Event.Error(ex)
     }
 
-    private val _events = MutableLiveData<Event>()
-    val events: LiveData<Event> = _events
+    private val _events = MutableStateFlow<Event>(Event.Empty)
+    val events: StateFlow<Event> = _events.asStateFlow()
 
     private val _uiState = MutableStateFlow<UiState>(UiState.Initialize)
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
@@ -220,7 +220,6 @@ class ForumViewModel @Inject constructor(
     private fun markForumRead(forumId: String) {
         viewModelScope.launch(errorHandler) {
             forumRepository.markAsRead(forumId)
-            delay(5000)
             _events.value = Event.ShowToast(R.string.forum_setted_read)
         }
     }
@@ -238,15 +237,20 @@ class ForumViewModel @Inject constructor(
         _events.value = Event.ShowToast(R.string.forum_setted_to_start)
     }
 
+    fun onEventReceived() {
+        _events.value = Event.Empty
+    }
+
     sealed class UiState {
         object Initialize : UiState()
         data class Items(val items: List<Item>, val scrollToTop: Boolean) : UiState()
     }
 
     sealed class Event {
+        object Empty : Event()
         data class Error(val exception: Throwable) : Event()
         data class ShowToast(
-            @StringRes val resId: Int,
+            @StringRes val resId: Int,// maybe need use enum for clear model
             val duration: Int = Toast.LENGTH_SHORT
         ) : Event()
 
