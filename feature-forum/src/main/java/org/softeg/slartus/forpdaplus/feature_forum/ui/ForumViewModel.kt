@@ -19,10 +19,7 @@ import org.softeg.slartus.forpdaplus.core_lib.ui.adapter.Item
 import org.softeg.slartus.forpdaplus.feature_forum.R
 import org.softeg.slartus.forpdaplus.feature_forum.di.ForumDependencies
 import org.softeg.slartus.forpdaplus.feature_forum.entities.ForumItem
-import org.softeg.slartus.forpdaplus.feature_forum.ui.fingerprints.ForumCurrentHeaderItem
-import org.softeg.slartus.forpdaplus.feature_forum.ui.fingerprints.ForumDataItem
-import org.softeg.slartus.forpdaplus.feature_forum.ui.fingerprints.ForumHeaderItem
-import org.softeg.slartus.forpdaplus.feature_forum.ui.fingerprints.ForumNoTopicsHeaderItem
+import org.softeg.slartus.forpdaplus.feature_forum.ui.fingerprints.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -128,11 +125,11 @@ class ForumViewModel @Inject constructor(
     }
 
     fun onCrumbClick(forumId: String?) {
-        val forum = items.firstOrNull { it.id == forumId } ?: return
-        if (forum.isHasTopics)
-            forumDependencies.showForumTopicsList(forum.id, forum.title)
-        else
+        val forum = items.firstOrNull { it.id == forumId }
+        if (forum?.isHasForums == true || forumId == null)
             refreshDataState(forumId)
+        else if (forum != null)
+            forumDependencies.showForumTopicsList(forum.id, forum.title)
     }
 
     fun onCrumbLongClick(forumId: String?) {
@@ -149,12 +146,7 @@ class ForumViewModel @Inject constructor(
     }
 
     fun onForumLongClick(forumId: String?) {
-        val forum = items.firstOrNull { it.id == forumId } ?: return
-        if (forum.isHasForums) {
-            refreshDataState(forum.id)
-        } else {
-            forumDependencies.showForumTopicsList(forum.id, forum.title)
-        }
+        _events.value = Event.ShowUrlMenu(forumRepository.getForumUrl(forumId))
     }
 
     private fun refreshDataState(forumId: String?) {
@@ -165,13 +157,6 @@ class ForumViewModel @Inject constructor(
     private fun refreshDataState(scrollToTop: Boolean) {
         crumbs = buildCrumbs(items)
 
-        val headerItems = crumbs.dropLast(1).map { ForumHeaderItem(it.id, it.title) }
-        val currentHeaderItems = listOfNotNull(crumbs.lastOrNull()).map {
-            if (it.isHasTopics)
-                ForumCurrentHeaderItem(it.id, it.title)
-            else
-                ForumNoTopicsHeaderItem(it.id, it.title)
-        }
         val currentItems = items.filter { it.parentId == forumId }
             .map {
                 ForumDataItem(
@@ -182,8 +167,14 @@ class ForumViewModel @Inject constructor(
                     it.isHasForums
                 )
             }
-        val items = headerItems + currentHeaderItems + currentItems
-        _uiState.value = UiState.Items(items, scrollToTop)
+        val currentForum = getCurrentForum()
+        val topicsList =
+            if (currentForum?.isHasTopics == true) listOf(TopicsItemItem(currentForum.id))
+            else emptyList()
+        val items = currentItems + topicsList
+
+        val crumbItems = crumbs.map { CrumbItem(it.id, it.title) }
+        _uiState.value = UiState.Items(crumbItems, items, scrollToTop)
     }
 
     private fun buildCrumbs(items: List<Forum>): List<Forum> {
@@ -242,9 +233,15 @@ class ForumViewModel @Inject constructor(
         _events.value = Event.Empty
     }
 
+    fun onTopicsClick(id: String?) {
+        val forum = items.firstOrNull { it.id == id } ?: return
+        forumDependencies.showForumTopicsList(forum.id, forum.title)
+    }
+
     sealed class UiState {
         object Initialize : UiState()
-        data class Items(val items: List<Item>, val scrollToTop: Boolean) : UiState()
+        data class Items(val crumbs: List<Item>, val items: List<Item>, val scrollToTop: Boolean) :
+            UiState()
     }
 
     sealed class Event {

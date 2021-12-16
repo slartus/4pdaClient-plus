@@ -22,10 +22,7 @@ import org.softeg.slartus.forpdaplus.core_lib.ui.adapter.FingerprintAdapter
 import org.softeg.slartus.forpdaplus.core_lib.ui.fragments.BaseFragment
 import org.softeg.slartus.forpdaplus.feature_forum.R
 import org.softeg.slartus.forpdaplus.feature_forum.databinding.ForumFragmentBinding
-import org.softeg.slartus.forpdaplus.feature_forum.ui.fingerprints.ForumDataItemFingerprint
-import org.softeg.slartus.forpdaplus.feature_forum.ui.fingerprints.ForumHeaderCurrentItemFingerprint
-import org.softeg.slartus.forpdaplus.feature_forum.ui.fingerprints.ForumHeaderItemFingerprint
-import org.softeg.slartus.forpdaplus.feature_forum.ui.fingerprints.ForumHeaderNoTopicsItemFingerprint
+import org.softeg.slartus.forpdaplus.feature_forum.ui.fingerprints.*
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -41,12 +38,17 @@ class ForumFragment : BaseFragment<ForumFragmentBinding>(ForumFragmentBinding::i
         viewModel
     }
 
-    private var mAdapter: FingerprintAdapter? = null
+    private var forumsListAdapter: FingerprintAdapter? = null
+    private var crumbsAdapter: FingerprintAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        mAdapter = createAdapter().apply {
+        forumsListAdapter = createForumsAdapter().apply {
+            this.stateRestorationPolicy =
+                RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
+        }
+        crumbsAdapter = createCrumbsAdapter().apply {
             this.stateRestorationPolicy =
                 RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
         }
@@ -90,9 +92,12 @@ class ForumFragment : BaseFragment<ForumFragmentBinding>(ForumFragmentBinding::i
                 // nothing
             }
             is ForumViewModel.UiState.Items -> {
-                mAdapter?.submitList(state.items) {
+                forumsListAdapter?.submitList(state.items) {
                     if (state.scrollToTop)
-                        binding.list.scrollToPosition(0)
+                        binding.forumsRecyclerView.scrollToPosition(0)
+                }
+                crumbsAdapter?.submitList(state.crumbs) {
+                    binding.crumbsRecyclerView.scrollToPosition(state.crumbs.size - 1)
                 }
             }
         }
@@ -138,31 +143,25 @@ class ForumFragment : BaseFragment<ForumFragmentBinding>(ForumFragmentBinding::i
         }
     }
 
-    private fun createAdapter() = FingerprintAdapter(
+    private fun createForumsAdapter() = FingerprintAdapter(
         listOf(
-            ForumHeaderItemFingerprint(
-                { _, item -> viewModel.onCrumbClick(item.id) },
-                { _, item ->
-                    viewModel.onCrumbLongClick(item.id)
-                    true
-                }),
-            ForumHeaderCurrentItemFingerprint(
-                { _, item -> viewModel.onCrumbClick(item.id) },
-                { _, item ->
-                    viewModel.onCrumbLongClick(item.id)
-                    true
-                }),
-            ForumHeaderNoTopicsItemFingerprint(
-                { _, item -> viewModel.onCrumbClick(item.id) },
-                { _, item ->
-                    viewModel.onCrumbLongClick(item.id)
-                    true
-                }),
             ForumDataItemFingerprint(
                 viewModel.showImages,
                 { _, item -> viewModel.onForumClick(item.id) },
                 { _, item ->
                     viewModel.onForumLongClick(item.id)
+                    true
+                }),
+            TopicsItemItemFingerprint { _, item -> viewModel.onTopicsClick(item.id) }
+        )
+    )
+
+    private fun createCrumbsAdapter() = FingerprintAdapter(
+        listOf(
+            CrumbFingerprint(
+                { _, item -> viewModel.onCrumbClick(item.id) },
+                { _, item ->
+                    viewModel.onCrumbLongClick(item.id)
                     true
                 })
         )
@@ -189,7 +188,8 @@ class ForumFragment : BaseFragment<ForumFragmentBinding>(ForumFragmentBinding::i
     }
 
     private fun setListViewAdapter() {
-        binding.list.adapter = mAdapter
+        binding.forumsRecyclerView.adapter = forumsListAdapter
+        binding.crumbsRecyclerView.adapter = crumbsAdapter
     }
 
     override fun onBackPressed(): Boolean {
@@ -197,6 +197,12 @@ class ForumFragment : BaseFragment<ForumFragmentBinding>(ForumFragmentBinding::i
     }
 
     override fun getSearchSettings() = viewModel.getSearchSettings()
+
+    override fun onDestroyView() {
+        binding.forumsRecyclerView.adapter = null
+        binding.crumbsRecyclerView.adapter = null
+        super.onDestroyView()
+    }
 
     companion object {
         const val FORUM_ID_KEY = "FORUM_ID_KEY"
