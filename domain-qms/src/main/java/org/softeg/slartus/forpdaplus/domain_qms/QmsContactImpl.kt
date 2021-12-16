@@ -1,4 +1,4 @@
-package org.softeg.slartus.forpdaplus.feature_qms_contacts.entities
+package org.softeg.slartus.forpdaplus.domain_qms
 
 import org.softeg.slartus.forpdaplus.core.entities.QmsContact
 

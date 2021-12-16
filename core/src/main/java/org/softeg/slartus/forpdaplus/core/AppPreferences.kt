@@ -3,7 +3,7 @@ package org.softeg.slartus.forpdaplus.core
 interface AppPreferences {
     var language: String
 
-    val forum: ForumPreferences
+    val accentColor: String
 
     companion object {
         const val LANGUAGE_DEFAULT = "default"
@@ -11,7 +11,25 @@ interface AppPreferences {
 }
 
 interface ForumPreferences {
-    fun setStartForum(id: String?, title: String?)
+    /**
+     * Отображать картинки в разделе "Форум"
+     */
     val showImages: Boolean
-    val startForumId: String?
+
+    /**
+     * стартовый форум при открытии раздела "Форум"
+     */
+    var startForumId: String?
+}
+
+interface QmsPreferences {
+    /**
+     * Квадратные аватарки в списке контактов
+     */
+    val squareAvatars: Boolean
+
+    /**
+     * Отображать или нет аватары
+     */
+    val showAvatars: Boolean
 }

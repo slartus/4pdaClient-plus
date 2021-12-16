@@ -1,16 +1,14 @@
 package org.softeg.slartus.forpdaplus.prefs
 
 import android.net.Uri
+import android.text.TextUtils
+import org.softeg.slartus.forpdaapi.ClientPreferences
 import org.softeg.slartus.forpdacommon.Connectivity.isConnectedWifi
 import org.softeg.slartus.forpdacommon.ExtPreferences
 import org.softeg.slartus.forpdaplus.App
-import org.softeg.slartus.forpdaplus.listtemplates.NewsPagerBrickInfo
-import android.text.TextUtils
-import org.softeg.slartus.forpdaplus.listtemplates.ForumBrickInfo
 import org.softeg.slartus.forpdaplus.R
-import org.softeg.slartus.forpdaapi.ClientPreferences
+import org.softeg.slartus.forpdaplus.listtemplates.NewsPagerBrickInfo
 import java.io.File
-import java.lang.StringBuilder
 import java.util.*
 
 object Preferences {
@@ -109,20 +107,6 @@ object Preferences {
         @JvmStatic
         fun getListSort(listName: String, defaultValue: String?): String? {
             return App.getInstance().preferences.getString("$listName.list.sort", defaultValue)
-        }
-
-        @JvmStatic
-        val startForumId: String?
-            get() = App.getInstance().preferences.getString(
-                ForumBrickInfo.NAME + ".start_forum_id",
-                null
-            )
-        @JvmStatic
-        fun setStartForum(id: String?, title: String?) {
-            App.getInstance().preferences.edit()
-                .putString(ForumBrickInfo.NAME + ".start_forum_id", id)
-                .putString(ForumBrickInfo.NAME + ".start_forum_title", title)
-                .apply()
         }
 
         object Favorites {

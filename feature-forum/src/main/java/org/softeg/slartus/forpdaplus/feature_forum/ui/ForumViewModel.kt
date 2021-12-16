@@ -19,7 +19,9 @@ import org.softeg.slartus.forpdaplus.core.repositories.UserInfoRepository
 import org.softeg.slartus.forpdaplus.core_lib.ui.adapter.Item
 import org.softeg.slartus.forpdaplus.feature_forum.R
 import org.softeg.slartus.forpdaplus.feature_forum.entities.ForumItem
-import org.softeg.slartus.forpdaplus.feature_forum.ui.fingerprints.*
+import org.softeg.slartus.forpdaplus.feature_forum.ui.fingerprints.CrumbItem
+import org.softeg.slartus.forpdaplus.feature_forum.ui.fingerprints.ForumDataItem
+import org.softeg.slartus.forpdaplus.feature_forum.ui.fingerprints.TopicsItemItem
 import javax.inject.Inject
 
 @HiltViewModel
@@ -120,7 +122,7 @@ class ForumViewModel @Inject constructor(
 
     fun onSetForumStartingClick() {
         getCurrentForum()?.let { f ->
-            setStartForum(f.id, f.title)
+            setStartForum(f.id)
         }
     }
 
@@ -224,8 +226,8 @@ class ForumViewModel @Inject constructor(
         )
     }
 
-    private fun setStartForum(id: String?, title: String?) {
-        forumPreferences.setStartForum(id, title)
+    private fun setStartForum(id: String?) {
+        forumPreferences.startForumId = id
         _events.value = Event.ShowToast(R.string.forum_setted_to_start)
     }
 

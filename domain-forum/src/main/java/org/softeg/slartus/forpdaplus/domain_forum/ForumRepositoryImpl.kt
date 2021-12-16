@@ -1,9 +1,7 @@
 package org.softeg.slartus.forpdaplus.domain_forum
 
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.withContext
 import org.softeg.slartus.forpdaplus.core.db.ForumTable
 import org.softeg.slartus.forpdaplus.core.entities.Forum
 import org.softeg.slartus.forpdaplus.core.repositories.ForumRepository
@@ -33,9 +31,7 @@ class ForumRepositoryImpl @Inject constructor(
     }
 
     override suspend fun markAsRead(forumId: String) {
-        withContext(Dispatchers.IO) {
-            forumService.markAsRead(forumId)
-        }
+        forumService.markAsRead(forumId)
     }
 
     override fun getForumUrl(forumId: String?): String {

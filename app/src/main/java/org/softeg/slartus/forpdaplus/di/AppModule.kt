@@ -12,10 +12,12 @@ import dagger.hilt.components.SingletonComponent
 import org.softeg.slartus.forpdaplus.core.AppActions
 import org.softeg.slartus.forpdaplus.core.AppPreferences
 import org.softeg.slartus.forpdaplus.core.ForumPreferences
+import org.softeg.slartus.forpdaplus.core.QmsPreferences
 import org.softeg.slartus.forpdaplus.core.repositories.UserInfoRepository
 import org.softeg.slartus.forpdaplus.core.services.AppHttpClient
 import org.softeg.slartus.forpdaplus.prefs.AppPreferencesImpl
 import org.softeg.slartus.forpdaplus.prefs.ForumPreferencesImpl
+import org.softeg.slartus.forpdaplus.prefs.QmsPreferencesImpl
 import org.softeg.slartus.forpdaplus.repositories.UserInfoRepositoryImpl
 import javax.inject.Singleton
 
@@ -48,6 +50,10 @@ interface ManagersModule {
     @Binds
     @Singleton
     fun bindForumPreferencesImpl(forumPreferencesImpl: ForumPreferencesImpl): ForumPreferences
+
+    @Binds
+    @Singleton
+    fun bindQmsPreferencesImpl(qmsPreferencesImpl: QmsPreferencesImpl): QmsPreferences
 
     @Binds
     @Singleton

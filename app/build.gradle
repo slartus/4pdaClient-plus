@@ -136,7 +136,9 @@ dependencies {
     implementation project(":core-lib")
     implementation project(":core-db")
     implementation project(":domain-forum")
+    implementation project(":domain-qms")
     implementation project(":feature-forum")
+    implementation project(":feature-qms-contacts")
 
     implementation "androidx.appcompat:appcompat:$rootProject.appcompat"
     implementation 'androidx.cardview:cardview:1.0.0'

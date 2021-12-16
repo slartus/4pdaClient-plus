@@ -8,4 +8,11 @@ class AppHttpClientImpl @Inject constructor() : AppHttpClient {
     override suspend fun performGet(url: String): String {
         return Http.instance.performGet(url).responseBody
     }
+
+    override suspend fun performPost(url: String, headers: Map<String, String>) {
+        Http.instance.performPost(
+            url,
+            headers.map { androidx.core.util.Pair(it.key, it.value) }
+        )
+    }
 }
