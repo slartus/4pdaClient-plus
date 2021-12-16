@@ -12,6 +12,7 @@ import org.softeg.slartus.forpdaplus.core.AppPreferences
 import org.softeg.slartus.forpdaplus.core.QmsPreferences
 import org.softeg.slartus.forpdaplus.core.repositories.QmsContactsRepository
 import org.softeg.slartus.forpdaplus.core_lib.ui.adapter.Item
+import org.softeg.slartus.forpdaplus.feature_qms_contacts.R
 import org.softeg.slartus.forpdaplus.feature_qms_contacts.ui.fingerprints.QmsContactItem
 import javax.inject.Inject
 
@@ -83,14 +84,15 @@ class QmsContactsViewModel @Inject constructor(
         }
     }
 
-    fun onContactClick(item: QmsContactItem) {
+    fun onContactDeleteClick(item: QmsContactItem) {
         viewModelScope.launch(errorHandler) {
-            _events.emit(Event.OpenContactThreads(item.id, item.nick))
+            try {
+                qmsContactsRepository.deleteContact(item.id)
+                _events.emit(Event.ShowToast(R.string.contact_deleted))
+            } finally {
+                reload()
+            }
         }
-    }
-
-    fun onContactLongClick(item: QmsContactItem) {
-        // TODO("Not yet implemented")
     }
 
     sealed class UiState {
@@ -106,7 +108,6 @@ class QmsContactsViewModel @Inject constructor(
             val duration: Int = Toast.LENGTH_SHORT
         ) : Event()
 
-        data class OpenContactThreads(val contactId: String, val contactNick: String?) : Event()
     }
 
     enum class AccentColor {

@@ -286,6 +286,7 @@
     <string name="deleting_messages">Deleting messages</string>
     <string name="deleting_dialogs">Deleting dialog</string>
     <string name="contacts">Contacts</string>
+    <string name="contact_deleted">The contact has been deleted</string>
     <string name="getting_user_nick">Getting username…</string>
     <string name="nick_received">Nick received</string>
     <string name="error_getting_nick">Error getting username</string>
@@ -361,6 +362,8 @@
     <string name="lang_pref_summary">Need to restart application</string>
     <string name="lang_changed">The application language has been changed, restart the application now?</string>
     <string name="file_not_support_forum">This file type is not supported by forum.</string>
+    <string name="SearchResultTitles_topics">Topics</string>
+    <string name="SearchResultTitles_posts">Posts</string>
 
     <string name="sort">Sort</string>
     <string name="sort_like_on_website">Like on website</string>

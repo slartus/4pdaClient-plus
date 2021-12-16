@@ -1,6 +1,8 @@
 package org.softeg.slartus.forpdaplus.feature_qms_contacts.ui
 
 import android.os.Bundle
+import android.view.ContextMenu
+import android.view.Menu
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.DrawableRes
@@ -14,25 +16,26 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.softeg.slartus.forpdaplus.core.AppActions
-import org.softeg.slartus.forpdaplus.core_lib.ui.adapter.FingerprintAdapter
 import org.softeg.slartus.forpdaplus.core_lib.ui.fragments.BaseFragment
 import org.softeg.slartus.forpdaplus.feature_qms_contacts.R
 import org.softeg.slartus.forpdaplus.feature_qms_contacts.databinding.FragmentQmsContactsBinding
 import org.softeg.slartus.forpdaplus.feature_qms_contacts.ui.fingerprints.QmsContactFingerprint
 import org.softeg.slartus.forpdaplus.feature_qms_contacts.ui.fingerprints.QmsContactHasNewFingerprint
+import org.softeg.slartus.forpdaplus.feature_qms_contacts.ui.fingerprints.QmsContactItem
 import timber.log.Timber
 import javax.inject.Inject
+import javax.inject.Provider
 
 @AndroidEntryPoint
 class QmsContactsFragment :
     BaseFragment<FragmentQmsContactsBinding>(FragmentQmsContactsBinding::inflate) {
 
     @Inject
-    lateinit var appActions: AppActions
+    lateinit var appActions: Provider<AppActions>
 
     private val viewModel: QmsContactsViewModel by viewModels()
 
-    private var contactsAdapter: FingerprintAdapter? = null
+    private var contactsAdapter: QmsContactsAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,12 +49,31 @@ class QmsContactsFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        registerForContextMenu(binding.contactsRecyclerView)
         binding.swipeToRefresh.setOnRefreshListener {
             viewModel.onReloadClick()
         }
         subscribeToViewModel()
 
         binding.contactsRecyclerView.adapter = contactsAdapter
+    }
+
+    override fun onCreateContextMenu(
+        menu: ContextMenu,
+        v: View,
+        menuInfo: ContextMenu.ContextMenuInfo?
+    ) {
+        if (v is RecyclerView) {
+            val adapter = binding.contactsRecyclerView.adapter as QmsContactsAdapter
+            adapter.lastLongClickItem?.let { item ->
+                menu.add(Menu.NONE, Menu.NONE, Menu.NONE, R.string.delete).apply {
+                    this.setOnMenuItemClickListener {
+                        viewModel.onContactDeleteClick(item as QmsContactItem)
+                        true
+                    }
+                }
+            }
+        }
     }
 
     private fun subscribeToViewModel() {
@@ -88,10 +110,6 @@ class QmsContactsFragment :
             QmsContactsViewModel.Event.Empty -> {
                 // ignore
             }
-            is QmsContactsViewModel.Event.OpenContactThreads -> appActions.showQmsContactThreads(
-                event.contactId,
-                event.contactNick
-            )
         }
     }
 
@@ -116,27 +134,27 @@ class QmsContactsFragment :
         }
     }
 
-    private fun createContactsAdapter() = FingerprintAdapter(
+    private fun createContactsAdapter() = QmsContactsAdapter(
         listOf(
             QmsContactFingerprint(
                 squareAvatars = viewModel.squareAvatars,
                 showAvatars = viewModel.showAvatars,
-                onClickListener = { _, item -> viewModel.onContactClick(item) },
-                onLongClickListener = { _, item ->
-                    viewModel.onContactLongClick(item)
-                    true
-                }),
+                onClickListener = { _, item -> onContactClick(item) }),
             QmsContactHasNewFingerprint(
                 squareAvatars = viewModel.squareAvatars,
                 showAvatars = viewModel.showAvatars,
                 accentBackground = getAccentBackgroundRes(),
-                onClickListener = { _, item -> viewModel.onContactClick(item) },
-                onLongClickListener = { _, item ->
-                    viewModel.onContactLongClick(item)
-                    true
-                })
+                onClickListener = { _, item -> onContactClick(item) })
         )
     )
+
+    private fun onContactClick(contactItem: QmsContactItem) {
+        appActions.get()
+            .showQmsContactThreads(
+                contactItem.id,
+                contactItem.nick
+            )
+    }
 
     @DrawableRes
     private fun getAccentBackgroundRes(): Int {

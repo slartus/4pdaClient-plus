@@ -6,13 +6,16 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.viewbinding.ViewBinding
 
-class FingerprintAdapter(
+open class FingerprintAdapter(
     private val fingerprints: List<ItemFingerprint<*, *>>,
 ) : ListAdapter<Item, BaseViewHolder<ViewBinding, Item>>(
     FingerprintDiffUtil(fingerprints)
 ) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<ViewBinding, Item> {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): BaseViewHolder<ViewBinding, Item> {
         val inflater = LayoutInflater.from(parent.context)
         return fingerprints.find { it.getLayoutId() == viewType }
             ?.getViewHolder(inflater, parent)

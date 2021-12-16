@@ -20,8 +20,7 @@ class QmsContactHasNewFingerprint(
     private val showAvatars: Boolean,
     @DrawableRes
     private val accentBackground: Int,
-    private val onClickListener: (view: View?, item: QmsContactItem) -> Unit,
-    private val onLongClickListener: (view: View?, item: QmsContactItem) -> Boolean
+    private val onClickListener: (view: View?, item: QmsContactItem) -> Unit
 ) :
     ItemFingerprint<LayoutQmsContactHasNewItemBinding, QmsContactItem> {
     private val diffUtil = object : DiffUtil.ItemCallback<QmsContactItem>() {
@@ -50,8 +49,7 @@ class QmsContactHasNewFingerprint(
             squareAvatars = squareAvatars,
             showAvatars = showAvatars,
             accentBackground = accentBackground,
-            onClickListener = onClickListener,
-            onLongClickListener = onLongClickListener
+            onClickListener = onClickListener
         )
     }
 
@@ -64,8 +62,7 @@ class QmsContactHasNewViewHolder(
     private val showAvatars: Boolean,
     @DrawableRes
     private val accentBackground: Int,
-    private val onClickListener: (view: View?, item: QmsContactItem) -> Unit,
-    private val onLongClickListener: (view: View?, item: QmsContactItem) -> Boolean
+    private val onClickListener: (view: View?, item: QmsContactItem) -> Unit
 ) :
     BaseViewHolder<LayoutQmsContactHasNewItemBinding, QmsContactItem>(binding) {
     private val avatarTransformations: List<Transformation> =
@@ -73,7 +70,6 @@ class QmsContactHasNewViewHolder(
 
     init {
         itemView.setOnClickListener { v -> onClickListener(v, item) }
-        itemView.setOnLongClickListener { v -> onLongClickListener(v, item) }
         binding.avatarImageView.isVisible = showAvatars
         binding.newMessagesCountTextView.setBackgroundResource(accentBackground)
     }

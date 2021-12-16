@@ -17,8 +17,7 @@ import org.softeg.slartus.forpdaplus.feature_qms_contacts.databinding.LayoutQmsC
 class QmsContactFingerprint(
     private val squareAvatars: Boolean,
     private val showAvatars: Boolean,
-    private val onClickListener: (view: View?, item: QmsContactItem) -> Unit,
-    private val onLongClickListener: (view: View?, item: QmsContactItem) -> Boolean
+    private val onClickListener: (view: View?, item: QmsContactItem) -> Unit
 ) :
     ItemFingerprint<LayoutQmsContactItemBinding, QmsContactItem> {
     private val diffUtil = object : DiffUtil.ItemCallback<QmsContactItem>() {
@@ -46,8 +45,7 @@ class QmsContactFingerprint(
             binding = binding,
             squareAvatars = squareAvatars,
             showAvatars = showAvatars,
-            onClickListener = onClickListener,
-            onLongClickListener = onLongClickListener
+            onClickListener = onClickListener
         )
     }
 
@@ -58,8 +56,7 @@ class QmsContactViewHolder(
     binding: LayoutQmsContactItemBinding,
     squareAvatars: Boolean,
     private val showAvatars: Boolean,
-    private val onClickListener: (view: View?, item: QmsContactItem) -> Unit,
-    private val onLongClickListener: (view: View?, item: QmsContactItem) -> Boolean
+    private val onClickListener: (view: View?, item: QmsContactItem) -> Unit
 ) :
     BaseViewHolder<LayoutQmsContactItemBinding, QmsContactItem>(binding) {
     private val avatarTransformations: List<Transformation> =
@@ -67,7 +64,6 @@ class QmsContactViewHolder(
 
     init {
         itemView.setOnClickListener { v -> onClickListener(v, item) }
-        itemView.setOnLongClickListener { v -> onLongClickListener(v, item) }
         binding.avatarImageView.isVisible = showAvatars
     }
 

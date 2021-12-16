@@ -17,4 +17,8 @@ class QmsContactsRepositoryImpl @Inject constructor(private val qmsService: QmsS
     override suspend fun load() {
         _contacts.emit(qmsService.getContacts())
     }
+
+    override suspend fun deleteContact(id: String) {
+        qmsService.deleteContact(id)
+    }
 }

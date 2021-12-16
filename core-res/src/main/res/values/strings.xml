@@ -296,6 +296,7 @@
     <string name="deleting_messages">Удаление сообщений</string>
     <string name="deleting_dialogs">Удаление диалогов</string>
     <string name="contacts">Контакты</string>
+    <string name="contact_deleted">Контакт удалён</string>
     <string name="getting_user_nick">Получение ника пользователя…</string>
     <string name="nick_received">Ник получен</string>
     <string name="error_getting_nick">Не удалось получить ник пользователя</string>
