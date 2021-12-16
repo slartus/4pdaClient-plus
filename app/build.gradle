@@ -135,6 +135,7 @@ dependencies {
     api project(':hosthelper')
     implementation project(":core-lib")
     implementation project(":core-db")
+    implementation project(":domain-forum")
     implementation project(":feature-forum")
 
     implementation "androidx.appcompat:appcompat:$rootProject.appcompat"
@@ -171,7 +172,7 @@ dependencies {
     kapt("com.google.auto.service:auto-service:1.0")
     compileOnly("com.google.auto.service:auto-service-annotations:1.0")
 
-    api 'com.google.code.gson:gson:2.8.6'
+    implementation "com.google.code.gson:gson:$rootProject.gson"
     api "com.squareup.okhttp3:okhttp:$rootProject.okhttp3"
     api 'com.github.armcha:Vertical-Intro:2.0.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"

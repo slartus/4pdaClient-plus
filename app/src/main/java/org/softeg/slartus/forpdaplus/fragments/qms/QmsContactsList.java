@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
 import android.text.TextUtils;
@@ -41,9 +42,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by radiationx on 12.11.15.
- */
 public class QmsContactsList extends BaseLoaderListFragment {
 
     @Override
@@ -113,7 +111,7 @@ public class QmsContactsList extends BaseLoaderListFragment {
     }
 
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+    public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, ContextMenu.ContextMenuInfo menuInfo) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
         if (info.id == -1) return;
         Object o = getAdapter().getItem((int) info.id);
@@ -144,7 +142,7 @@ public class QmsContactsList extends BaseLoaderListFragment {
         ExtUrl.showContextDialog(getContext(), null, list);
     }
 
-    public class QmsContactsAdapter extends BaseAdapter {
+    public static class QmsContactsAdapter extends BaseAdapter {
 
         private final ArrayList<IListItem> dataList;
 
@@ -250,7 +248,7 @@ public class QmsContactsList extends BaseLoaderListFragment {
             return inflater.getContext();
         }
 
-        public class ViewHolder {
+        public static class ViewHolder {
             ImageView imgAvatar;
             TextView txtNick;
             TextView txtCount;
