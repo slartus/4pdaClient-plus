@@ -64,7 +64,7 @@ public class ExtEditTextPreference extends EditTextPreference {
                     break;
             }
 
-            m_DefaultValue = a.getString(R.styleable.ExtEditTextPreference_defaultValue);
+            m_DefaultValue = a.getString(R.styleable.ExtEditTextPreference_appDefaultValue);
         } finally {
             a.recycle();
         }

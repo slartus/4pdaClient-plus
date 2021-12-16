@@ -6,7 +6,6 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import org.softeg.slartus.forpdaplus.feature_forum.di.ForumDb
 import org.softeg.slartus.forpdaplus.feature_forum.di.ForumDependencies
-import org.softeg.slartus.forpdaplus.feature_forum.di.ForumPreferences
 import org.softeg.slartus.forpdaplus.feature_forum.di.ForumService
 
 @Module
@@ -17,9 +16,6 @@ abstract class ForumFeatureModule {
 
     @Binds
     abstract fun bindForumServiceImpl(forumServiceImpl: ForumServiceImpl): ForumService
-
-    @Binds
-    abstract fun bindForumPreferencesImpl(dorumPreferencesImpl: ForumPreferencesImpl): ForumPreferences
 
     @Binds
     abstract fun bindForumDependenciesImpl(forumDependenciesImpl: ForumDependenciesImpl): ForumDependencies

@@ -10,17 +10,16 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import org.softeg.slartus.forpdaplus.core.ForumPreferences
 import org.softeg.slartus.forpdaplus.core.entities.Forum
+import org.softeg.slartus.forpdaplus.core.entities.SearchSettings
 import org.softeg.slartus.forpdaplus.core.repositories.ForumRepository
 import org.softeg.slartus.forpdaplus.core.repositories.UserInfoRepository
 import org.softeg.slartus.forpdaplus.core_lib.ui.adapter.Item
 import org.softeg.slartus.forpdaplus.feature_forum.R
-import org.softeg.slartus.forpdaplus.feature_forum.di.ForumPreferences
+import org.softeg.slartus.forpdaplus.feature_forum.di.ForumDependencies
 import org.softeg.slartus.forpdaplus.feature_forum.entities.ForumItem
-import org.softeg.slartus.forpdaplus.feature_forum.ui.fingerprints.ForumCurrentHeaderItem
-import org.softeg.slartus.forpdaplus.feature_forum.ui.fingerprints.ForumDataItem
-import org.softeg.slartus.forpdaplus.feature_forum.ui.fingerprints.ForumHeaderItem
-import org.softeg.slartus.forpdaplus.feature_forum.ui.fingerprints.ForumNoTopicsHeaderItem
+import org.softeg.slartus.forpdaplus.feature_forum.ui.fingerprints.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,13 +28,14 @@ class ForumViewModel @Inject constructor(
     private val userInfoRepository: UserInfoRepository,
     private val forumRepository: ForumRepository,
     private val forumPreferences: ForumPreferences,
+    private val forumDependencies: ForumDependencies
 ) : ViewModel() {
     val showImages: Boolean = forumPreferences.showImages
     private val errorHandler = CoroutineExceptionHandler { _, ex ->
         _events.value = Event.Error(ex)
     }
 
-    private val _events = MutableStateFlow<Event>(Event.Initialize)
+    private val _events = MutableStateFlow<Event>(Event.Empty)
     val events: StateFlow<Event> = _events.asStateFlow()
 
     private val _uiState = MutableStateFlow<UiState>(UiState.Initialize)
@@ -46,9 +46,7 @@ class ForumViewModel @Inject constructor(
 
     private var items = emptyList<Forum>()
     private var crumbs = emptyList<Forum>()
-    private var _userLogined = false
-    val userLogined: Boolean
-        get() = _userLogined
+    private var userLogined = false
 
     var forumId: String? = state.get(ForumFragment.FORUM_ID_KEY)
         set(value) {
@@ -57,13 +55,9 @@ class ForumViewModel @Inject constructor(
         }
 
     init {
-        _loading.value = true
-
-        viewModelScope.launch(errorHandler) {
-            launch {
-                forumRepository.load()
-            }
-            launch {
+        reload()
+        viewModelScope.launch {
+            launch(errorHandler) {
                 forumRepository.forum
                     .distinctUntilChanged()
                     .collect { rawItems ->
@@ -80,14 +74,13 @@ class ForumViewModel @Inject constructor(
                         }
 
                         refreshDataState(false)
-
-                        _loading.value = false
                     }
             }
-            launch {
-                userInfoRepository.userInfo.distinctUntilChanged()
+            launch(errorHandler) {
+                userInfoRepository.userInfo
+                    .distinctUntilChanged()
                     .collect {
-                        _userLogined = it.logined
+                        userLogined = it.logined
                     }
             }
         }
@@ -96,26 +89,74 @@ class ForumViewModel @Inject constructor(
     fun setArguments(arguments: Bundle?) {
         forumId = this.forumId ?: arguments?.getString(ForumFragment.FORUM_ID_KEY, null)
                 ?: forumPreferences.startForumId
+        refreshDataState(false)
     }
 
     fun reload() {
         viewModelScope.launch(errorHandler) {
             _loading.value = true
-            forumRepository.load()
-            _loading.value = false
+            try {
+                forumRepository.load()
+            } finally {
+                _loading.value = false
+            }
         }
+    }
+
+    fun onMarkAsReadClick() {
+        if (!userLogined) {
+            _events.value = Event.ShowToast(R.string.need_login)
+        } else {
+            _events.value = Event.MarkAsReadConfirmDialog
+        }
+    }
+
+    fun onMarkAsReadConfirmClick() {
+        _events.value = Event.ShowToast(R.string.request_sent)
+        getCurrentForum()?.let { f ->
+            markForumRead(f.id ?: "-1")
+        }
+    }
+
+    fun onSetForumStartingClick() {
+        getCurrentForum()?.let { f ->
+            setStartForum(f.id, f.title)
+        }
+    }
+
+    fun onCrumbClick(forumId: String?) {
+        val forum = items.firstOrNull { it.id == forumId }
+        if (forum?.isHasForums == true || forumId == null)
+            refreshDataState(forumId)
+        else if (forum != null)
+            forumDependencies.showForumTopicsList(forum.id, forum.title)
+    }
+
+    fun onCrumbLongClick(forumId: String?) {
+        _events.value = Event.ShowUrlMenu(forumRepository.getForumUrl(forumId))
+    }
+
+    fun onForumClick(forumId: String?) {
+        val forum = items.firstOrNull { it.id == forumId } ?: return
+        if (forum.isHasForums) {
+            refreshDataState(forum.id)
+        } else {
+            forumDependencies.showForumTopicsList(forum.id, forum.title)
+        }
+    }
+
+    fun onForumLongClick(forumId: String?) {
+        _events.value = Event.ShowUrlMenu(forumRepository.getForumUrl(forumId))
+    }
+
+    private fun refreshDataState(forumId: String?) {
+        this.forumId = forumId
+        refreshDataState(true)
     }
 
     private fun refreshDataState(scrollToTop: Boolean) {
         crumbs = buildCrumbs(items)
 
-        val headerItems = crumbs.dropLast(1).map { ForumHeaderItem(it.id, it.title) }
-        val currentHeaderItems = listOfNotNull(crumbs.lastOrNull()).map {
-            if (it.isHasTopics)
-                ForumCurrentHeaderItem(it.id, it.title)
-            else
-                ForumNoTopicsHeaderItem(it.id, it.title)
-        }
         val currentItems = items.filter { it.parentId == forumId }
             .map {
                 ForumDataItem(
@@ -126,11 +167,18 @@ class ForumViewModel @Inject constructor(
                     it.isHasForums
                 )
             }
-        val items = headerItems + currentHeaderItems + currentItems
-        _uiState.value = UiState.Items(items, scrollToTop)
+        val currentForum = getCurrentForum()
+        val topicsList =
+            if (currentForum?.isHasTopics == true) listOf(TopicsItemItem(currentForum.id))
+            else emptyList()
+        val items = currentItems + topicsList
+
+        val crumbItems = crumbs.map { CrumbItem(it.id, it.title) }
+        _uiState.value = UiState.Items(crumbItems, items, scrollToTop)
     }
 
     private fun buildCrumbs(items: List<Forum>): List<Forum> {
+        if (items.isEmpty()) return emptyList()
         val crumbs = ArrayList<Forum>()
         var f = forumId
         while (true) {
@@ -151,17 +199,6 @@ class ForumViewModel @Inject constructor(
         return crumbs
     }
 
-    fun refreshDataState(forumId: String?) {
-        this.forumId = forumId
-        refreshDataState(true)
-    }
-
-    fun load() {
-        viewModelScope.launch(errorHandler) {
-            forumRepository.load()
-        }
-    }
-
     fun onBack(): Boolean {
         if (crumbs.size > 1) {
             refreshDataState(crumbs.dropLast(1).last().id)
@@ -170,31 +207,53 @@ class ForumViewModel @Inject constructor(
         return false
     }
 
-    fun getCurrentForum(): Forum? = items.firstOrNull { it.id == forumId }
-    fun markForumRead(forumId: String) {
+    private fun getCurrentForum(): Forum? = items.firstOrNull { it.id == forumId }
+
+    private fun markForumRead(forumId: String) {
         viewModelScope.launch(errorHandler) {
             forumRepository.markAsRead(forumId)
             _events.value = Event.ShowToast(R.string.forum_setted_read)
         }
     }
 
-    fun setStartForum(id: String?, title: String?) {
+    fun getSearchSettings(): SearchSettings {
+        val forumIds = forumId?.let { setOf(it) } ?: emptySet()
+        return SearchSettings(
+            sourceType = SearchSettings.SourceType.All,
+            forumIds = forumIds
+        )
+    }
+
+    private fun setStartForum(id: String?, title: String?) {
         forumPreferences.setStartForum(id, title)
         _events.value = Event.ShowToast(R.string.forum_setted_to_start)
     }
 
+    fun onEventReceived() {
+        _events.value = Event.Empty
+    }
+
+    fun onTopicsClick(id: String?) {
+        val forum = items.firstOrNull { it.id == id } ?: return
+        forumDependencies.showForumTopicsList(forum.id, forum.title)
+    }
+
     sealed class UiState {
         object Initialize : UiState()
-        data class Items(val items: List<Item>, val scrollToTop: Boolean) : UiState()
+        data class Items(val crumbs: List<Item>, val items: List<Item>, val scrollToTop: Boolean) :
+            UiState()
     }
 
     sealed class Event {
-        object Initialize : Event()
+        object Empty : Event()
         data class Error(val exception: Throwable) : Event()
         data class ShowToast(
-            @StringRes val resId: Int,
+            @StringRes val resId: Int,// maybe need use enum for clear model
             val duration: Int = Toast.LENGTH_SHORT
         ) : Event()
+
+        object MarkAsReadConfirmDialog : Event()
+        data class ShowUrlMenu(val url: String) : Event()
     }
 }
 

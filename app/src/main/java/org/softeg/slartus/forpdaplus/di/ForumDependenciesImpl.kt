@@ -2,15 +2,15 @@ package org.softeg.slartus.forpdaplus.di
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.softeg.slartus.forpdacommon.URIUtils
 import org.softeg.slartus.forpdaplus.core_db.forum.ForumDao
 import org.softeg.slartus.forpdaplus.feature_forum.di.ForumDb
 import org.softeg.slartus.forpdaplus.feature_forum.di.ForumDependencies
-import org.softeg.slartus.forpdaplus.feature_forum.di.ForumPreferences
 import org.softeg.slartus.forpdaplus.feature_forum.di.ForumService
 import org.softeg.slartus.forpdaplus.feature_forum.entities.ForumItem
 import org.softeg.slartus.forpdaplus.listfragments.ForumTopicsListFragment
-import org.softeg.slartus.forpdaplus.prefs.Preferences
 import org.softeg.slartus.hosthelper.HostHelper
 import ru.slartus.http.Http
 import javax.inject.Inject
@@ -18,8 +18,7 @@ import org.softeg.slartus.forpdaplus.core_db.forum.Forum as DbForum
 
 class ForumDependenciesImpl @Inject constructor(
     override val forumsService: ForumService,
-    override val forumsDb: ForumDb,
-    override val forumPreferences: ForumPreferences
+    override val forumsDb: ForumDb
 ) : ForumDependencies {
     override fun showForumTopicsList(forumId: String?, forumTitle: String?) {
         ForumTopicsListFragment.showForumTopicsList(forumId, forumTitle)
@@ -28,19 +27,23 @@ class ForumDependenciesImpl @Inject constructor(
 
 class ForumServiceImpl @Inject constructor() : ForumService {
     override suspend fun getGithubForum(): List<ForumItem> {
-        val response = Http.instance
-            .performGet("https://raw.githubusercontent.com/slartus/4pdaClient-plus/master/forum_struct.json")
+        return withContext(Dispatchers.IO) {
+            val response = Http.instance
+                .performGet("https://raw.githubusercontent.com/slartus/4pdaClient-plus/master/forum_struct.json")
 
-        val itemsListType = object : TypeToken<List<ForumItem>>() {}.type
-        return Gson().fromJson(response.responseBody, itemsListType)
+            val itemsListType = object : TypeToken<List<ForumItem>>() {}.type
+            Gson().fromJson(response.responseBody, itemsListType)
+        }
     }
 
     override suspend fun getSlartusForum(): List<ForumItem> {
-        val response = Http.instance
-            .performGet("http://slartus.ru/4pda/forum_struct.json")
+        return withContext(Dispatchers.IO) {
+            val response = Http.instance
+                .performGet("http://slartus.ru/4pda/forum_struct.json")
 
-        val itemsListType = object : TypeToken<List<ForumItem>>() {}.type
-        return Gson().fromJson(response.responseBody, itemsListType)
+            val itemsListType = object : TypeToken<List<ForumItem>>() {}.type
+            Gson().fromJson(response.responseBody, itemsListType)
+        }
     }
 
     override fun markAsRead(forumId: String) {
@@ -55,7 +58,11 @@ class ForumServiceImpl @Inject constructor() : ForumService {
     }
 
     override fun getForumUrl(forumId: String?): String {
-        return "https://${HostHelper.host}/forum/index.php?showforum=$forumId"
+        val baseUrl = "https://${HostHelper.host}/forum/index.php"
+        return if (forumId == null)
+            baseUrl
+        else
+            "$baseUrl?showforum=$forumId"
     }
 }
 
@@ -63,25 +70,16 @@ class ForumDbImpl @Inject constructor(
     private val forumDao: ForumDao
 ) : ForumDb {
     override suspend fun getAll(): List<ForumItem> {
-        return forumDao.getAll().map { it.map() }
+        return withContext(Dispatchers.IO) {
+            forumDao.getAll().map { it.map() }
+        }
     }
 
     override suspend fun merge(forums: List<ForumItem>) {
-        return forumDao.merge(forums.map { it.map() })
+        return withContext(Dispatchers.IO) {
+            forumDao.merge(forums.map { it.map() })
+        }
     }
-}
-
-class ForumPreferencesImpl @Inject constructor(
-) : ForumPreferences {
-    override fun setStartForum(id: String?, title: String?) {
-        Preferences.List.setStartForum(id, title)
-    }
-
-    override val showImages: Boolean
-        get() = Preferences.Forums.isShowImages
-    override val startForumId: String?
-        get() = Preferences.List.startForumId
-
 }
 
 private fun DbForum.map(): ForumItem = ForumItem(

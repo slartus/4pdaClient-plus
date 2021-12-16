@@ -35,6 +35,7 @@ import org.softeg.slartus.forpdaplus.prefs.Preferences
 import org.softeg.slartus.forpdaplus.repositories.UserInfoRepositoryImpl
 import org.softeg.slartus.hosthelper.HostHelper
 import ru.slartus.http.Http
+import timber.log.Timber
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
@@ -177,7 +178,7 @@ class ShortUserInfo internal constructor(activity: MainActivity, private val vie
 
     private inner class updateAsyncTask : AsyncTask<String, Void, Boolean?>() {
         var reputation = ""
-
+        private var ex: Throwable? = null
         override fun doInBackground(vararg urls: String): Boolean? {
             try {
                 val doc =
@@ -195,13 +196,17 @@ class ShortUserInfo internal constructor(activity: MainActivity, private val vie
                 }
 
             } catch (e: IOException) {
-                AppLog.e(getContext(), e)
+                ex = e
+
             }
 
             return null
         }
 
         override fun onPostExecute(result: Boolean?) {
+            if (ex != null) {
+                Timber.e(ex)
+            }
             when {
                 (avatarUrl == "") or (reputation == "") -> {
                     loginButton.setText(R.string.unknown_error)

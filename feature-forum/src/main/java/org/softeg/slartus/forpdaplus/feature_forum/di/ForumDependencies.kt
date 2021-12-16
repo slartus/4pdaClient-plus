@@ -5,16 +5,7 @@ import org.softeg.slartus.forpdaplus.feature_forum.entities.ForumItem
 interface ForumDependencies {
     val forumsService: ForumService
     val forumsDb: ForumDb
-    val forumPreferences: ForumPreferences
-
     fun showForumTopicsList(forumId: String?, forumTitle: String?)
-}
-
-interface ForumPreferences {
-    fun setStartForum(id: String?, title: String?)
-
-    val showImages: Boolean
-    val startForumId: String?
 }
 
 interface ForumService {

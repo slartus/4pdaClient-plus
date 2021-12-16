@@ -11,16 +11,15 @@ import org.softeg.slartus.forpdaplus.core_lib.ui.adapter.BaseViewHolder
 import org.softeg.slartus.forpdaplus.core_lib.ui.adapter.Item
 import org.softeg.slartus.forpdaplus.core_lib.ui.adapter.ItemFingerprint
 
-
 import org.softeg.slartus.forpdaplus.feature_forum.R
-import org.softeg.slartus.forpdaplus.feature_forum.databinding.ForumItemBinding
+import org.softeg.slartus.forpdaplus.feature_forum.databinding.LayoutForumBinding
 
 class ForumDataItemFingerprint(
     private val showImages: Boolean,
     private val onClickListener: (view: View?, item: ForumDataItem) -> Unit,
     private val onLongClickListener: (view: View?, item: ForumDataItem) -> Boolean
 ) :
-    ItemFingerprint<ForumItemBinding, ForumDataItem> {
+    ItemFingerprint<LayoutForumBinding, ForumDataItem> {
     private val diffUtil = object : DiffUtil.ItemCallback<ForumDataItem>() {
         override fun areItemsTheSame(
             oldItem: ForumDataItem,
@@ -33,15 +32,15 @@ class ForumDataItemFingerprint(
         ) = oldItem == newItem
     }
 
-    override fun getLayoutId() = R.layout.forum_item
+    override fun getLayoutId() = R.layout.layout_forum
 
     override fun isRelativeItem(item: Item) = item is ForumDataItem
 
     override fun getViewHolder(
         layoutInflater: LayoutInflater,
         parent: ViewGroup
-    ): BaseViewHolder<ForumItemBinding, ForumDataItem> {
-        val binding = ForumItemBinding.inflate(layoutInflater, parent, false)
+    ): BaseViewHolder<LayoutForumBinding, ForumDataItem> {
+        val binding = LayoutForumBinding.inflate(layoutInflater, parent, false)
         return ForumDataViewHolder(binding, showImages, onClickListener, onLongClickListener)
     }
 
@@ -49,12 +48,12 @@ class ForumDataItemFingerprint(
 }
 
 class ForumDataViewHolder(
-    binding: ForumItemBinding,
+    binding: LayoutForumBinding,
     showImages: Boolean,
     private val onClickListener: (view: View?, item: ForumDataItem) -> Unit,
     private val onLongClickListener: (view: View?, item: ForumDataItem) -> Boolean
 ) :
-    BaseViewHolder<ForumItemBinding, ForumDataItem>(binding) {
+    BaseViewHolder<LayoutForumBinding, ForumDataItem>(binding) {
     init {
         binding.iconImageView.isVisible = showImages
         itemView.setOnClickListener { v -> onClickListener(v, item) }
