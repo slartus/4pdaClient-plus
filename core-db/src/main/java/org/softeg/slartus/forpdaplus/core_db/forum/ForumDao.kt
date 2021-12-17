@@ -18,7 +18,7 @@ abstract class ForumDao {
     abstract suspend fun getAll(): List<Forum>
 
     @Insert
-    abstract suspend fun insertAll(vararg notes: Forum)
+    abstract suspend fun insertAll(vararg items: Forum)
 
     @Query("DELETE FROM forum")
     abstract suspend fun deleteAll()

@@ -79,8 +79,11 @@ class QmsContactsViewModel @Inject constructor(
     private fun reload() {
         viewModelScope.launch(errorHandler) {
             _loading.emit(true)
-            qmsContactsRepository.load()
-            _loading.emit(false)
+            try {
+                qmsContactsRepository.load()
+            } finally {
+                _loading.emit(false)
+            }
         }
     }
 

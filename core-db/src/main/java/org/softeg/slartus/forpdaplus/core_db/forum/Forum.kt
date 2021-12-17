@@ -2,9 +2,8 @@ package org.softeg.slartus.forpdaplus.core_db.forum
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.util.*
 
-@Entity
+@Entity(tableName = "forum")
 data class Forum(
     @PrimaryKey(autoGenerate = true)
     val _id: Int? = null,

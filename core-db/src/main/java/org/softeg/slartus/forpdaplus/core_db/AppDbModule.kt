@@ -8,9 +8,12 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import org.softeg.slartus.forpdaplus.core.ForumPreferences
 import org.softeg.slartus.forpdaplus.core.db.ForumTable
+import org.softeg.slartus.forpdaplus.core.db.QmsContactsTable
 import org.softeg.slartus.forpdaplus.core_db.forum.ForumDao
+import org.softeg.slartus.forpdaplus.core_db.forum.ForumTableImpl
+import org.softeg.slartus.forpdaplus.core_db.qms_contacts.QmsContactsDao
+import org.softeg.slartus.forpdaplus.core_db.qms_contacts.QmsContactsTableImpl
 import javax.inject.Singleton
 
 @Module
@@ -32,6 +35,12 @@ class AppDbModule {
     fun provideForumDao(db: AppDatabase): ForumDao {
         return db.forumDao()
     }
+
+    @Provides
+    @Singleton
+    fun provideQmsContactsDao(db: AppDatabase): QmsContactsDao {
+        return db.qmsContactsDao()
+    }
 }
 
 @Module
@@ -40,4 +49,8 @@ interface CoreImplementationsModule {
     @Binds
     @Singleton
     fun bindForumTableImpl(forumTableImpl: ForumTableImpl): ForumTable
+
+    @Binds
+    @Singleton
+    fun bindQmsContactsTableImpl(qmsContactsTableImpl: QmsContactsTableImpl): QmsContactsTable
 }

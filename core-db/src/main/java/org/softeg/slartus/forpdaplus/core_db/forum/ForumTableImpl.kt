@@ -1,12 +1,11 @@
-package org.softeg.slartus.forpdaplus.core_db
+package org.softeg.slartus.forpdaplus.core_db.forum
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.softeg.slartus.forpdaplus.core.db.ForumTable
 import org.softeg.slartus.forpdaplus.core.entities.Forum
-import org.softeg.slartus.forpdaplus.core_db.forum.ForumDao
-import org.softeg.slartus.forpdaplus.core_db.forum.Forum as ForumDbItem
 import javax.inject.Inject
+import org.softeg.slartus.forpdaplus.core_db.forum.Forum as ForumDbItem
 
 class ForumTableImpl @Inject constructor(private val forumDao: ForumDao) : ForumTable {
     override suspend fun getAll(): List<Forum> {
