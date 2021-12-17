@@ -63,7 +63,7 @@ class UserInfoRepositoryImpl(cookieStore: PersistentCookieStore) : UserInfoRepos
         setNewUserInfo(_userInfo.value.copy(mentionsCount = value))
     }
 
-    fun setQmsCount(value: Int?) {
+    override fun setQmsCount(value: Int?) {
         setNewUserInfo(_userInfo.value.copy(qmsCount = value))
     }
 

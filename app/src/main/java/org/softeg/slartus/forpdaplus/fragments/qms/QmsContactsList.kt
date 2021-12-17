@@ -14,9 +14,7 @@ class QmsContactsList : BaseBrickContainerFragment() {
     override fun onResume() {
         super.onResume()
         setArrow()
-        //        if (Preferences.Notifications.Qms.isReadDone())
-//            reloadData();
-    } //
+    }
 
     override fun getFragmentInstance(): Fragment {
         val args = arguments
@@ -24,44 +22,4 @@ class QmsContactsList : BaseBrickContainerFragment() {
             this.arguments = args
         }
     }
-    //
-    //    @Override
-    //    protected ListData loadData(int loaderId, Bundle args) {
-// TODO:
-    //        Client.getInstance().setQmsCount(QmsUsers.unreadMessageUsersCount(users));
-    //    }
-
-    //
-    //    @Override
-    //    public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, ContextMenu.ContextMenuInfo menuInfo) {
-    //        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-    //        if (info.id == -1) return;
-    //        Object o = getAdapter().getItem((int) info.id);
-    //        if (o == null)
-    //            return;
-    //        final QmsUser qmsUser = (QmsUser) o;
-    //        if (TextUtils.isEmpty(qmsUser.getId())) return;
-    //
-    //        final List<MenuListDialog> list = new ArrayList<>();
-    //        list.add(new MenuListDialog(getString(R.string.delete), () -> {
-    //            Handler handler = new Handler();
-    //            new Thread(() -> {
-    //                try {
-    //                    Map<String, String> additionalHeaders = new HashMap<>();
-    //                    additionalHeaders.put("act", "qms-xhr");
-    //                    additionalHeaders.put("action", "del-member");
-    //                    additionalHeaders.put("del-mid", qmsUser.getId());
-    //                    Client.getInstance().performPost("https://" + App.Host + "/forum/index.php", additionalHeaders);
-    //
-    //                    handler.post(this::reloadData);
-    //
-    //                } catch (IOException e) {
-    //                    e.printStackTrace();
-    //                }
-    //            }).start();
-    //        }));
-    //// TODO:
-    //        ExtUrl.showContextDialog(getContext(), null, list);
-    //    }
-
 }

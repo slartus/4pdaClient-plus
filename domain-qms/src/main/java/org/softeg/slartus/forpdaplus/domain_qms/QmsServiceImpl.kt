@@ -6,6 +6,7 @@ import org.softeg.slartus.forpdaplus.core.entities.QmsContact
 import org.softeg.slartus.forpdaplus.core.services.AppHttpClient
 import org.softeg.slartus.forpdaplus.core.services.QmsService
 import org.softeg.slartus.forpdaplus.domain_qms.parsers.QmsContactsParser
+import org.softeg.slartus.forpdaplus.domain_qms.parsers.QmsCountParser
 import org.softeg.slartus.hosthelper.HostHelper
 import javax.inject.Inject
 
@@ -24,6 +25,14 @@ class QmsServiceImpl @Inject constructor(private val httpClient: AppHttpClient) 
                 mapOf("act" to "qms-xhr", "action" to "del-member", "del-mid" to contactId)
             httpClient
                 .performPost("https://${HostHelper.host}/forum/index.php", headers)
+        }
+    }
+
+    override suspend fun getQmsCount(): Int {
+        return withContext(Dispatchers.IO) {
+            val pageBody =
+                httpClient.performGet("https://${HostHelper.host}/about")
+            QmsCountParser.parse(pageBody)
         }
     }
 }

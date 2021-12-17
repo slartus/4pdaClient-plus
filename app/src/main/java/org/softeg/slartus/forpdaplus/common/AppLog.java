@@ -6,10 +6,9 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
-import androidx.core.content.ContextCompat;
-
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import org.acra.ACRA;
 import org.apache.http.conn.ConnectTimeoutException;
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdacommon.ShowInBrowserException;
@@ -79,8 +78,7 @@ public final class AppLog {
                         .positiveText(R.string.ok)
                         .show();
             } else {
-                org.acra.ACRA.getErrorReporter().handleException(ex);
-
+                ACRA.getErrorReporter().handleException(ex);
             }
         } catch (Throwable error) {
             android.util.Log.e(TAG, error.toString());

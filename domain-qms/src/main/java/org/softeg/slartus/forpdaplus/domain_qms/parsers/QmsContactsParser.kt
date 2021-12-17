@@ -2,10 +2,11 @@ package org.softeg.slartus.forpdaplus.domain_qms.parsers
 
 import org.softeg.slartus.forpdacommon.fromHtml
 import org.softeg.slartus.forpdaplus.core.entities.QmsContact
+import org.softeg.slartus.forpdaplus.core.interfaces.Parser
 import org.softeg.slartus.forpdaplus.domain_qms.QmsContactImpl
 import java.util.regex.Pattern
 
-object QmsContactsParser {
+object QmsContactsParser : Parser<List<QmsContact>> {
     private val QmsContactsPattern by lazy {
         Pattern.compile(
             "<a class=\"list-group-item[^>]*=(\\d*)\">[^<]*<div class=\"bage\">([^<]*)[\\s\\S]*?src=\"([^\"]*)\" title=\"([^\"]*)\"",
@@ -13,9 +14,9 @@ object QmsContactsParser {
         )
     }
 
-    fun parse(pageBody: String): List<QmsContact> {
+    override fun parse(page: String): List<QmsContact> {
         val res = mutableListOf<QmsContact>()
-        val m = QmsContactsPattern.matcher(pageBody)
+        val m = QmsContactsPattern.matcher(page)
 
         while (m.find()) {
             val id = m.group(1) ?: continue
