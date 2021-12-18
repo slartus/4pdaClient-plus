@@ -19,7 +19,7 @@ class AppActionsImpl @Inject constructor() : AppActions {
         ForumTopicsListFragment.showForumTopicsList(forumId, forumTitle)
     }
 
-    override fun showQmsContactThreads(contactId: String?, contactNick: String?) {
+    override fun showQmsContactThreads(contactId: String, contactNick: String?) {
         QmsContactThemes.showThemes(contactId, contactNick)
     }
 }

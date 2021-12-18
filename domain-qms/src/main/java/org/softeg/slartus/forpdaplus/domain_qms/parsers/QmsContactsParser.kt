@@ -3,7 +3,7 @@ package org.softeg.slartus.forpdaplus.domain_qms.parsers
 import org.softeg.slartus.forpdacommon.fromHtml
 import org.softeg.slartus.forpdaplus.core.entities.QmsContact
 import org.softeg.slartus.forpdaplus.core.interfaces.Parser
-import org.softeg.slartus.forpdaplus.domain_qms.QmsContactImpl
+import org.softeg.slartus.forpdaplus.domain_qms.entities.QmsContactImpl
 import java.util.regex.Pattern
 
 object QmsContactsParser : Parser<List<QmsContact>> {

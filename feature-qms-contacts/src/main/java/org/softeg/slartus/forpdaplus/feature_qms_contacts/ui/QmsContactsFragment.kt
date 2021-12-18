@@ -44,7 +44,6 @@ class QmsContactsFragment :
             this.stateRestorationPolicy =
                 RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
         }
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

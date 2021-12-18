@@ -6,5 +6,5 @@ import androidx.annotation.StringRes
 interface AppActions {
     fun showUrlActions(context: Context, @StringRes titleRes: Int, url: String)
     fun showForumTopicsList(forumId: String?, forumTitle: String?)
-    fun showQmsContactThreads(contactId: String?, contactNick: String?)
+    fun showQmsContactThreads(contactId: String, contactNick: String?)
 }
