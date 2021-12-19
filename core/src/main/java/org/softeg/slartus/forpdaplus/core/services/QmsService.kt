@@ -8,4 +8,5 @@ interface QmsService {
     suspend fun deleteContact(contactId: String)
     suspend fun getQmsCount(): Int
     suspend fun getContactThreads(contactId: String): List<QmsThread>
+    suspend fun getContact(contactId: String): QmsContact?
 }

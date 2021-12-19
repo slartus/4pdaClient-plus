@@ -66,6 +66,11 @@ class QmsContactThreadsFragment :
                         onEvent(it)
                     }
                 }
+                launch {
+                    viewModel.contact.collect {
+                        Timber.i(it?.nick)
+                    }
+                }
             }
         }
     }

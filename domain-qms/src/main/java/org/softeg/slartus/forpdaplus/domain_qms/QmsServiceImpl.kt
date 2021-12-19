@@ -6,6 +6,7 @@ import org.softeg.slartus.forpdaplus.core.entities.QmsContact
 import org.softeg.slartus.forpdaplus.core.entities.QmsThread
 import org.softeg.slartus.forpdaplus.core.services.AppHttpClient
 import org.softeg.slartus.forpdaplus.core.services.QmsService
+import org.softeg.slartus.forpdaplus.domain_qms.parsers.QmsContactParser
 import org.softeg.slartus.forpdaplus.domain_qms.parsers.QmsContactsParser
 import org.softeg.slartus.forpdaplus.domain_qms.parsers.QmsCountParser
 import org.softeg.slartus.forpdaplus.domain_qms.parsers.QmsThreadsParser
@@ -38,4 +39,11 @@ class QmsServiceImpl @Inject constructor(private val httpClient: AppHttpClient) 
                 httpClient.performGet("https://${HostHelper.host}/forum/index.php?act=qms&mid=$contactId")
             QmsThreadsParser.parse(pageBody)
         }
+
+    override suspend fun getContact(contactId: String): QmsContact? = withContext(Dispatchers.IO) {
+        val pageBody =
+            httpClient.performGet("https://${HostHelper.host}/forum/index.php?&act=qms-xhr&action=userlist")
+        QmsContactParser(contactId).parse(pageBody)
+    }
+
 }

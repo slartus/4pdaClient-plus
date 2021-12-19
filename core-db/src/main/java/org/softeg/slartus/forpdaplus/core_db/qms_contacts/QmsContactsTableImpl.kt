@@ -9,17 +9,17 @@ import org.softeg.slartus.forpdaplus.core_db.qms_contacts.QmsContact as QmsConta
 
 class QmsContactsTableImpl @Inject constructor(private val qmsContactsDao: QmsContactsDao) :
     QmsContactsTable {
-    override suspend fun getAll(): List<QmsContact> {
-        return withContext(Dispatchers.IO) {
-            qmsContactsDao.getAll().map { it.map() }
-        }
+    override suspend fun getAll(): List<QmsContact> = withContext(Dispatchers.IO) {
+        qmsContactsDao.getAll().map { it.map() }
     }
 
-    override suspend fun insertAll(vararg items: QmsContact) {
-        return withContext(Dispatchers.IO) {
-            qmsContactsDao.insertAll(*items.mapIndexedNotNull { index, item -> item.map(index.toString()) }
-                .toTypedArray())
-        }
+    override suspend fun insertAll(vararg items: QmsContact) = withContext(Dispatchers.IO) {
+        qmsContactsDao.insertAll(*items.mapIndexedNotNull { index, item -> item.map(index.toString()) }
+            .toTypedArray())
+    }
+
+    override suspend fun findById(contactId: String): QmsContact? = withContext(Dispatchers.IO) {
+        qmsContactsDao.findById(contactId.toLong())?.map()
     }
 
     private data class QmsContactImpl(

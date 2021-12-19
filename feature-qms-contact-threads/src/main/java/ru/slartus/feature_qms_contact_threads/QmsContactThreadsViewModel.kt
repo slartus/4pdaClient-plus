@@ -7,9 +7,10 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
+import org.softeg.slartus.forpdaplus.core.entities.QmsContact
+import org.softeg.slartus.forpdaplus.core.repositories.QmsContactsRepository
 import org.softeg.slartus.forpdaplus.core.repositories.QmsThreadsRepository
 import org.softeg.slartus.forpdaplus.core_lib.ui.adapter.Item
 import ru.slartus.feature_qms_contact_threads.fingerprints.QmsThreadItem
@@ -18,7 +19,8 @@ import javax.inject.Inject
 @HiltViewModel
 class QmsContactThreadsViewModel @Inject constructor(
     private val state: SavedStateHandle,
-    private val qmsThreadsRepository: QmsThreadsRepository
+    private val qmsThreadsRepository: QmsThreadsRepository,
+    private val qmsContactsRepository: QmsContactsRepository
 
 ) : ViewModel() {
     private val errorHandler = CoroutineExceptionHandler { _, ex ->
@@ -33,6 +35,9 @@ class QmsContactThreadsViewModel @Inject constructor(
 
     private val _loading = MutableStateFlow(true)
     val loading: StateFlow<Boolean> = _loading.asStateFlow()
+
+    private val _contact = MutableStateFlow<QmsContact?>(null)
+    val contact: StateFlow<QmsContact?> = _contact.asStateFlow()
 
     private var contactId: String? = state[QmsContactThreadsFragment.ARG_CONTACT_ID]
         set(value) {
@@ -69,12 +74,17 @@ class QmsContactThreadsViewModel @Inject constructor(
 
     private fun reload() {
         val contactId = contactId ?: return
-        viewModelScope.launch(errorHandler) {
-            _loading.emit(true)
-            try {
-                qmsThreadsRepository.load(contactId)
-            } finally {
-                _loading.emit(false)
+        viewModelScope.launch {
+            launch(SupervisorJob() + errorHandler + CoroutineName("qms_threads")) {
+                _loading.emit(true)
+                try {
+                    qmsThreadsRepository.load(contactId)
+                } finally {
+                    _loading.emit(false)
+                }
+            }
+            launch(SupervisorJob() + errorHandler + CoroutineName("qms_contact")) {
+                _contact.emit(qmsContactsRepository.getContact(contactId))
             }
         }
     }

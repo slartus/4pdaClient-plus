@@ -6,14 +6,17 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 
 @Dao
-abstract class QmsContactsDao {
+interface QmsContactsDao {
 
     @Query("SELECT * FROM qms_contacts ORDER BY `order`")
-    abstract suspend fun getAll(): List<QmsContact>
+    suspend fun getAll(): List<QmsContact>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract suspend fun insertAll(vararg items: QmsContact)
+    suspend fun insertAll(vararg items: QmsContact)
 
     @Query("DELETE FROM qms_contacts")
-    abstract suspend fun deleteAll()
+    suspend fun deleteAll()
+
+    @Query("SELECT * FROM qms_contacts WHERE id=:id")
+    suspend fun findById(id: Long): QmsContact?
 }

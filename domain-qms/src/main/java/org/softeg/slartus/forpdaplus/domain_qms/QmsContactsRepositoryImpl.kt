@@ -29,4 +29,8 @@ class QmsContactsRepositoryImpl @Inject constructor(
     override suspend fun deleteContact(id: String) {
         qmsService.deleteContact(id)
     }
+
+    override suspend fun getContact(contactId: String): QmsContact? {
+        return qmsContactsTable.findById(contactId) ?: qmsService.getContact(contactId)
+    }
 }
