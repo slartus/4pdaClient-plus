@@ -11,7 +11,9 @@ class ForumsRepository private constructor() {
     private object Holder {
         val INSTANCE = ForumsRepository()
     }
+
     val forumsSubject: BehaviorSubject<List<Forum>> = BehaviorSubject.createDefault(emptyList())
+
     init {
         loadDb()
 
@@ -19,8 +21,11 @@ class ForumsRepository private constructor() {
     }
 
     private fun loadAsync() {
+        val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
+            throwable.printStackTrace()
+        }
         InternetConnection.instance.loadDataOnInternetConnected({
-            GlobalScope.launch {
+            MainScope().launch(coroutineExceptionHandler) {
                 load()
             }
         })
