@@ -12,7 +12,7 @@ repositories {
 android {
     compileSdkVersion rootProject.compileSdkVersion
 
-    def appVersionCode = 657
+    def appVersionCode = 658
     // именование версий:
     // первое число не трогаем никогда. только если весь клиент переписали, но тогда это другой репозиторий
     // второе число только при серьезных изменениях, затрагивающих интерфейс или архитектуру
