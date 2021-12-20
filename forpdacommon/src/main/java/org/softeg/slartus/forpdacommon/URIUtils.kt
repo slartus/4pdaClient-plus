@@ -1,13 +1,12 @@
 package org.softeg.slartus.forpdacommon
 
 import android.net.Uri
-import java.lang.StringBuilder
 import java.net.URLEncoder
 import kotlin.math.max
 
 class URIUtils {
     companion object {
-
+        @JvmStatic
         fun escapeHTML(str: String?): String? {
             val s = str ?: return str
             val out = StringBuilder(max(16, s.length))
@@ -23,12 +22,30 @@ class URIUtils {
             return out.toString()
         }
 
+        @Deprecated("use params: Map<String, String> instead.")
         @JvmStatic
         fun createURI(
             scheme: String,
             authority: String,
             path: String,
             params: MutableList<NameValuePair>,
+            encoding: String
+        ): String {
+            return createURI(
+                scheme,
+                authority,
+                path,
+                params.map { it.name to (it.value ?: "") }.toMap(),
+                encoding
+            )
+        }
+
+        @JvmStatic
+        fun createURI(
+            scheme: String,
+            authority: String,
+            path: String,
+            params: Map<String, String>,
             encoding: String
         ): String {
             val builder =
@@ -41,11 +58,10 @@ class URIUtils {
             }
 
             var url = builder.build().toString()
-            url += "?" + params.joinToString("&") {
-                "${it.name}=${URLEncoder.encode(escapeHTML(it.value) ?: "", encoding)}"
-            }
+            url += "?" + params
+                .map { "${it.key}=${URLEncoder.encode(escapeHTML(it.value) ?: "", encoding)}" }
+                .joinToString("&")
             return url
         }
-
     }
 }

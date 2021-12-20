@@ -2,8 +2,9 @@ package org.softeg.slartus.forpdaplus.repositories
 
 import io.reactivex.subjects.BehaviorSubject
 import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import org.softeg.slartus.forpdaapi.Forum
 import org.softeg.slartus.forpdaplus.common.AppLog
@@ -23,7 +24,7 @@ class ForumsRepository private constructor() {
     val forumsSubject: BehaviorSubject<List<Forum>> = BehaviorSubject.createDefault(emptyList())
 
     fun init(forumRepository: ForumRepository) {
-        GlobalScope.launch(errorHandler) {
+        MainScope().launch(errorHandler) {
             forumRepository.forum
                 .distinctUntilChanged()
                 .collect { rawItems ->
@@ -40,7 +41,7 @@ class ForumsRepository private constructor() {
         }
 
         InternetConnection.instance.loadDataOnInternetConnected({
-            GlobalScope.launch(errorHandler) {
+            MainScope().launch(errorHandler) {
                 forumRepository.load()
             }
         })
@@ -55,10 +56,5 @@ class ForumsRepository private constructor() {
     companion object {
         @JvmStatic
         val instance by lazy { Holder.INSTANCE }
-    }
-
-    sealed class LoadResult {
-        object Success : LoadResult()
-        class Error(val error: Throwable) : LoadResult()
     }
 }
