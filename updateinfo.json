@@ -24,16 +24,16 @@
   "versions": [
     {
       "name": "release",
-      "ver": "3.5.8.7",
-      "versionCode":656,
-      "apk": "https://github.com/slartus/4pdaClient-plus/releases/download/3.5.8.7/ForPDA_3.5.8.7-release.apk",
+      "ver": "3.5.8.8",
+      "versionCode": 658,
+      "apk": "https://github.com/slartus/4pdaClient-plus/releases/download/3.5.8.7/ForPDA_3.5.8.8-release.apk",
       "info": "[!] Важное  замечание\n[+] Нововведение\n[-] Исправлена ошибка\n[*] Изменения\n\n3.5.8\n[*] 4pda.to\n[-] утечка памяти\n[-] ломается разметка при просмотре результатов опроса\n[+] Удалённый сервер для заметок\n[-] 'Открыть в..' не всегда выводит окно выбора\n[*] полностью вырезал плеер клиента\n[*] убрал возможность скачивать с помощью клиента\n[*] в связи с изменением форума отключена возможность менять репутацию пользователей отдельно от сообщений"
     },
     {
       "name": "beta",
-      "ver": "3.5.8",
-      "versionCode":665,
-      "apk": "https://4pda.to/forum/dl/post/22987675/ForPDA_3.5.8-beta_c665.apk",
+      "ver": "3.5.9",
+      "versionCode":668,
+      "apk": "https://4pda.to/forum/dl/post/24544031/ForPDA_3.5.9-beta_c668.apk",
       "info": ""
     }
   ]
