@@ -1,7 +1,6 @@
 package org.softeg.slartus.forpdacommon
 
 import android.net.Uri
-import java.lang.StringBuilder
 import java.net.URLEncoder
 import kotlin.math.max
 
@@ -11,10 +10,13 @@ class URIUtils {
         fun escapeHTML(str: String?): String? {
             val s = str ?: return str
             val out = StringBuilder(max(16, s.length))
+            val ignoreCodes = (1040..1103) + 1025 + 8470// А-я + Ё + №
+            val maxLatinCode = 126
             for (element in s) {
-                if (element.toInt() > 127 || element == '"' || element == '\'' || element == '<' || element == '>' || element == '&') {
+                val code = element.toInt()
+                if (code > maxLatinCode && code !in ignoreCodes) {
                     out.append("&#")
-                    out.append(element.toInt())
+                    out.append(code)
                     out.append(';')
                 } else {
                     out.append(element)
