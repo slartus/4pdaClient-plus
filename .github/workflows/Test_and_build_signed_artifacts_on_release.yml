@@ -23,14 +23,21 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Setup JDK
-        uses: actions/setup-java@v1
+        
+      - name: Set up JDK
+        uses: actions/setup-java@v2
         with:
-          java-version: 1.8     
+          distribution: 'zulu'
+          java-version: '11'   
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v2
+        
       - name: Build APK
         run: |
           ./gradlew test
           ./gradlew assembleRelease
+          
 # based on https://medium.com/google-developer-experts/github-actions-for-android-developers-6b54c8a32f55         
       - name: Save name of our Artifact
         id: set-result-artifact
@@ -39,7 +46,8 @@ jobs:
           ARTIFACT_NAME_APK=$(basename $ARTIFACT_PATHNAME_APK)
           echo "ARTIFACT_NAME_APK is " ${ARTIFACT_NAME_APK}
           echo "ARTIFACT_PATHNAME_APK=${ARTIFACT_PATHNAME_APK}" >> $GITHUB_ENV
-          echo "ARTIFACT_NAME_APK=${ARTIFACT_NAME_APK}" >> $GITHUB_ENV        
+          echo "ARTIFACT_NAME_APK=${ARTIFACT_NAME_APK}" >> $GITHUB_ENV  
+          
       - name: Upload APK
         uses: actions/upload-artifact@v1
         with:
