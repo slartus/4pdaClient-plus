@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="theme_light_background_light">#FAFAFA</color>
+    <color name="theme_light_background_dark">#0C0C0C</color>
+    <color name="white">#FFFFFF</color>
+    <color name="holo_blue_light">#33b5e5</color>
+    <color name="holo_blue_dark">#0099cc</color>
+
+    <!-- Mod -->
+    <color name="app_background_light">#fafafa</color>
+    <color name="app_background_dark">#1A1A1A</color>
+    <color name="app_background_black">#000</color>
+
+    <color name="swipe_background_light">#fff</color>
+    <color name="swipe_background_dark">#eee</color>
+    <color name="swipe_background_black">#2b2b2b</color>
+
+    <color name="actionbar_background_light">#0277bd</color>
+    <color name="actionbar_background_dark">#17415f</color>
+    <color name="actionbar_background_black">#111</color>
+
+    <color name="statusBar_light">@color/actionbar_background_light</color>
+    <color name="statusBar_dark">@color/actionbar_background_dark</color>
+    <color name="statusBar_black">@color/actionbar_background_black</color>
+
+    <color name="statusBar_translucent_light">#2d000000</color>
+    <color name="statusBar_translucent_dark">#2d000000</color>
+    <color name="statusBar_translucent_black">#66000000</color>
+
+    <color name="statusBarPrefs_light">#02629C</color>
+    <color name="statusBarPrefs_dark">#133044</color>
+    <color name="statusBarPrefs_black">#0a0a0a</color>
+
+    <color name="navBar_light">@color/actionbar_background_light</color>
+    <color name="navBar_dark">@color/actionbar_background_dark</color>
+    <color name="navBar_black">@color/actionbar_background_black</color>
+
+
+    <color name="news_background_light">#ffffff</color>
+    <color name="news_background_dark">#2b2b2b</color>
+    <color name="news_background_black">#111</color>
+
+
+    <color name="drawer_menu_background_light">#ffffff</color>
+    <color name="drawer_menu_background_dark">@color/app_background_dark</color>
+    <color name="drawer_menu_background_black">#0d0d0d</color>
+    <color name="drawer_menu_text_light">@color/list_text_special_color_light</color>
+    <color name="drawer_menu_text_dark">@color/list_text_special_color_dark</color>
+
+    <color name="divider_light">#15000000</color>
+    <color name="divider_dark">#15ffffff</color>
+    <color name="divider_black">#20ffffff</color>
+
+    <color name="list_text_general_color_light">#4D4D4D</color>
+    <color name="list_text_minor_color_light">#757575</color>
+    <color name="list_text_second_color_light">#757575</color>
+    <color name="list_text_special_color_light">#212121</color>
+
+    <color name="list_text_general_color_dark">#999999</color>
+    <color name="list_text_minor_color_dark">#8a8a8a</color>
+    <color name="list_text_second_color_dark">#737373</color>
+    <color name="list_text_special_color_dark">#cccccc</color>
+
+    <color name="news_text_general_color_light">#ffffff</color>
+    <color name="news_text_general_color_dark">#ffffff</color>
+    <color name="news_text_minor_color_light">@color/list_text_special_color_light</color>
+    <color name="news_text_minor_color_dark">@color/list_text_special_color_dark</color>
+    <color name="news_text_second_color_light">@color/list_text_second_color_light</color>
+    <color name="news_text_second_color_dark">@color/list_text_second_color_dark</color>
+
+    <color name="edit_text_light">@color/white</color>
+    <color name="edit_text_dark">#2b2b2b</color>
+    <color name="edit_text_black">#000000</color>
+
+    <color name="post_panel_light">@color/white</color>
+    <color name="post_panel_dark">#2b2b2b</color>
+    <color name="post_panel_black">@color/actionbar_background_black</color>
+
+    <color name="accent">#0277BD</color>
+    <color name="accentPink">@color/accent</color>
+    <color name="accentBlue">#E91E63</color>
+    <color name="accentGray">#757575</color>
+
+    <color name="plusrep">#4caf50</color>
+    <color name="minusrep">#E91E63</color>
+
+
+    <color name="old_flag">#46460300</color>
+    <color name="new_flag">#A8014E7D</color>
+
+    <color name="selectedItem">#2777</color>
+    <color name="selectedItemText">@color/actionbar_background_light</color>
+
+    <color name="background_toolbar">#66000000</color>
+
+    <color name="dialog_background_light">#eeeeee</color>
+    <color name="dialog_background_dark">#303030</color>
+    <color name="dialog_background_black">#1a1a1a</color>
+
+    <!--ADS NEW VERSION COLOR-->
+</resources>

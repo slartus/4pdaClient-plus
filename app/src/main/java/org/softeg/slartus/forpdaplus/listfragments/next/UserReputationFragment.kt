@@ -24,7 +24,7 @@ import org.softeg.slartus.forpdaplus.classes.common.ExtUrl
 import org.softeg.slartus.forpdaplus.fragments.GeneralFragment
 import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment
 import org.softeg.slartus.forpdaplus.listtemplates.UserReputationBrickInfo
-import org.softeg.slartus.forpdaplus.repositories.UserInfoRepository.Companion.instance
+import org.softeg.slartus.forpdaplus.repositories.UserInfoRepositoryImpl.Companion.instance
 import org.softeg.slartus.hosthelper.HostHelper
 import java.io.IOException
 import java.util.*

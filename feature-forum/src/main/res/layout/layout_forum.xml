@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:minHeight="56dp"
+    android:paddingVertical="6dp"
+    android:paddingHorizontal="16dp"
+    tools:ignore="UnusedAttribute">
+
+    <ImageView
+        android:id="@+id/icon_imageView"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:contentDescription="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/forum" />
+
+    <TextView
+        android:id="@+id/title_textView"
+        style="?list_text_special_color"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        app:layout_constraintBottom_toTopOf="@id/description_textView"
+        app:layout_constraintStart_toEndOf="@id/icon_imageView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="Мультимедиа редакторы и настройка звука" />
+
+    <TextView
+        android:id="@+id/description_textView"
+        style="?list_text_second_color"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title_textView"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/icon_imageView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title_textView"
+        tools:text="Редакторы аудио, видео и фото, эквалайзеры." />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

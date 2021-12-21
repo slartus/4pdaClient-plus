@@ -39,7 +39,7 @@ import org.softeg.slartus.forpdaplus.prefs.Preferences
 import org.softeg.slartus.forpdaplus.prefs.TopicsListPreferencesActivity
 import org.softeg.slartus.forpdaplus.prefs.TopicsPreferenceFragment
 import org.softeg.slartus.forpdaplus.repositories.InternetConnection
-import org.softeg.slartus.forpdaplus.repositories.UserInfoRepository.Companion.instance
+import org.softeg.slartus.forpdaplus.repositories.UserInfoRepositoryImpl.Companion.instance
 import org.softeg.slartus.forpdaplus.tabs.ListViewMethodsBridge
 import java.io.IOException
 import java.net.URISyntaxException
@@ -119,7 +119,7 @@ abstract class TopicsListFragment : BaseTaskListFragment() {
                             TopicUtils.getUrlArgs(topic.id, Topic.NAVIGATE_VIEW_LAST_URL.toString(), "")
                                     ?: "")
                 })
-                list.add(MenuListDialog(getContext()!!.getString(R.string.NotesByTopic)) {
+                list.add(MenuListDialog(getContext()!!.getString(R.string.notes_by_topic)) {
                     val args = Bundle()
                     args.putString(NotesListFragment.TOPIC_ID_KEY, topic.id.toString())
                     MainActivity.showListFragment(topic.id.toString(), NotesBrickInfo().name, args)
@@ -211,12 +211,12 @@ abstract class TopicsListFragment : BaseTaskListFragment() {
         }
         if (Client.getInstance().logined && !topic.isInProgress) {
             val isFavotitesList = FavoritesBrickInfo.NAME == listName
-            val title = if (isFavotitesList) context!!.getString(R.string.change_subscription) else context!!.getString(R.string.add_to_favorite)
+            val title = if (isFavotitesList) context!!.getString(R.string.change_subscription) else context!!.getString(R.string.add_to_favorites)
             optionsMenu.add(MenuListDialog(title) {
                 TopicUtils.showSubscribeSelectTypeDialog(context, mHandler!!, topic) { emailType -> addToFavoritesAsync(topic, emailType) }
             })
             if (isFavotitesList) {
-                optionsMenu.add(MenuListDialog(context.getString(R.string.DeleteFromFavorites)) {
+                optionsMenu.add(MenuListDialog(context.getString(R.string.delete_from_favorites)) {
                     removeFromFavoritesAsync(topic)
                 })
                 val favTopic = topic as FavTopic
@@ -224,7 +224,7 @@ abstract class TopicsListFragment : BaseTaskListFragment() {
                     togglePinAsync(topic)
                 })
             }
-            optionsMenu.add(MenuListDialog(context.getString(R.string.OpenTopicForum)) { showActivity(topic.forumId, topic.id) })
+            optionsMenu.add(MenuListDialog(context.getString(R.string.open_topics_forum)) { showActivity(topic.forumId, topic.id) })
         }
         optionsMenu.add(MenuListDialog(getString(R.string.attachments)) { showActivity(listItem.id) })
     }

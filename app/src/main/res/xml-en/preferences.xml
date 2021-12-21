@@ -395,7 +395,7 @@
                 android:key="qms.service.timeout"
                 android:summary="Timeout check for new messages, %s min"
                 android:title="Timeout check "
-                project:defaultValue="5"
+                project:appDefaultValue="5"
                 project:myInputType="numberDecimal" />
         </PreferenceScreen>
 
@@ -418,7 +418,7 @@
                 android:key="FavoritesNotifier.service.timeout"
                 android:summary="Timeout check for new posts, %s min"
                 android:title="Timeout check"
-                project:defaultValue="5"
+                project:appDefaultValue="5"
                 project:myInputType="numberDecimal" />
         </PreferenceScreen>
 

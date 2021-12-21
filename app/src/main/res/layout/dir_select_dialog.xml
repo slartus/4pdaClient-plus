@@ -12,20 +12,20 @@
         <RadioButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Внутренняя память устройства"
+            android:text="@string/dir_select_dialog_internal"
             android:id="@+id/rbInternal" />
 
         <RadioButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Внешняя память устройства"
+            android:text="@string/dir_select_dialog_external"
             android:id="@+id/rbExternal"
             android:checked="false" />
 
         <RadioButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Ручной ввод"
+            android:text="@string/dir_select_dialog_custom"
             android:id="@+id/rbCustom" />
     </RadioGroup>
 

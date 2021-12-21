@@ -14,7 +14,8 @@
         android:scaleType="centerCrop"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/star" />
+        tools:src="@drawable/star"
+        tools:ignore="contentDescription" />
 
     <View
         android:layout_width="match_parent"
@@ -63,10 +64,10 @@
         android:id="@+id/imgAvatarSquare"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        android:contentDescription="avatar"
         android:scaleType="fitCenter"
         app:layout_constraintStart_toStartOf="@+id/start_guidline"
-        app:layout_constraintTop_toTopOf="@+id/top_guidline" />
+        app:layout_constraintTop_toTopOf="@+id/top_guidline"
+        tools:ignore="contentDescription" />
 
     <ImageView
         android:id="@+id/infoRefresh"
@@ -76,11 +77,11 @@
         android:layout_marginEnd="4dp"
         android:layout_marginRight="4dp"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:contentDescription="avatar"
         android:padding="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/top_guidline"
-        app:srcCompat="@drawable/refresh" />
+        app:srcCompat="@drawable/refresh"
+        android:contentDescription="@string/refresh" />
 
     <ImageView
         android:id="@+id/openLink"
@@ -90,11 +91,11 @@
         android:layout_marginEnd="52dp"
         android:layout_marginRight="52dp"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:contentDescription="open link"
         android:padding="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/top_guidline"
-        app:srcCompat="@drawable/link" />
+        app:srcCompat="@drawable/link"
+        android:contentDescription="@string/open_link" />
 
 
     <androidx.constraintlayout.widget.Guideline
@@ -111,7 +112,7 @@
         android:layout_height="0dp"
         android:gravity="center_vertical"
         android:paddingBottom="8dp"
-        android:text="Войти"
+        android:text="@string/login"
         android:textAlignment="gravity"
         android:textColor="@color/white"
         android:textSize="18sp"

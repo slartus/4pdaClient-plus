@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="44dp"
             android:inputType="textAutoComplete"
-            android:hint="Ключевые слова"
+            android:hint="@string/search_input_hint"
             android:layout_toLeftOf="@+id/forHideButton"
             android:layout_toStartOf="@+id/forHideButton" />
 
@@ -46,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:inputType="textAutoComplete"
-                android:hint="Логин автора" />
+                android:hint="@string/search_username_input_hint" />
 
             <RelativeLayout
                 android:id="@+id/topics_group"
@@ -87,7 +87,7 @@
                         android:id="@+id/forums_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Форумы" />
+                        android:text="@string/forums" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -129,7 +129,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:text="Вид"
+                        android:text="@string/search_fragment_settings_type"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textStyle="bold" />
 
@@ -152,7 +152,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:text="@string/Search"
+                        android:text="@string/search_fragment_settings_search_in"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textStyle="bold" />
 
@@ -173,7 +173,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:text="@string/SortBy"
+                        android:text="@string/search_fragment_settings_sort_by"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textStyle="bold" />
 
@@ -191,7 +191,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="true"
-                android:text="@string/Subforums"
+                android:text="@string/search_fragment_settings_subforums"
                 android:layout_marginTop="4dp" />
 
             <Button

@@ -5,18 +5,18 @@
     <item
         android:id="@+id/share_it"
         android:icon="@drawable/share_variant"
-        android:title="Поделиться"
+        android:title="@string/menu_image_view_share"
         app:showAsAction="never"
         android:actionProviderClass="android.widget.ShareActionProvider" />
     <item
         android:id="@+id/download"
         android:icon="@drawable/download_white"
-        android:title="Скачать"
+        android:title="@string/menu_image_view_download"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/close"
         android:icon="@drawable/close_white"
-        android:title="Закрыть"
+        android:title="@string/menu_image_view_close"
         app:showAsAction="always" />
 </menu>

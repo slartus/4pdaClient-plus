@@ -38,22 +38,22 @@ public class TopicsPreferenceFragment extends PreferenceFragment implements Pref
             case "sortorder.desc":
                 asc = false;
             case "sortorder.asc":
-                title = getString(R.string.sort_how_on_site);
+                title = getString(R.string.sort_like_on_website);
                 break;
             case "date.desc":
                 asc = false;
             case "date.asc":
-                title = getString(R.string.sort_date_last_post);
+                title = getString(R.string.sort_by_date_of_last_post);
                 break;
             case "date_and_new.desc":
                 asc = false;
             case "date_and_new.asc":
-                title = getString(R.string.sort_date_last_post_unview);
+                title = getString(R.string.sort_by_date_of_last_post_and_read_status);
                 break;
             case "title.desc":
                 asc = false;
             case "title.asc":
-                title = getString(R.string.sort_topic_name);
+                title = getString(R.string.sort_by_topic_title);
                 break;
         }
         return String.format("%s (%s)", title, (asc ? getString(R.string.sort_ascending) : getString(R.string.sort_descending)));

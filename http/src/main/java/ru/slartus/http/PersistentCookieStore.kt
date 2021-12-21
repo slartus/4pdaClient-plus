@@ -33,14 +33,25 @@ import java.util.HashSet
 import io.reactivex.subjects.BehaviorSubject
 import ru.slartus.http.prefs.AppJsonSharedPrefs
 
-class PersistentCookieStore private constructor(context: Context) : CookieStore {
+class PersistentCookieStore private constructor(cookieFilePath: String) : CookieStore {
 
+
+    private val sharedPreferences: AppJsonSharedPrefs = AppJsonSharedPrefs(cookieFilePath)
+
+    // In memory
+    private var allCookies: MutableMap<URI, MutableSet<HttpCookie>> = HashMap()
+
+    var memberId = BehaviorSubject.createDefault("")
+
+    init {
+        loadAllFromPersistence()
+    }
 
     companion object {
         private var INSTANCE: PersistentCookieStore? = null
         fun getInstance(context: Context): PersistentCookieStore {
             if (INSTANCE == null)
-                INSTANCE = PersistentCookieStore(context)
+                INSTANCE = PersistentCookieStore(getCookieFilePath(context))
             return INSTANCE!!
         }
 
@@ -104,17 +115,6 @@ class PersistentCookieStore private constructor(context: Context) : CookieStore 
         }
     }
 
-    private val sharedPreferences: AppJsonSharedPrefs
-
-    // In memory
-    private var allCookies: MutableMap<URI, MutableSet<HttpCookie>> = HashMap()
-
-    var memberId = BehaviorSubject.createDefault("")
-
-    init {
-        sharedPreferences = AppJsonSharedPrefs(getCookieFilePath(context))
-        loadAllFromPersistence()
-    }
 
     fun reload() {
         sharedPreferences.reload()

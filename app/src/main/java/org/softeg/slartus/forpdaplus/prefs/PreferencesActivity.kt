@@ -69,7 +69,7 @@ class PreferencesActivity : BasePreferencesActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
         if (resultCode == RESULT_OK) if (requestCode == NOTIFIERS_SERVICE_SOUND_REQUEST_CODE) {
             val uri = intent?.getParcelableExtra<Uri>(RingtoneManager.EXTRA_RINGTONE_PICKED_URI)
-            Preferences.Notifications.setSound(uri)
+            Preferences.Notifications.sound = uri
         }
     }
 
@@ -98,7 +98,7 @@ class PreferencesActivity : BasePreferencesActivity() {
             findPreference("About.CheckNewVersion").onPreferenceClickListener = this
             findPreference("notifiers.silent_mode.start_time")?.let { preference ->
                 preference.onPreferenceClickListener = this
-                val clndr = Preferences.Notifications.SilentMode.getStartTime()
+                val clndr = Preferences.Notifications.SilentMode.startTime
                 preference.summary = String.format(
                     Locale.getDefault(),
                     "%02d:%02d",
@@ -109,7 +109,7 @@ class PreferencesActivity : BasePreferencesActivity() {
 
             findPreference("notifiers.silent_mode.end_time")?.let { preference ->
                 preference.onPreferenceClickListener = this
-                val clndr = Preferences.Notifications.SilentMode.getEndTime()
+                val clndr = Preferences.Notifications.SilentMode.endTime
                 preference.summary = String.format(
                     Locale.getDefault(),
                     "%02d:%02d",
@@ -159,7 +159,7 @@ class PreferencesActivity : BasePreferencesActivity() {
                     true
                 }
             findPreference("notes.remote.url")?.let { p ->
-                p.summary = Preferences.Notes.getRemoteUrl()
+                p.summary = Preferences.Notes.remoteUrl
                 p.onPreferenceClickListener = Preference.OnPreferenceClickListener {
                     showNotesRemoteServerDialog()
                     true
@@ -199,7 +199,7 @@ class PreferencesActivity : BasePreferencesActivity() {
             val inflater = (activity.getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater)
             val view = inflater.inflate(R.layout.input_notes_remote_url_layout, null as ViewGroup?)
             val editText = view.findViewById<EditText>(R.id.edit_text)
-            editText.setText(Preferences.Notes.getRemoteUrl() ?: "")
+            editText.setText(Preferences.Notes.remoteUrl ?: "")
             MaterialDialog.Builder(activity)
                 .title(R.string.notes_remote_url)
                 .customView(view, true)
@@ -213,7 +213,7 @@ class PreferencesActivity : BasePreferencesActivity() {
                         NotesRepository.checUrlAsync(baseUrl, {
                             setLoading(false)
                             Preferences.Notes.setPlacement("remote")
-                            Preferences.Notes.setRemoteUrl(baseUrl)
+                            Preferences.Notes.remoteUrl = baseUrl
                             findPreference("notes.remote.url")?.summary = baseUrl
                             refreshNotesEnabled()
                         }, {
@@ -376,11 +376,14 @@ class PreferencesActivity : BasePreferencesActivity() {
                     return true
                 }
                 "notifiers.service.sound" -> {
-                    pickRingtone(Preferences.Notifications.getSound())
+                    Preferences.Notifications.sound?.let{
+                        pickRingtone(it)
+                    }
+
                     return true
                 }
                 "notifiers.silent_mode.start_time" -> {
-                    val calendar = Preferences.Notifications.SilentMode.getStartTime()
+                    val calendar = Preferences.Notifications.SilentMode.startTime
                     TimePickerDialog(activity, { _: TimePicker?, hourOfDay: Int, minute: Int ->
                         Preferences.Notifications.SilentMode.setStartTime(hourOfDay, minute)
                         findPreference(key).summary =
@@ -389,7 +392,7 @@ class PreferencesActivity : BasePreferencesActivity() {
                     return true
                 }
                 "notifiers.silent_mode.end_time" -> {
-                    val endcalendar = Preferences.Notifications.SilentMode.getEndTime()
+                    val endcalendar = Preferences.Notifications.SilentMode.endTime
                     TimePickerDialog(activity, { _: TimePicker?, hourOfDay: Int, minute: Int ->
                         Preferences.Notifications.SilentMode.setEndTime(hourOfDay, minute)
                         findPreference(key).summary =
@@ -652,7 +655,7 @@ class PreferencesActivity : BasePreferencesActivity() {
                 val redTxt = view.findViewById<EditText>(R.id.redText)
                 val greenTxt = view.findViewById<EditText>(R.id.greenText)
                 val blueTxt = view.findViewById<EditText>(R.id.blueText)
-                val preview = view.findViewById<LinearLayout>(R.id.preview)
+                val preview = view.findViewById<View>(R.id.preview)
                 val red = view.findViewById<SeekBar>(R.id.red)
                 val green = view.findViewById<SeekBar>(R.id.green)
                 val blue = view.findViewById<SeekBar>(R.id.blue)
@@ -870,7 +873,7 @@ class PreferencesActivity : BasePreferencesActivity() {
                 getStylesList(activity, newStyleNames, newstyleValues)
                 val selected = intArrayOf(newstyleValues.indexOf(currentValue))
                 MaterialDialog.Builder(activity)
-                    .title(R.string.theme_style)
+                    .title(R.string.app_theme)
                     .cancelable(true)
                     .items(*newStyleNames.toTypedArray())
                     .itemsCallbackSingleChoice(newstyleValues.indexOf(currentValue)) { _: MaterialDialog?, _: View?, i: Int, _: CharSequence? ->
@@ -1045,7 +1048,7 @@ class PreferencesActivity : BasePreferencesActivity() {
             val rbExternal = view.findViewById<RadioButton>(R.id.rbExternal)
             val rbCustom = view.findViewById<RadioButton>(R.id.rbCustom)
             val txtPath = view.findViewById<EditText>(R.id.txtPath)
-            txtPath.setText(Preferences.System.getSystemDir())
+            txtPath.setText(Preferences.System.systemDir)
             val checkedChangeListener =
                 CompoundButton.OnCheckedChangeListener { compoundButton: CompoundButton, b: Boolean ->
                     if (b) {
@@ -1085,7 +1088,7 @@ class PreferencesActivity : BasePreferencesActivity() {
                         var dir = txtPath.text.toString()
                         dir = dir.replace("/", File.separator)
                         FileUtils.checkDirPath(dir)
-                        Preferences.System.setSystemDir(dir)
+                        Preferences.System.systemDir = dir
                     } catch (ex: Throwable) {
                         AppLog.e(activity, ex)
                     }
@@ -1108,7 +1111,7 @@ class PreferencesActivity : BasePreferencesActivity() {
     companion object {
         val NOTIFIERS_SERVICE_SOUND_REQUEST_CODE = App.getInstance().uniqueIntValue
         private val appCookiesPath: String
-            get() = Preferences.System.getSystemDir() + "4pda_cookies"
+            get() = Preferences.System.systemDir + "4pda_cookies"
 
         @JvmStatic
         val cookieFilePath: String
@@ -1138,7 +1141,7 @@ class PreferencesActivity : BasePreferencesActivity() {
                 newStyleNames.add(styleName)
                 newstyleValues.add(styleValue)
             }
-            val file = File(Preferences.System.getSystemDir() + "styles/")
+            val file = File(Preferences.System.systemDir + "styles/")
             getStylesList(newStyleNames, newstyleValues, file)
         }
 

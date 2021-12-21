@@ -37,7 +37,6 @@ import org.softeg.slartus.forpdaapi.ListInfo;
 import org.softeg.slartus.forpdaapi.Topic;
 import org.softeg.slartus.forpdaapi.search.SearchApi;
 import org.softeg.slartus.forpdaapi.search.SearchSettings;
-import org.softeg.slartus.forpdacommon.URIUtils;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.MainActivity;
@@ -140,7 +139,6 @@ public class SearchSettingsDialogFragment extends DialogFragment {
     }
 
     public static SearchSettings createUserTopicsSearchSettings(String userNick) {
-        URIUtils.escapeHTML(userNick);
         SharedPreferences prefs = App.getInstance().getPreferences();
         SearchSettings searchSettings = new SearchSettings(SearchSettings.SEARCH_TYPE_USER_TOPICS);
         searchSettings.load(prefs);

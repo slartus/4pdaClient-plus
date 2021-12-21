@@ -393,7 +393,7 @@
                 android:key="qms.service.timeout"
                 android:summary="Таймаут проверки новых сообщений, (%s) мин"
                 android:title="Таймаут проверки"
-                project:defaultValue="5"
+                project:appDefaultValue="5"
                 project:myInputType="numberDecimal" />
         </PreferenceScreen>
 
@@ -416,7 +416,7 @@
                 android:key="FavoritesNotifier.service.timeout"
                 android:summary="Таймаут проверки новых постов,  (%s) мин"
                 android:title="Таймаут проверки"
-                project:defaultValue="5"
+                project:appDefaultValue="5"
                 project:myInputType="numberDecimal" />
         </PreferenceScreen>
 

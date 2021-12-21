@@ -6,6 +6,8 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.core.content.ContextCompat;
+
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.apache.http.conn.ConnectTimeoutException;
@@ -80,7 +82,7 @@ public final class AppLog {
                 org.acra.ACRA.getErrorReporter().handleException(ex);
 
             }
-        }catch (Throwable error){
+        } catch (Throwable error) {
             android.util.Log.e(TAG, error.toString());
         }
     }
@@ -91,24 +93,33 @@ public final class AppLog {
             return false;
         try {
 
+            if (context != null && context != App.getContext()) {
+                MaterialDialog.Builder builder = new MaterialDialog.Builder(context)
+                        .title(R.string.check_connection)
+                        .content(message)
+                        .positiveText(R.string.ok);
 
-            MaterialDialog.Builder builder = new MaterialDialog.Builder(context)
-                    .title(R.string.check_connection)
-                    .content(message)
-                    .positiveText(R.string.ok);
 
+                if (netExceptionAction != null) {
+                    builder.negativeText(R.string.repeat)
+                            .onNegative((dialog, which) ->
+                                    netExceptionAction.run());
 
-            if (netExceptionAction != null) {
-                builder.negativeText(R.string.repeat)
-                        .onNegative((dialog, which) ->
-                                netExceptionAction.run());
-
+                }
+                builder.show();
+            } else {
+                Toast.makeText(App.getInstance(), message, Toast.LENGTH_SHORT).show();
             }
-            builder.show();
             return true;
 
         } catch (Throwable loggedEx) {
-            Toast.makeText(App.getInstance(),message,Toast.LENGTH_SHORT).show();
+
+            try {
+                Toast.makeText(App.getInstance(), message, Toast.LENGTH_SHORT).show();
+            } catch (Throwable toastEx) {
+                toastEx.printStackTrace();
+            }
+
             android.util.Log.e(TAG, ex.toString());
             return true;
         }
@@ -159,7 +170,7 @@ public final class AppLog {
     private static Boolean isTimeOutException(Throwable ex, Boolean isCause) {
         if (ex == null) return false;
 
-        return (isException(ex,ConnectTimeoutException.class)) || isException(ex, SocketTimeoutException.class) ||
+        return (isException(ex, ConnectTimeoutException.class)) || isException(ex, SocketTimeoutException.class) ||
                 (ex.getClass() == SocketException.class
                         && "recvfrom failed: ETIMEDOUT (Connection timed out)".equals(ex.getMessage())) ||
                 (!isCause && isTimeOutException(ex.getCause(), true));

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -34,7 +36,7 @@
             android:textSize="16sp"
             android:lineSpacingExtra="-2dp"
             android:textStyle="bold"
-            android:text="Устройства от Apple обогнали по популярности специализированную фототехнику" />
+            tools:text="Устройства от Apple обогнали по популярности специализированную фототехнику" />
 
 
         <TextView
@@ -46,7 +48,7 @@
             android:paddingTop="4dp"
             android:textSize="14sp"
             style="?list_text_second_color"
-            android:text="14.04.2015, 22:00" />
+            tools:text="14.04.2015, 22:00" />
 
     </LinearLayout>
 

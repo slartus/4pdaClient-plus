@@ -340,7 +340,7 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
             CharSequence[] styleNames = newStyleNames.toArray(new CharSequence[newStyleNames.size()]);
 
             new MaterialDialog.Builder(getMainActivity())
-                    .title(R.string.theme_style)
+                    .title(R.string.app_theme)
                     .cancelable(true)
                     .positiveText(R.string.accept)
                     .items(styleNames)

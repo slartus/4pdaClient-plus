@@ -1,0 +1,49 @@
+<resources>
+    <!-- Mod -->
+    <attr name="right_separator" format="reference" />
+    <attr name="news" format="reference" />
+    <attr name="drawer_menu" format="reference" />
+    <attr name="popup_topic" format="reference" />
+    <attr name="popup_item" format="reference" />
+    <attr name="popup_item_text" format="reference" />
+    <attr name="list_text_general_color" format="reference" />
+    <attr name="list_text_minor_color" format="reference" />
+    <attr name="list_text_second_color" format="reference" />
+    <attr name="list_text_special_color" format="reference" />
+    <attr name="news_text_general_color" format="reference" />
+    <attr name="news_text_minor_color" format="reference" />
+    <attr name="news_text_second_color" format="reference" />
+    <attr name="edit_text" format="reference" />
+    <attr name="Divider" format="reference" />
+    <attr name="fab_pressed" format="reference" />
+    <attr name="fab_ripple" format="reference" />
+    <attr name="actbar" format="reference" />
+    <attr name="arrow_up" format="reference" />
+    <attr name="arrow_down" format="reference" />
+    <attr name="post_panel" format="reference" />
+    <attr name="defaultColors" format="reference" />
+
+    <!-- Default -->
+    <attr name="theme_background" format="reference" />
+    <attr name="theme_light_background" format="reference" />
+
+    <attr name="forum_header_text_color" format="color" />
+
+    <declare-styleable name="ExpandablePanel">
+        <attr name="handle" format="reference" />
+        <attr name="content" format="reference" />
+        <attr name="collapsedHeight" format="dimension" />
+        <attr name="animationDuration" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="ExtEditTextPreference">
+        <attr name="myInputType" format="enum">
+            <enum name="number" value="0" />
+            <enum name="numberDecimal" value="1" />
+        </attr>
+        <attr name="appDefaultValue" format="string" />
+
+    </declare-styleable>
+
+
+</resources>

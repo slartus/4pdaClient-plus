@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
@@ -32,7 +33,7 @@
                 android:layout_height="fill_parent"
                 android:adjustViewBounds="true"
                 android:scaleType="fitCenter"
-                android:contentDescription="img" />
+                tools:ignore="contentDescription"/>
         </FrameLayout>
 
 
@@ -50,9 +51,10 @@
                 android:id="@+id/textTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="i Ready O превратит iPhone в классический портативный радиоприёмник"
                 android:textAppearance="@android:style/TextAppearance.Medium"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:text="i Ready O превратит iPhone в классический портативный радиоприёмник"
+                />
 
             <TextView
                 android:id="@+id/textDate"
@@ -61,8 +63,8 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="2dp"
                 android:paddingBottom="6dp"
-                android:text="05.03.2015"
-                android:textAppearance="@android:style/TextAppearance.Small" />
+                android:textAppearance="@android:style/TextAppearance.Small"
+                tools:text="05.03.2015" />
 
             <TextView
                 android:id="@+id/textDescription"
@@ -72,8 +74,9 @@
                 android:layout_alignBottom="@+id/image_panel"
                 android:layout_toEndOf="@+id/image_panel"
                 android:layout_toRightOf="@+id/image_panel"
-                android:text="Всем пользователям старых iPhone, которые хотят вдохнут в устройства новую жизнь, следует обратить внимание на новый Kickstarter-проект от смелых энтузиастов. На самом деле, относительно старых - подойдут iPhone 4/4S и iPhone 5/5S. Компания K Tech собирает средства на производство аксессуара, который превратит смартфон в некое подобие винтажного радио с относительно большой ручкой. Аксессуар получил название i Ready O. Для превращения iPhone в радио нужно лишь вставить его в отведённую нишу. Кнопки Home и управление звуком дублируются на корпусе i Ready O для придания аутентичности."
-                android:textAppearance="@android:style/TextAppearance.Small" />
+                android:textAppearance="@android:style/TextAppearance.Small"
+                tools:text="Всем пользователям старых iPhone, которые хотят вдохнут в устройства новую жизнь, следует обратить внимание на новый Kickstarter-проект от смелых энтузиастов. На самом деле, относительно старых - подойдут iPhone 4/4S и iPhone 5/5S. Компания K Tech собирает средства на производство аксессуара, который превратит смартфон в некое подобие винтажного радио с относительно большой ручкой. Аксессуар получил название i Ready O. Для превращения iPhone в радио нужно лишь вставить его в отведённую нишу. Кнопки Home и управление звуком дублируются на корпусе i Ready O для придания аутентичности."
+                />
         </LinearLayout>
     </LinearLayout>
 

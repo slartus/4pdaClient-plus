@@ -46,7 +46,7 @@ import org.softeg.slartus.forpdaplus.fragments.qms.QmsContactThemes;
 import org.softeg.slartus.forpdaplus.fragments.search.SearchSettingsDialogFragment;
 import org.softeg.slartus.forpdaplus.listfragments.next.UserReputationFragment;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
-import org.softeg.slartus.forpdaplus.repositories.UserInfoRepository;
+import org.softeg.slartus.forpdaplus.repositories.UserInfoRepositoryImpl;
 import org.softeg.slartus.hosthelper.HostHelper;
 
 import java.io.IOException;
@@ -454,7 +454,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
 
-        if (Client.getInstance().getLogined() && getUserId() != null && !getUserId().equals(UserInfoRepository.Companion.getInstance().getId())) {
+        if (Client.getInstance().getLogined() && getUserId() != null && !getUserId().equals(UserInfoRepositoryImpl.Companion.getInstance().getId())) {
             menu.add(getString(R.string.MessagesQms)).setIcon(R.drawable.pencil)
                     .setOnMenuItemClickListener(menuItem -> {
                         QmsContactThemes.showThemes(getUserId(), getUserNick());

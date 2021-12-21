@@ -182,7 +182,7 @@ class QmsChatFragment : WebViewFragment() {
             settings.setAppCacheEnabled(true)
             settings.allowFileAccess = true
             settings.cacheMode = WebSettings.LOAD_DEFAULT
-            settings.defaultFontSize = Preferences.Topic.getFontSize()
+            settings.defaultFontSize = Preferences.Topic.fontSize
         }
         wvChat?.addJavascriptInterface(this, "HTMLOUT")
 
@@ -648,7 +648,7 @@ class QmsChatFragment : WebViewFragment() {
 
     private fun startSendMessage() {
         if (emptyText) {
-            val toast = Toast.makeText(context, R.string.EnterMessage_, Toast.LENGTH_SHORT)
+            val toast = Toast.makeText(context, R.string.enter_message, Toast.LENGTH_SHORT)
             toast.setGravity(
                 Gravity.TOP,
                 0,

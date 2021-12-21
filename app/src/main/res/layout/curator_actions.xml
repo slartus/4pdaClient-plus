@@ -12,14 +12,14 @@
         <androidx.appcompat.widget.AppCompatRadioButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Удалить"
+            android:text="@string/curator_actions_delete"
             android:checked="true"
             android:id="@+id/radioButton" />
 
         <androidx.appcompat.widget.AppCompatRadioButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Переместить в тему"
+            android:text="@string/curator_actions_move_into_topic"
             android:id="@+id/radioButton2" />
     </RadioGroup>
 
@@ -28,5 +28,5 @@
         android:layout_height="wrap_content"
         android:id="@+id/editText2"
         android:inputType="text"
-        android:hint="URL темы" />
+        android:hint="@string/curator_actions_url_hint" />
 </LinearLayout>

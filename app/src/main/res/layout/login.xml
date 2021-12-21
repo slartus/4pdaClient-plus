@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                      android:layout_width="fill_parent"
-                      android:layout_height="wrap_content"
-                      android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
@@ -23,7 +24,7 @@
                     android:id="@+id/username_edit"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/UserNameLogin"
+                    android:hint="@string/login_username"
                     android:inputType="textPersonName"
                     android:minWidth="250dp"
                     android:scrollHorizontally="true"
@@ -42,7 +43,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:hint="@string/Password"
+                    android:hint="@string/login_password"
                     android:inputType="textPassword"
                     android:minWidth="250dp"
                     android:scrollHorizontally="true"
@@ -69,7 +70,7 @@
                     android:id="@+id/cap_value_ed"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Число с картинки"
+                    android:hint="@string/login_capcha_hint"
                     android:inputType="number"
                     android:minWidth="250dp"
                     android:scrollHorizontally="true"
@@ -84,7 +85,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:checked="false"
-                android:text="@string/Stealth"/>
+                android:text="@string/login_stealth"/>
         </LinearLayout>
     </ScrollView>
 

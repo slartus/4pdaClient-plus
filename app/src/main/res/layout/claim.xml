@@ -10,5 +10,5 @@
         android:id="@+id/message_edit"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:hint="Текст жалобы" />
+        android:hint="@string/complaint_short_hint" />
 </LinearLayout>
