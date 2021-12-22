@@ -14,7 +14,7 @@ class QmsThreadsRepositoryImpl @Inject constructor(
     private val parser: Parser<QmsThreads>
 ) :
     QmsThreadsRepository {
-    private val _threads = MutableStateFlow<List<QmsThread>>(emptyList())
+    private val _threads = MutableStateFlow<List<QmsThread>?>(null)
     override val threads
         get() = _threads.asStateFlow()
 

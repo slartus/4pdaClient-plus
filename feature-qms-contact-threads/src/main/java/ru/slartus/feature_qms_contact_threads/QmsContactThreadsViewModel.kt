@@ -61,6 +61,7 @@ class QmsContactThreadsViewModel @Inject constructor(
         viewModelScope.launch {
             launch(errorHandler) {
                 qmsThreadsRepository.threads
+                    .filterNotNull()
                     .distinctUntilChanged()
                     .collect { rawItems ->
                         val items = rawItems.map {
