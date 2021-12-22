@@ -12,6 +12,7 @@ import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import org.softeg.slartus.forpdaplus.core.AppPreferences
 import org.softeg.slartus.forpdaplus.core.entities.QmsContact
 import org.softeg.slartus.forpdaplus.core.repositories.QmsContactsRepository
 import org.softeg.slartus.forpdaplus.core.repositories.QmsThreadsRepository
@@ -23,9 +24,10 @@ import javax.inject.Inject
 class QmsContactThreadsViewModel @Inject constructor(
     private val state: SavedStateHandle,
     private val qmsThreadsRepository: QmsThreadsRepository,
-    private val qmsContactsRepository: QmsContactsRepository
+    private val qmsContactsRepository: QmsContactsRepository,
+    appPreferences: AppPreferences,
 
-) : ViewModel() {
+    ) : ViewModel() {
     private val errorHandler = CoroutineExceptionHandler { _, ex ->
         _events.value = Event.Error(ex)
     }
@@ -47,6 +49,12 @@ class QmsContactThreadsViewModel @Inject constructor(
             field = value
             state[QmsContactThreadsFragment.ARG_CONTACT_ID] = value
         }
+
+    val accentColor: AccentColor = when (appPreferences.accentColor) {
+        "blue" -> AccentColor.Blue
+        "gray" -> AccentColor.Gray
+        else -> AccentColor.Standard
+    }
 
     init {
         reload()
@@ -161,5 +169,9 @@ class QmsContactThreadsViewModel @Inject constructor(
             val contactId: String,
             val contactNick: String?
         ) : Event()
+    }
+
+    enum class AccentColor {
+        Standard, Blue, Gray
     }
 }

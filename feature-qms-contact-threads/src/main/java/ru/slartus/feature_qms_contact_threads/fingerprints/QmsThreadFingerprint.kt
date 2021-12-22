@@ -3,6 +3,7 @@ package ru.slartus.feature_qms_contact_threads.fingerprints
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.DrawableRes
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import org.softeg.slartus.forpdaplus.core_lib.ui.adapter.BaseViewHolder
@@ -12,6 +13,8 @@ import ru.slartus.feature_qms_contact_threads.R
 import ru.slartus.feature_qms_contact_threads.databinding.LayoutQmsThreadItemBinding
 
 class QmsThreadFingerprint(
+    @DrawableRes
+    private val accentBackground: Int,
     private val onClickListener: (view: View?, item: QmsThreadItem) -> Unit
 ) :
     ItemFingerprint<LayoutQmsThreadItemBinding, QmsThreadItem> {
@@ -38,6 +41,7 @@ class QmsThreadFingerprint(
         val binding = LayoutQmsThreadItemBinding.inflate(layoutInflater, parent, false)
         return QmsThreadViewHolder(
             binding = binding,
+            accentBackground,
             onClickListener = onClickListener
         )
     }
@@ -47,6 +51,8 @@ class QmsThreadFingerprint(
 
 class QmsThreadViewHolder(
     binding: LayoutQmsThreadItemBinding,
+    @DrawableRes
+    accentBackground: Int,
     private val onClickListener: (view: View?, item: QmsThreadItem) -> Unit
 ) :
     BaseViewHolder<LayoutQmsThreadItemBinding, QmsThreadItem>(binding) {
@@ -55,6 +61,7 @@ class QmsThreadViewHolder(
 
     init {
         itemView.setOnClickListener { v -> onClickListener(v, item) }
+        binding.newMessagesCountTextView.setBackgroundResource(accentBackground)
     }
 
     override fun onBind(item: QmsThreadItem) {

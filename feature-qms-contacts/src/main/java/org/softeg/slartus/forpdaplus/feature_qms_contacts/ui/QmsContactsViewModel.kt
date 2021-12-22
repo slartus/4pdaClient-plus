@@ -28,7 +28,7 @@ class QmsContactsViewModel @Inject constructor(
     val accentColor: AccentColor = when (appPreferences.accentColor) {
         "blue" -> AccentColor.Blue
         "gray" -> AccentColor.Gray
-        else -> AccentColor.Standart
+        else -> AccentColor.Standard
     }
 
     private val errorHandler = CoroutineExceptionHandler { _, ex ->
@@ -120,6 +120,6 @@ class QmsContactsViewModel @Inject constructor(
     }
 
     enum class AccentColor {
-        Standart, Blue, Gray
+        Standard, Blue, Gray
     }
 }

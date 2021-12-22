@@ -6,6 +6,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.DrawableRes
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResult
@@ -163,9 +164,19 @@ class QmsContactThreadsFragment :
     private fun createContactsAdapter() = QmsContactThreadsAdapter(
         listOf(
             QmsThreadFingerprint(
+                accentBackground = getAccentBackgroundRes(),
                 onClickListener = { _, item -> viewModel.onThreadClick(item) }),
         )
     )
+
+    @DrawableRes
+    private fun getAccentBackgroundRes(): Int {
+        return when (viewModel.accentColor) {
+            QmsContactThreadsViewModel.AccentColor.Blue -> R.drawable.qmsnewblue
+            QmsContactThreadsViewModel.AccentColor.Gray -> R.drawable.qmsnewgray
+            else -> R.drawable.qmsnew
+        }
+    }
 
     override fun onDestroyView() {
         binding.threadsRecyclerView.adapter = null
