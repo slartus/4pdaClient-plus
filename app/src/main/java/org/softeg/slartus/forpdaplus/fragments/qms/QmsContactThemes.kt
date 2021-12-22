@@ -14,6 +14,13 @@ class QmsContactThemes : BaseBrickContainerFragment() {
         super.onCreate(savedInstanceState)
         contactId =
             savedInstanceState?.getString(MID_KEY) ?: arguments?.getString(MID_KEY) ?: contactId
+
+        childFragmentManager.setFragmentResultListener(
+            QmsContactThreadsFragment.ARG_CONTACT_NICK,
+            this
+        ) { _, bundle ->
+            setTitle(bundle.getString(QmsContactThreadsFragment.ARG_CONTACT_NICK))
+        }
     }
 
     override fun onResume() {
@@ -43,7 +50,7 @@ class QmsContactThemes : BaseBrickContainerFragment() {
 
     companion object {
         const val MID_KEY = QmsContactThreadsFragment.ARG_CONTACT_ID
-        const val NICK_KEY = "nick"
+        const val NICK_KEY = QmsContactThreadsFragment.ARG_CONTACT_NICK
 
         @JvmStatic
         fun showThemes(userId: String, userNick: String?) {

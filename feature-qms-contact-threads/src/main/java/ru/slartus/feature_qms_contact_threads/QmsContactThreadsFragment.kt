@@ -3,7 +3,9 @@ package ru.slartus.feature_qms_contact_threads
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -11,6 +13,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 import org.softeg.slartus.forpdaplus.core.AppActions
 import org.softeg.slartus.forpdaplus.core_lib.ui.fragments.BaseFragment
@@ -38,6 +41,7 @@ class QmsContactThreadsFragment :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+
         threadsAdapter = createContactsAdapter().apply {
             this.stateRestorationPolicy =
                 RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
@@ -74,9 +78,14 @@ class QmsContactThreadsFragment :
                     }
                 }
                 launch {
-                    viewModel.contact.collect {
-                        Timber.i(it?.nick)
-                    }
+                    viewModel.contact
+                        .filterNotNull()
+                        .collect {
+                            setFragmentResult(
+                                ARG_CONTACT_NICK,
+                                bundleOf(ARG_CONTACT_NICK to it.nick)
+                            )
+                        }
                 }
             }
         }
@@ -145,5 +154,6 @@ class QmsContactThreadsFragment :
 
     companion object {
         const val ARG_CONTACT_ID = "QmsContactThreadsFragment.CONTACT_ID"
+        const val ARG_CONTACT_NICK = "QmsContactThreadsFragment.CONTACT_NICK"
     }
 }
