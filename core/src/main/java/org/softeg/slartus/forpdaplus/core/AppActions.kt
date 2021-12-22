@@ -13,4 +13,7 @@ interface AppActions {
         threadId: String,
         threadTitle: String?
     )
+
+    fun showUserProfile(contactId: String, contactNick: String?)
+    fun showNewQmsContactThread(contactId: String, contactNick: String?)
 }

@@ -116,6 +116,22 @@ class QmsContactThreadsViewModel @Inject constructor(
         }
     }
 
+    fun onContactProfileClick() {
+        val contactId = contactId ?: return
+        viewModelScope.launch(errorHandler) {
+            val contact = _contact.value
+            _events.emit(Event.ShowContactProfile(contactId, contact?.nick))
+        }
+    }
+
+    fun onNewThreadClick() {
+        val contactId = contactId ?: return
+        viewModelScope.launch(errorHandler) {
+            val contact = _contact.value
+            _events.emit(Event.ShowNewThread(contactId, contact?.nick))
+        }
+    }
+
     sealed class UiState {
         object Initialize : UiState()
         data class Items(val items: List<Item>) : UiState()
@@ -136,5 +152,14 @@ class QmsContactThreadsViewModel @Inject constructor(
             val threadTitle: String?
         ) : Event()
 
+        data class ShowContactProfile(
+            val contactId: String,
+            val contactNick: String?
+        ) : Event()
+
+        data class ShowNewThread(
+            val contactId: String,
+            val contactNick: String?
+        ) : Event()
     }
 }

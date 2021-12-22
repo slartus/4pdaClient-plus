@@ -1,6 +1,9 @@
 package ru.slartus.feature_qms_contact_threads
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.core.os.bundleOf
@@ -59,6 +62,23 @@ class QmsContactThreadsFragment :
         binding.threadsRecyclerView.adapter = threadsAdapter
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.menu_qms_threads, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.new_thread_item -> {
+                viewModel.onNewThreadClick()
+            }
+            R.id.profile_interlocutor_item -> {
+                viewModel.onContactProfileClick()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     private fun subscribeToViewModel() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -99,23 +119,23 @@ class QmsContactThreadsFragment :
     private fun onEvent(event: QmsContactThreadsViewModel.Event) {
         viewModel.onEventReceived()
         when (event) {
-            is QmsContactThreadsViewModel.Event.Error -> {
-                Timber.e(event.exception)
-            }
-            is QmsContactThreadsViewModel.Event.ShowToast -> {
-                Toast.makeText(requireContext(), event.resId, event.duration).show()
-            }
             QmsContactThreadsViewModel.Event.Empty -> {
                 // ignore
             }
-            is QmsContactThreadsViewModel.Event.ShowQmsThread -> {
+            is QmsContactThreadsViewModel.Event.Error -> Timber.e(event.exception)
+            is QmsContactThreadsViewModel.Event.ShowToast ->
+                Toast.makeText(requireContext(), event.resId, event.duration).show()
+            is QmsContactThreadsViewModel.Event.ShowQmsThread ->
                 appActions.get().showQmsThread(
                     event.contactId,
                     event.contactNick,
                     event.threadId,
                     event.threadTitle
                 )
-            }
+            is QmsContactThreadsViewModel.Event.ShowContactProfile -> appActions.get()
+                .showUserProfile(event.contactId, event.contactNick)
+            is QmsContactThreadsViewModel.Event.ShowNewThread -> appActions.get()
+                .showNewQmsContactThread(event.contactId, event.contactNick)
         }
     }
 

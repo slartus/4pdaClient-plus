@@ -64,87 +64,6 @@ class QmsContactThemes : BaseBrickContainerFragment() {
         }
     }
 
-//
-    //    
-
-    //    ActionMode mMode;
-    //    private String m_Id;
-    //    private String m_Nick = "";
-    //
-    //    private Boolean DeleteMode = false;
-    //
-    //   
-    //
-
-    //
-    //    @Override
-    //    public void onCreate(Bundle savedInstanceState) {
-    //        super.onCreate(savedInstanceState);
-    //        setArrow();
-    //
-    //        if (savedInstanceState != null) {
-    //            m_Id = savedInstanceState.getString(MID_KEY);
-    //            m_Nick = savedInstanceState.getString(NICK_KEY);
-    //        } else if (getArguments() != null) {
-    //            m_Id = getArguments().getString(MID_KEY);
-    //            m_Nick = getArguments().getString(NICK_KEY);
-    //        }
-    //        if (m_Nick != null)
-    //            if (m_Nick.equals(""))
-    //                new GetUserTask(m_Id).execute();
-    //    }
-    //
-    //    @Override
-    //    public void onSaveInstanceState(Bundle outState) {
-    //        super.onSaveInstanceState(outState);
-    //        outState.putString(MID_KEY, m_Id);
-    //        outState.putString(NICK_KEY, m_Nick);
-    //    }
-    //
-    //    private class GetUserTask extends AsyncTask<String, Void, Boolean> {
-    //        private final String userId;
-    //        private String userNick;
-    //
-    //        GetUserTask(String userId) {
-    //            this.userId = userId;
-    //        }
-    //
-    //        @Override
-    //        protected Boolean doInBackground(String... params) {
-    //            try {
-    //                userNick = ProfileApi.getUserNick(Client.getInstance(), userId);
-    //                return true;
-    //            } catch (Exception e) {
-    //                ex = e;
-    //                return false;
-    //            }
-    //        }
-    //
-    //        protected void onPreExecute() {
-    //            Toast.makeText(getContext(), R.string.getting_user_nick, Toast.LENGTH_SHORT).show();
-    //        }
-    //
-    //        private Exception ex;
-    //
-    //        protected void onPostExecute(final Boolean success) {
-    //            if (success && !TextUtils.isEmpty(userNick)) {
-    //                m_Nick = userNick;
-    //                Toast.makeText(App.getContext(), App.getContext().getString(R.string.nick_received) + ": " + m_Nick, Toast.LENGTH_SHORT).show();
-    //                setTitle(m_Nick);
-    //                TabsManager.getInstance().getTabByTag(getTag()).setTitle(m_Nick);
-    //                getMainActivity().notifyTabAdapter();
-    //            } else {
-    //                if (ex != null)
-    //                    AppLog.e(getMainActivity(), ex, () -> new GetUserTask(userId).execute());
-    //                else if (TextUtils.isEmpty(userNick))
-    //                    Toast.makeText(getMainActivity(), R.string.error_getting_nick,
-    //                            Toast.LENGTH_SHORT).show();
-    //                else
-    //                    Toast.makeText(getMainActivity(), R.string.unknown_error,
-    //                            Toast.LENGTH_SHORT).show();
-    //            }
-    //        }
-    //    }
     //
     //    private boolean dialogShowed = false;
     //
@@ -161,36 +80,7 @@ class QmsContactThemes : BaseBrickContainerFragment() {
     //            dialogShowed = true;
     //        }
     //    }
-    //
-    //    @Override
-    //    protected Boolean useCache() {
-    //        return false;
-    //    }
-    //
-    //    @Override
-    //    protected BaseAdapter createAdapter() {
-    //        return new QmsContactsAdapter(getMainActivity(), getData().getItems());
-    //    }
-    //
-    //    @Override
-    //    protected int getViewResourceId() {
-    //        return R.layout.list_fragment;
-    //    }
-    //
-    //    @Override
-    //    protected ListData loadData(int loaderId, Bundle args) throws Throwable {
-    //        ListData listData = new ListData();
-    //
-    //
-    //        QmsUsers qmsUsers = new QmsUsers();
-    //        QmsUserThemes mails = QmsApi.INSTANCE.getQmsUserThemes(m_Id, qmsUsers,
-    //                TextUtils.isEmpty(m_Nick));
-    //        listData.getItems().addAll(mails);
-    //        Client.getInstance().setQmsCount(qmsUsers.unreadMessageUsersCount());
-    //
-    //        return listData;
-    //    }
-    //
+
     //    @Override
     //    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
     //
@@ -215,28 +105,6 @@ class QmsContactThemes : BaseBrickContainerFragment() {
     //            startDeleteMode();
     //        return true;
     //    }
-    //
-    //
-    //    @Override
-    //    public boolean onOptionsItemSelected(MenuItem item) {
-    //        switch (item.getItemId()){
-    //            case R.id.new_thread_item:
-    //                QmsNewThreadFragment.showUserNewThread(getMainActivity(), m_Id, m_Nick);
-    //                return true;
-    //            case R.id.profile_interlocutor_item:
-    //                ProfileFragment.showProfile(m_Id, m_Nick);
-    //                return true;
-    //        }
-    //        return super.onOptionsItemSelected(item);
-    //    }
-    //
-    //    @Override
-    //    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-    //        super.onCreateOptionsMenu(menu, inflater);
-    //        if(inflater!=null)
-    //            inflater .inflate(R.menu.qms_contact_themes, menu);
-    //    }
-    //
     //    private void startDeleteMode() {
     //        mMode = getMainActivity().startActionMode(new AnActionModeOfEpicProportions());
     //        DeleteMode = true;
