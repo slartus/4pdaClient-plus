@@ -13,10 +13,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Setup JDK
-        uses: actions/setup-java@v1
+        
+      - name: Set up JDK
+        uses: actions/setup-java@v2
         with:
-          java-version: 1.8     
+          distribution: 'zulu'
+          java-version: '11'   
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v2
+        
       - name: Test
         run: |
           ./gradlew test
