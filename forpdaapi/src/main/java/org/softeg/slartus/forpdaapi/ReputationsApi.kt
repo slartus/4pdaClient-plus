@@ -57,7 +57,8 @@ import java.util.regex.Pattern
                 res.currentPage = pel.text().toInt()
             }
         }
-        for (trElement in doc.selectFirst("div.borderwrap table.ipbtable tbody").select("tr")) {
+        for (trElement in doc.selectFirst("div.borderwrap table.ipbtable tbody")?.select("tr")
+            ?: emptyList()) {
             val tdElements = trElement.select("td")
             if (tdElements.size < 5) continue
             val rep = ReputationEvent()

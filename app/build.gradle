@@ -173,8 +173,8 @@ dependencies {
     implementation "ch.acra:acra-notification:$acraVersion"
     implementation "ch.acra:acra-toast:$acraVersion"
     implementation "ch.acra:acra-limiter:$acraVersion"
-    kapt("com.google.auto.service:auto-service:1.0")
-    compileOnly("com.google.auto.service:auto-service-annotations:1.0")
+    kapt('com.google.auto.service:auto-service:1.0.1')
+    compileOnly('com.google.auto.service:auto-service-annotations:1.0.1')
 
     implementation "com.google.code.gson:gson:$rootProject.gson"
     api "com.squareup.okhttp3:okhttp:$rootProject.okhttp3"
