@@ -64,23 +64,6 @@ class QmsContactThemes : BaseBrickContainerFragment() {
         }
     }
 
-    //
-    //    private boolean dialogShowed = false;
-    //
-    //    @Override
-    //    public void onLoadFinished(Loader<ListData> loader, ListData data) {
-    //        super.onLoadFinished(loader, data);
-    //        if (data.getItems().size() <= 0 & !dialogShowed) {
-    //            new MaterialDialog.Builder(getContext())
-    //                    .content(String.format(App.getContext().getString(R.string.ask_create_dialog), m_Nick))
-    //                    .positiveText(R.string.yes)
-    //                    .negativeText(R.string.no)
-    //                    .onPositive((dialog, which) -> QmsNewThreadFragment.showUserNewThread(getMainActivity(), m_Id, m_Nick))
-    //                    .show();
-    //            dialogShowed = true;
-    //        }
-    //    }
-
     //    @Override
     //    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
     //
