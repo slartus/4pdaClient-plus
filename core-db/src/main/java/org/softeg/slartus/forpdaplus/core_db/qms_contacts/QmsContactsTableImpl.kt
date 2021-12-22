@@ -15,7 +15,7 @@ class QmsContactsTableImpl @Inject constructor(private val qmsContactsDao: QmsCo
 
     override suspend fun insertAll(vararg items: QmsContact) = withContext(Dispatchers.IO) {
         qmsContactsDao.deleteAll()
-        qmsContactsDao.insertAll(*items.mapIndexedNotNull { index, item -> item.map((1000 + index).toString()) }
+        qmsContactsDao.insertAll(*items.mapIndexedNotNull { index, item -> item.map(index) }
             .toTypedArray())
     }
 
@@ -34,8 +34,8 @@ class QmsContactsTableImpl @Inject constructor(private val qmsContactsDao: QmsCo
         private fun QmsContactDb.map(): QmsContact =
             QmsContactImpl(this.id.toString(), this.nick, this.avatarUrl, this.messagesCount)
 
-        private fun QmsContact.map(order: String?): QmsContactDb? = this.id?.let { id ->
-            QmsContactDb(id.toLong(), this.nick, this.avatarUrl, this.newMessagesCount, order)
+        private fun QmsContact.map(sort: Int?): QmsContactDb? = this.id?.let { id ->
+            QmsContactDb(id.toLong(), this.nick, this.avatarUrl, this.newMessagesCount, sort)
         }
     }
 }

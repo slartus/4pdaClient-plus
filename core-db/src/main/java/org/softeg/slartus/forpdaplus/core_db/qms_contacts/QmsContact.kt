@@ -10,5 +10,5 @@ data class QmsContact(
     val nick: String? = null,
     val avatarUrl: String? = null,
     val messagesCount: Int? = null,
-    val order: String? = null
+    val sort: Int? = null
 )

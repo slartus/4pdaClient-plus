@@ -8,7 +8,7 @@ import androidx.room.Query
 @Dao
 interface QmsContactsDao {
 
-    @Query("SELECT * FROM qms_contacts ORDER BY `order`")
+    @Query("SELECT * FROM qms_contacts ORDER BY `sort`")
     suspend fun getAll(): List<QmsContact>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
