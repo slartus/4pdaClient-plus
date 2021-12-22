@@ -277,6 +277,7 @@
     <string name="reputation">Репутация</string>
     <string name="all_forums">Все форумы</string>
     <string name="total">Всего</string>
+    <string name="qms_thread_total">всего: %d</string>
     <string name="source">Источник</string>
     <string name="link_to_post">Ссылка на сообщение</string>
     <string name="vote_request_sent">Запрос на изменение репутации сообщения отправлен</string>

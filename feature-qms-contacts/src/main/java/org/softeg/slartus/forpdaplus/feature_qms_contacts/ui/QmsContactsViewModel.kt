@@ -98,6 +98,12 @@ class QmsContactsViewModel @Inject constructor(
         }
     }
 
+    fun onHiddenChanged(hidden: Boolean) {
+        if (!hidden) {
+            reload()
+        }
+    }
+
     sealed class UiState {
         object Initialize : UiState()
         data class Items(val items: List<Item>) : UiState()

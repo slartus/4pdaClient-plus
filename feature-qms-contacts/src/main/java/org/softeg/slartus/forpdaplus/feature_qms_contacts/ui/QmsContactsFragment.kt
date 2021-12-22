@@ -75,6 +75,11 @@ class QmsContactsFragment :
         }
     }
 
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        viewModel.onHiddenChanged(hidden)
+    }
+
     private fun subscribeToViewModel() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {

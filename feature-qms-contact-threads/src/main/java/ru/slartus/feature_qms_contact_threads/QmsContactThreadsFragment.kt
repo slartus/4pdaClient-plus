@@ -12,14 +12,21 @@ import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import org.softeg.slartus.forpdaplus.core.AppActions
 import org.softeg.slartus.forpdaplus.core_lib.ui.fragments.BaseFragment
 import ru.slartus.feature_qms_contact_threads.databinding.FragmentQmsContactThreadsBinding
 import ru.slartus.feature_qms_contact_threads.fingerprints.QmsThreadFingerprint
 import timber.log.Timber
+import javax.inject.Inject
+import javax.inject.Provider
 
 @AndroidEntryPoint
 class QmsContactThreadsFragment :
     BaseFragment<FragmentQmsContactThreadsBinding>(FragmentQmsContactThreadsBinding::inflate) {
+
+    @Inject
+    lateinit var appActions: Provider<AppActions>
+
     private val viewModel: QmsContactThreadsViewModel by lazy {
         val viewModel: QmsContactThreadsViewModel by viewModels()
         viewModel.setArguments(arguments)
@@ -75,6 +82,11 @@ class QmsContactThreadsFragment :
         }
     }
 
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        viewModel.onHiddenChanged(hidden)
+    }
+
     private fun onEvent(event: QmsContactThreadsViewModel.Event) {
         viewModel.onEventReceived()
         when (event) {
@@ -86,6 +98,14 @@ class QmsContactThreadsFragment :
             }
             QmsContactThreadsViewModel.Event.Empty -> {
                 // ignore
+            }
+            is QmsContactThreadsViewModel.Event.ShowQmsThread -> {
+                appActions.get().showQmsThread(
+                    event.contactId,
+                    event.contactNick,
+                    event.threadId,
+                    event.threadTitle
+                )
             }
         }
     }
@@ -114,7 +134,7 @@ class QmsContactThreadsFragment :
     private fun createContactsAdapter() = QmsContactThreadsAdapter(
         listOf(
             QmsThreadFingerprint(
-                onClickListener = { _, item -> }),
+                onClickListener = { _, item -> viewModel.onThreadClick(item) }),
         )
     )
 

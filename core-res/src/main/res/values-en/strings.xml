@@ -267,6 +267,7 @@
     <string name="look">Look</string>
     <string name="reputation">Reputation</string>
     <string name="total">Total</string>
+    <string name="qms_thread_total">total: %d</string>
     <string name="source">Source</string>
     <string name="link_to_post">Link to post</string>
     <string name="vote_request_sent">Request to change the reputation of messages sent</string>

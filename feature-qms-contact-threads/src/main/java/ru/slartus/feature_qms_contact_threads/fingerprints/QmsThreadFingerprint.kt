@@ -3,6 +3,7 @@ package ru.slartus.feature_qms_contact_threads.fingerprints
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import org.softeg.slartus.forpdaplus.core_lib.ui.adapter.BaseViewHolder
 import org.softeg.slartus.forpdaplus.core_lib.ui.adapter.Item
@@ -49,6 +50,8 @@ class QmsThreadViewHolder(
     private val onClickListener: (view: View?, item: QmsThreadItem) -> Unit
 ) :
     BaseViewHolder<LayoutQmsThreadItemBinding, QmsThreadItem>(binding) {
+    private val totalTextFormat =
+        itemView.context.getString(org.softeg.slartus.forpdaplus.core_res.R.string.qms_thread_total)
 
     init {
         itemView.setOnClickListener { v -> onClickListener(v, item) }
@@ -58,10 +61,12 @@ class QmsThreadViewHolder(
         super.onBind(item)
 
         with(binding) {
-
             titleTextView.text = item.title
-            messagesCountTextView.text = item.messagesCount.toString()
+            messagesCountTextView.text = totalTextFormat.format(item.messagesCount)
             newMessagesCountTextView.text = item.newMessagesCount.toString()
+            newMessagesCountTextView.isVisible = item.newMessagesCount > 0
+            selectedCheckBox.isVisible = false
+            dateTextView.text = item.lastMessageDate
         }
     }
 }
@@ -70,5 +75,6 @@ data class QmsThreadItem(
     val id: String,
     val title: String,
     val messagesCount: Int,
-    val newMessagesCount: Int
+    val newMessagesCount: Int,
+    val lastMessageDate: String?
 ) : Item

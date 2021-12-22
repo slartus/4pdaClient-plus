@@ -7,8 +7,11 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.CoroutineName
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import org.softeg.slartus.forpdaplus.core.entities.QmsContact
 import org.softeg.slartus.forpdaplus.core.repositories.QmsContactsRepository
 import org.softeg.slartus.forpdaplus.core.repositories.QmsThreadsRepository
@@ -57,7 +60,8 @@ class QmsContactThreadsViewModel @Inject constructor(
                                 id = it.id ?: "",
                                 title = it.title ?: "",
                                 messagesCount = it.messagesCount ?: 0,
-                                newMessagesCount = it.newMessagesCount ?: 0
+                                newMessagesCount = it.newMessagesCount ?: 0,
+                                lastMessageDate = it.lastMessageDate
                             )
                         }
                         _uiState.emit(UiState.Items(items))
@@ -93,9 +97,22 @@ class QmsContactThreadsViewModel @Inject constructor(
         reload()
     }
 
+    fun onHiddenChanged(hidden: Boolean) {
+        if (!hidden)
+            reload()
+    }
+
     fun onEventReceived() {
         viewModelScope.launch(errorHandler) {
             _events.emit(Event.Empty)
+        }
+    }
+
+    fun onThreadClick(item: QmsThreadItem) {
+        val contactId = contactId ?: return
+        viewModelScope.launch(errorHandler) {
+            val contact = _contact.value
+            _events.emit(Event.ShowQmsThread(contactId, contact?.nick, item.id, item.title))
         }
     }
 
@@ -111,5 +128,13 @@ class QmsContactThreadsViewModel @Inject constructor(
             @StringRes val resId: Int,// maybe need use enum for clear model
             val duration: Int = Toast.LENGTH_SHORT
         ) : Event()
+
+        data class ShowQmsThread(
+            val contactId: String,
+            val contactNick: String?,
+            val threadId: String,
+            val threadTitle: String?
+        ) : Event()
+
     }
 }

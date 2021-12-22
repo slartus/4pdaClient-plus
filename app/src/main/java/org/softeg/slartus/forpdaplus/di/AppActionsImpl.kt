@@ -3,6 +3,7 @@ package org.softeg.slartus.forpdaplus.di
 import android.content.Context
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl
 import org.softeg.slartus.forpdaplus.core.AppActions
+import org.softeg.slartus.forpdaplus.fragments.qms.QmsChatFragment
 import org.softeg.slartus.forpdaplus.fragments.qms.QmsContactThemes
 import org.softeg.slartus.forpdaplus.listfragments.ForumTopicsListFragment
 import javax.inject.Inject
@@ -21,5 +22,14 @@ class AppActionsImpl @Inject constructor() : AppActions {
 
     override fun showQmsContactThreads(contactId: String, contactNick: String?) {
         QmsContactThemes.showThemes(contactId, contactNick)
+    }
+
+    override fun showQmsThread(
+        contactId: String,
+        contactNick: String?,
+        threadId: String,
+        threadTitle: String?
+    ) {
+        QmsChatFragment.openChat(contactId, contactNick, threadId, threadTitle)
     }
 }
