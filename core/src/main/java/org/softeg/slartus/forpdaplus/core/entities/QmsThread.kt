@@ -7,3 +7,5 @@ interface QmsThread {
     val newMessagesCount: Int?
     val lastMessageDate: String?
 }
+
+class QmsThreads(list: List<QmsThread>) : List<QmsThread> by list

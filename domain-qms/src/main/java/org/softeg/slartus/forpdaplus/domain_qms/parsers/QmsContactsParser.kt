@@ -1,20 +1,25 @@
 package org.softeg.slartus.forpdaplus.domain_qms.parsers
 
+import android.os.Bundle
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import org.softeg.slartus.forpdacommon.fromHtml
 import org.softeg.slartus.forpdaplus.core.entities.QmsContact
+import org.softeg.slartus.forpdaplus.core.entities.QmsContacts
 import org.softeg.slartus.forpdaplus.core.interfaces.Parser
 import org.softeg.slartus.forpdaplus.domain_qms.entities.QmsContactImpl
 import java.util.regex.Pattern
+import javax.inject.Inject
 
-object QmsContactsParser : Parser<List<QmsContact>> {
-    private val QmsContactsPattern by lazy {
-        Pattern.compile(
-            "<a class=\"list-group-item[^>]*=(\\d*)\">[^<]*<div class=\"bage\">([^<]*)[\\s\\S]*?src=\"([^\"]*)\" title=\"([^\"]*)\"",
-            Pattern.CASE_INSENSITIVE
-        )
-    }
+class QmsContactsParser @Inject constructor() : Parser<QmsContacts> {
+    override val id: String
+        get() = QmsContactsParser::class.java.simpleName
 
-    override fun parse(page: String): List<QmsContact> {
+    private val _data = MutableStateFlow(QmsContacts(emptyList()))
+    override val data
+        get() = _data.asStateFlow()
+
+    override suspend fun parse(page: String, args: Bundle?): QmsContacts {
         val res = mutableListOf<QmsContact>()
         val m = QmsContactsPattern.matcher(page)
 
@@ -36,6 +41,30 @@ object QmsContactsParser : Parser<List<QmsContact>> {
 
             res.add(qmsUser)
         }
-        return res
+        val result = QmsContacts(res)
+        _data.emit(result)
+        return result
     }
+
+    override fun isOwn(url: String, args: Bundle?): Boolean {
+        return UrlActPattern.matcher(url).find() && UrlActionPattern.matcher(url).find()
+    }
+
+    companion object {
+        private val QmsContactsPattern by lazy {
+            Pattern.compile(
+                "<a class=\"list-group-item[^>]*=(\\d*)\">[^<]*<div class=\"bage\">([^<]*)[\\s\\S]*?src=\"([^\"]*)\" title=\"([^\"]*)\"",
+                Pattern.CASE_INSENSITIVE
+            )
+        }
+
+        private val UrlActPattern by lazy {
+            Pattern.compile("act=qms-xhr", Pattern.CASE_INSENSITIVE)
+        }
+
+        private val UrlActionPattern by lazy {
+            Pattern.compile("action=userlist", Pattern.CASE_INSENSITIVE)
+        }
+    }
+
 }

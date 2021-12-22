@@ -6,3 +6,5 @@ interface QmsContact {
     val avatarUrl: String?
     val newMessagesCount: Int?
 }
+
+class QmsContacts(list: List<QmsContact>) : List<QmsContact> by list

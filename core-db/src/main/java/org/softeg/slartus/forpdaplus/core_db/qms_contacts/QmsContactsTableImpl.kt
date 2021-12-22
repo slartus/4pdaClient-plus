@@ -14,7 +14,8 @@ class QmsContactsTableImpl @Inject constructor(private val qmsContactsDao: QmsCo
     }
 
     override suspend fun insertAll(vararg items: QmsContact) = withContext(Dispatchers.IO) {
-        qmsContactsDao.insertAll(*items.mapIndexedNotNull { index, item -> item.map(index.toString()) }
+        qmsContactsDao.deleteAll()
+        qmsContactsDao.insertAll(*items.mapIndexedNotNull { index, item -> item.map((1000 + index).toString()) }
             .toTypedArray())
     }
 

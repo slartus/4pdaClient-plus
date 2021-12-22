@@ -2,15 +2,15 @@ package org.softeg.slartus.forpdaplus.domain_qms
 
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import org.softeg.slartus.forpdaplus.core.repositories.QmsContactsRepository
+import org.softeg.slartus.forpdaplus.core.interfaces.Parser
 import org.softeg.slartus.forpdaplus.core.repositories.QmsCountRepository
 import org.softeg.slartus.forpdaplus.core.services.QmsService
 import org.softeg.slartus.forpdaplus.core_lib.coroutines.AppIOScope
 import javax.inject.Inject
 
 class QmsCountRepositoryImpl @Inject constructor(
-    private val qmsContactsRepository: QmsContactsRepository,
-    private val qmsService: QmsService
+    private val qmsService: QmsService,
+    private val qmsCountParser: Parser<Int>
 ) :
     QmsCountRepository {
 
@@ -20,17 +20,17 @@ class QmsCountRepositoryImpl @Inject constructor(
 
     init {
         AppIOScope().launch {
-            qmsContactsRepository.contacts
+            qmsCountParser.data
                 .drop(1)
                 .distinctUntilChanged()
-                .collect { contacts ->
-                    setCount(contacts.sumOf { it.newMessagesCount ?: 0 })
+                .collect { count ->
+                    setCount(count)
                 }
         }
     }
 
     override suspend fun load() {
-        setCount(qmsService.getQmsCount())
+        qmsService.getQmsCount(qmsCountParser.id)
     }
 
     override suspend fun setCount(count: Int) {
