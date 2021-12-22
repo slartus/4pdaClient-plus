@@ -302,7 +302,7 @@
     <string name="nick_received">Ник получен</string>
     <string name="error_getting_nick">Не удалось получить ник пользователя</string>
     <string name="ask_create_dialog" formatted="false">С пользователем %s нет диалогов. Создать?</string>
-    <string name="new_thread">Новая тема</string>
+    <string name="new_thread">Новый диалог</string>
     <string name="ask_deleting_dialogs" formatted="false">Вы действительно хотите удалить выбранные диалоги с пользователем %s?</string>
     <string name="qms_title_new_thread">QMS:Новая тема</string>
     <string name="enter_nick">Укажите получателя</string>

@@ -27,5 +27,14 @@
             android:gravity="center"
             android:text="@string/no_data"
             android:visibility="gone" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/new_thread_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:src="@drawable/pencil"
+            android:contentDescription="@string/new_thread"
+            android:layout_margin="16dp" />
     </FrameLayout>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

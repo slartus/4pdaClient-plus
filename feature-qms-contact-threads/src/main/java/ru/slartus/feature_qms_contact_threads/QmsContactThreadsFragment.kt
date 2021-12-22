@@ -58,6 +58,9 @@ class QmsContactThreadsFragment :
         binding.swipeToRefresh.setOnRefreshListener {
             viewModel.onReloadClick()
         }
+        binding.newThreadFab.setOnClickListener {
+            viewModel.onNewThreadClick()
+        }
         subscribeToViewModel()
 
         binding.threadsRecyclerView.adapter = threadsAdapter
@@ -70,9 +73,6 @@ class QmsContactThreadsFragment :
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.new_thread_item -> {
-                viewModel.onNewThreadClick()
-            }
             R.id.profile_interlocutor_item -> {
                 viewModel.onContactProfileClick()
             }
