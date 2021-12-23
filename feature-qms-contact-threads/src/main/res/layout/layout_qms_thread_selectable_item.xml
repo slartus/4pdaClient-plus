@@ -7,6 +7,18 @@
     android:foreground="?android:attr/selectableItemBackground"
     tools:ignore="UnusedAttribute">
 
+    <CheckBox
+        android:id="@+id/selected_checkBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:checkMark="?android:listChoiceIndicatorMultiple"
+        android:clickable="false"
+        android:focusable="false"
+        app:layout_constraintBottom_toBottomOf="@id/title_textView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/title_textView" />
+
     <TextView
         android:id="@+id/title_textView"
         style="?list_text_special_color"
@@ -20,7 +32,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintEnd_toStartOf="@id/new_messages_count_textView"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/selected_checkBox"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="@tools:sample/lorem/random" />
 

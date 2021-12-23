@@ -1,4 +1,4 @@
-package org.softeg.slartus.forpdaplus.listfragments.next.forum
+package org.softeg.slartus.forpdaplus.fragments
 
 import android.os.Bundle
 import android.text.TextUtils
@@ -7,10 +7,8 @@ import androidx.fragment.app.Fragment
 import dagger.hilt.android.AndroidEntryPoint
 import org.softeg.slartus.forpdaplus.MainActivity
 import org.softeg.slartus.forpdaplus.core.entities.SearchSettings
-import org.softeg.slartus.forpdaplus.core.interfaces.IOnBackPressed
 import org.softeg.slartus.forpdaplus.core.interfaces.SearchSettingsListener
 import org.softeg.slartus.forpdaplus.feature_forum.ui.ForumFragment
-import org.softeg.slartus.forpdaplus.fragments.BaseGeneralContainerFragment
 import org.softeg.slartus.forpdaplus.fragments.search.SearchSettingsDialogFragment
 import org.softeg.slartus.forpdaplus.listfragments.TopicsListFragment
 import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo
@@ -88,10 +86,6 @@ class ForumFragment : BaseGeneralContainerFragment(), SearchSettingsListener {
      */
     override fun getListName(): String? {
         return mName
-    }
-
-    override fun onBackPressed(): Boolean {
-        return childFragmentManager.fragments.any { (it as? IOnBackPressed)?.onBackPressed() == true }
     }
 
     fun setBrickInfo(listTemplate: BrickInfo): Fragment {

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import org.softeg.slartus.forpdaplus.R
+import org.softeg.slartus.forpdaplus.core.interfaces.IOnBackPressed
 import org.softeg.slartus.forpdaplus.listfragments.BaseBrickFragment
 
 abstract class BaseBrickContainerFragment :
@@ -19,6 +20,11 @@ abstract class BaseBrickContainerFragment :
     }
 
     abstract fun getFragmentInstance(): Fragment
+
+    override fun onBackPressed(): Boolean {
+        return childFragmentManager.fragments.any { (it as? IOnBackPressed)?.onBackPressed() == true }
+    }
+
 }
 
 abstract class BaseGeneralContainerFragment :
@@ -34,4 +40,9 @@ abstract class BaseGeneralContainerFragment :
     }
 
     abstract fun getFragmentInstance(): Fragment
+
+    override fun onBackPressed(): Boolean {
+        return childFragmentManager.fragments.any { (it as? IOnBackPressed)?.onBackPressed() == true }
+    }
+
 }

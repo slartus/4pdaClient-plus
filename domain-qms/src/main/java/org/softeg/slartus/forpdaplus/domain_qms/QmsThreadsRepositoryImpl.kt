@@ -22,4 +22,8 @@ class QmsThreadsRepositoryImpl @Inject constructor(
         val items = qmsService.getContactThreads(contactId, parser.id)
         _threads.emit(items)
     }
+
+    override suspend fun delete(contactId: String, threadIds: List<String>) {
+        qmsService.deleteThreads(contactId, threadIds)
+    }
 }

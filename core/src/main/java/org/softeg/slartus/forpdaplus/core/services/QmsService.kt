@@ -9,6 +9,7 @@ interface QmsService {
     suspend fun getQmsCount(resultParserId: String): Int
     suspend fun getContactThreads(contactId: String, resultParserId: String): List<QmsThread>
     suspend fun getContact(contactId: String, resultParserId: String): QmsContact?
+    suspend fun deleteThreads(contactId: String, threadIds: List<String>)
 
     companion object {
         const val ARG_CONTACT_ID = "QmsService.CONTACT_ID"

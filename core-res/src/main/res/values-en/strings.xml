@@ -292,7 +292,7 @@
     <string name="nick_received">Nick received</string>
     <string name="error_getting_nick">Error getting username</string>
     <string name="new_thread">New thread</string>
-    <string name="ask_deleting_dialogs" formatted="false">Are you sure you want to remove the selected dialogues with the user %s?</string>
+    <string name="ask_deleting_dialogs" formatted="false">Are you sure you want to remove the selected dialogues (%d) with the user %s?</string>
     <string name="qms_title_new_thread">QMS: New topic</string>
     <string name="enter_nick">Enter nick</string>
     <string name="file_name">File name</string>

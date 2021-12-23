@@ -3,12 +3,11 @@ package org.softeg.slartus.forpdaplus.listfragments;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import androidx.core.util.Pair;
-
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+
+import androidx.core.util.Pair;
 
 import org.jetbrains.annotations.NotNull;
 import org.softeg.slartus.forpdaapi.IListItem;
@@ -22,7 +21,7 @@ import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
-import org.softeg.slartus.forpdaplus.listfragments.next.forum.ForumFragment;
+import org.softeg.slartus.forpdaplus.fragments.ForumFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.ForumTopicsBrickInfo;
 import org.softeg.slartus.forpdaplus.prefs.ForumTopicsPreferencesActivity;
 import org.softeg.slartus.hosthelper.HostHelper;

@@ -6,4 +6,5 @@ import org.softeg.slartus.forpdaplus.core.entities.QmsThread
 interface QmsThreadsRepository {
     val threads: Flow<List<QmsThread>?>
     suspend fun load(contactId: String)
+    suspend fun delete(contactId: String, threadIds: List<String>)
 }

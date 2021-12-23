@@ -61,4 +61,21 @@ class QmsServiceImpl @Inject constructor(
             //QmsContactParser(contactId).parse(pageBody)
         }
 
+    override suspend fun deleteThreads(contactId: String, threadIds: List<String>): Unit =
+        withContext(Dispatchers.IO) {
+            val additionalHeaders = hashMapOf(
+                "action" to "delete-threads",
+                "title" to "",
+                "message" to ""
+            )
+            for (id in threadIds) {
+                additionalHeaders["thread-id[$id]"] = id
+            }
+            // not usable response (maybe error check)
+            httpClient.performPost(
+                "https://${HostHelper.host}/forum/index.php?act=qms&xhr=body&do=1&mid=$contactId",
+                additionalHeaders
+            )
+        }
+
 }

@@ -7,17 +7,16 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.CoroutineName
-import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 import org.softeg.slartus.forpdaplus.core.AppPreferences
 import org.softeg.slartus.forpdaplus.core.entities.QmsContact
 import org.softeg.slartus.forpdaplus.core.repositories.QmsContactsRepository
 import org.softeg.slartus.forpdaplus.core.repositories.QmsThreadsRepository
-import org.softeg.slartus.forpdaplus.core_lib.ui.adapter.Item
 import ru.slartus.feature_qms_contact_threads.fingerprints.QmsThreadItem
+import ru.slartus.feature_qms_contact_threads.fingerprints.QmsThreadSelectableItem
+import ru.slartus.feature_qms_contact_threads.fingerprints.ThreadItem
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -43,6 +42,9 @@ class QmsContactThreadsViewModel @Inject constructor(
 
     private val _contact = MutableStateFlow<QmsContact?>(null)
     val contact: StateFlow<QmsContact?> = _contact.asStateFlow()
+
+    private val _selectionMode = MutableStateFlow(false)
+    val selectionMode: StateFlow<Boolean> = _selectionMode.asStateFlow()
 
     private var contactId: String? = state[QmsContactThreadsFragment.ARG_CONTACT_ID]
         set(value) {
@@ -74,6 +76,36 @@ class QmsContactThreadsViewModel @Inject constructor(
                             )
                         }
                         _uiState.emit(UiState.Items(items))
+                    }
+            }
+            launch {
+                _selectionMode
+                    .drop(1)
+                    .collect { selectionMode ->
+                        val uiState = _uiState.value
+                        if (uiState is UiState.Items) {
+                            if (selectionMode) {
+                                _uiState.emit(uiState.copy(items = uiState.items.map { item ->
+                                    QmsThreadSelectableItem(
+                                        id = item.id,
+                                        title = item.title,
+                                        messagesCount = item.messagesCount,
+                                        newMessagesCount = item.newMessagesCount,
+                                        lastMessageDate = item.lastMessageDate
+                                    )
+                                }))
+                            } else {
+                                _uiState.emit(uiState.copy(items = uiState.items.map { item ->
+                                    QmsThreadItem(
+                                        id = item.id,
+                                        title = item.title,
+                                        messagesCount = item.messagesCount,
+                                        newMessagesCount = item.newMessagesCount,
+                                        lastMessageDate = item.lastMessageDate
+                                    )
+                                }))
+                            }
+                        }
                     }
             }
         }
@@ -141,13 +173,88 @@ class QmsContactThreadsViewModel @Inject constructor(
         }
     }
 
+    fun onLongClickListener() {
+        viewModelScope.launch(errorHandler) {
+            _selectionMode.emit(true)
+        }
+    }
+
+    fun onThreadSelectableClick(item: QmsThreadSelectableItem) {
+        Timber.d("onThreadSelectableClick")
+        viewModelScope.launch(errorHandler) {
+            val uiState = _uiState.value
+            if (uiState is UiState.Items) {
+                _uiState.emit(uiState.copy(items = uiState.items.map {
+                    if (it.id == item.id)
+                        QmsThreadSelectableItem(
+                            id = it.id,
+                            title = it.title,
+                            messagesCount = it.messagesCount,
+                            newMessagesCount = it.newMessagesCount,
+                            lastMessageDate = it.lastMessageDate,
+                            selected = !item.selected
+                        )
+                    else
+                        it
+                }))
+            }
+        }
+    }
+
+    fun onDeleteSelectionClick() {
+
+        viewModelScope.launch(errorHandler) {
+            val uiState = _uiState.value
+            val contact = _contact.value?.nick ?: contactId ?: return@launch
+            if (uiState is UiState.Items) {
+                val selectedIds =
+                    uiState.items.filterIsInstance(QmsThreadSelectableItem::class.java)
+                        .filter { it.selected }
+                        .map { it.id }
+                if (selectedIds.isNotEmpty()) {
+                    _events.emit(Event.ShowConfirmDeleteDialog(contact, selectedIds))
+                }
+            }
+        }
+    }
+
+    fun onConfirmDeleteSelectionClick(selectedIds: List<String>) {
+        val contactId = contactId ?: return
+        viewModelScope.launch(errorHandler) {
+            _events.emit(Event.Progress(true))
+            try {
+                qmsThreadsRepository.delete(contactId, selectedIds)
+            } finally {
+                _events.emit(Event.Progress(false))
+            }
+
+            _selectionMode.emit(false)
+
+            reload()
+        }
+    }
+
+    fun onBack(): Boolean {
+        val selectionMode = runBlocking {
+            _selectionMode.value
+        }
+        if (selectionMode) {
+            viewModelScope.launch(errorHandler) {
+                _selectionMode.emit(false)
+            }
+        }
+        return selectionMode
+    }
+
     sealed class UiState {
         object Initialize : UiState()
-        data class Items(val items: List<Item>) : UiState()
+        data class Items(val items: List<ThreadItem>, val selectionMode: Boolean = false) :
+            UiState()
     }
 
     sealed class Event {
         object Empty : Event()
+        data class Progress(val visible: Boolean) : Event()
         data class Error(val exception: Throwable) : Event()
         data class ShowToast(
             @StringRes val resId: Int,// maybe need use enum for clear model
@@ -169,6 +276,11 @@ class QmsContactThreadsViewModel @Inject constructor(
         data class ShowNewThread(
             val contactId: String,
             val contactNick: String?
+        ) : Event()
+
+        data class ShowConfirmDeleteDialog(
+            val userNick: String,
+            val selectedIds: List<String>
         ) : Event()
     }
 
