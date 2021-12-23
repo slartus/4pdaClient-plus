@@ -9,12 +9,20 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import org.softeg.slartus.forpdaplus.core.AppActions
 import org.softeg.slartus.forpdaplus.core.AppPreferences
 import org.softeg.slartus.forpdaplus.core.ForumPreferences
-import org.softeg.slartus.forpdaplus.core.LinkManager
+import org.softeg.slartus.forpdaplus.core.QmsPreferences
+import org.softeg.slartus.forpdaplus.core.entities.QmsContact
+import org.softeg.slartus.forpdaplus.core.entities.QmsContacts
+import org.softeg.slartus.forpdaplus.core.entities.QmsThreads
+import org.softeg.slartus.forpdaplus.core.interfaces.ParseFactory
+import org.softeg.slartus.forpdaplus.core.interfaces.Parser
 import org.softeg.slartus.forpdaplus.core.repositories.UserInfoRepository
+import org.softeg.slartus.forpdaplus.core.services.AppHttpClient
 import org.softeg.slartus.forpdaplus.prefs.AppPreferencesImpl
 import org.softeg.slartus.forpdaplus.prefs.ForumPreferencesImpl
+import org.softeg.slartus.forpdaplus.prefs.QmsPreferencesImpl
 import org.softeg.slartus.forpdaplus.repositories.UserInfoRepositoryImpl
 import javax.inject.Singleton
 
@@ -30,20 +38,44 @@ class AppModule {
     @Singleton
     fun provideSharedPreferences(@ApplicationContext context: Context): SharedPreferences =
         PreferenceManager.getDefaultSharedPreferences(context)
+
+    @Provides
+    @Singleton
+    fun provideParseFactoryImpl(
+        qmsContactsParser: Parser<QmsContacts>,
+        qmsCountParser: Parser<Int>,
+        qmsContactParser: Parser<QmsContact>,
+        qmsThreadsParser: Parser<QmsThreads>,
+    ): ParseFactory =
+        ParseFactoryImpl.Builder()
+            .add(qmsContactsParser)
+            .add(qmsCountParser)
+            .add(qmsContactParser)
+            .add(qmsThreadsParser)
+            .build()
 }
 
+@Suppress("unused")
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class ManagersModule {
+interface ManagersModule {
     @Binds
     @Singleton
-    abstract fun bindLinkManagerImpl(linkManagerImpl: LinkManagerImpl): LinkManager
+    fun bindLinkManagerImpl(appActionsImpl: AppActionsImpl): AppActions
 
     @Binds
     @Singleton
-    abstract fun bindAppPreferencesImpl(appPreferencesImpl: AppPreferencesImpl): AppPreferences
+    fun bindAppPreferencesImpl(appPreferencesImpl: AppPreferencesImpl): AppPreferences
 
     @Binds
     @Singleton
-    abstract fun bindForumPreferencesImpl(forumPreferencesImpl: ForumPreferencesImpl): ForumPreferences
+    fun bindForumPreferencesImpl(forumPreferencesImpl: ForumPreferencesImpl): ForumPreferences
+
+    @Binds
+    @Singleton
+    fun bindQmsPreferencesImpl(qmsPreferencesImpl: QmsPreferencesImpl): QmsPreferences
+
+    @Binds
+    @Singleton
+    fun bindAppHttpClientImpl(appHttpClientImpl: AppHttpClientImpl): AppHttpClient
 }

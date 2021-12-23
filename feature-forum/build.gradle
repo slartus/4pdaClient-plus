@@ -44,7 +44,7 @@ dependencies {
     implementation "androidx.core:core-ktx:$rootProject.coreCtx"
     implementation "androidx.appcompat:appcompat:$rootProject.appcompat"
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:$rootProject.swiperefreshlayout"
-    implementation 'androidx.fragment:fragment-ktx:1.4.0'
+    implementation "androidx.fragment:fragment-ktx:$rootProject.fragmentCtx"
 
     implementation "com.google.android.material:material:$rootProject.material"
 

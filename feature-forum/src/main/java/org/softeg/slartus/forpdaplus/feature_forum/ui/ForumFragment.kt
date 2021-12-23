@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import org.softeg.slartus.forpdaplus.core.LinkManager
+import org.softeg.slartus.forpdaplus.core.AppActions
 import org.softeg.slartus.forpdaplus.core.interfaces.IOnBackPressed
 import org.softeg.slartus.forpdaplus.core.interfaces.SearchSettingsListener
 import org.softeg.slartus.forpdaplus.core_lib.ui.adapter.FingerprintAdapter
@@ -30,7 +30,7 @@ import javax.inject.Inject
 class ForumFragment : BaseFragment<ForumFragmentBinding>(ForumFragmentBinding::inflate),
     IOnBackPressed, SearchSettingsListener {
     @Inject
-    lateinit var linkManager: LinkManager
+    lateinit var appActions: AppActions
 
     private val viewModel: ForumViewModel by lazy {
         val viewModel: ForumViewModel by viewModels()
@@ -113,7 +113,7 @@ class ForumFragment : BaseFragment<ForumFragmentBinding>(ForumFragmentBinding::i
                 Toast.makeText(requireContext(), event.resId, event.duration).show()
             }
             ForumViewModel.Event.MarkAsReadConfirmDialog -> showMarkAsReadConfirmDialog()
-            is ForumViewModel.Event.ShowUrlMenu -> linkManager.showUrlActions(
+            is ForumViewModel.Event.ShowUrlMenu -> appActions.showUrlActions(
                 requireContext(),
                 R.string.link,
                 event.url

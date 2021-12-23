@@ -277,6 +277,7 @@
     <string name="reputation">Репутация</string>
     <string name="all_forums">Все форумы</string>
     <string name="total">Всего</string>
+    <string name="qms_thread_total">всего: %d</string>
     <string name="source">Источник</string>
     <string name="link_to_post">Ссылка на сообщение</string>
     <string name="vote_request_sent">Запрос на изменение репутации сообщения отправлен</string>
@@ -296,12 +297,13 @@
     <string name="deleting_messages">Удаление сообщений</string>
     <string name="deleting_dialogs">Удаление диалогов</string>
     <string name="contacts">Контакты</string>
+    <string name="contact_deleted">Контакт удалён</string>
     <string name="getting_user_nick">Получение ника пользователя…</string>
     <string name="nick_received">Ник получен</string>
     <string name="error_getting_nick">Не удалось получить ник пользователя</string>
     <string name="ask_create_dialog" formatted="false">С пользователем %s нет диалогов. Создать?</string>
-    <string name="new_thread">Новая тема</string>
-    <string name="ask_deleting_dialogs" formatted="false">Вы действительно хотите удалить выбранные диалоги с пользователем %s?</string>
+    <string name="new_thread">Новый диалог</string>
+    <string name="ask_deleting_dialogs" formatted="false">Вы действительно хотите удалить выбранные диалоги (%d) с пользователем %s?</string>
     <string name="qms_title_new_thread">QMS:Новая тема</string>
     <string name="enter_nick">Укажите получателя</string>
     <string name="file_name">Имя файла</string>

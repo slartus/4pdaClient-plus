@@ -1,5 +1,7 @@
 package org.softeg.slartus.forpdaplus.fragments.topic;
 
+import static org.softeg.slartus.forpdaplus.utils.Utils.getS;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -14,7 +16,6 @@ import android.os.Handler;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,7 +25,6 @@ import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.JavascriptInterface;
-import android.webkit.RenderProcessGoneDetail;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -71,6 +71,7 @@ import org.softeg.slartus.forpdaplus.controls.imageview.ImgViewer;
 import org.softeg.slartus.forpdaplus.controls.quickpost.PostTask;
 import org.softeg.slartus.forpdaplus.controls.quickpost.QuickPostFragment;
 import org.softeg.slartus.forpdaplus.db.TopicsHistoryTable;
+import org.softeg.slartus.forpdaplus.fragments.ForumFragment;
 import org.softeg.slartus.forpdaplus.fragments.WebViewFragment;
 import org.softeg.slartus.forpdaplus.fragments.search.SearchSettingsDialogFragment;
 import org.softeg.slartus.forpdaplus.fragments.topic.editpost.EditPostFragment;
@@ -82,7 +83,6 @@ import org.softeg.slartus.forpdaplus.listfragments.TopicUtils;
 import org.softeg.slartus.forpdaplus.listfragments.TopicWritersListFragment;
 import org.softeg.slartus.forpdaplus.listfragments.TopicsListFragment;
 import org.softeg.slartus.forpdaplus.listfragments.next.UserReputationFragment;
-import org.softeg.slartus.forpdaplus.listfragments.next.forum.ForumFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.ListCore;
 import org.softeg.slartus.forpdaplus.listtemplates.NewsPagerBrickInfo;
@@ -106,8 +106,7 @@ import java.util.regex.Pattern;
 import io.paperdb.Paper;
 import ru.slartus.http.AppResponse;
 import ru.slartus.http.Http;
-
-import static org.softeg.slartus.forpdaplus.utils.Utils.getS;
+import timber.log.Timber;
 
 @SuppressWarnings("unused")
 public class ThemeFragment extends WebViewFragment implements BricksListDialogFragment.IBricksListDialogCaller, QuickPostFragment.PostSendListener {
@@ -239,7 +238,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 BrickInfo brickInfo = ListCore.getRegisteredBrick(Preferences.Lists.getLastSelectedList());
                 if (brickInfo == null)
                     brickInfo = new NewsPagerBrickInfo();
-                ((MainActivity)requireActivity()).selectItem(brickInfo);
+                ((MainActivity) requireActivity()).selectItem(brickInfo);
                 return true;
             }
             return false;
@@ -660,12 +659,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
     private void doSearch(String query) {
         if (TextUtils.isEmpty(query)) return;
-        if (Build.VERSION.SDK_INT >= 16) {
-            webView.findAllAsync(query);
-        } else {
-            //noinspection deprecation
-            webView.findAll(query);
-        }
+        webView.findAllAsync(query);
         try {
             @SuppressWarnings("JavaReflectionMemberAccess")
             Method m = WebView.class.getMethod("setFindIsUp", Boolean.TYPE);
@@ -677,12 +671,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
     private void closeSearch() {
         mHandler.post(() -> {
-            if (Build.VERSION.SDK_INT >= 16) {
-                webView.findAllAsync("");
-            } else {
-                //noinspection deprecation
-                webView.findAll("");
-            }
+            webView.findAllAsync("");
 
             try {
                 @SuppressWarnings("JavaReflectionMemberAccess")
@@ -835,7 +824,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
         CharSequence[] titles = new CharSequence[]{getS(R.string.blank_quote), getS(R.string.quote_from_buffer)};
         final CharSequence finalClipboardText = clipboardText;
-        new MaterialDialog.Builder(getContext())
+        new MaterialDialog.Builder(requireContext())
                 .title(R.string.quote)
                 .cancelable(true)
                 .items(titles)
@@ -1218,6 +1207,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
     @Override
     public void onAfterSendPost(@Nullable PostTask.PostResult postResult) {
+        if (postResult == null) return;
         if (postResult.Success) {
             hideMessagePanel();
 
@@ -1226,7 +1216,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             m_Topic.setLastUrl(m_LastUrl);
 
             if (postResult.TopicBody == null)
-                Log.e("ThemeActivity", "TopicBody is null");
+                Timber.w("TopicBody is null");
             addToHistory(postResult.TopicBody);
             try {
                 showBody(postResult.TopicBody);
@@ -1302,19 +1292,11 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
         @Override
         public void onReceivedError(WebView view, int errorCode, String description, String url) {
-            Log.d(TAG, "onReceivedError>");
             if (mUrl != null && !mLoadingError) {
-                Log.e(TAG, "onReceivedError: " + errorCode + ", " + description);
                 mLoadingError = true;
             } else {
                 mOnErrorUrl = url;
             }
-        }
-
-        @Override
-        public boolean onRenderProcessGone(WebView view, RenderProcessGoneDetail detail) {
-            Log.d(TAG, "onRenderProcessGone");
-            return super.onRenderProcessGone(view, detail);
         }
 
         @Override
@@ -1377,7 +1359,6 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
-            Log.d(TAG, "onPageStarted>");
             if (startsWith(url, mOnErrorUrl)) {
                 mUrl = url;
                 mLoadingError = true;
@@ -1392,13 +1373,12 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 view.postDelayed(mPageLoadingTimeoutHandlerTask, LOADING_ERROR_TIMEOUT);
                 mReference = new WeakReference<>(view);
             }
-            Log.d(TAG, "<onPageStarted");
         }
 
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-            Log.d(TAG, "onPageFinished>");
+
             if (startsWith(url, mUrl) && !mLoadingFinished) {
                 mLoadingFinished = true;
                 view.removeCallbacks(mPageLoadingTimeoutHandlerTask);
@@ -1409,8 +1389,6 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 mLoadingFinished = true;
             }
             view.clearHistory();
-            Log.d(TAG, "<onPageFinished");
-            //tryScrollToElement();
         }
 
         private boolean startsWith(String str, String prefix) {

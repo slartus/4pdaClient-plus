@@ -13,15 +13,13 @@ import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.softeg.slartus.forpdaplus.*
 import org.softeg.slartus.forpdaplus.R
 import org.softeg.slartus.forpdaplus.common.AppLog
 import org.softeg.slartus.forpdaplus.core.entities.UserInfo
+import org.softeg.slartus.forpdaplus.core.repositories.QmsCountRepository
 import org.softeg.slartus.forpdaplus.core.repositories.UserInfoRepository
 import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment
 import org.softeg.slartus.forpdaplus.listfragments.mentions.MentionsListFragment.Companion.newFragment
@@ -170,10 +168,12 @@ class UserInfoMenuFragment : Fragment() {
 
 @HiltViewModel
 class UserInfoMenuViewModel @Inject constructor(
-    private val userInfoRepository: UserInfoRepository
+    private val userInfoRepository: UserInfoRepository,
+    private val qmsCountRepository: QmsCountRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow<ViewState>(ViewState.Initialize)
     val uiState: StateFlow<ViewState> = _uiState
+
     private val errorHandler = CoroutineExceptionHandler { _, ex ->
         _uiState.value = ViewState.Error(ex)
     }
@@ -185,6 +185,14 @@ class UserInfoMenuViewModel @Inject constructor(
                     .distinctUntilChanged()
                     .collect {
                         _uiState.value = ViewState.Success(it)
+                    }
+            }
+            launch {
+                qmsCountRepository.count
+                    .drop(1)
+                    .distinctUntilChanged()
+                    .collect {
+                        userInfoRepository.setQmsCount(it)
                     }
             }
         }

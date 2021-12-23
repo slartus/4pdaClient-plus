@@ -10,6 +10,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import org.softeg.slartus.forpdaplus.core.AppActions
 import org.softeg.slartus.forpdaplus.core.ForumPreferences
 import org.softeg.slartus.forpdaplus.core.entities.Forum
 import org.softeg.slartus.forpdaplus.core.entities.SearchSettings
@@ -17,9 +18,10 @@ import org.softeg.slartus.forpdaplus.core.repositories.ForumRepository
 import org.softeg.slartus.forpdaplus.core.repositories.UserInfoRepository
 import org.softeg.slartus.forpdaplus.core_lib.ui.adapter.Item
 import org.softeg.slartus.forpdaplus.feature_forum.R
-import org.softeg.slartus.forpdaplus.feature_forum.di.ForumDependencies
 import org.softeg.slartus.forpdaplus.feature_forum.entities.ForumItem
-import org.softeg.slartus.forpdaplus.feature_forum.ui.fingerprints.*
+import org.softeg.slartus.forpdaplus.feature_forum.ui.fingerprints.CrumbItem
+import org.softeg.slartus.forpdaplus.feature_forum.ui.fingerprints.ForumDataItem
+import org.softeg.slartus.forpdaplus.feature_forum.ui.fingerprints.TopicsItemItem
 import javax.inject.Inject
 
 @HiltViewModel
@@ -28,7 +30,7 @@ class ForumViewModel @Inject constructor(
     private val userInfoRepository: UserInfoRepository,
     private val forumRepository: ForumRepository,
     private val forumPreferences: ForumPreferences,
-    private val forumDependencies: ForumDependencies
+    private val appActions: AppActions
 ) : ViewModel() {
     val showImages: Boolean = forumPreferences.showImages
     private val errorHandler = CoroutineExceptionHandler { _, ex ->
@@ -120,7 +122,7 @@ class ForumViewModel @Inject constructor(
 
     fun onSetForumStartingClick() {
         getCurrentForum()?.let { f ->
-            setStartForum(f.id, f.title)
+            setStartForum(f.id)
         }
     }
 
@@ -129,7 +131,7 @@ class ForumViewModel @Inject constructor(
         if (forum?.isHasForums == true || forumId == null)
             refreshDataState(forumId)
         else if (forum != null)
-            forumDependencies.showForumTopicsList(forum.id, forum.title)
+            appActions.showForumTopicsList(forum.id, forum.title)
     }
 
     fun onCrumbLongClick(forumId: String?) {
@@ -141,7 +143,7 @@ class ForumViewModel @Inject constructor(
         if (forum.isHasForums) {
             refreshDataState(forum.id)
         } else {
-            forumDependencies.showForumTopicsList(forum.id, forum.title)
+            appActions.showForumTopicsList(forum.id, forum.title)
         }
     }
 
@@ -224,8 +226,8 @@ class ForumViewModel @Inject constructor(
         )
     }
 
-    private fun setStartForum(id: String?, title: String?) {
-        forumPreferences.setStartForum(id, title)
+    private fun setStartForum(id: String?) {
+        forumPreferences.startForumId = id
         _events.value = Event.ShowToast(R.string.forum_setted_to_start)
     }
 
@@ -235,7 +237,7 @@ class ForumViewModel @Inject constructor(
 
     fun onTopicsClick(id: String?) {
         val forum = items.firstOrNull { it.id == id } ?: return
-        forumDependencies.showForumTopicsList(forum.id, forum.title)
+        appActions.showForumTopicsList(forum.id, forum.title)
     }
 
     sealed class UiState {

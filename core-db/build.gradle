@@ -33,6 +33,7 @@ android {
 }
 
 dependencies {
+    implementation project(':core')
     implementation "androidx.core:core-ktx:$rootProject.coreCtx"
 
     api "androidx.room:room-runtime:$rootProject.room" // api for access in AppDatabaseImpl

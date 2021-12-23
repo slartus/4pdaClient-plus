@@ -4,33 +4,32 @@ import android.content.SharedPreferences
 import org.softeg.slartus.forpdaplus.core.AppPreferences
 import org.softeg.slartus.forpdaplus.core.AppPreferences.Companion.LANGUAGE_DEFAULT
 import org.softeg.slartus.forpdaplus.core.ForumPreferences
+import org.softeg.slartus.forpdaplus.core.QmsPreferences
 import org.softeg.slartus.forpdaplus.core_lib.utils.appPreference
 import org.softeg.slartus.forpdaplus.listtemplates.ForumBrickInfo
 import javax.inject.Inject
 
-class AppPreferencesImpl @Inject constructor(
-    preferences: SharedPreferences,
-    forumPreferences: ForumPreferences
-) : AppPreferences {
+class AppPreferencesImpl @Inject constructor(preferences: SharedPreferences) : AppPreferences {
     override var language: String by appPreference(preferences, "lang", LANGUAGE_DEFAULT)
-    override val forum: ForumPreferences = forumPreferences
+    override val accentColor: String by appPreference(preferences, "mainAccentColor", "pink")
 }
 
-class ForumPreferencesImpl @Inject constructor(private val preferences: SharedPreferences) :
+class ForumPreferencesImpl @Inject constructor(preferences: SharedPreferences) :
     ForumPreferences {
-    override fun setStartForum(id: String?, title: String?) {
-        preferences.edit().apply {
-            putString(ForumBrickInfo.NAME + ".start_forum_id", id)
-            putString(ForumBrickInfo.NAME + ".start_forum_title", title)
-        }.apply()
-    }
-
     override val showImages: Boolean by appPreference(preferences, "forum.list.show_images", true)
 
-    override val startForumId: String? by appPreference(
+    override var startForumId: String? by appPreference(
         preferences,
         ForumBrickInfo.NAME + ".start_forum_id",
         null
     )
+}
 
+class QmsPreferencesImpl @Inject constructor(preferences: SharedPreferences) :
+    QmsPreferences {
+    override val squareAvatars: Boolean by appPreference(preferences, "isSquareAvarars", true)
+
+    // TODO: переделать без использования Preferences
+    override val showAvatars: Boolean
+        get() = Preferences.Topic.isShowAvatars
 }

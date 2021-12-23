@@ -28,7 +28,6 @@ import org.jsoup.nodes.Element
 import org.softeg.slartus.forpdacommon.setAllOnClickListener
 import org.softeg.slartus.forpdaplus.classes.FastBlur
 import org.softeg.slartus.forpdaplus.classes.common.StringUtils
-import org.softeg.slartus.forpdaplus.common.AppLog
 import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment
 import org.softeg.slartus.forpdaplus.listtemplates.QmsContactsBrickInfo
 import org.softeg.slartus.forpdaplus.prefs.Preferences
@@ -189,7 +188,7 @@ class ShortUserInfo internal constructor(activity: MainActivity, private val vie
 
                 el = doc.selectFirst("div.statistic-box")
                 if (el != null && el.children().size > 0) {
-                    val repa = el.child(1).selectFirst("ul > li > div.area").text()
+                    val repa = el.child(1).selectFirst("ul > li > div.area")?.text()
                     if (repa != null) {
                         reputation = repa
                     }

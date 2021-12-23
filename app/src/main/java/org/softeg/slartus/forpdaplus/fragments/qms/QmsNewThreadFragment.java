@@ -3,8 +3,6 @@ package org.softeg.slartus.forpdaplus.fragments.qms;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -18,6 +16,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
@@ -64,7 +65,7 @@ public class QmsNewThreadFragment extends GeneralFragment {
         return fragment;
     }
 
-    public static void showUserNewThread(Context activity, String userId, String userNick) {
+    public static void showUserNewThread(String userId, String userNick) {
         Bundle args = new Bundle();
         args.putString(USER_ID_KEY, userId);
         args.putString(USER_NICK_KEY, userNick);

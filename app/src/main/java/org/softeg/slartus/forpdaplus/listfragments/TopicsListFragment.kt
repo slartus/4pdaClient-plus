@@ -13,7 +13,6 @@ import android.widget.AdapterView.AdapterContextMenuInfo
 import android.widget.BaseAdapter
 import android.widget.Toast
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.softeg.slartus.forpdaapi.*
@@ -29,10 +28,11 @@ import org.softeg.slartus.forpdaplus.classes.common.ExtUrl
 import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic
 import org.softeg.slartus.forpdaplus.common.AppLog
 import org.softeg.slartus.forpdaplus.controls.ListViewLoadMoreFooter
+import org.softeg.slartus.forpdaplus.core_lib.coroutines.AppIOScope
+import org.softeg.slartus.forpdaplus.fragments.ForumFragment.Companion.showActivity
 import org.softeg.slartus.forpdaplus.fragments.topic.editpost.EditPostFragment.Companion.newPostWithAttach
 import org.softeg.slartus.forpdaplus.listfragments.TopicAttachmentListFragment.Companion.showActivity
 import org.softeg.slartus.forpdaplus.listfragments.adapters.SortedListAdapter
-import org.softeg.slartus.forpdaplus.listfragments.next.forum.ForumFragment.Companion.showActivity
 import org.softeg.slartus.forpdaplus.listtemplates.FavoritesBrickInfo
 import org.softeg.slartus.forpdaplus.listtemplates.NotesBrickInfo
 import org.softeg.slartus.forpdaplus.prefs.Preferences
@@ -48,9 +48,6 @@ import java.util.*
 import kotlin.math.max
 import kotlin.math.min
 
-/*
-* Created by slartus on 20.02.14.
-*/
 abstract class TopicsListFragment : BaseTaskListFragment() {
     @JvmField
     protected var mListInfo = ListInfo()
@@ -153,14 +150,19 @@ abstract class TopicsListFragment : BaseTaskListFragment() {
         topic.inProgress(true)
         adapter?.notifyDataSetChanged()
         InternetConnection.instance.loadDataOnInternetConnected({
-            GlobalScope.launch(Dispatchers.IO) {
+            AppIOScope().launch {
                 try {
                     val result = actionAsync()
 
                     withContext(Dispatchers.Main) {
-                        Toast.makeText(App.getContext(),
-                                "\"" + topic.title.substring(0, min(10, topic.title.length - 1)) + "...\": " + result,
-                                Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            App.getContext(),
+                            "\"" + topic.title.substring(
+                                0,
+                                min(10, topic.title.length - 1)
+                            ) + "...\": " + result,
+                            Toast.LENGTH_SHORT
+                        ).show()
                         topic.inProgress(false)
                         onSuccessAction?.let {
                             it()

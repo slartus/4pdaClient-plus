@@ -2,7 +2,6 @@ package org.softeg.slartus.forpdaapi
 
 import android.content.SharedPreferences
 import android.net.Uri
-import android.text.Html
 import android.text.TextUtils
 import android.util.Log
 import org.jsoup.Jsoup
@@ -13,10 +12,8 @@ import org.softeg.slartus.forpdacommon.UrlExtensions
 import org.softeg.slartus.hosthelper.HostHelper
 import org.w3c.dom.Element
 import org.xml.sax.InputSource
-import java.io.IOException
 import java.io.StringReader
 import java.util.*
-import java.util.regex.Matcher
 import java.util.regex.Pattern
 import javax.xml.parsers.DocumentBuilderFactory
 import kotlin.math.ceil
@@ -47,7 +44,7 @@ object NewsApi {
                 ?: doc.selectFirst("div.container:has(meta[itemprop=datePublished])")
                 ?: doc.selectFirst("div.container")
         if (bodyElement != null) {
-            newsPageBody = bodyElement.parent().html()
+            newsPageBody = bodyElement.parent()?.html() ?: ""
         } else {
             var m = PatternExtensions.compile("<article[^>]*>([\\s\\S]*?)</article>").matcher(newsPageBody)
             if (m.find()) newsPageBody = m.group(1) else {

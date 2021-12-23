@@ -267,6 +267,7 @@
     <string name="look">Look</string>
     <string name="reputation">Reputation</string>
     <string name="total">Total</string>
+    <string name="qms_thread_total">total: %d</string>
     <string name="source">Source</string>
     <string name="link_to_post">Link to post</string>
     <string name="vote_request_sent">Request to change the reputation of messages sent</string>
@@ -286,11 +287,12 @@
     <string name="deleting_messages">Deleting messages</string>
     <string name="deleting_dialogs">Deleting dialog</string>
     <string name="contacts">Contacts</string>
+    <string name="contact_deleted">The contact has been deleted</string>
     <string name="getting_user_nick">Getting username…</string>
     <string name="nick_received">Nick received</string>
     <string name="error_getting_nick">Error getting username</string>
     <string name="new_thread">New thread</string>
-    <string name="ask_deleting_dialogs" formatted="false">Are you sure you want to remove the selected dialogues with the user %s?</string>
+    <string name="ask_deleting_dialogs" formatted="false">Are you sure you want to remove the selected dialogues (%d) with the user %s?</string>
     <string name="qms_title_new_thread">QMS: New topic</string>
     <string name="enter_nick">Enter nick</string>
     <string name="file_name">File name</string>
@@ -361,6 +363,8 @@
     <string name="lang_pref_summary">Need to restart application</string>
     <string name="lang_changed">The application language has been changed, restart the application now?</string>
     <string name="file_not_support_forum">This file type is not supported by forum.</string>
+    <string name="SearchResultTitles_topics">Topics</string>
+    <string name="SearchResultTitles_posts">Posts</string>
 
     <string name="sort">Sort</string>
     <string name="sort_like_on_website">Like on website</string>
