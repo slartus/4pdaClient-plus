@@ -28,8 +28,4 @@ class QmsContactParser @Inject constructor(private val parser: Parser<QmsContact
         _data.emit(result)
         return result
     }
-
-    companion object {
-
-    }
 }

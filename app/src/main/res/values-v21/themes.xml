@@ -95,47 +95,47 @@
     </style>
 
 
-    <style name="DialogPinkLight" parent="Theme.AppCompat.Light.Dialog">
+    <style name="DialogPinkLight" parent="Theme.MaterialComponents.Light.Dialog">
         <item name="colorAccent">@color/accentPink</item>
         <item name="android:background">@color/dialog_background_light</item>
     </style>
 
-    <style name="DialogBlueLight" parent="Theme.AppCompat.Light.Dialog">
+    <style name="DialogBlueLight" parent="Theme.MaterialComponents.Light.Dialog">
         <item name="colorAccent">@color/accentBlue</item>
         <item name="android:background">@color/dialog_background_light</item>
     </style>
 
-    <style name="DialogGrayLight" parent="Theme.AppCompat.Light.Dialog">
+    <style name="DialogGrayLight" parent="Theme.MaterialComponents.Light.Dialog">
         <item name="colorAccent">@color/accentGray</item>
         <item name="android:background">@color/dialog_background_light</item>
     </style>
 
-    <style name="DialogPinkDark" parent="Theme.AppCompat.Dialog">
+    <style name="DialogPinkDark" parent="Theme.MaterialComponents.Dialog">
         <item name="colorAccent">@color/accentPink</item>
         <item name="android:background">@color/dialog_background_dark</item>
     </style>
 
-    <style name="DialogBlueDark" parent="Theme.AppCompat.Dialog">
+    <style name="DialogBlueDark" parent="Theme.MaterialComponents.Dialog">
         <item name="colorAccent">@color/accentBlue</item>
         <item name="android:background">@color/dialog_background_dark</item>
     </style>
 
-    <style name="DialogGrayDark" parent="Theme.AppCompat.Dialog">
+    <style name="DialogGrayDark" parent="Theme.MaterialComponents.Dialog">
         <item name="colorAccent">@color/accentGray</item>
         <item name="android:background">@color/dialog_background_dark</item>
     </style>
 
-    <style name="DialogPinkBlack" parent="Theme.AppCompat.Dialog">
+    <style name="DialogPinkBlack" parent="Theme.MaterialComponents.Dialog">
         <item name="colorAccent">@color/accentPink</item>
         <item name="android:background">@color/dialog_background_black</item>
     </style>
 
-    <style name="DialogBlueBlack" parent="Theme.AppCompat.Dialog">
+    <style name="DialogBlueBlack" parent="Theme.MaterialComponents.Dialog">
         <item name="colorAccent">@color/accentBlue</item>
         <item name="android:background">@color/dialog_background_black</item>
     </style>
 
-    <style name="DialogGrayBlack" parent="Theme.AppCompat.Dialog">
+    <style name="DialogGrayBlack" parent="Theme.MaterialComponents.Dialog">
         <item name="colorAccent">@color/accentGray</item>
         <item name="android:background">@color/dialog_background_black</item>
     </style>

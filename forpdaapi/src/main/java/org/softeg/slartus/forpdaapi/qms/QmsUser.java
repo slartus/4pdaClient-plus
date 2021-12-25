@@ -15,22 +15,12 @@ public class QmsUser implements IListItem, Serializable {
     private CharSequence id;
     @Column(name = "nick")
     private CharSequence nick;
-    @Column(name = "avatar_url")
-    private CharSequence avatarUrl;
     @Column(name = "new_messages_count")
     private CharSequence newMessagesCount = "";
     @Column(name = "messages_count")
-    private CharSequence messagesCount = "";
+    private final CharSequence messagesCount = "";
 
     private CharSequence lastThemeId = "";
-
-    public CharSequence getMessagesCount() {
-        return messagesCount;
-    }
-
-    public void setMessagesCount(String messagesCount) {
-        this.messagesCount = messagesCount;
-    }
 
 
     public CharSequence getNewMessagesCount() {
@@ -97,12 +87,7 @@ public class QmsUser implements IListItem, Serializable {
         this.nick = nick;
     }
 
-    public String getAvatarUrl() {
-        return avatarUrl == null ? null : avatarUrl.toString();
-    }
-
-    public void setAvatarUrl(CharSequence avatarUrl) {
-        this.avatarUrl = avatarUrl;
+    public void setAvatarUrl() {
     }
 
     public String getLastThemeId() {

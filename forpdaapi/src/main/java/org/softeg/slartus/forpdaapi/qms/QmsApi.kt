@@ -249,7 +249,7 @@ object QmsApi {
             if (avatar.substring(0, 2) == "//") {
                 avatar = "https:$avatar"
             }
-            qmsUser.setAvatarUrl(avatar)
+            qmsUser.setAvatarUrl()
             qmsUser.nick = m.group(4).fromHtml().toString().trim { it <= ' ' }
             count = m.group(2).trim { it <= ' ' }
             if (count != "")

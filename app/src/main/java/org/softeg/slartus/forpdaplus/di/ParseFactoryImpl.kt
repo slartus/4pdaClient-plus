@@ -28,7 +28,7 @@ class ParseFactoryImpl private constructor(private val parsers: List<Parser<*>>)
         var result: T? = null
         withContext(Dispatchers.Default) {
             parsers
-                .filter { it.isOwn(url) }
+                .filter { it.isOwn(url, args) }
                 .forEach { parser ->
                     launch {
                         val r = parser.parse(body, args)

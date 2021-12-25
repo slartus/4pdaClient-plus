@@ -9,19 +9,20 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import org.softeg.slartus.forpdaplus.core.AppActions
-import org.softeg.slartus.forpdaplus.core.AppPreferences
-import org.softeg.slartus.forpdaplus.core.ForumPreferences
-import org.softeg.slartus.forpdaplus.core.QmsPreferences
+import org.softeg.slartus.forpdaplus.core.*
 import org.softeg.slartus.forpdaplus.core.entities.QmsContact
 import org.softeg.slartus.forpdaplus.core.entities.QmsContacts
 import org.softeg.slartus.forpdaplus.core.entities.QmsThreads
+import org.softeg.slartus.forpdaplus.core.entities.UserProfile
 import org.softeg.slartus.forpdaplus.core.interfaces.ParseFactory
 import org.softeg.slartus.forpdaplus.core.interfaces.Parser
 import org.softeg.slartus.forpdaplus.core.repositories.UserInfoRepository
 import org.softeg.slartus.forpdaplus.core.services.AppHttpClient
+import org.softeg.slartus.forpdaplus.domain_qms.di.QmsCountParserInt
+import org.softeg.slartus.forpdaplus.domain_qms.di.QmsNewThreadParserString
 import org.softeg.slartus.forpdaplus.prefs.AppPreferencesImpl
 import org.softeg.slartus.forpdaplus.prefs.ForumPreferencesImpl
+import org.softeg.slartus.forpdaplus.prefs.ListPreferencesImpl
 import org.softeg.slartus.forpdaplus.prefs.QmsPreferencesImpl
 import org.softeg.slartus.forpdaplus.repositories.UserInfoRepositoryImpl
 import javax.inject.Singleton
@@ -43,14 +44,18 @@ class AppModule {
     @Singleton
     fun provideParseFactoryImpl(
         qmsContactsParser: Parser<QmsContacts>,
-        qmsCountParser: Parser<Int>,
+        @QmsCountParserInt qmsCountParser: Parser<Int>,
         qmsContactParser: Parser<QmsContact>,
         qmsThreadsParser: Parser<QmsThreads>,
+        profileParser: Parser<UserProfile>,
+        @QmsNewThreadParserString qmsChatParser: Parser<String>,
     ): ParseFactory =
         ParseFactoryImpl.Builder()
+            .add(profileParser)
+            .add(qmsChatParser)
             .add(qmsContactsParser)
-            .add(qmsCountParser)
             .add(qmsContactParser)
+            .add(qmsCountParser)
             .add(qmsThreadsParser)
             .build()
 }
@@ -65,6 +70,16 @@ interface ManagersModule {
 
     @Binds
     @Singleton
+    fun bindAppHttpClientImpl(appHttpClientImpl: AppHttpClientImpl): AppHttpClient
+}
+
+@Suppress("unused")
+@Module
+@InstallIn(SingletonComponent::class)
+interface PreferencesModule {
+
+    @Binds
+    @Singleton
     fun bindAppPreferencesImpl(appPreferencesImpl: AppPreferencesImpl): AppPreferences
 
     @Binds
@@ -73,9 +88,9 @@ interface ManagersModule {
 
     @Binds
     @Singleton
-    fun bindQmsPreferencesImpl(qmsPreferencesImpl: QmsPreferencesImpl): QmsPreferences
+    fun bindListPreferencesImpl(listPreferencesImpl: ListPreferencesImpl): ListPreferences
 
     @Binds
     @Singleton
-    fun bindAppHttpClientImpl(appHttpClientImpl: AppHttpClientImpl): AppHttpClient
+    fun bindQmsPreferencesImpl(qmsPreferencesImpl: QmsPreferencesImpl): QmsPreferences
 }

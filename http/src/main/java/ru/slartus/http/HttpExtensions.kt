@@ -16,26 +16,20 @@ fun String.toMediaTypeOrNull(): MediaType? {
 
 fun String.toMediaType(): MediaType = MediaType.get(this)
 
-var Response.body: ResponseBody?
+val Response.body: ResponseBody?
     get() = this.body()
-    set(value) {}
 
-var Response.request: Request
+val Response.request: Request
     get() = this.request()
-    set(value) {}
 
-var Response.headers: Headers
+val Response.headers: Headers
     get() = this.headers()
-    set(value) {}
 
-var Request.url: HttpUrl
+val Request.url: HttpUrl
     get() = this.url()
-    set(value) {}
 
-var Request.body: RequestBody?
+val Request.body: RequestBody?
     get() = this.body()
-    set(value) {}
 
-var Request.headers: Headers
+val Request.headers: Headers
     get() = this.headers()
-    set(value) {}

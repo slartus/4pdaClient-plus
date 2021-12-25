@@ -138,9 +138,11 @@ dependencies {
     implementation project(":core-db")
     implementation project(":domain-forum")
     implementation project(":domain-qms")
+    implementation project(":domain-user-profile")
     implementation project(":feature-forum")
     implementation project(":feature-qms-contact-threads")
     implementation project(":feature-qms-contacts")
+    implementation project(":feature-qms-new-thread")
 
     implementation "androidx.appcompat:appcompat:$rootProject.appcompat"
     implementation 'androidx.cardview:cardview:1.0.0'

@@ -1,10 +1,14 @@
 package org.softeg.slartus.forpdaplus.feature_forum.ui.fingerprints
 
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
+import coil.ImageLoader
+import coil.decode.GifDecoder
+import coil.decode.ImageDecoderDecoder
 import coil.load
 
 import org.softeg.slartus.forpdaplus.core_lib.ui.adapter.BaseViewHolder
@@ -54,6 +58,17 @@ class ForumDataViewHolder(
     private val onLongClickListener: (view: View?, item: ForumDataItem) -> Boolean
 ) :
     BaseViewHolder<LayoutForumBinding, ForumDataItem>(binding) {
+
+    val imageLoader = ImageLoader.Builder(itemView.context)
+        .componentRegistry {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                add(ImageDecoderDecoder(itemView.context))
+            } else {
+                add(GifDecoder())
+            }
+        }
+        .build()
+
     init {
         binding.iconImageView.isVisible = showImages
         itemView.setOnClickListener { v -> onClickListener(v, item) }
@@ -68,7 +83,7 @@ class ForumDataViewHolder(
             descriptionTextView.text = item.description
             descriptionTextView.isVisible = !item.description.isNullOrEmpty()
             if (iconImageView.isVisible && !item.iconUrl.isNullOrEmpty()) {
-                iconImageView.load(item.iconUrl)
+                iconImageView.load(item.iconUrl, imageLoader)
             }
         }
     }

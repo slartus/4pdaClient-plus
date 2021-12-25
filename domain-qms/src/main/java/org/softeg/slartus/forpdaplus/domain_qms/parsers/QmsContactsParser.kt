@@ -21,7 +21,7 @@ class QmsContactsParser @Inject constructor() : Parser<QmsContacts> {
 
     override suspend fun parse(page: String, args: Bundle?): QmsContacts {
         val res = mutableListOf<QmsContact>()
-        val m = QmsContactsPattern.matcher(page)
+        val m = qmsContactsPattern.matcher(page)
 
         while (m.find()) {
             val id = m.group(1) ?: continue
@@ -47,22 +47,22 @@ class QmsContactsParser @Inject constructor() : Parser<QmsContacts> {
     }
 
     override fun isOwn(url: String, args: Bundle?): Boolean {
-        return UrlActPattern.matcher(url).find() && UrlActionPattern.matcher(url).find()
+        return urlActPattern.matcher(url).find() && urlActionPattern.matcher(url).find()
     }
 
     companion object {
-        private val QmsContactsPattern by lazy {
+        private val qmsContactsPattern by lazy {
             Pattern.compile(
                 "<a class=\"list-group-item[^>]*=(\\d*)\">[^<]*<div class=\"bage\">([^<]*)[\\s\\S]*?src=\"([^\"]*)\" title=\"([^\"]*)\"",
                 Pattern.CASE_INSENSITIVE
             )
         }
 
-        private val UrlActPattern by lazy {
+        private val urlActPattern by lazy {
             Pattern.compile("act=qms-xhr", Pattern.CASE_INSENSITIVE)
         }
 
-        private val UrlActionPattern by lazy {
+        private val urlActionPattern by lazy {
             Pattern.compile("action=userlist", Pattern.CASE_INSENSITIVE)
         }
     }

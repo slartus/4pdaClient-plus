@@ -1,7 +1,5 @@
 package org.softeg.slartus.forpdaplus.tabs
 
-import java.util.*
-
 class TabsManager {
     private object Holder {
         val INSTANCE = TabsManager()
@@ -42,9 +40,9 @@ class TabsManager {
         currentFragmentTag = s
     }
 
-    private val mTabItems: List<TabItem> = ArrayList()
+    private val mTabItems = mutableListOf<TabItem>()
 
-    fun getTabItems(): List<TabItem> {
+    fun getTabItems(): MutableList<TabItem> {
         return mTabItems
     }
 
@@ -59,7 +57,7 @@ class TabsManager {
         return false
     }
 
-    fun isContainsByUrl(url: String): Boolean {
+    fun isContainsByUrl(url: String?): Boolean {
         for (item in getTabItems()) if (item.url == url) return true
         return false
     }

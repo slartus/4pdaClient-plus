@@ -6,16 +6,17 @@ import org.softeg.slartus.forpdaplus.core.interfaces.Parser
 import org.softeg.slartus.forpdaplus.core.repositories.QmsCountRepository
 import org.softeg.slartus.forpdaplus.core.services.QmsService
 import org.softeg.slartus.forpdaplus.core_lib.coroutines.AppIOScope
+import org.softeg.slartus.forpdaplus.domain_qms.di.QmsCountParserInt
 import javax.inject.Inject
 
 class QmsCountRepositoryImpl @Inject constructor(
     private val qmsService: QmsService,
-    private val qmsCountParser: Parser<Int>
+    @QmsCountParserInt private val qmsCountParser: Parser<Int>
 ) :
     QmsCountRepository {
 
-    private val _count = MutableStateFlow(0)
-    override val count: Flow<Int>
+    private val _count = MutableStateFlow<Int?>(null)
+    override val count: Flow<Int?>
         get() = _count.asStateFlow()
 
     init {

@@ -1,10 +1,15 @@
 package org.softeg.slartus.forpdaplus.feature_qms_contacts.ui.fingerprints
 
+import android.os.Build
+import android.os.Build.VERSION.SDK_INT
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
+import coil.ImageLoader
+import coil.decode.GifDecoder
+import coil.decode.ImageDecoderDecoder
 import coil.load
 import coil.transform.CircleCropTransformation
 import coil.transform.Transformation
@@ -62,6 +67,16 @@ class QmsContactViewHolder(
     private val avatarTransformations: List<Transformation> =
         if (squareAvatars) emptyList() else listOf(CircleCropTransformation())
 
+    val imageLoader = ImageLoader.Builder(itemView.context)
+        .componentRegistry {
+            if (SDK_INT >= Build.VERSION_CODES.P) {
+                add(ImageDecoderDecoder(itemView.context))
+            } else {
+                add(GifDecoder())
+            }
+        }
+        .build()
+
     init {
         itemView.setOnClickListener { v -> onClickListener(v, item) }
         binding.avatarImageView.isVisible = showAvatars
@@ -72,7 +87,7 @@ class QmsContactViewHolder(
 
         with(binding) {
             if (showAvatars) {
-                avatarImageView.load(item.avatarUrl) {
+                avatarImageView.load(item.avatarUrl, imageLoader) {
                     transformations(avatarTransformations)
                 }
             }

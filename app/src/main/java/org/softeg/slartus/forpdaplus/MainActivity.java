@@ -41,9 +41,10 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.navigation.NavigationView;
 
 import org.softeg.slartus.forpdaapi.search.SearchSettings;
-import org.softeg.slartus.forpdacommon.ExtPreferences;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.common.SearchSettingsMapperKt;
+import org.softeg.slartus.forpdaplus.core.AppPreferences;
+import org.softeg.slartus.forpdaplus.core.ListPreferences;
 import org.softeg.slartus.forpdaplus.core.interfaces.SearchSettingsListener;
 import org.softeg.slartus.forpdaplus.fragments.GeneralFragment;
 import org.softeg.slartus.forpdaplus.fragments.UserInfoMenuFragment;
@@ -66,14 +67,20 @@ import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import dagger.hilt.android.AndroidEntryPoint;
 import timber.log.Timber;
 
 @AndroidEntryPoint
 public class MainActivity extends BaseActivity implements BricksListDialogFragment.IBricksListDialogCaller,
         MainDrawerMenu.SelectItemListener, TabDrawerMenu.SelectItemListener {
-    // test commit to beta
-    public static final int REQUEST_WRITE_STORAGE = 112;
+
+    @Inject
+    AppPreferences appPreferences;
+    @Inject
+    ListPreferences listPreferences;
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -90,13 +97,11 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
     private final Handler mHandler = new Handler();
 
     private MainDrawerMenu mMainDrawerMenu;
-    private static TabDrawerMenu mTabDraweMenu;
+
     public Toolbar toolbar;
     boolean top;
     int lastTheme;
-    private static TabItem tabOnIntent = null;
-    private static String tabTagForRemove = null;
-    private static boolean activityPaused = false;
+
     private View toolbarShadow;
     private AppBarLayout appBarLayout;
     private RelativeLayout statusBar;
@@ -125,10 +130,6 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
     };
 
 
-    public static SearchSettings searchSettings;
-
-
-    private static final int MSG_RECREATE = 1337;
     Handler handler = new Handler(msg -> {
         if (msg.what == MSG_RECREATE)
             recreate();
@@ -162,7 +163,9 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
         setTheme(AppTheme.getThemeStyleResID());
         super.onCreate(saveInstance);
         Timber.plant(timberTree);
-        loadPreferences(App.getInstance().getPreferences());
+
+        setRequestedOrientation(appPreferences.getScreenOrientation());
+
         if (shortUserInfo != null)
             shortUserInfo.setMActivity(new WeakReference<>(this));
         if (saveInstance != null) {
@@ -202,7 +205,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
             }
 
             setSupportActionBar(toolbar);
-            if (App.getInstance().getPreferences().getBoolean("titleMarquee", false)) {
+            if (appPreferences.getTitleMarquee()) {
                 Field field = Toolbar.class.getDeclaredField("mTitleTextView");
                 field.setAccessible(true);
                 Object value = field.get(toolbar);
@@ -251,7 +254,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
                 leftDrawer.setPadding(0, (int) (25 * scale + 0.5f), 0, (int) (48 * scale + 0.5f));
             }
 
-            mTabDraweMenu = new TabDrawerMenu(this, this);
+            mTabDrawerMenu = new TabDrawerMenu(this, this);
             mMainDrawerMenu = new MainDrawerMenu(this, this);
 
             searchSettings = SearchSettingsDialogFragment.createDefaultSearchSettings();
@@ -393,9 +396,9 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
 
         mMainDrawerMenu.close();
 
-        if (mTabDraweMenu == null)
-            mTabDraweMenu = new TabDrawerMenu(this, this);
-        mTabDraweMenu.close();
+        if (mTabDrawerMenu == null)
+            mTabDrawerMenu = new TabDrawerMenu(this, this);
+        mTabDrawerMenu.close();
 
         if (!top)
             shortUserInfo = new ShortUserInfo(this, mMainDrawerMenu.getNavigationView().getHeaderView(0));
@@ -467,8 +470,8 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
     }
 
     private void selectFragment(final String title, final String tag, final Fragment fragment) {
-        if (mTabDraweMenu != null) {
-            mTabDraweMenu.close();
+        if (mTabDrawerMenu != null) {
+            mTabDrawerMenu.close();
             notifyTabAdapter();
         }
         if (mMainDrawerMenu != null) {
@@ -496,7 +499,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
                     transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).show(fragment);
                 } else {
                     showFragment(transaction, tag);
-                    if (Preferences.Lists.isRefreshOnTab())
+                    if (listPreferences.getRefreshListOnTab())
                         handler.postDelayed(() -> ((IBrickFragment) getSupportFragmentManager().findFragmentByTag(tag)).loadData(true), 300);
                 }
             }
@@ -573,14 +576,11 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
         hack = false;
     }
 
-    public static SharedPreferences getPreferences() {
-        return App.getInstance().getPreferences();
-    }
 
     public void notifyTabAdapter() {
-        if (mTabDraweMenu != null)
+        if (mTabDrawerMenu != null)
             if (TabDrawerMenu.adapter != null)
-                mTabDraweMenu.notifyDataSetChanged();
+                mTabDrawerMenu.notifyDataSetChanged();
     }
 
     private String lang = null;
@@ -589,9 +589,9 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
     public void onResume() {
         super.onResume();
         if (lang == null) {
-            lang = getPreferences().getString("lang", "default");
+            lang = appPreferences.getLanguage();
         }
-        if (!getPreferences().getString("lang", "default").equals(lang)) {
+        if (!appPreferences.getLanguage().equals(lang)) {
             new AlertDialog.Builder(getContext())
                     .setMessage(R.string.lang_changed)
                     .setPositiveButton(R.string.yes, (dialog, which) -> {
@@ -663,39 +663,6 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
     }
 
 
-    public static void addTab(String url, Fragment fragment) {
-        addTab("ForPDA", url, fragment);
-    }
-
-    public static void addTab(String title, String url, Fragment fragment) {
-        if (activityPaused | mTabDraweMenu == null) {
-            tabOnIntent = new TabItem(title, url, tabPrefix + TabsManager.getInstance().getTabIterator(), TabsManager.getInstance().getCurrentFragmentTag(), fragment);
-        } else {
-            addTabToList(title, url, tabPrefix + TabsManager.getInstance().getTabIterator(), fragment, true);
-        }
-        if (!TabsManager.getInstance().isContainsByUrl(url)) {
-            String newTag = tabPrefix + (TabsManager.getInstance().getTabIterator() - 1);
-            TabsManager.getInstance().setCurrentFragmentTag(newTag);
-        }
-    }
-
-    private static void addTabToList(String name, String url, String tag, Fragment fragment, boolean select) {
-        TabItem item = null;
-        if (TabsManager.getInstance().isContainsByUrl(url)) {
-            if (select) item = TabsManager.getInstance().getTabByUrl(url);
-        } else if (!TabsManager.getInstance().isContainsByTag(tag)) {
-            item = new TabItem(name, url, tag, TabsManager.getInstance().getCurrentFragmentTag(), fragment);
-            ((GeneralFragment) fragment).setThisTab(item);
-            TabsManager.getInstance().getTabItems().add(item);
-            TabsManager.getInstance().plusTabIterator();
-            mTabDraweMenu.refreshAdapter();
-        } else {
-            if (select) item = TabsManager.getInstance().getTabByTag(tag);
-        }
-
-        if (select) mTabDraweMenu.selectTab(item);
-    }
-
     public void tryRemoveTab(String tag) {
         tryRemoveTab(tag, false);
     }
@@ -712,14 +679,14 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
     }
 
     private void removeTab(String tag) {
-        if (activityPaused | mTabDraweMenu == null) {
+        if (activityPaused | mTabDrawerMenu == null) {
             tabTagForRemove = tag;
         } else {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             hideFragments(transaction, false);
             transaction.remove(getSupportFragmentManager().findFragmentByTag(tag));
             transaction.commitAllowingStateLoss();
-            mTabDraweMenu.removeTab(tag);
+            mTabDrawerMenu.removeTab(tag);
         }
     }
 
@@ -733,22 +700,6 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
         transaction.commitAllowingStateLoss();
     }
 
-    /**
-     * Конец этого ужаса
-     */
-
-
-    public static void showListFragment(String brickName, Bundle extras) {
-        showListFragment("", brickName, extras);
-    }
-
-    public static void showListFragment(String prefix, String brickName, Bundle extras) {
-        final BrickInfo listTemplate = ListCore.getRegisteredBrick(brickName);
-        assert listTemplate != null;
-        Fragment fragment = listTemplate.createFragment();
-        fragment.setArguments(extras);
-        addTab(listTemplate.getTitle(), prefix + brickName, fragment);
-    }
 
     private Boolean m_ExitWarned = false;
 
@@ -778,8 +729,8 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
                 mMainDrawerMenu.close();
                 return;
             }
-            if (mTabDraweMenu.isOpen()) {
-                mTabDraweMenu.close();
+            if (mTabDrawerMenu.isOpen()) {
+                mTabDrawerMenu.close();
                 return;
             }
             Fragment currentFragment = getSupportFragmentManager().findFragmentByTag(TabsManager.getInstance().getCurrentFragmentTag());
@@ -816,7 +767,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
         int id = item.getItemId();
         switch (id) {
             case R.id.tabs_item:
-                mTabDraweMenu.toggleOpenState();
+                mTabDrawerMenu.toggleOpenState();
                 return true;
             case R.id.search_item:
                 SearchSettingsDialogFragment.showSearchSettingsDialog(MainActivity.this, getSearchSettings());
@@ -877,6 +828,62 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
         return null;
     }
 
+    public static final int REQUEST_WRITE_STORAGE = 112;
+    private static TabDrawerMenu mTabDrawerMenu;
+    private static TabItem tabOnIntent = null;
+    private static String tabTagForRemove = null;
+    private static boolean activityPaused = false;
+    public static SearchSettings searchSettings;
+    private static final int MSG_RECREATE = 1337;
+
+    public static SharedPreferences getPreferences() {
+        return App.getInstance().getPreferences();
+    }
+
+    public static void addTab(String url, Fragment fragment) {
+        addTab("ForPDA", url, fragment);
+    }
+
+    public static void addTab(String title, String url, Fragment fragment) {
+        if (activityPaused | mTabDrawerMenu == null) {
+            tabOnIntent = new TabItem(title, url, tabPrefix + TabsManager.getInstance().getTabIterator(), TabsManager.getInstance().getCurrentFragmentTag(), fragment);
+        } else {
+            addTabToList(title, url, tabPrefix + TabsManager.getInstance().getTabIterator(), fragment, true);
+        }
+        if (!TabsManager.getInstance().isContainsByUrl(url)) {
+            String newTag = tabPrefix + (TabsManager.getInstance().getTabIterator() - 1);
+            TabsManager.getInstance().setCurrentFragmentTag(newTag);
+        }
+    }
+
+    private static void addTabToList(String name, String url, String tag, Fragment fragment, boolean select) {
+        TabItem item = null;
+        if (TabsManager.getInstance().isContainsByUrl(url)) {
+            if (select) item = TabsManager.getInstance().getTabByUrl(url);
+        } else if (!TabsManager.getInstance().isContainsByTag(tag)) {
+            item = new TabItem(name, url, tag, TabsManager.getInstance().getCurrentFragmentTag(), fragment);
+            ((GeneralFragment) fragment).setThisTab(item);
+            TabsManager.getInstance().getTabItems().add(item);
+            TabsManager.getInstance().plusTabIterator();
+            mTabDrawerMenu.refreshAdapter();
+        } else {
+            if (select) item = TabsManager.getInstance().getTabByTag(tag);
+        }
+
+        if (select) mTabDrawerMenu.selectTab(item);
+    }
+
+    public static void showListFragment(String brickName, Bundle extras) {
+        showListFragment("", brickName, extras);
+    }
+
+    public static void showListFragment(String prefix, String brickName, Bundle extras) {
+        final BrickInfo listTemplate = ListCore.getRegisteredBrick(brickName);
+        assert listTemplate != null;
+        Fragment fragment = listTemplate.createFragment();
+        fragment.setArguments(extras);
+        addTab(listTemplate.getTitle(), prefix + brickName, fragment);
+    }
 
     public static void startForumSearch(SearchSettings searchSettings) {
 
@@ -895,10 +902,5 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
             MainActivity.addTab(title, searchSettings.getSearchQuery(), SearchPostFragment.newFragment(searchSettings.getSearchQuery()));
 
 
-    }
-
-    @SuppressWarnings("ResourceType")
-    private void loadPreferences(SharedPreferences prefs) {
-        setRequestedOrientation(ExtPreferences.parseInt(prefs, "theme.ScreenOrientation", -1));
     }
 }

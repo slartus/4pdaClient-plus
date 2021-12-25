@@ -4,6 +4,7 @@ import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Environment
 import org.softeg.slartus.forpdaplus.classes.common.ArrayUtils
+import org.softeg.slartus.forpdaplus.core.AppPreferences
 import java.io.File
 
 object AppTheme {
@@ -39,9 +40,9 @@ object AppTheme {
         get() {
             var color = R.color.accentPink
             when (preferences.getString("mainAccentColor", "pink")) {
-                "pink" -> color = R.color.accentPink
-                "blue" -> color = R.color.accentBlue
-                "gray" -> color = R.color.accentGray
+                AppPreferences.ACCENT_COLOR_PINK_NAME -> color = R.color.accentPink
+                AppPreferences.ACCENT_COLOR_BLUE_NAME -> color = R.color.accentBlue
+                AppPreferences.ACCENT_COLOR_GRAY_NAME -> color = R.color.accentGray
             }
             return color
         }
@@ -54,23 +55,23 @@ object AppTheme {
             when (themeType) {
                 THEME_TYPE_LIGHT -> {
                     when (color) {
-                        "pink" -> theme = R.style.MainPinkLight
-                        "blue" -> theme = R.style.MainBlueLight
-                        "gray" -> theme = R.style.MainGrayLight
+                        AppPreferences.ACCENT_COLOR_PINK_NAME -> theme = R.style.MainPinkLight
+                        AppPreferences.ACCENT_COLOR_BLUE_NAME -> theme = R.style.MainBlueLight
+                        AppPreferences.ACCENT_COLOR_GRAY_NAME -> theme = R.style.MainGrayLight
                     }
                 }
                 THEME_TYPE_DARK -> {
                     when (color) {
-                        "pink" -> theme = R.style.MainPinkDark
-                        "blue" -> theme = R.style.MainBlueDark
-                        "gray" -> theme = R.style.MainGrayDark
+                        AppPreferences.ACCENT_COLOR_PINK_NAME -> theme = R.style.MainPinkDark
+                        AppPreferences.ACCENT_COLOR_BLUE_NAME -> theme = R.style.MainBlueDark
+                        AppPreferences.ACCENT_COLOR_GRAY_NAME -> theme = R.style.MainGrayDark
                     }
                 }
                 else -> {
                     when (color) {
-                        "pink" -> theme = R.style.MainPinkBlack
-                        "blue" -> theme = R.style.MainBlueBlack
-                        "gray" -> theme = R.style.MainGrayBlack
+                        AppPreferences.ACCENT_COLOR_PINK_NAME -> theme = R.style.MainPinkBlack
+                        AppPreferences.ACCENT_COLOR_BLUE_NAME -> theme = R.style.MainBlueBlack
+                        AppPreferences.ACCENT_COLOR_GRAY_NAME -> theme = R.style.MainGrayBlack
                     }
                 }
             }
@@ -85,23 +86,23 @@ object AppTheme {
             when (themeType) {
                 THEME_TYPE_LIGHT -> {
                     when (color) {
-                        "pink" -> theme = R.style.ThemePrefsLightPink
-                        "blue" -> theme = R.style.ThemePrefsLightBlue
-                        "gray" -> theme = R.style.ThemePrefsLightGray
+                        AppPreferences.ACCENT_COLOR_PINK_NAME -> theme = R.style.ThemePrefsLightPink
+                        AppPreferences.ACCENT_COLOR_BLUE_NAME -> theme = R.style.ThemePrefsLightBlue
+                        AppPreferences.ACCENT_COLOR_GRAY_NAME -> theme = R.style.ThemePrefsLightGray
                     }
                 }
                 THEME_TYPE_DARK -> {
                     when (color) {
-                        "pink" -> theme = R.style.ThemePrefsDarkPink
-                        "blue" -> theme = R.style.ThemePrefsDarkBlue
-                        "gray" -> theme = R.style.ThemePrefsDarkGray
+                        AppPreferences.ACCENT_COLOR_PINK_NAME -> theme = R.style.ThemePrefsDarkPink
+                        AppPreferences.ACCENT_COLOR_BLUE_NAME -> theme = R.style.ThemePrefsDarkBlue
+                        AppPreferences.ACCENT_COLOR_GRAY_NAME -> theme = R.style.ThemePrefsDarkGray
                     }
                 }
                 else -> {
                     when (color) {
-                        "pink" -> theme = R.style.ThemePrefsBlackPink
-                        "blue" -> theme = R.style.ThemePrefsBlackBlue
-                        "gray" -> theme = R.style.ThemePrefsBlackGray
+                        AppPreferences.ACCENT_COLOR_PINK_NAME -> theme = R.style.ThemePrefsBlackPink
+                        AppPreferences.ACCENT_COLOR_BLUE_NAME -> theme = R.style.ThemePrefsBlackBlue
+                        AppPreferences.ACCENT_COLOR_GRAY_NAME -> theme = R.style.ThemePrefsBlackGray
                     }
                 }
             }
@@ -211,19 +212,19 @@ object AppTheme {
         val color = preferences.getString("mainAccentColor", "pink")
         when (theme) {
             THEME_LIGHT -> when (color) {
-                "pink" -> cssFile = "4pda_light_blue.css"
-                "blue" -> cssFile = "4pda_light_pink.css"
-                "gray" -> cssFile = "4pda_light_gray.css"
+                AppPreferences.ACCENT_COLOR_PINK_NAME -> cssFile = "4pda_light_blue.css"
+                AppPreferences.ACCENT_COLOR_BLUE_NAME -> cssFile = "4pda_light_pink.css"
+                AppPreferences.ACCENT_COLOR_GRAY_NAME -> cssFile = "4pda_light_gray.css"
             }
             THEME_DARK -> when (color) {
-                "pink" -> cssFile = "4pda_dark_blue.css"
-                "blue" -> cssFile = "4pda_dark_pink.css"
-                "gray" -> cssFile = "4pda_dark_gray.css"
+                AppPreferences.ACCENT_COLOR_PINK_NAME -> cssFile = "4pda_dark_blue.css"
+                AppPreferences.ACCENT_COLOR_BLUE_NAME -> cssFile = "4pda_dark_pink.css"
+                AppPreferences.ACCENT_COLOR_GRAY_NAME -> cssFile = "4pda_dark_gray.css"
             }
             THEME_BLACK -> when (color) {
-                "pink" -> cssFile = "4pda_black_blue.css"
-                "blue" -> cssFile = "4pda_black_pink.css"
-                "gray" -> cssFile = "4pda_black_gray.css"
+                AppPreferences.ACCENT_COLOR_PINK_NAME -> cssFile = "4pda_black_blue.css"
+                AppPreferences.ACCENT_COLOR_BLUE_NAME -> cssFile = "4pda_black_pink.css"
+                AppPreferences.ACCENT_COLOR_GRAY_NAME -> cssFile = "4pda_black_gray.css"
             }
             THEME_MATERIAL_LIGHT -> cssFile = "material_light.css"
             THEME_MATERIAL_DARK -> cssFile = "material_dark.css"

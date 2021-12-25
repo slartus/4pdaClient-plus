@@ -304,7 +304,7 @@
     <string name="ask_create_dialog" formatted="false">С пользователем %s нет диалогов. Создать?</string>
     <string name="new_thread">Новый диалог</string>
     <string name="ask_deleting_dialogs" formatted="false">Вы действительно хотите удалить выбранные диалоги (%d) с пользователем %s?</string>
-    <string name="qms_title_new_thread">QMS:Новая тема</string>
+    <string name="qms_title_new_thread">%s: Новый диалог</string>
     <string name="enter_nick">Укажите получателя</string>
     <string name="file_name">Имя файла</string>
     <string name="error_external_storage">Внешнее хранилище недоступно!</string>
@@ -400,7 +400,9 @@
     <string name="open_link">Открыть ссылку</string>
     <string name="comment_hint">Комментарий</string>
     <string name="message_hint">Сообщение</string>
+    <string name="subject">Тема</string>
     <string name="enter_subject">Введите тему</string>
+    <string name="message">Сообщение</string>
     <string name="enter_message">Введите сообщение</string>
     <string name="to_whom">Кому</string>
     <string name="user__">Пользователь: </string>
@@ -464,5 +466,5 @@
     <string name="menu_topic_find_in_topic">Найти в этой теме</string>
     <string name="menu_topic_load_imgs_for_session">Загр-ть изобр-я (для сессии)</string>
     <string name="menu_topic_attachments_invert_sorting">Инвертировать сортировку</string>
-
+    <string name="error_on_new_thread">Не найден идентификатор нового диалога. Возможно, пользователь заблокировал вас</string>
 </resources>
