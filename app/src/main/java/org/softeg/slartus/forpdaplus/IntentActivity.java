@@ -680,20 +680,17 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
 
     public static void showInDefaultBrowser(Context context, String url) {
         try {
-
             Intent intent = new Intent(
                     Intent.ACTION_VIEW,
                     Uri.parse(url));
             if (is4pdaUrl(url))
                 context.startActivity(Intent.createChooser(intent, context.getString(R.string.open_in)));
-            else if (intent.resolveActivity(context.getPackageManager()) != null) {
+            else {
                 context.startActivity(intent);
-            } else {
-                StringUtils.copyToClipboard(context, url);
-                Toast.makeText(context, context.getString(R.string.link_copied_to_buffer), Toast.LENGTH_SHORT).show();
-                throw new ActivityNotFoundException();
             }
         } catch (ActivityNotFoundException ex) {
+            StringUtils.copyToClipboard(context, url);
+            Toast.makeText(context, context.getString(R.string.link_copied_to_buffer), Toast.LENGTH_SHORT).show();
             AppLog.e(context, new NotReportException(context.getString(R.string.no_app_for_link) + ": " + url));
         } catch (Throwable ex) {
             AppLog.e(context, ex);
