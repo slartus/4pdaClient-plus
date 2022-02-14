@@ -192,13 +192,6 @@
             android:name=".FeatureActivity"
             android:exported="false"
             android:label="kekos" />
-        <activity
-            android:name="org.acra.CrashReportDialog"
-            android:excludeFromRecents="true"
-            android:exported="false"
-            android:finishOnTaskLaunch="true"
-            android:launchMode="singleInstance"
-            android:theme="@android:style/Theme.Dialog" />
 
         <receiver
             android:name=".BootReceiver"
@@ -256,11 +249,6 @@
             android:label="Изображения"
             android:launchMode="singleTask" />
 
-        <activity
-            android:name=".activity.NewYear"
-            android:exported="false"
-            android:theme="@style/AppTheme.FullScreen" />
-
         <receiver
             android:name="org.softeg.slartus.forpdanotifyservice.qms.AlarmReceiver"
             android:enabled="true"
@@ -306,7 +294,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/fileprovider" />
         </provider>
-
     </application>
 
 </manifest>
