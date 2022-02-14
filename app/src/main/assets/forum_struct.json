@@ -156,7 +156,7 @@
         "isHasTopics": true,
         "isHasForums": false,
         "parentId": "281",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbL1Vp1R283HKCTDWiHQKrLH7gyKNz23rfBE0rRemdcXvgaMUN.gif",
+        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObK95l9z2ePlW5V04eueo1lK0oXPQSQW8UbB3z2LnEX9vz0ha.gif",
         "description": "\u0412\u043e\u043f\u0440\u043e\u0441\u044b \u0438 \u043e\u0442\u0432\u0435\u0442\u044b \u043f\u043e Android OS \u0438 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432\u0430\u043c \u043f\u043e\u0434 \u0435\u0435 \u0443\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0438\u0435\u043c"
     },
     {
@@ -2449,7 +2449,7 @@
         "isHasTopics": true,
         "isHasForums": false,
         "parentId": "56",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbLpUZz0mz2YpF8CGv2IftugSalJjUhE7t19bjo7oNXsRZI.gif",
+        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBEbrkaz0uwIXV3xa6B4sR6jVi4Fz09kpKqW1QCkU9DJSug.gif",
         "description": "\u041f\u0440\u043e\u0448\u0438\u0432\u043a\u0438 \u0434\u043b\u044f \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 \u043e\u0442 E-Ten"
     },
     {
@@ -2795,409 +2795,40 @@
         "description": " "
     },
     {
-        "id": "391",
-        "title": "\u041b\u0438\u0447\u043d\u044b\u0439 \u043e\u043f\u044b\u0442",
-        "isHasTopics": true,
-        "isHasForums": false,
-        "parentId": "361",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbLpz1IyUYxBhBLRBE0nmeUQBkLkSXfz0hmsHwuqk0DDX9YEuV8e.gif",
-        "description": "\u0413\u043e\u0442\u043e\u0432\u044b\u0435 \u0438 \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043d\u044b\u0435 \u043f\u043e\u043b\u0435\u0437\u043d\u044b\u0435 \u0441\u043e\u0432\u0435\u0442\u044b."
-    },
-    {
-        "id": "418",
-        "title": "\u0410\u0440\u0445\u0438\u0432 \u0440\u0430\u0437\u0434\u0435\u043b\u0430",
-        "isHasTopics": true,
-        "isHasForums": false,
-        "parentId": "361",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBEbrkaCT8d2yxrz09tvkXWT21poRdkz1uFBgDX8XvT1SC0AqNez01.gif",
-        "description": "\u0417\u0434\u0435\u0441\u044c \u0441\u043a\u043b\u0430\u0434\u0438\u0440\u0443\u044e\u0442\u0441\u044f \u043e\u0442\u043e\u0431\u0440\u0430\u043d\u043d\u044b\u0435 \u0437\u043d\u0430\u043d\u0438\u044f \u0438\u0437 \u0440\u0430\u0437\u0434\u0435\u043b\u0430 \u041f\u0435\u0440\u0432\u043e\u0439 \u043f\u043e\u043c\u043e\u0449\u0438. \u0414\u0430\u043d\u043d\u044b\u0439 \u043f\u043e\u0434\u0440\u0430\u0437\u0434\u0435\u043b \u0434\u043e\u0441\u0442\u0443\u043f\u0435\u043d \u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u0442\u0435\u043b\u044f\u043c \u0442\u043e\u043b\u044c\u043a\u043e \u0434\u043b\u044f \u0447\u0442\u0435\u043d\u0438\u044f."
-    },
-    {
-        "id": "393",
-        "title": "FAQ \u043f\u043e \u041e\u0421 \u0438 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432\u0430\u043c (\u0440\u0435\u0434\u0438\u0440\u0435\u043a\u0442)",
-        "isHasTopics": true,
-        "isHasForums": false,
-        "parentId": "361",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObK95lxMS7dCapiIJ1KrB8QBSGvz1RcKF88EkmRfz2y.gif",
-        "description": null
-    },
-    {
         "id": "361",
         "title": "Windows Phone - \u041f\u0435\u0440\u0432\u0430\u044f \u043f\u043e\u043c\u043e\u0449\u044c",
         "isHasTopics": true,
-        "isHasForums": true,
+        "isHasForums": false,
         "parentId": "355",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObLz1RaiPXh6y9hcfxc3aeOM2WyVeEDlP6Q92VAVYxi.gif",
-        "description": "\u041f\u043e\u043c\u043e\u0449\u044c \u043d\u043e\u0432\u0438\u0447\u043a\u0430\u043c, \u0447\u0430\u0441\u0442\u043e \u0437\u0430\u0434\u0430\u0432\u0430\u0435\u043c\u044b\u0435 \u0432\u043e\u043f\u0440\u043e\u0441\u044b \u0438 \u043e\u0442\u0432\u0435\u0442\u044b \u043f\u043e \u043a\u043e\u043c\u043c\u0443\u043d\u0438\u043a\u0430\u0442\u043e\u0440\u0430\u043c. \u041d\u043e\u0432\u0438\u0447\u043a\u0430\u043c \u0447\u0438\u0442\u0430\u0442\u044c \u043e\u0431\u044f\u0437\u0430\u0442\u0435\u043b\u044c\u043d\u043e. "
-    },
-    {
-        "id": "392",
-        "title": "Windows Phone - FAQ \u043f\u043e \u041e\u0421 \u0438 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432\u0430\u043c",
-        "isHasTopics": true,
-        "isHasForums": false,
-        "parentId": "355",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbL1Vp1RAlGCDoXNoXz2y4OWwihko53GQeTWWb3Suz1jB.gif",
-        "description": "\u0412\u043e\u043f\u0440\u043e\u0441\u044b \u0438 \u043e\u0442\u0432\u0435\u0442\u044b \u043f\u043e Windows Phone \u0438 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432\u0430\u043c \u043f\u043e\u0434 \u0435\u0435 \u0443\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0438\u0435\u043c."
-    },
-    {
-        "id": "417",
-        "title": "Dell",
-        "isHasTopics": true,
-        "isHasForums": false,
-        "parentId": "358",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbLpEpAB7a6hqEt8MLTz25Coa2FkPE2meHHH5x4C.gif",
-        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 Dell \u043d\u0430 \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0435 Windows Phone"
-    },
-    {
-        "id": "414",
-        "title": "HTC",
-        "isHasTopics": true,
-        "isHasForums": false,
-        "parentId": "358",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbL1NoFCXfkvpWVdhusPj30ngvpLCE7Mo6iTDX.gif",
-        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 HTC \u043d\u0430 \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0435 Windows Phone"
-    },
-    {
-        "id": "416",
-        "title": "LG",
-        "isHasTopics": true,
-        "isHasForums": false,
-        "parentId": "358",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbL17IPFLMZ6ZGr3JL2sl4sCh8cBjtAxljXg5.gif",
-        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 LG \u043d\u0430 \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0435 Windows Phone"
-    },
-    {
-        "id": "503",
-        "title": "Nokia \/ Microsoft",
-        "isHasTopics": true,
-        "isHasForums": false,
-        "parentId": "358",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbLpkIhpIgDmwlLpBGLrFsREMGCkdwqWbYsaYvJLK86R5JGYGDn21.gif",
-        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 Nokia \/ Microsoft \u043d\u0430 \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0435 Windows Phone"
-    },
-    {
-        "id": "415",
-        "title": "Samsung",
-        "isHasTopics": true,
-        "isHasForums": false,
-        "parentId": "358",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbL17oPrmVC0BrDPfRMRuUlYmz09kpKqWXA4QiKOoFsn.gif",
-        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 Samsung \u043d\u0430 \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0435 Windows Phone"
-    },
-    {
-        "id": "535",
-        "title": "\u0414\u0440\u0443\u0433\u0438\u0435",
-        "isHasTopics": true,
-        "isHasForums": false,
-        "parentId": "358",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObILxEBgz0bJeXDhHYPFLspEtoW2GJDkJY9ix0Ivm2x0byAeW.gif",
-        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 \u043d\u0435 \u0432\u043e\u0448\u0435\u0434\u0448\u0438\u0445 \u0432 \u043e\u0441\u043d\u043e\u0432\u043d\u043e\u0439 \u0441\u043f\u0438\u0441\u043e\u043a \u043d\u0430 \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0435 Windows Phone."
-    },
-    {
-        "id": "431",
-        "title": "\u0411\u0430\u0440\u0430\u0445\u043e\u043b\u043a\u0430 (\u0440\u0435\u0434\u0438\u0440\u0435\u043a\u0442)",
-        "isHasTopics": true,
-        "isHasForums": false,
-        "parentId": "430",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb0LP0jz2wW2vnq5U9j3KierWeu71JINHGBXhU.gif",
-        "description": "\u041f\u043e\u043a\u0443\u043f\u043a\u0430 \u0438 \u043f\u0440\u043e\u0434\u0430\u0436\u0430 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 \u043e\u0442 \u0447\u0430\u0441\u0442\u043d\u044b\u0445 \u043b\u0438\u0446."
-    },
-    {
-        "id": "430",
-        "title": "\u041f\u043e\u043a\u0443\u043f\u043a\u0430 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432",
-        "isHasTopics": true,
-        "isHasForums": true,
-        "parentId": "358",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObILxEBgz0b1eY6cz1rTQABxOWk4z0od6X1jB3NywYOC2z2rg2slq.gif",
-        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0432\u043e\u043f\u0440\u043e\u0441\u043e\u0432 \u043f\u0440\u0438\u043e\u0431\u0440\u0435\u0442\u0435\u043d\u0438\u044f \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 \u043d\u0430 Windows Phone. "
-    },
-    {
-        "id": "432",
-        "title": "\u0410\u043a\u0441\u0435\u0441\u0441\u0443\u0430\u0440\u044b \u043a \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432\u0430\u043c",
-        "isHasTopics": true,
-        "isHasForums": false,
-        "parentId": "358",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObILxEBgz0bJqOXUXjcm2ldXnvpQFasBGwrxlDnYjdAZdbiU6LRq0kD.gif",
-        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0430\u043a\u0441\u0435\u0441\u0441\u0443\u0430\u0440\u043e\u0432 \u0434\u043b\u044f \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 \u043d\u0430 Windows Phone."
-    },
-    {
-        "id": "434",
-        "title": "\u041d\u043e\u0432\u0438\u043d\u043a\u0438 (\u0440\u0435\u0434\u0438\u0440\u0435\u043a\u0442)",
-        "isHasTopics": true,
-        "isHasForums": false,
-        "parentId": "358",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObMLEbfRWvz0P1CfGINA3e2q3z1VRNKz1vQ26yUF.gif",
-        "description": null
-    },
-    {
-        "id": "433",
-        "title": "\u0412\u044b\u0431\u043e\u0440 \u0438 \u0421\u0440\u0430\u0432\u043d\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 (\u0440\u0435\u0434\u0438\u0440\u0435\u043a\u0442)",
-        "isHasTopics": true,
-        "isHasForums": false,
-        "parentId": "358",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObMHcZIxMhz11HtUM29kpKq0HIuyp4msbtI.gif",
-        "description": null
+        "description": "\u041f\u043e\u043c\u043e\u0449\u044c \u043d\u043e\u0432\u0438\u0447\u043a\u0430\u043c, \u0447\u0430\u0441\u0442\u043e \u0437\u0430\u0434\u0430\u0432\u0430\u0435\u043c\u044b\u0435 \u0432\u043e\u043f\u0440\u043e\u0441\u044b \u0438 \u043e\u0442\u0432\u0435\u0442\u044b \u043f\u043e \u043a\u043e\u043c\u043c\u0443\u043d\u0438\u043a\u0430\u0442\u043e\u0440\u0430\u043c. \u041d\u043e\u0432\u0438\u0447\u043a\u0430\u043c \u0447\u0438\u0442\u0430\u0442\u044c \u043e\u0431\u044f\u0437\u0430\u0442\u0435\u043b\u044c\u043d\u043e."
     },
     {
         "id": "358",
-        "title": "Windows Phone - \u0423\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432\u0430",
+        "title": "Windows Phone - \u0423\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432\u0430 \u0438 \u041f\u0440\u043e\u0448\u0438\u0432\u043a\u0438",
         "isHasTopics": true,
-        "isHasForums": true,
+        "isHasForums": false,
         "parentId": "355",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb0fXEIrhKn7NLgHH2NOYQkSCaKmMXY4oXOnBkHUe7z2uG.gif",
-        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u044f, \u0441\u0432\u044f\u0437\u0430\u043d\u043d\u044b\u0435 \u0441 \u043a\u043e\u043d\u043a\u0440\u0435\u0442\u043d\u044b\u043c\u0438 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432\u0430\u043c\u0438 \u043d\u0430 Windows Phone. "
-    },
-    {
-        "id": "403",
-        "title": "\u041e\u0444\u0438\u0441\u043d\u044b\u0435 \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u044b",
-        "isHasTopics": true,
-        "isHasForums": false,
-        "parentId": "356",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbL1FoIwoXr0SBfUEqEz2sBUlA3QJBturfjxuTiRAaWgFglk.gif",
-        "description": "\u041a\u0430\u043b\u0435\u043d\u0434\u0430\u0440\u0438, \u043a\u0430\u043b\u044c\u043a\u0443\u043b\u044f\u0442\u043e\u0440\u044b, \u0440\u0430\u0431\u043e\u0442\u0430 \u0441 \u0434\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u0430\u043c\u0438, \u043f\u043b\u0430\u043d\u0438\u0440\u043e\u0432\u0449\u0438\u043a\u0438, \u0444\u0438\u043d\u0430\u043d\u0441\u044b, \u0442\u043e\u0440\u0433\u043e\u0432\u043b\u044f."
-    },
-    {
-        "id": "404",
-        "title": "\u0421\u0438\u0441\u0442\u0435\u043c\u043d\u044b\u0435 \u0443\u0442\u0438\u043b\u0438\u0442\u044b \u0438 \u0423\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0438\u0435",
-        "isHasTopics": true,
-        "isHasForums": false,
-        "parentId": "356",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbL1lIpK31Qt6IMUka6hqk7GA3QJBtO5nHz0NLOfNn1v1H5l.gif",
-        "description": "\u041d\u0430\u0441\u0442\u0440\u043e\u0439\u043a\u0438 \u0441\u0438\u0441\u0442\u0435\u043c\u044b, \u0442\u0435\u0441\u0442\u0438\u0440\u043e\u0432\u0430\u043d\u0438\u0435, \u043e\u043f\u0442\u0438\u043c\u0438\u0437\u0430\u0446\u0438\u044f."
-    },
-    {
-        "id": "405",
-        "title": "\u0427\u0442\u0435\u043d\u0438\u0435, \u0441\u043b\u043e\u0432\u0430\u0440\u0438, \u044d\u043d\u0446\u0438\u043a\u043b\u043e\u043f\u0435\u0434\u0438\u0438",
-        "isHasTopics": true,
-        "isHasForums": false,
-        "parentId": "356",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbL17oPfKAE0DuCGnXPi3nz2G4ipiRXmhQLz0z1sTd8B8ARVrTCw.gif",
-        "description": "\u041f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u044b \u0434\u043b\u044f \u0447\u0442\u0435\u043d\u0438\u044f, \u043c\u043e\u0431\u0438\u043b\u044c\u043d\u044b\u0435 \u043a\u0430\u0442\u0430\u043b\u043e\u0433\u0438 \u0438 \u0431\u0430\u0437\u044b \u0437\u043d\u0430\u043d\u0438\u0439, \u043e\u0431\u0443\u0447\u0430\u044e\u0449\u0438\u0435 \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u044b."
-    },
-    {
-        "id": "406",
-        "title": "\u041c\u0443\u043b\u044c\u0442\u0438\u043c\u0435\u0434\u0438\u0430",
-        "isHasTopics": true,
-        "isHasForums": false,
-        "parentId": "356",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbL1Vo0Rh8eaz18APlIa88gEC9jtQhieLm0STuSABddVZkt.gif",
-        "description": "\u0410\u0443\u0434\u0438\u043e\/\u0432\u0438\u0434\u0435\u043e, \u043f\u043b\u0435\u0435\u0440\u044b, \u043a\u043e\u043d\u0432\u0435\u0440\u0442\u0435\u0440\u044b \u0438 \u0434\u0440\u0443\u0433\u0438\u0435 \u0441\u0440\u0435\u0434\u0441\u0442\u0432\u0430 \u043c\u0443\u043b\u044c\u0442\u0438\u043c\u0435\u0434\u0438\u0430."
-    },
-    {
-        "id": "407",
-        "title": "\u0418\u043d\u0442\u0435\u0440\u043d\u0435\u0442 \u0438 \u043a\u043e\u043c\u043c\u0443\u043d\u0438\u043a\u0430\u0446\u0438\u0438",
-        "isHasTopics": true,
-        "isHasForums": false,
-        "parentId": "356",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbL1BR4wXs9z0GKz204XDLnXQBkLkSX9j3KCODCcZTuywphPyrfR.gif",
-        "description": "Wi-Fi, Bluetooth, \u0431\u0440\u0430\u0443\u0437\u0435\u0440\u044b, IM-\u043a\u043b\u0438\u0435\u043d\u0442\u044b, \u044d\u043b. \u043f\u043e\u0447\u0442\u0430, \u0443\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0438\u0435 \u043f\u043e\u0434\u043a\u043b\u044e\u0447\u0435\u043d\u0438\u044f\u043c\u0438."
-    },
-    {
-        "id": "408",
-        "title": "\u041f\u0440\u043e\u0447\u0438\u0435 \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u044b",
-        "isHasTopics": true,
-        "isHasForums": false,
-        "parentId": "356",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbL1NJDaz20okNvqhVz2y2JoHN6z0v5CRsEZyGQez0GuvrByKie.gif",
-        "description": "\u0420\u0430\u0437\u043b\u0438\u0447\u043d\u044b\u0435 \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u044b \u0432\u043d\u0435 \u043e\u0441\u043d\u043e\u0432\u043d\u043e\u0439 \u043a\u043b\u0430\u0441\u0441\u0438\u0444\u0438\u043a\u0430\u0446\u0438\u0438."
-    },
-    {
-        "id": "410",
-        "title": "\u041d\u0430\u0432\u0438\u0433\u0430\u0446\u0438\u044f \u0434\u043b\u044f WP7 (\u0440\u0435\u0434\u0438\u0440\u0435\u043a\u0442)",
-        "isHasTopics": true,
-        "isHasForums": false,
-        "parentId": "356",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBE5fjNUCol6ZRK3cFZxLndcsb5txz0o7MfLFU2qAjcITfTWhXWeO.gif",
-        "description": null
+        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 \u043d\u0430 Windows Phone \u0438 \u0438\u0445 \u043f\u0440\u043e\u0448\u0438\u0432\u043e\u043a."
     },
     {
         "id": "356",
-        "title": "Windows Phone - \u041f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u044b",
+        "title": "Windows Phone - \u041f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u044b \u0438 \u0418\u0433\u0440\u044b",
         "isHasTopics": true,
-        "isHasForums": true,
+        "isHasForums": false,
         "parentId": "355",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObMz0VlaeATOICoTujdlbklOmz1U1MSLIrz0PaFoFin1TVL46sp.gif",
-        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c \u0434\u043b\u044f Windows Phone.  "
+        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c \u0438 \u0438\u0433\u0440 \u0434\u043b\u044f Windows Phone."
     },
     {
-        "id": "592",
-        "title": "\u0410\u0440\u043a\u0430\u0434\u044b",
-        "isHasTopics": true,
-        "isHasForums": false,
-        "parentId": "357",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbL1NZeN1XT6JrWxwJ7z1z2z1ivuMTxuYpFfVi5aAD7vK1Gma.gif",
-        "description": "\u0418\u0433\u0440\u044b \u0432 \u0441\u0442\u0438\u043b\u0435 \u0430\u0440\u043a\u0430\u0434\u044b"
-    },
-    {
-        "id": "513",
-        "title": "\u042d\u043a\u0448\u0435\u043d",
-        "isHasTopics": true,
-        "isHasForums": false,
-        "parentId": "357",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbL1NZeN1XT6JrWxwJ7z1z2z1ivuMTxuYpFfVi5aAD7vK1Gma.gif",
-        "description": "\u0418\u0433\u0440\u044b \u0432 \u0441\u0442\u0438\u043b\u0435 \u044d\u043a\u0448\u0435\u043d."
-    },
-    {
-        "id": "514",
-        "title": "\u041d\u0430\u0441\u0442\u043e\u043b\u044c\u043d\u044b\u0435",
-        "isHasTopics": true,
-        "isHasForums": false,
-        "parentId": "357",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbL1NZeN1XT6JrWxwJ7z1z2z1ivuMTxuYpFfVi5aAD7vK1Gma.gif",
-        "description": "\u041d\u0430\u0441\u0442\u043e\u043b\u044c\u043d\u044b\u0435 \u0438\u0433\u0440\u044b"
-    },
-    {
-        "id": "515",
-        "title": "\u041b\u043e\u0433\u0438\u0447\u0435\u0441\u043a\u0438\u0435",
-        "isHasTopics": true,
-        "isHasForums": false,
-        "parentId": "357",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbL1NZeN1XT6JrWxwJ7z1z2z1ivuMTxuYpFfVi5aAD7vK1Gma.gif",
-        "description": "\u041b\u043e\u0433\u0438\u0447\u0435\u0441\u043a\u0438\u0435 \u0438\u0433\u0440\u044b"
-    },
-    {
-        "id": "516",
-        "title": "\u0421\u0442\u0440\u0430\u0442\u0435\u0433\u0438\u0438",
-        "isHasTopics": true,
-        "isHasForums": false,
-        "parentId": "357",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbL1NZeN1XT6JrWxwJ7z1z2z1ivuMTxuYpFfVi5aAD7vK1Gma.gif",
-        "description": "\u0418\u0433\u0440\u044b \u0432 \u0441\u0442\u0438\u043b\u0435 \u0441\u0442\u0440\u0430\u0442\u0435\u0433\u0438\u0438"
-    },
-    {
-        "id": "517",
-        "title": "\u0421\u0438\u043c\u0443\u043b\u044f\u0442\u043e\u0440\u044b",
-        "isHasTopics": true,
-        "isHasForums": false,
-        "parentId": "357",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbL1NZeN1XT6JrWxwJ7z1z2z1ivuMTxuYpFfVi5aAD7vK1Gma.gif",
-        "description": "\u0418\u0433\u0440\u044b \u0432 \u0441\u0442\u0438\u043b\u0435 \u0441\u0438\u043c\u0443\u043b\u044f\u0442\u043e\u0440\u044b"
-    },
-    {
-        "id": "518",
-        "title": "\u041f\u0440\u043e\u0447\u0435\u0435",
-        "isHasTopics": true,
-        "isHasForums": false,
-        "parentId": "357",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbL1NZeN1XT6JrWxwJ7z1z2z1ivuMTxuYpFfVi5aAD7vK1Gma.gif",
-        "description": "\u041f\u0440\u043e\u0447\u0438\u0435 \u0438\u0433\u0440\u044b"
-    },
-    {
-        "id": "357",
-        "title": "Windows Phone - \u0418\u0433\u0440\u044b",
-        "isHasTopics": true,
-        "isHasForums": true,
-        "parentId": "355",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObMTVCWByAH6Ene9WKI15qWb2cCcJocgBW4LxKeXMhxk.gif",
-        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0438\u0433\u0440 \u0434\u043b\u044f Windows Phone "
-    },
-    {
-        "id": "372",
-        "title": "\u041e\u0431\u043e\u0438 \u0434\u043b\u044f \u044d\u043a\u0440\u0430\u043d\u0430 (\u0440\u0435\u0434\u0438\u0440\u0435\u043a\u0442)",
-        "isHasTopics": true,
-        "isHasForums": false,
-        "parentId": "359",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObHAtATVoB9QSsSGioxO6cccn4PwRwLqgOrmz2SiRXmhQ5.gif",
-        "description": null
-    },
-    {
-        "id": "359",
-        "title": "Windows Phone - \u0423\u043a\u0440\u0430\u0448\u0430\u0442\u0435\u043b\u044c\u0441\u0442\u0432\u0430",
-        "isHasTopics": true,
-        "isHasForums": true,
-        "parentId": "355",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbL1Bhc9mgoCYEgA1v6T9f83n1Pn9vfsc7mJZcZCB9q1xM.gif",
-        "description": "\u0421\u043a\u0438\u043d\u044b, \u0442\u0435\u043c\u044b, \u043a\u0430\u0440\u0442\u0438\u043d\u043a\u0438. \u041f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u044b \u0434\u043b\u044f \u0438\u0437\u043c\u0435\u043d\u0435\u043d\u0438\u044f \u0438\u043d\u0442\u0435\u0440\u0444\u0435\u0439\u0441\u0430 Windows Phone. "
-    },
-    {
-        "id": "375",
-        "title": "HTC",
-        "isHasTopics": true,
-        "isHasForums": false,
-        "parentId": "360",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbL1NoFCXfkvpWVdhusPj30ngvpLCE7Mo6iTDX.gif",
-        "description": "\u041f\u0440\u043e\u0448\u0438\u0432\u043a\u0438 \u0434\u043b\u044f \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 \u043e\u0442 HTC"
-    },
-    {
-        "id": "376",
-        "title": "Samsung",
-        "isHasTopics": true,
-        "isHasForums": false,
-        "parentId": "360",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbL17oPrmVC0BrDPfRMRuUlYmz09kpKqWXA4QiKOoFsn.gif",
-        "description": "\u041f\u0440\u043e\u0448\u0438\u0432\u043a\u0438 \u0434\u043b\u044f \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 \u043e\u0442 Samsung"
-    },
-    {
-        "id": "377",
-        "title": "LG",
-        "isHasTopics": true,
-        "isHasForums": false,
-        "parentId": "360",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbL17IPFLMZ6ZGr3JL2sl4sCh8cBjtAxljXg5.gif",
-        "description": "\u041f\u0440\u043e\u0448\u0438\u0432\u043a\u0438 \u0434\u043b\u044f \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 \u043e\u0442 LG"
-    },
-    {
-        "id": "378",
-        "title": "Dell",
-        "isHasTopics": true,
-        "isHasForums": false,
-        "parentId": "360",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbLpEpAB7a6hqEt8MLTz25Coa2FkPE2meHHH5x4C.gif",
-        "description": "\u041f\u0440\u043e\u0448\u0438\u0432\u043a\u0438 \u0434\u043b\u044f \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 \u043e\u0442 Dell"
-    },
-    {
-        "id": "504",
-        "title": "Nokia \/ Microsoft",
-        "isHasTopics": true,
-        "isHasForums": false,
-        "parentId": "360",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbLpkIhpIgDmwlLpBGLrFsREMGCkdwqWbYsaYvJLK86R5JGYGDn21.gif",
-        "description": "\u041f\u0440\u043e\u0448\u0438\u0432\u043a\u0438 \u0434\u043b\u044f \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 \u043e\u0442 Nokia \/ Microsoft"
-    },
-    {
-        "id": "536",
-        "title": "\u0414\u0440\u0443\u0433\u0438\u0435",
-        "isHasTopics": true,
-        "isHasForums": false,
-        "parentId": "360",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObILxEBgz0bJeXDhHYPFLspEtoW2GJDkJY9ix0Ivm2x0byAeW.gif",
-        "description": "\u041f\u0440\u043e\u0448\u0438\u0432\u043a\u0438 \u0434\u043b\u044f \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 \u043d\u0435 \u0432\u043e\u0448\u0435\u0434\u0448\u0438\u0445 \u0432 \u043e\u0441\u043d\u043e\u0432\u043d\u043e\u0439 \u0441\u043f\u0438\u0441\u043e\u043a"
-    },
-    {
-        "id": "482",
-        "title": "\u0414\u0435\u043b\u0430\u0435\u043c \u043f\u0440\u043e\u0448\u0438\u0432\u043a\u0438 \u0441\u0430\u043c\u043e\u0441\u0442\u043e\u044f\u0442\u0435\u043b\u044c\u043d\u043e",
-        "isHasTopics": true,
-        "isHasForums": false,
-        "parentId": "360",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbL1FYsgw6ppqmz1GKvz18a09bb73niq8wxaytb1VRNqknkmRfVC.gif",
-        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u043e\u0431\u0449\u0438\u0445 \u0432\u043e\u043f\u0440\u043e\u0441\u043e\u0432 \u0438 \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c \u0434\u043b\u044f \u0441\u0430\u043c\u043e\u0441\u0442\u043e\u044f\u0442\u0435\u043b\u044c\u043d\u043e\u0433\u043e \u0441\u043e\u0437\u0434\u0430\u043d\u0438\u044f \u043f\u0440\u043e\u0448\u0438\u0432\u043e\u043a. "
-    },
-    {
-        "id": "484",
-        "title": "\u0421\u0431\u043e\u0440\u043d\u0438\u043a FAQ'\u043e\u0432 \u0438 \u0410\u0440\u0445\u0438\u0432 \u0442\u0435\u043c \u043f\u043e \u041f\u0440\u043e\u0448\u0438\u0432\u043a\u0430\u043c",
-        "isHasTopics": true,
-        "isHasForums": false,
-        "parentId": "360",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbL1FYsgw6ppqmz1GKvz18a09bb73niq8wxaytb1VRNqknkmRfVC.gif",
-        "description": "\u0412 \u0434\u0430\u043d\u043d\u044b\u0439 \u0440\u0430\u0437\u0434\u0435\u043b \"\u0430\u0440\u0445\u0438\u0432\u0438\u0440\u0443\u044e\u0442\u0441\u044f\" \u043d\u0430\u043a\u043e\u043f\u043b\u0435\u043d\u043d\u044b\u0435 \u0437\u043d\u0430\u043d\u0438\u044f. \u042d\u0442\u043e \u043f\u043e\u0437\u0432\u043e\u043b\u044f\u0435\u0442 \u0441\u043e\u0434\u0435\u0440\u0436\u0430\u0442\u044c \u043e\u0441\u043d\u043e\u0432\u043d\u043e\u0439 \u0440\u0430\u0437\u0434\u0435\u043b \u043c\u0430\u043a\u0441\u0438\u043c\u0430\u043b\u044c\u043d\u043e \u0438\u043d\u0444\u043e\u0440\u043c\u0430\u0442\u0438\u0432\u043d\u044b\u043c. "
-    },
-    {
-        "id": "360",
-        "title": "Windows Phone - \u041f\u0440\u043e\u0448\u0438\u0432\u043a\u0438",
-        "isHasTopics": true,
-        "isHasForums": true,
-        "parentId": "355",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb0jeRp65gqfBz13BJafAcxQL7Hvwoz1GG4sCBuUdZimoOPpdO.gif",
-        "description": "\u041f\u0440\u043e\u0448\u0438\u0432\u043a\u0438 \u0434\u043b\u044f \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 \u043d\u0430 Windows Phone "
-    },
-    {
-        "id": "397",
-        "title": "Windows Phone - \u0420\u0430\u0437\u0440\u0430\u0431\u043e\u0442\u043a\u0430 \u0438 \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u0438\u0440\u043e\u0432\u0430\u043d\u0438\u0435",
+        "id": "418",
+        "title": "\u0410\u0440\u0445\u0438\u0432 \u0440\u0430\u0437\u0434\u0435\u043b\u0430 Windows Phone",
         "isHasTopics": true,
         "isHasForums": false,
         "parentId": "355",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObJMT3rjscKo7bBEbs0Nz1PHPnz0q3UlZxwLxVh1GGq.gif",
-        "description": "\u0418\u043d\u0441\u0442\u0440\u0443\u043c\u0435\u043d\u0442\u044b \u0440\u0430\u0437\u0440\u0430\u0431\u043e\u0442\u043a\u0438, \u0438\u043d\u0441\u0442\u0440\u0443\u043a\u0446\u0438\u0438 \u043f\u043e \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u0438\u0440\u043e\u0432\u0430\u043d\u0438\u044e, \u0432\u043e\u043f\u0440\u043e\u0441\u044b \u043a \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u0438\u0441\u0442\u0430\u043c"
+        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBEbrkaCT8d2yxrz09tvkXWT21poRdkz1uFBgDX8XvT1SC0AqNez01.gif",
+        "description": "\u0417\u0434\u0435\u0441\u044c \u0441\u043a\u043b\u0430\u0434\u0438\u0440\u0443\u044e\u0442\u0441\u044f \u043e\u0442\u043e\u0431\u0440\u0430\u043d\u043d\u044b\u0435 \u0437\u043d\u0430\u043d\u0438\u044f \u0438\u0437 \u0440\u0430\u0437\u0434\u0435\u043b\u0430 Windows Phone. \u0414\u0430\u043d\u043d\u044b\u0439 \u043f\u043e\u0434\u0440\u0430\u0437\u0434\u0435\u043b \u0434\u043e\u0441\u0442\u0443\u043f\u0435\u043d \u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u0442\u0435\u043b\u044f\u043c \u0442\u043e\u043b\u044c\u043a\u043e \u0434\u043b\u044f \u0447\u0442\u0435\u043d\u0438\u044f."
     },
     {
         "id": "355",
@@ -4461,7 +4092,7 @@
         "isHasTopics": true,
         "isHasForums": true,
         "parentId": "607",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbLpUccQJ99JOWywhGqOPw5GG2JytjuypaWz1nrt.png",
+        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBEbrz15ge1HHY7m6W7xGIZaKahpc3j0GKO9Cz0Mz2S.png",
         "description": "\u041d\u0430\u0441\u0442\u0440\u043e\u0439\u043a\u0430 \u0438 \u043a\u043e\u043d\u0444\u0438\u0433\u0443\u0440\u0430\u0446\u0438\u044f \u0441\u0435\u0442\u0435\u0439. \u0412\u044b\u0431\u043e\u0440 \u0438 \u043e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432. "
     },
     {
