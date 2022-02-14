@@ -1,7 +1,5 @@
 package org.softeg.slartus.forpdaplus.core_db.forum
 
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import org.softeg.slartus.forpdaplus.core.db.ForumTable
 import org.softeg.slartus.forpdaplus.core.entities.Forum
 import javax.inject.Inject
@@ -9,15 +7,12 @@ import org.softeg.slartus.forpdaplus.core_db.forum.Forum as ForumDbItem
 
 class ForumTableImpl @Inject constructor(private val forumDao: ForumDao) : ForumTable {
     override suspend fun getAll(): List<Forum> {
-        return withContext(Dispatchers.IO) {
-            forumDao.getAll().map { it.mapToItem() }
-        }
+        return forumDao.getAll().map { it.mapToItem() }
+
     }
 
     override suspend fun merge(forums: List<Forum>) {
-        return withContext(Dispatchers.IO) {
-            forumDao.merge(forums.map { it.mapToDb() })
-        }
+        return forumDao.merge(forums.map { it.mapToDb() })
     }
 
     private data class ForumItem(

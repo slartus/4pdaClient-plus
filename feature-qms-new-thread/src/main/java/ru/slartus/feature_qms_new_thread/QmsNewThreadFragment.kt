@@ -53,7 +53,7 @@ class QmsNewThreadFragment :
 
     private fun subscribeToViewModel() {
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
                     viewModel.uiState.collect { state ->
                         onUiState(state)
