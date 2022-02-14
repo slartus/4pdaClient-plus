@@ -331,6 +331,15 @@
         "description": "\u041f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u044b \u0434\u043b\u044f \u0447\u0442\u0435\u043d\u0438\u044f, \u043c\u043e\u0431\u0438\u043b\u044c\u043d\u044b\u0435 \u043a\u0430\u0442\u0430\u043b\u043e\u0433\u0438 \u0438 \u0431\u0430\u0437\u044b \u0437\u043d\u0430\u043d\u0438\u0439, \u043e\u0431\u0443\u0447\u0430\u044e\u0449\u0438\u0435 \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u044b."
     },
     {
+        "id": "1157",
+        "title": "\u041f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u044b \u0443\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0438\u044f \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432\u0430\u043c\u0438",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "212",
+        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObHUz2CIVz0IwMf4Im4LmLsJz1Fz1z1HU8NNyAjMIdkz2Vgz2AqturL.gif",
+        "description": "\u041f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u044b \u0434\u043b\u044f \u0443\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0438\u044f \u0440\u0430\u0437\u043b\u0438\u0447\u043d\u044b\u043c\u0438 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432\u0430\u043c\u0438 - \u043e\u0442 \u043c\u0430\u0440\u0448\u0440\u0443\u0442\u0438\u0437\u0430\u0442\u043e\u0440\u0430 \u0434\u043e \u043f\u044b\u043b\u0435\u0441\u043e\u0441\u0430"
+    },
+    {
         "id": "321",
         "title": "\u041f\u0440\u043e\u0447\u0438\u0435 \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u044b",
         "isHasTopics": true,
@@ -2058,21 +2067,21 @@
     },
     {
         "id": "125",
-        "title": "SymbianOS - \u041f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u044b",
+        "title": "SymbianOS - \u041f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u044b \u0438 \u0418\u0433\u0440\u044b",
         "isHasTopics": true,
         "isHasForums": false,
         "parentId": "444",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBsLyReUglQZVYfPmFlINgJWs6UBkWTb5phPyLvJ.gif",
-        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u044f \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c \u0434\u043b\u044f SymbianOS"
+        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u044f \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c \u0438 \u0438\u0433\u0440 \u0434\u043b\u044f SymbianOS"
     },
     {
         "id": "126",
-        "title": "SymbianOS - \u0418\u0433\u0440\u044b",
+        "title": "SymbianOS - \u0410\u0440\u0445\u0438\u0432 \u0440\u0430\u0437\u0434\u0435\u043b\u0430",
         "isHasTopics": true,
         "isHasForums": false,
         "parentId": "444",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBsLyReUglQZVYfPmFlINgJWs6UBkWTb5phPyLvJ.gif",
-        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u044f \u0438 \u0438\u0433\u0440\u044b \u0434\u043b\u044f SymbianOS"
+        "description": "\u0410\u0440\u0445\u0438\u0432 \u0442\u0435\u043c \u0440\u0430\u0437\u0434\u0435\u043b\u0430 SymbianOS"
     },
     {
         "id": "547",
@@ -2080,7 +2089,7 @@
         "isHasTopics": true,
         "isHasForums": false,
         "parentId": "444",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObHAtATVoB9QSsSGioxO6cccn4PwRwLqgOrmz2SiRXmhQ5.gif",
+        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBEbreWoWDF2SusvPreUjSRDvz2CO1Hz1Oz2JMhz1O9z0NGtEbpxFKRU.gif",
         "description": null
     },
     {
