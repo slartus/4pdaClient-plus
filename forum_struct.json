@@ -1141,15 +1141,6 @@
         "description": "\u041f\u0440\u043e\u0448\u0438\u0432\u043a\u0438 \u0434\u043b\u044f \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432"
     },
     {
-        "id": "841",
-        "title": "Doogee",
-        "isHasTopics": true,
-        "isHasForums": false,
-        "parentId": "268",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObILxEBgz0b5OsPEdIRhFliz1Fz1z1nkGB1xcZju6TXCaaGj8Obz0.gif",
-        "description": "\u041f\u0440\u043e\u0448\u0438\u0432\u043a\u0438 \u0434\u043b\u044f \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432"
-    },
-    {
         "id": "864",
         "title": "Google",
         "isHasTopics": true,
