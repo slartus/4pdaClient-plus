@@ -19,15 +19,15 @@ public abstract class BaseBrickFragment extends GeneralFragment {
     public static final String TITLE_KEY = "TITLE_KEY";
     public static final String NEED_LOGIN_KEY = "NEED_LOGIN_KEY";
 
-    private String m_Title;
-    private String m_Name;
+    private String m_Title = "";
+    private String m_Name = "base";
     private Boolean m_NeedLogin = false;
 
     public BaseBrickFragment() {
         super();
     }
 
-    public BaseBrickFragment(@LayoutRes int contentLayoutId){
+    public BaseBrickFragment(@LayoutRes int contentLayoutId) {
         super(contentLayoutId);
     }
 
