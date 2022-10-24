@@ -1,21 +1,21 @@
 package org.softeg.slartus.forpdaplus.devdb;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import com.google.android.material.tabs.TabLayout;
-import androidx.viewpager.widget.ViewPager;
-
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.Nullable;
+import androidx.viewpager.widget.ViewPager;
+
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.android.material.tabs.TabLayout;
 
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
@@ -39,7 +39,6 @@ public class ParentFragment extends GeneralFragment {
     private int m_Position;
     private String m_Title;
 
-    private final int LAYOUT = R.layout.dev_db_parent_fragment;
     private ViewPager viewPager;
     private MaterialDialog dialog;
     private DevDbViewPagerAdapter adapter;
@@ -61,6 +60,7 @@ public class ParentFragment extends GeneralFragment {
         args.putString(TOOLBAR_TITLE, title);
         MainActivity.addTab(title, deviceId + " more", newInstance(args));
     }
+
     public static void showDevice(String deviceId) {
         Bundle args = new Bundle();
         args.putString(DEVICE_ID_KEY, deviceId);
@@ -90,11 +90,9 @@ public class ParentFragment extends GeneralFragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         menu.add(R.string.link)
-                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-                        ExtUrl.showSelectActionDialog(getMainActivity(), getString(R.string.link), m_DeviceId);
-                        return true;
-                    }
+                .setOnMenuItemClickListener(menuItem -> {
+                    ExtUrl.showSelectActionDialog(getMainActivity(), getString(R.string.link), m_DeviceId);
+                    return true;
                 });
     }
 
@@ -105,7 +103,7 @@ public class ParentFragment extends GeneralFragment {
 
         if (DevDbUtils.isAndroid5()) {
             getMainActivity().getAppBarLayout().setElevation(6);
-        }else {
+        } else {
             getMainActivity().getToolbarShadow().setVisibility(View.VISIBLE);
         }
     }
@@ -113,7 +111,7 @@ public class ParentFragment extends GeneralFragment {
     @Override
     public void onResume() {
         super.onResume();
-        if(DevDbUtils.isAndroid5())
+        if (DevDbUtils.isAndroid5())
             getMainActivity().getAppBarLayout().setElevation(0);
         else
             getMainActivity().getToolbarShadow().setVisibility(View.GONE);
@@ -123,6 +121,7 @@ public class ParentFragment extends GeneralFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 //        recLifeCycle(getClass(), CALL_TO_SUPER);
+        int LAYOUT = R.layout.dev_db_parent_fragment;
         view = inflater.inflate(LAYOUT, container, false);
 //        recLifeCycle(getClass(), RETURN_FROM_SUPER);
         getMainActivity().getToolbarShadow().setVisibility(View.GONE);
@@ -140,14 +139,6 @@ public class ParentFragment extends GeneralFragment {
         tabLayout.addTab(tabLayout.newTab().setText(R.string.firmwares));
         tabLayout.addTab(tabLayout.newTab().setText(R.string.prices));
         return view;
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-//        recLifeCycle(getClass(), CALL_TO_SUPER);
-        super.onViewCreated(view, savedInstanceState);
-//        recLifeCycle(getClass(), RETURN_FROM_SUPER);
-
     }
 
     @Override
@@ -200,7 +191,8 @@ public class ParentFragment extends GeneralFragment {
         int currentPosition = 0;
 
         @Override
-        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+        }
 
         @Override
         public void onPageSelected(int position) {
@@ -213,7 +205,8 @@ public class ParentFragment extends GeneralFragment {
         }
 
         @Override
-        public void onPageScrollStateChanged(int state) {}
+        public void onPageScrollStateChanged(int state) {
+        }
     };
 
     private void loading() {
@@ -224,7 +217,6 @@ public class ParentFragment extends GeneralFragment {
     public class HelperTask extends AsyncTask<String, Void, Boolean> {
 
         private Throwable ex;
-        private ParseHelper mParseHelper;
         private ParsedModel parsed;
 
         @Override
@@ -239,24 +231,24 @@ public class ParentFragment extends GeneralFragment {
         }
 
         protected void onPreExecute() {
-            dialog = new MaterialDialog.Builder(getActivity())
-                    .progress(true, 0)
-                    .cancelable(false)
-                    .content(R.string.loading)
-                    .build();
-            dialog.show();
+            Activity activity = getActivity();
+            if (activity != null) {
+                dialog = new MaterialDialog.Builder(activity)
+                        .progress(true, 0)
+                        .cancelable(false)
+                        .content(R.string.loading)
+                        .build();
+                dialog.show();
+            }
         }
 
         protected void onPostExecute(final Boolean success) {
+            if (dialog != null && dialog.isShowing()) {
+                dialog.dismiss();
+            }
             if (success) {
-                if (dialog.isShowing()) {
-                    dialog.dismiss();
-                }
                 initUI(parsed);
             } else {
-                if (dialog.isShowing()) {
-                    dialog.dismiss();
-                }
                 if (ex != null)
                     AppLog.e(App.getContext(), ex);
             }
