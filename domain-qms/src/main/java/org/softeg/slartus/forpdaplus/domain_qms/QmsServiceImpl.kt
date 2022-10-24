@@ -19,7 +19,7 @@ class QmsServiceImpl @Inject constructor(
         withContext(Dispatchers.IO) {
             val url = "https://${HostHelper.host}/forum/index.php?&act=qms-xhr&action=userlist"
             val pageBody = httpClient.performGet(url)
-            parseFactory.parse(url, pageBody, resultParserId) ?: emptyList()
+            parseFactory.parse<List<QmsContact>>(url, pageBody, resultParserId) ?: emptyList()
         }
 
     override suspend fun deleteContact(contactId: String) =
@@ -35,7 +35,7 @@ class QmsServiceImpl @Inject constructor(
     override suspend fun getQmsCount(resultParserId: String): Int = withContext(Dispatchers.IO) {
         val url = "https://${HostHelper.host}/about"
         val pageBody = httpClient.performGet(url)
-        parseFactory.parse(url, pageBody, resultParserId) ?: 0
+        parseFactory.parse<Int>(url, pageBody, resultParserId) ?: 0
     }
 
     override suspend fun getContactThreads(
@@ -45,20 +45,19 @@ class QmsServiceImpl @Inject constructor(
         withContext(Dispatchers.IO) {
             val url = "https://${HostHelper.host}/forum/index.php?act=qms&mid=$contactId"
             val pageBody = httpClient.performGet(url)
-            parseFactory.parse(url, pageBody, resultParserId) ?: emptyList()
+            parseFactory.parse<List<QmsThread>>(url, pageBody, resultParserId) ?: emptyList()
         }
 
     override suspend fun getContact(contactId: String, resultParserId: String): QmsContact? =
         withContext(Dispatchers.IO) {
             val url = "https://${HostHelper.host}/forum/index.php?&act=qms-xhr&action=userlist"
             val pageBody = httpClient.performGet(url)
-            parseFactory.parse(
+            return@withContext parseFactory.parse<QmsContact?>(
                 url,
                 pageBody,
                 resultParserId,
                 bundleOf(QmsService.ARG_CONTACT_ID to contactId)
             )
-            //QmsContactParser(contactId).parse(pageBody)
         }
 
     override suspend fun deleteThreads(contactId: String, threadIds: List<String>): Unit =
