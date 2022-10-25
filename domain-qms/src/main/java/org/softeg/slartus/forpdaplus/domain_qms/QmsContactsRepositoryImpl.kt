@@ -13,7 +13,8 @@ import javax.inject.Inject
 class QmsContactsRepositoryImpl @Inject constructor(
     private val qmsService: QmsService,
     private val qmsContactsTable: QmsContactsTable,
-    private val parser: Parser<QmsContacts>
+    private val qmsContactsParser: Parser<QmsContacts>,
+    private val qmsContactParser: Parser<QmsContact>
 ) :
     QmsContactsRepository {
 
@@ -23,7 +24,7 @@ class QmsContactsRepositoryImpl @Inject constructor(
 
     override suspend fun load() {
         _contacts.emit(qmsContactsTable.getAll())
-        val contacts = qmsService.getContacts(parser.id)
+        val contacts = qmsService.getContacts(qmsContactsParser.id)
 
         qmsContactsTable.insertAll(*contacts.toTypedArray())
         _contacts.emit(qmsContactsTable.getAll())
@@ -34,6 +35,6 @@ class QmsContactsRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getContact(contactId: String): QmsContact? {
-        return qmsContactsTable.findById(contactId) ?: qmsService.getContact(contactId, parser.id)
+        return qmsContactsTable.findById(contactId) ?: qmsService.getContact(contactId, qmsContactParser.id)
     }
 }

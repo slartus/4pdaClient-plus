@@ -129,7 +129,8 @@ class QmsContactThreadsViewModel @Inject constructor(
                 }
             }
             launch(SupervisorJob() + errorHandler + CoroutineName("qms_contact")) {
-                _contact.emit(qmsContactsRepository.getContact(contactId))
+                val contact = qmsContactsRepository.getContact(contactId)
+                _contact.emit(contact)
             }
         }
     }
