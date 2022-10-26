@@ -33,10 +33,10 @@ public class DbHelper extends SQLiteAssetHelper {
     }
 
     public static Date parseDateOrNull(String text) {
-        if (TextUtils.isEmpty(text))
+        if (text == null || TextUtils.isEmpty(text))
             return null;
         try {
-            return DateTimeFormat.parse(text);
+            return DateTimeFormat.parse(text.trim());
         } catch (Exception ex) {
             return null;
         }
