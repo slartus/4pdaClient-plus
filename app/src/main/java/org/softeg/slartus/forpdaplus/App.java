@@ -115,6 +115,8 @@ public class App extends MultiDexApplication {
         Client.getInstance().checkLoginByCookies();
         InternetConnection.getInstance().subscribeInternetState();
         ForumsRepository.getInstance().init(forumRepository);
+
+        QmsWidgetProvider.sendUpdateIntent(this);
     }
 
     private void initLocale() {

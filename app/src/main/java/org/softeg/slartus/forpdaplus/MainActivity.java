@@ -588,6 +588,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
     @Override
     public void onResume() {
         super.onResume();
+        QmsWidgetProvider.sendUpdateIntent(this);
         if (lang == null) {
             lang = getPreferences().getString("lang", "default");
         }

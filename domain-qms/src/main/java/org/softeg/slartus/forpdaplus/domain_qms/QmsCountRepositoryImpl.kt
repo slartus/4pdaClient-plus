@@ -14,9 +14,9 @@ class QmsCountRepositoryImpl @Inject constructor(
 ) :
     QmsCountRepository {
 
-    private val _count = MutableStateFlow(0)
-    override val count: Flow<Int>
-        get() = _count.asStateFlow()
+    private val _countFlow = MutableStateFlow(0)
+    override val countFlow: Flow<Int>
+        get() = _countFlow.asStateFlow()
 
     init {
         AppIOScope().launch {
@@ -34,7 +34,7 @@ class QmsCountRepositoryImpl @Inject constructor(
     }
 
     override suspend fun setCount(count: Int) {
-        _count.emit(count)
+        _countFlow.emit(count)
     }
 
 }

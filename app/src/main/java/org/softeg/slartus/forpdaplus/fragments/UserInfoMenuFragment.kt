@@ -1,5 +1,6 @@
 package org.softeg.slartus.forpdaplus.fragments
 
+import android.app.Application
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -16,7 +17,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.softeg.slartus.forpdaplus.*
-import org.softeg.slartus.forpdaplus.R
 import org.softeg.slartus.forpdaplus.common.AppLog
 import org.softeg.slartus.forpdaplus.core.entities.UserInfo
 import org.softeg.slartus.forpdaplus.core.repositories.QmsCountRepository
@@ -26,6 +26,7 @@ import org.softeg.slartus.forpdaplus.listfragments.mentions.MentionsListFragment
 import org.softeg.slartus.forpdaplus.listfragments.next.UserReputationFragment.Companion.showActivity
 import org.softeg.slartus.forpdaplus.listtemplates.QmsContactsBrickInfo
 import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class UserInfoMenuFragment : Fragment() {
@@ -169,7 +170,8 @@ class UserInfoMenuFragment : Fragment() {
 @HiltViewModel
 class UserInfoMenuViewModel @Inject constructor(
     private val userInfoRepository: UserInfoRepository,
-    private val qmsCountRepository: QmsCountRepository
+    private val qmsCountRepository: QmsCountRepository,
+    private val application: Application
 ) : ViewModel() {
     private val _uiState = MutableStateFlow<ViewState>(ViewState.Initialize)
     val uiState: StateFlow<ViewState> = _uiState
@@ -188,11 +190,12 @@ class UserInfoMenuViewModel @Inject constructor(
                     }
             }
             launch {
-                qmsCountRepository.count
+                qmsCountRepository.countFlow
                     .drop(1)
                     .distinctUntilChanged()
                     .collect {
                         userInfoRepository.setQmsCount(it)
+                        QmsWidgetProvider.sendUpdateIntent(application)
                     }
             }
         }
