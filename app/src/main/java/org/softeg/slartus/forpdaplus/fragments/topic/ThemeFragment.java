@@ -332,7 +332,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             menu.add(R.string.quote)
                     .setOnMenuItemClickListener(item -> {
                         webView.evalJs("htmlOutSelectionPostInfo();");
-                        actionMode.finish();
+                        mHandler.postDelayed(actionMode::finish, 300); // delay for wait while js catch selected text
                         return true;
                     })
                     .setShowAsActionFlags(MenuItem.SHOW_AS_ACTION_ALWAYS);

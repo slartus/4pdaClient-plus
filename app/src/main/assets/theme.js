@@ -552,20 +552,11 @@ function getSelectedText() {
     console.log("getSelectedText");
     var selectedText = null;
     if (window.getSelection) {
-        console.log("window.getSelection");
         var selection = window.getSelection();
-        selectedText = selection.toString()
+    } else if (document.getSelection) {
+        selection = document.getSelection();
+    } else if (document.selection) {
+        selection = document.selection;
     }
-    if (!selectedText && document.getSelection) {
-        console.log("document.getSelection");
-        var selection = document.getSelection();
-        selectedText = selection.toString()
-    }
-    if (!selectedText && document.selection && document.selection.type != "Control") {
-        console.log("document.selection");
-        var selection = document.selection;
-        var textRange = selection.createRange();
-        selectedText = textRange.text || selection.toString();
-    }
-    return selectedText || "";
+    return (selection && selection.rangeCount) ? selection.getRangeAt(0).toString() : "";
 };
