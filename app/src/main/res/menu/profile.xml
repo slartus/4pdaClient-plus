@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/start_message_item"
+        android:icon="@drawable/pencil"
+        android:title="@string/MessagesQms"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/reputation_item"
+        android:title="@string/Reputation"
+        app:showAsAction="never" />
+
+
+    <item
+        android:id="@+id/topics_item"
+        android:title="@string/topics"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/posts_item"
+        android:title="@string/posts"
+        app:showAsAction="never" />
+
+
+    <item
+        android:id="@+id/link_item"
+        android:title="@string/link"
+        app:showAsAction="never" />
+</menu>
