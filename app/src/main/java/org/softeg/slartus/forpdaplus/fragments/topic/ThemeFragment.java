@@ -328,8 +328,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         setHideArrows(Preferences.isHideArrows());
         webView.addJavascriptInterface(new ForPdaWebInterface(this), ForPdaWebInterface.NAME);
 
-        webView.setActionModeListener((actionMode, callback, type) -> {
-            Menu menu = actionMode.getMenu();
+        webView.setActionModeListener((actionMode, menu) -> {
             menu.add(R.string.quote)
                     .setOnMenuItemClickListener(item -> {
                         webView.evalJs("htmlOutSelectionPostInfo();");
