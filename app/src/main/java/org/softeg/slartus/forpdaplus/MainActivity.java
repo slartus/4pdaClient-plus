@@ -588,7 +588,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
     @Override
     public void onResume() {
         super.onResume();
-        QmsWidgetProvider.sendUpdateIntent(this);
+        QmsWidgetProvider.sendUpdateIntent(this.getApplicationContext());
         if (lang == null) {
             lang = getPreferences().getString("lang", "default");
         }
@@ -654,6 +654,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
     @Override
     protected void onPause() {
         super.onPause();
+        QmsWidgetProvider.sendUpdateIntent(this.getApplicationContext());
         activityPaused = true;
         if (!(String.valueOf(TabsManager.getInstance().getCurrentFragmentTag())).equals("null")) {
             Fragment fragment = getSupportFragmentManager().findFragmentByTag(TabsManager.getInstance().getCurrentFragmentTag());
