@@ -32,10 +32,14 @@ public class DbHelper extends SQLiteAssetHelper {
         new DbHelper(context, true);
     }
 
-    public static Date parseDate(String text) throws ParseException {
+    public static Date parseDateOrNull(String text) {
         if (TextUtils.isEmpty(text))
             return null;
-        return DateTimeFormat.parse(text);
+        try {
+            return DateTimeFormat.parse(text);
+        } catch (Exception ex) {
+            return null;
+        }
     }
 
     public static String getDateString(Date date) {

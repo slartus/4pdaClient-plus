@@ -82,13 +82,7 @@ public class TopicsHistoryTable {
                     Forum f = ForumsRepository.getInstance().findById(forumId);
                     if (f != null)
                         forumTitle = f.getTitle();
-                    Date dateTime = null;
-                    try {
-                        dateTime = DbHelper.parseDate(c.getString(columnDateTimeIndex));
-                    } catch (ParseException e) {
-                        AppLog.e(App.getContext(), e);
-                    }
-
+                    Date dateTime = DbHelper.parseDateOrNull(c.getString(columnDateTimeIndex));
                     HistoryTopic topic = new HistoryTopic(id, title, url);
                     topic.setDescription(description);
                     topic.setForumId(forumId);
