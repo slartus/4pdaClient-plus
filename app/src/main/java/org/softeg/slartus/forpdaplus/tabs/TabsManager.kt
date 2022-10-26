@@ -59,7 +59,7 @@ class TabsManager {
         return false
     }
 
-    fun isContainsByUrl(url: String): Boolean {
+    fun isContainsByUrl(url: String?): Boolean {
         for (item in getTabItems()) if (item.url == url) return true
         return false
     }
