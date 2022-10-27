@@ -30,7 +30,7 @@ class MentionsCountParser @Inject constructor() : Parser<MentionsCount> {
     companion object {
         private val pattern by lazy {
             Pattern.compile(
-                """\Wact=mentions[^"]*"[^"]*\sdata-count="(\d+)""""",
+                """\Wact=mentions[^"]*"[^"]*\sdata-count="(\d+)"""",
                 Pattern.CASE_INSENSITIVE
             )
         }

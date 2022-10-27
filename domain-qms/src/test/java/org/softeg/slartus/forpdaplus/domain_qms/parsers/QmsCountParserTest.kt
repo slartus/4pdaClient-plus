@@ -10,21 +10,21 @@ class QmsCountParserTest {
         val parser = QmsCountParser()
         assertEquals(
             runBlocking {
-                parser.parse("<a href=\"//4pda.to/forum/index.php?act=qms&amp;\" id=\"events-count\" data-count=\"3\">Сообщений: 3</a>")
+                parser.parse("<a href=\"//4pda.to/forum/index.php?act=qms&amp;\" id=\"events-count\" data-count=\"3\">Сообщений: 3</a>").count
             },
             3
         )
 
         assertEquals(
             runBlocking {
-                parser.parse("<a href=\"//4pda.to/forum/index.php?act=qms&amp;\" id=\"events-count\">Сообщений: 3</a>")
+                parser.parse("<a href=\"//4pda.to/forum/index.php?act=qms&amp;\" id=\"events-count\">Сообщений: 3</a>").count
             },
             3
         )
 
         assertEquals(
             runBlocking {
-                parser.parse("<span id=\"events-count\" href=\"//4pda.to/forum/index.php?act=qms&amp;code=no\" target=\"_blank\" data-count=\"3\">3</span>")
+                parser.parse("<span id=\"events-count\" href=\"//4pda.to/forum/index.php?act=qms&amp;code=no\" target=\"_blank\" data-count=\"3\">3</span>").count
             },
             3
         )

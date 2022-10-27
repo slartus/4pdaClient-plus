@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:theme="@style/Theme.4pdaClientplus.AppWidgetContainer">
 
-    <LinearLayout
+    <RelativeLayout
         style="@style/Widget.4pdaClientplus.AppWidget.InnerView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -20,11 +20,13 @@
 
         <ImageView
             android:id="@+id/info_icon"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
             android:src="@drawable/notify_icon" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <ProgressBar
         android:id="@+id/progress_view"
