@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "qms_contacts")
 data class QmsContact(
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     val id: Long,
     val nick: String? = null,
     val avatarUrl: String? = null,

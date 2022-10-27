@@ -9,7 +9,8 @@ import org.softeg.slartus.forpdaplus.core_db.qms_contacts.QmsContact
 import org.softeg.slartus.forpdaplus.core_db.qms_contacts.QmsContactsDao
 
 @Database(
-    entities = [Forum::class, QmsContact::class], version = 5
+    entities = [Forum::class, QmsContact::class],
+    version = 6
 )
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {

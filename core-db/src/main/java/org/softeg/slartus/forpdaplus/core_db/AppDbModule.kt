@@ -25,7 +25,7 @@ class AppDbModule {
     fun provideDb(@ApplicationContext app: Context): AppDatabase {
         return Room
             .databaseBuilder(app, AppDatabase::class.java, AppDatabase.NAME)
-            //.addMigrations(MIGRATION_1_2)
+            .addMigrations(MIGRATION_5_6)
             .fallbackToDestructiveMigration()
             .build()
     }
