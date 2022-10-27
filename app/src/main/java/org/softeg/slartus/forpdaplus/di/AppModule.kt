@@ -13,9 +13,7 @@ import org.softeg.slartus.forpdaplus.core.AppActions
 import org.softeg.slartus.forpdaplus.core.AppPreferences
 import org.softeg.slartus.forpdaplus.core.ForumPreferences
 import org.softeg.slartus.forpdaplus.core.QmsPreferences
-import org.softeg.slartus.forpdaplus.core.entities.QmsContact
-import org.softeg.slartus.forpdaplus.core.entities.QmsContacts
-import org.softeg.slartus.forpdaplus.core.entities.QmsThreads
+import org.softeg.slartus.forpdaplus.core.entities.*
 import org.softeg.slartus.forpdaplus.core.interfaces.ParseFactory
 import org.softeg.slartus.forpdaplus.core.interfaces.Parser
 import org.softeg.slartus.forpdaplus.core.repositories.UserInfoRepository
@@ -43,13 +41,11 @@ class AppModule {
     @Singleton
     fun provideParseFactoryImpl(
         qmsContactsParser: Parser<QmsContacts>,
-        qmsCountParser: Parser<Int>,
         qmsContactParser: Parser<QmsContact>,
-        qmsThreadsParser: Parser<QmsThreads>,
+        qmsThreadsParser: Parser<QmsThreads>
     ): ParseFactory =
         ParseFactoryImpl.Builder()
             .add(qmsContactsParser)
-            .add(qmsCountParser)
             .add(qmsContactParser)
             .add(qmsThreadsParser)
             .build()

@@ -18,25 +18,11 @@
         android:minHeight="48dp"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:includeFontPadding="false"
-            android:text="qms"
-            android:textColor="#fff"
-            android:textSize="12sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/qms_count_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:includeFontPadding="false"
-            android:textColor="#fff"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            tools:text="0" />
+        <ImageView
+            android:id="@+id/info_icon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/notify_icon" />
 
     </LinearLayout>
 

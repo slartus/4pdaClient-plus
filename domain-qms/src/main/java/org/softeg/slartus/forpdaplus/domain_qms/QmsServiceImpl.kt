@@ -4,6 +4,7 @@ import androidx.core.os.bundleOf
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.softeg.slartus.forpdaplus.core.entities.QmsContact
+import org.softeg.slartus.forpdaplus.core.entities.QmsCount
 import org.softeg.slartus.forpdaplus.core.entities.QmsThread
 import org.softeg.slartus.forpdaplus.core.interfaces.ParseFactory
 import org.softeg.slartus.forpdaplus.core.services.AppHttpClient
@@ -35,7 +36,7 @@ class QmsServiceImpl @Inject constructor(
     override suspend fun getQmsCount(resultParserId: String): Int = withContext(Dispatchers.IO) {
         val url = "https://${HostHelper.host}/about"
         val pageBody = httpClient.performGet(url)
-        parseFactory.parse<Int>(url, pageBody, resultParserId) ?: 0
+        parseFactory.parse<QmsCount>(url, pageBody, resultParserId)?.count ?: 0
     }
 
     override suspend fun getContactThreads(

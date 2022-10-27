@@ -5,18 +5,13 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.components.SingletonComponent
-import org.softeg.slartus.forpdaplus.core.entities.QmsContact
-import org.softeg.slartus.forpdaplus.core.entities.QmsContacts
-import org.softeg.slartus.forpdaplus.core.entities.QmsThreads
+import org.softeg.slartus.forpdaplus.core.entities.*
 import org.softeg.slartus.forpdaplus.core.interfaces.Parser
 import org.softeg.slartus.forpdaplus.core.repositories.QmsContactsRepository
 import org.softeg.slartus.forpdaplus.core.repositories.QmsCountRepository
 import org.softeg.slartus.forpdaplus.core.repositories.QmsThreadsRepository
 import org.softeg.slartus.forpdaplus.core.services.QmsService
-import org.softeg.slartus.forpdaplus.domain_qms.parsers.QmsContactParser
-import org.softeg.slartus.forpdaplus.domain_qms.parsers.QmsContactsParser
-import org.softeg.slartus.forpdaplus.domain_qms.parsers.QmsCountParser
-import org.softeg.slartus.forpdaplus.domain_qms.parsers.QmsThreadsParser
+import org.softeg.slartus.forpdaplus.domain_qms.parsers.*
 import javax.inject.Singleton
 
 @Suppress("unused")
@@ -41,7 +36,11 @@ interface DomainQmsModule {
 
     @Binds
     @Singleton
-    fun provideQmsCountParser(parser: QmsCountParser): Parser<Int>
+    fun provideQmsCountParser(parser: QmsCountParser): Parser<QmsCount>
+
+    @Binds
+    @Singleton
+    fun provideMentionsCountParser(parser: MentionsCountParser): Parser<MentionsCount>
 
     @Binds
     @Singleton

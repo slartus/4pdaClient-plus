@@ -12,12 +12,14 @@ import android.widget.RemoteViews
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.softeg.slartus.forpdanotifyservice.R
+import org.softeg.slartus.forpdaplus.core.entities.MentionsCount
+import org.softeg.slartus.forpdaplus.core.entities.QmsCount
 import org.softeg.slartus.forpdaplus.core.interfaces.Parser
+import org.softeg.slartus.forpdaplus.core.services.AppHttpClient
 import org.softeg.slartus.forpdaplus.core.services.QmsService
 import org.softeg.slartus.forpdaplus.core_lib.coroutines.AppMainScope
+import org.softeg.slartus.hosthelper.HostHelper
 import javax.inject.Inject
-
 
 @AndroidEntryPoint
 class QmsWidgetProvider : AppWidgetProvider() {
@@ -27,7 +29,13 @@ class QmsWidgetProvider : AppWidgetProvider() {
     lateinit var qmsService: QmsService
 
     @Inject
-    lateinit var qmsCountParser: Parser<Int>
+    lateinit var qmsCountParser: Parser<QmsCount>
+
+    @Inject
+    lateinit var mentionsCountParser: Parser<MentionsCount>
+
+    @Inject
+    lateinit var httpClient: AppHttpClient
 
     override fun onUpdate(
         context: Context,
@@ -57,9 +65,7 @@ class QmsWidgetProvider : AppWidgetProvider() {
         }
         scope.launch(Dispatchers.IO) {
             kotlin.runCatching {
-                val unreadCount = qmsService.getQmsCount(qmsCountParser.id)
-
-                views.setTextViewText(R.id.qms_count_text, unreadCount.toString())
+                views.setImageViewResource(R.id.info_icon, getUserIconRes())
             }.onFailure {
                 views.setViewVisibility(R.id.progress_view, View.GONE)
                 appWidgetManager.updateAppWidget(appWidgetId, views)
@@ -72,6 +78,22 @@ class QmsWidgetProvider : AppWidgetProvider() {
             }
         }
         appWidgetManager.updateAppWidget(appWidgetId, views)
+    }
+
+    private suspend fun getUserIconRes(): Int {
+        val logged = Client.getInstance().logined
+        return if (logged) {
+            val url = "https://${HostHelper.host}/about"
+            val pageBody = httpClient.performGet(url)
+            val qmsCount = qmsCountParser.parse(pageBody)
+            val mentionsCount = mentionsCountParser.parse(pageBody)
+            if ((qmsCount?.count ?: 0) > 0 || (mentionsCount?.count ?: 0) > 0)
+                R.drawable.message_text
+            else
+                R.drawable.account
+        } else {
+            R.drawable.account_outline
+        }
     }
 
     companion object {

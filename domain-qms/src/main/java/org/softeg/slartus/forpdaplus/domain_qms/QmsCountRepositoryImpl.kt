@@ -2,6 +2,7 @@ package org.softeg.slartus.forpdaplus.domain_qms
 
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import org.softeg.slartus.forpdaplus.core.entities.QmsCount
 import org.softeg.slartus.forpdaplus.core.interfaces.Parser
 import org.softeg.slartus.forpdaplus.core.repositories.QmsCountRepository
 import org.softeg.slartus.forpdaplus.core.services.QmsService
@@ -10,7 +11,7 @@ import javax.inject.Inject
 
 class QmsCountRepositoryImpl @Inject constructor(
     private val qmsService: QmsService,
-    private val qmsCountParser: Parser<Int>
+    private val qmsCountParser: Parser<QmsCount>
 ) :
     QmsCountRepository {
 
@@ -23,8 +24,8 @@ class QmsCountRepositoryImpl @Inject constructor(
             qmsCountParser.data
                 .drop(1)
                 .distinctUntilChanged()
-                .collect { count ->
-                    setCount(count)
+                .collect { item ->
+                    setCount(item.count ?: 0)
                 }
         }
     }
