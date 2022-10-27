@@ -1,7 +1,5 @@
 package org.softeg.slartus.forpdaplus.feature_qms_contacts.ui
 
-import android.widget.Toast
-import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -11,7 +9,6 @@ import kotlinx.coroutines.launch
 import org.softeg.slartus.forpdaplus.core.AppPreferences
 import org.softeg.slartus.forpdaplus.core.QmsPreferences
 import org.softeg.slartus.forpdaplus.core.repositories.QmsContactsRepository
-import org.softeg.slartus.forpdaplus.core_lib.ui.adapter.Item
 import org.softeg.slartus.forpdaplus.feature_qms_contacts.R
 import org.softeg.slartus.forpdaplus.feature_qms_contacts.ui.fingerprints.QmsContactItem
 import javax.inject.Inject
@@ -32,14 +29,14 @@ class QmsContactsViewModel @Inject constructor(
     }
 
     private val errorHandler = CoroutineExceptionHandler { _, ex ->
-        _events.value = Event.Error(ex)
+        _events.value = QmsContactsAction.Error(ex)
     }
 
-    private val _events = MutableStateFlow<Event>(Event.Empty)
-    val events: StateFlow<Event> = _events.asStateFlow()
+    private val _events = MutableStateFlow<QmsContactsAction>(QmsContactsAction.Empty)
+    val events: StateFlow<QmsContactsAction> = _events.asStateFlow()
 
-    private val _uiState = MutableStateFlow<UiState>(UiState.Initialize)
-    val uiState: StateFlow<UiState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow(QmsContactsState())
+    val uiState: StateFlow<QmsContactsState> = _uiState.asStateFlow()
 
     private val _loading = MutableStateFlow(true)
     val loading: StateFlow<Boolean> = _loading.asStateFlow()
@@ -60,7 +57,7 @@ class QmsContactsViewModel @Inject constructor(
                             )
                         }
 
-                        _uiState.emit(UiState.Items(contacts))
+                        _uiState.emit(_uiState.value.copy(items = contacts, filteredItems = contacts))
                     }
             }
         }
@@ -72,7 +69,7 @@ class QmsContactsViewModel @Inject constructor(
 
     fun onEventReceived() {
         viewModelScope.launch(errorHandler) {
-            _events.emit(Event.Empty)
+            _events.emit(QmsContactsAction.Empty)
         }
     }
 
@@ -91,35 +88,28 @@ class QmsContactsViewModel @Inject constructor(
         viewModelScope.launch(errorHandler) {
             try {
                 qmsContactsRepository.deleteContact(item.id)
-                _events.emit(Event.ShowToast(R.string.contact_deleted))
+                _events.emit(QmsContactsAction.ShowToast(R.string.contact_deleted))
             } finally {
                 reload()
             }
         }
     }
 
-    fun onHiddenChanged(hidden: Boolean) {
+    fun obtainEvent(event: QmsContactsEvent) = when (event) {
+        is QmsContactsEvent.HiddenChanged -> onHiddenChanged(event.hidden)
+
+        is QmsContactsEvent.OnSearchTextChanged -> handleOnSearchTextChanged(event.text)
+    }
+
+    private fun onHiddenChanged(hidden: Boolean) {
         if (!hidden) {
             reload()
         }
     }
 
-    sealed class UiState {
-        object Initialize : UiState()
-        data class Items(val items: List<Item>) : UiState()
-    }
-
-    sealed class Event {
-        object Empty : Event()
-        data class Error(val exception: Throwable) : Event()
-        data class ShowToast(
-            @StringRes val resId: Int,// maybe need use enum for clear model
-            val duration: Int = Toast.LENGTH_SHORT
-        ) : Event()
-
-    }
-
-    enum class AccentColor {
-        Standard, Blue, Gray
+    private fun handleOnSearchTextChanged(text: String) {
+        _uiState.value = _uiState.value.copy(
+            filteredItems = _uiState.value.items.filter { text.isEmpty() || it.nick.contains(text, ignoreCase = true) }
+        )
     }
 }

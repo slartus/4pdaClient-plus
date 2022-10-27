@@ -66,7 +66,7 @@ class UserInfoMenuFragment : Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.user, menu)
         guestMenuItem = menu.findItem(R.id.guest_item)
-        userMenuItem = menu.findItem(R.id.user_item)
+        userMenuItem = menu.findItem(R.id.menu_item_profile)
         qmsMenuItem = menu.findItem(R.id.qms_item)
         mentionsMenuItem = menu.findItem(R.id.mentions_item)
     }

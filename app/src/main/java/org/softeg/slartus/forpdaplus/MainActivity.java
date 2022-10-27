@@ -820,7 +820,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
             case R.id.tabs_item:
                 mTabDraweMenu.toggleOpenState();
                 return true;
-            case R.id.search_item:
+            case R.id.menu_item_forum_search:
                 SearchSettingsDialogFragment.showSearchSettingsDialog(MainActivity.this, getSearchSettings());
                 return true;
             case R.id.exit_item:

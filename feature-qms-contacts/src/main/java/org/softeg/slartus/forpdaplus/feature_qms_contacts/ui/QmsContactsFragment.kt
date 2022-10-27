@@ -1,9 +1,8 @@
 package org.softeg.slartus.forpdaplus.feature_qms_contacts.ui
 
 import android.os.Bundle
-import android.view.ContextMenu
-import android.view.Menu
-import android.view.View
+import android.view.*
+import android.widget.SearchView
 import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.core.view.isVisible
@@ -25,6 +24,7 @@ import org.softeg.slartus.forpdaplus.feature_qms_contacts.ui.fingerprints.QmsCon
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Provider
+
 
 @AndroidEntryPoint
 class QmsContactsFragment :
@@ -57,6 +57,40 @@ class QmsContactsFragment :
         binding.contactsRecyclerView.adapter = contactsAdapter
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_qms_contacts, menu)
+
+
+        menu.findItem(R.id.menu_item_forum_search).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER)
+
+        val searchViewItem = menu.findItem(R.id.qms_contacts_search_item)
+        val searchView: SearchView = searchViewItem.actionView as SearchView
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                searchView.clearFocus()
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                viewModel.obtainEvent(QmsContactsEvent.OnSearchTextChanged(newText.orEmpty()))
+                return true
+            }
+        })
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.qms_contacts_search_item -> {
+                item.actionView.requestFocus()
+                true
+            }
+            else -> {
+                return super.onOptionsItemSelected(item)
+            }
+        }
+    }
+
     override fun onCreateContextMenu(
         menu: ContextMenu,
         v: View,
@@ -77,7 +111,7 @@ class QmsContactsFragment :
 
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
-        viewModel.onHiddenChanged(hidden)
+        viewModel.obtainEvent(QmsContactsEvent.HiddenChanged(hidden))
     }
 
     private fun subscribeToViewModel() {
@@ -102,31 +136,24 @@ class QmsContactsFragment :
         }
     }
 
-    private fun onEvent(event: QmsContactsViewModel.Event) {
+    private fun onEvent(event: QmsContactsAction) {
         viewModel.onEventReceived()
         when (event) {
-            is QmsContactsViewModel.Event.Error -> {
+            is QmsContactsAction.Error -> {
                 Timber.e(event.exception)
             }
-            is QmsContactsViewModel.Event.ShowToast -> {
+            is QmsContactsAction.ShowToast -> {
                 Toast.makeText(requireContext(), event.resId, event.duration).show()
             }
-            QmsContactsViewModel.Event.Empty -> {
+            QmsContactsAction.Empty -> {
                 // ignore
             }
         }
     }
 
-    private fun onUiState(state: QmsContactsViewModel.UiState) {
-        when (state) {
-            QmsContactsViewModel.UiState.Initialize -> {
-                // nothing
-            }
-            is QmsContactsViewModel.UiState.Items -> {
-                contactsAdapter?.submitList(state.items)
-                binding.emptyTextView.isVisible = state.items.isEmpty()
-            }
-        }
+    private fun onUiState(state: QmsContactsState) {
+        contactsAdapter?.submitList(state.filteredItems)
+        binding.emptyTextView.isVisible = state.filteredItems.isEmpty()
     }
 
     private fun setLoading(loading: Boolean) {
@@ -163,8 +190,8 @@ class QmsContactsFragment :
     @DrawableRes
     private fun getAccentBackgroundRes(): Int {
         return when (viewModel.accentColor) {
-            QmsContactsViewModel.AccentColor.Blue -> R.drawable.qmsnewblue
-            QmsContactsViewModel.AccentColor.Gray -> R.drawable.qmsnewgray
+            AccentColor.Blue -> R.drawable.qmsnewblue
+            AccentColor.Gray -> R.drawable.qmsnewgray
             else -> R.drawable.qmsnew
         }
     }

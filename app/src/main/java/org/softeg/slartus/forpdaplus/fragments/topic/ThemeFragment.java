@@ -447,7 +447,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         menu.findItem(R.id.hide_arrows_item).setChecked(Preferences.isHideArrows());
         menu.findItem(R.id.loading_img_for_session_item).setChecked(getLoadsImagesAutomatically());
         menu.findItem(R.id.multi_moderation_item).setVisible(Preferences.System.isCurator());
-        menu.findItem(R.id.search_item).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+        menu.findItem(R.id.menu_item_forum_search).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
     }
 
     @SuppressLint("NonConstantResourceId")
