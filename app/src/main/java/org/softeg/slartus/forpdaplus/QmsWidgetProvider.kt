@@ -81,18 +81,20 @@ class QmsWidgetProvider : AppWidgetProvider() {
     }
 
     private suspend fun getUserIconRes(): Int {
-        val logged = Client.getInstance().logined
-        return if (logged) {
-            val url = "https://${HostHelper.host}/about"
-            val pageBody = httpClient.performGet(url)
-            val qmsCount = qmsCountParser.parse(pageBody)
-            val mentionsCount = mentionsCountParser.parse(pageBody)
-            if ((qmsCount?.count ?: 0) > 0 || (mentionsCount?.count ?: 0) > 0)
-                R.drawable.message_text
-            else
-                R.drawable.account
-        } else {
-            R.drawable.account_outline
+        val url = "https://${HostHelper.host}/about"
+        val pageBody = httpClient.performGet(url)
+
+        val qmsCount = qmsCountParser.parse(pageBody)?.count
+        val mentionsCount = mentionsCountParser.parse(pageBody)?.count
+
+        val logined = Client.getInstance().logined
+
+        return when {
+            qmsCount != null && qmsCount > 0 -> R.drawable.message_text
+            mentionsCount != null && mentionsCount > 0 -> R.drawable.message_text
+            qmsCount == 0 && mentionsCount == 0 -> R.drawable.account
+            logined -> R.drawable.account
+            else -> R.drawable.account_outline
         }
     }
 

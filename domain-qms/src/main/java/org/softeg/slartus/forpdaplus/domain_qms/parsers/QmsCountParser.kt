@@ -12,7 +12,7 @@ class QmsCountParser @Inject constructor() : Parser<QmsCount> {
     override val id: String
         get() = QmsCountParser::class.java.simpleName
 
-    private val _data = MutableStateFlow(QmsCount(0))
+    private val _data = MutableStateFlow(QmsCount())
     override val data
         get() = _data.asStateFlow()
 
@@ -21,11 +21,11 @@ class QmsCountParser @Inject constructor() : Parser<QmsCount> {
     }
 
     override suspend fun parse(page: String, args: Bundle?): QmsCount {
-        var result = QmsCount(0)
+        var result = QmsCount()
         listOf(pattern, pattern2).forEach {
             val m = it.matcher(page)
             if (m.find()) {
-                result = QmsCount(m.group(1)?.toIntOrNull() ?: 0)
+                result = QmsCount(m.group(1)?.toIntOrNull())
                 _data.emit(result)
             }
         }
