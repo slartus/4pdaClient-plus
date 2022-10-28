@@ -77,7 +77,6 @@ class QmsWidgetProvider : AppWidgetProvider() {
                 appWidgetManager.updateAppWidget(appWidgetId, views)
             }
         }
-        appWidgetManager.updateAppWidget(appWidgetId, views)
     }
 
     private suspend fun getUserIconRes(): Int {
