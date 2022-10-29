@@ -16,7 +16,7 @@ import org.softeg.slartus.forpdaplus.core.entities.SearchSettings
 import ru.softeg.slartus.forum.api.ForumRepository
 import org.softeg.slartus.forpdaplus.core.repositories.UserInfoRepository
 import org.softeg.slartus.forpdaplus.core_lib.ui.adapter.Item
-import org.softeg.slartus.forpdaplus.impl.R
+import org.softeg.slartus.forpdaplus.forum.impl.R
 import org.softeg.slartus.forpdaplus.forum.impl.entities.ForumItem
 import org.softeg.slartus.forpdaplus.forum.impl.ui.fingerprints.CrumbItem
 import org.softeg.slartus.forpdaplus.forum.impl.ui.fingerprints.ForumDataItem

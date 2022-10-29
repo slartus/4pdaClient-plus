@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.DiffUtil
 import org.softeg.slartus.forpdaplus.core_lib.ui.adapter.BaseViewHolder
 import org.softeg.slartus.forpdaplus.core_lib.ui.adapter.Item
 import org.softeg.slartus.forpdaplus.core_lib.ui.adapter.ItemFingerprint
-import org.softeg.slartus.forpdaplus.qms.R
-import org.softeg.slartus.forpdaplus.qms.databinding.LayoutQmsThreadItemBinding
+import org.softeg.slartus.forpdaplus.qms.impl.R
+import org.softeg.slartus.forpdaplus.qms.impl.databinding.LayoutQmsThreadItemBinding
 
 class QmsThreadFingerprint(
     @DrawableRes

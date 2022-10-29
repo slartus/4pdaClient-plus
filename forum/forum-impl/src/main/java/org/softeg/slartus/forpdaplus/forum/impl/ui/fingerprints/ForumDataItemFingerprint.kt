@@ -10,9 +10,9 @@ import coil.load
 import org.softeg.slartus.forpdaplus.core_lib.ui.adapter.BaseViewHolder
 import org.softeg.slartus.forpdaplus.core_lib.ui.adapter.Item
 import org.softeg.slartus.forpdaplus.core_lib.ui.adapter.ItemFingerprint
+import org.softeg.slartus.forpdaplus.forum.impl.R
+import org.softeg.slartus.forpdaplus.forum.impl.databinding.LayoutForumBinding
 
-import org.softeg.slartus.forpdaplus.impl.R
-import org.softeg.slartus.forpdaplus.impl.databinding.LayoutForumBinding
 
 class ForumDataItemFingerprint(
     private val showImages: Boolean,

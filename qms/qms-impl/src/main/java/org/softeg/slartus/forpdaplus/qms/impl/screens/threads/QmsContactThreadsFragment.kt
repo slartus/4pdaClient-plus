@@ -23,8 +23,8 @@ import kotlinx.coroutines.launch
 import org.softeg.slartus.forpdaplus.core.AppActions
 import org.softeg.slartus.forpdaplus.core.interfaces.IOnBackPressed
 import org.softeg.slartus.forpdaplus.core_lib.ui.fragments.BaseFragment
-import org.softeg.slartus.forpdaplus.qms.R
-import org.softeg.slartus.forpdaplus.qms.databinding.FragmentQmsContactThreadsBinding
+import org.softeg.slartus.forpdaplus.qms.impl.R
+import org.softeg.slartus.forpdaplus.qms.impl.databinding.FragmentQmsContactThreadsBinding
 import org.softeg.slartus.forpdaplus.qms.impl.screens.threads.fingerprints.QmsThreadFingerprint
 import org.softeg.slartus.forpdaplus.qms.impl.screens.threads.fingerprints.QmsThreadSelectableFingerprint
 import timber.log.Timber

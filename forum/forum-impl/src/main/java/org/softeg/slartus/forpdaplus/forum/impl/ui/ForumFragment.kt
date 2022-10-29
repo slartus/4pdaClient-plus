@@ -20,11 +20,11 @@ import org.softeg.slartus.forpdaplus.core.interfaces.IOnBackPressed
 import org.softeg.slartus.forpdaplus.core.interfaces.SearchSettingsListener
 import org.softeg.slartus.forpdaplus.core_lib.ui.adapter.FingerprintAdapter
 import org.softeg.slartus.forpdaplus.core_lib.ui.fragments.BaseFragment
+import org.softeg.slartus.forpdaplus.forum.impl.R
+import org.softeg.slartus.forpdaplus.forum.impl.databinding.ForumFragmentBinding
 import org.softeg.slartus.forpdaplus.forum.impl.ui.fingerprints.CrumbFingerprint
 import org.softeg.slartus.forpdaplus.forum.impl.ui.fingerprints.ForumDataItemFingerprint
 import org.softeg.slartus.forpdaplus.forum.impl.ui.fingerprints.TopicsItemItemFingerprint
-import org.softeg.slartus.forpdaplus.impl.R
-import org.softeg.slartus.forpdaplus.impl.databinding.ForumFragmentBinding
 import timber.log.Timber
 import javax.inject.Inject
 

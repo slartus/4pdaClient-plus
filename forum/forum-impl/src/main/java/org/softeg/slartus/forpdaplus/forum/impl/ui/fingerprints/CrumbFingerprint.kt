@@ -7,8 +7,8 @@ import androidx.recyclerview.widget.DiffUtil
 import org.softeg.slartus.forpdaplus.core_lib.ui.adapter.BaseViewHolder
 import org.softeg.slartus.forpdaplus.core_lib.ui.adapter.Item
 import org.softeg.slartus.forpdaplus.core_lib.ui.adapter.ItemFingerprint
-import org.softeg.slartus.forpdaplus.impl.R
-import org.softeg.slartus.forpdaplus.impl.databinding.LayoutCrumbBinding
+import org.softeg.slartus.forpdaplus.forum.impl.R
+import org.softeg.slartus.forpdaplus.forum.impl.databinding.LayoutCrumbBinding
 
 class CrumbFingerprint(
     private val onClickListener: (view: View?, item: CrumbItem) -> Unit,
