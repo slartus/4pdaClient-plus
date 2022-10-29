@@ -3,7 +3,6 @@ package org.softeg.slartus.forpdaplus.prefs
 import android.app.TimePickerDialog
 import android.content.ActivityNotFoundException
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
@@ -14,8 +13,6 @@ import android.os.Bundle
 import android.os.Environment
 import android.preference.Preference
 import android.preference.PreferenceFragment
-import androidx.fragment.app.FragmentManager
-import androidx.appcompat.app.AlertDialog
 import android.text.*
 import android.view.LayoutInflater
 import android.view.View
@@ -23,7 +20,7 @@ import android.view.ViewGroup
 import android.widget.*
 import com.afollestad.materialdialogs.DialogAction
 import com.afollestad.materialdialogs.MaterialDialog
-import org.softeg.slartus.forpdacommon.ExternalStorage
+import kotlinx.android.synthetic.main.device_edit.*
 import org.softeg.slartus.forpdacommon.FileUtils
 import org.softeg.slartus.forpdacommon.NotReportException
 import org.softeg.slartus.forpdaplus.App
@@ -34,9 +31,6 @@ import org.softeg.slartus.forpdaplus.R
 import org.softeg.slartus.forpdaplus.classes.FilePath
 import org.softeg.slartus.forpdaplus.classes.InputFilterMinMax
 import org.softeg.slartus.forpdaplus.common.AppLog
-import org.softeg.slartus.forpdaplus.controls.OpenFileDialog
-import org.softeg.slartus.forpdaplus.db.NotesDbHelper
-import org.softeg.slartus.forpdaplus.db.NotesTable
 import org.softeg.slartus.forpdaplus.fragments.base.ProgressDialog
 import org.softeg.slartus.forpdaplus.fragments.topic.ThemeFragment
 import org.softeg.slartus.forpdaplus.listtemplates.ListCore
@@ -67,10 +61,20 @@ class PreferencesActivity : BasePreferencesActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
-        if (resultCode == RESULT_OK) if (requestCode == NOTIFIERS_SERVICE_SOUND_REQUEST_CODE) {
-            val uri = intent?.getParcelableExtra<Uri>(RingtoneManager.EXTRA_RINGTONE_PICKED_URI)
-            Preferences.Notifications.sound = uri
-        }
+        if (resultCode == RESULT_OK)
+            when (requestCode) {
+                NOTIFIERS_SERVICE_SOUND_REQUEST_CODE -> {
+                    val uri =
+                        intent?.getParcelableExtra<Uri>(RingtoneManager.EXTRA_RINGTONE_PICKED_URI)
+                    Preferences.Notifications.sound = uri
+                }
+                PreferencesNotes.BACKUP_REQUEST_CODE -> {
+                    PreferencesNotes.showBackupNotesBackupDialog(this)
+                }
+                PreferencesNotes.RESTORE_REQUEST_CODE -> {
+                    PreferencesNotes.restoreNotes(this)
+                }
+            }
     }
 
     class PrefsFragment : PreferenceFragment(), Preference.OnPreferenceClickListener {
@@ -136,12 +140,12 @@ class PreferencesActivity : BasePreferencesActivity() {
             findPreference("notifiers.service.sound").onPreferenceClickListener = this
             findPreference("notes.backup").onPreferenceClickListener =
                 Preference.OnPreferenceClickListener {
-                    showBackupNotesBackupDialog()
+                    PreferencesNotes.showBackupNotesBackupDialog(activity)
                     true
                 }
             findPreference("notes.restore").onPreferenceClickListener =
                 Preference.OnPreferenceClickListener {
-                    restoreNotes()
+                    PreferencesNotes.restoreNotes(activity)
                     true
                 }
             DonateActivity.setDonateClickListeners(this)
@@ -238,97 +242,6 @@ class PreferencesActivity : BasePreferencesActivity() {
                 .show()
         }
 
-        private fun showBackupNotesBackupDialog() {
-            try {
-                val dbFile = File(NotesDbHelper.DATABASE_DIR + "/" + NotesDbHelper.DATABASE_NAME)
-                if (!dbFile.exists()) {
-                    AlertDialog.Builder(activity)
-                        .setTitle("Ошибка")
-                        .setMessage("Файл базы заметок не найден. Возможно, вы ещё не создали ни одной заметки")
-                        .setPositiveButton("ОК", null)
-                        .create().show()
-                    return
-                }
-                val externalDirPath: String
-                val externalLocations = ExternalStorage.getAllStorageLocations()
-                val sdCard = externalLocations[ExternalStorage.SD_CARD]
-                val externalSdCard = externalLocations[ExternalStorage.EXTERNAL_SD_CARD]
-                externalDirPath = externalSdCard?.toString()
-                    ?: (sdCard?.toString()
-                        ?: Environment.getExternalStorageDirectory().toString())
-                val toPath = "$externalDirPath/forpda_notes.sqlite"
-                var newFile = File(toPath)
-                var i = 0
-                while (newFile.exists()) {
-                    newFile = File(
-                        externalDirPath + String.format(
-                            Locale.getDefault(),
-                            "/forpda_notes_%d.sqlite",
-                            i++
-                        )
-                    )
-                }
-                val b = newFile.createNewFile()
-                if (!b) {
-                    AlertDialog.Builder(activity)
-                        .setTitle("Ошибка").setMessage("Не удалось создать файл: $toPath")
-                        .setPositiveButton("ОК", null)
-                        .create().show()
-                    return
-                }
-                FileUtils.copy(dbFile, newFile)
-                AlertDialog.Builder(activity)
-                    .setTitle("Успех!")
-                    .setMessage("Резервная копия заметок сохранена в файл:\n$newFile")
-                    .setPositiveButton("ОК", null)
-                    .create().show()
-            } catch (ex: Throwable) {
-                AppLog.e(activity, ex)
-            }
-        }
-
-        private fun restoreNotes() {
-            OpenFileDialog(activity)
-                .setFilter(".*\\.(?i:sqlite)")
-                .setOpenDialogListener { fileName: String? ->
-                    try {
-                        val sourceuri = Uri.parse(fileName)
-                        if (sourceuri == null) {
-                            Toast.makeText(activity, "Файл не выбран!", Toast.LENGTH_SHORT).show()
-                            return@setOpenDialogListener
-                        }
-                        val notes = NotesTable.getNotesFromFile(fileName)
-                        AlertDialog.Builder(activity)
-                            .setTitle("Внимание!")
-                            .setMessage(
-                                """
-    Заметок для восстановления: ${notes.size}
-    
-    Восстановление заметок приведёт к полной потере всех существующих заметок!
-    """.trimIndent()
-                            )
-                            .setPositiveButton("Продолжить") { dialogInterface: DialogInterface, _: Int ->
-                                dialogInterface.dismiss()
-                                try {
-                                    val count = NotesTable.restoreFrom(notes)
-                                    AlertDialog.Builder(activity)
-                                        .setTitle("Успех!")
-                                        .setMessage("Резервная копия заметок восстановлена!\nЗаметок восстановлено: $count")
-                                        .setPositiveButton("ОК", null)
-                                        .create().show()
-                                } catch (ex: Throwable) {
-                                    AppLog.e(activity, ex)
-                                }
-                            }
-                            .setNegativeButton("Отмена", null)
-                            .create().show()
-                    } catch (ex: Throwable) {
-                        AppLog.e(activity, ex)
-                    }
-                }
-                .show()
-        }
-
         override fun onPreferenceClick(preference: Preference): Boolean {
             when (val key = preference.key) {
                 "path.system_path" -> {
@@ -376,7 +289,7 @@ class PreferencesActivity : BasePreferencesActivity() {
                     return true
                 }
                 "notifiers.service.sound" -> {
-                    Preferences.Notifications.sound?.let{
+                    Preferences.Notifications.sound?.let {
                         pickRingtone(it)
                     }
 
@@ -1109,7 +1022,7 @@ class PreferencesActivity : BasePreferencesActivity() {
     }
 
     companion object {
-        val NOTIFIERS_SERVICE_SOUND_REQUEST_CODE = App.getInstance().uniqueIntValue
+        private val NOTIFIERS_SERVICE_SOUND_REQUEST_CODE = App.getInstance().uniqueIntValue
         private val appCookiesPath: String
             get() = Preferences.System.systemDir + "4pda_cookies"
 
