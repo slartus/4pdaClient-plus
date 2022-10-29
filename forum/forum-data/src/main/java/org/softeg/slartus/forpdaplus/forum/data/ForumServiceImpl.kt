@@ -5,7 +5,7 @@ import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.softeg.slartus.forpdacommon.URIUtils
-import org.softeg.slartus.forpdaplus.core.entities.Forum
+import ru.softeg.slartus.forum.api.Forum
 import org.softeg.slartus.forpdaplus.core.services.AppHttpClient
 import org.softeg.slartus.forpdaplus.core.services.ForumService
 import org.softeg.slartus.hosthelper.HostHelper

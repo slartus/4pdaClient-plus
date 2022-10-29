@@ -1,6 +1,6 @@
 package org.softeg.slartus.forpdaplus.core.db
 
-import org.softeg.slartus.forpdaplus.core.entities.Forum
+import ru.softeg.slartus.forum.api.Forum
 
 interface ForumTable {
     suspend fun getAll(): List<Forum>

@@ -3,7 +3,7 @@ package org.softeg.slartus.forpdaplus.core_db.forum
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.softeg.slartus.forpdaplus.core.db.ForumTable
-import org.softeg.slartus.forpdaplus.core.entities.Forum
+import ru.softeg.slartus.forum.api.Forum
 import javax.inject.Inject
 import org.softeg.slartus.forpdaplus.core_db.forum.Forum as ForumDbItem
 

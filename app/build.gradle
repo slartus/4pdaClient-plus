@@ -136,6 +136,7 @@ dependencies {
     api project(':hosthelper')
     implementation project(":core-lib")
     implementation project(":core-db")
+    implementation project(":forum:forum-api")
     implementation project(":forum:forum-impl")
     implementation project(":forum:forum-data")
     implementation project(":qms:qms-impl")

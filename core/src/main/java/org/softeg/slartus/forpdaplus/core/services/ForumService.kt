@@ -1,6 +1,6 @@
 package org.softeg.slartus.forpdaplus.core.services
 
-import org.softeg.slartus.forpdaplus.core.entities.Forum
+import ru.softeg.slartus.forum.api.Forum
 
 interface ForumService {
     suspend fun getGithubForum(): List<Forum>

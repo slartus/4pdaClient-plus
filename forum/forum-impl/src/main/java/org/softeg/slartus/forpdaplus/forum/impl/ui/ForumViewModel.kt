@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.softeg.slartus.forpdaplus.core.AppActions
 import org.softeg.slartus.forpdaplus.core.ForumPreferences
-import org.softeg.slartus.forpdaplus.core.entities.Forum
 import org.softeg.slartus.forpdaplus.core.entities.SearchSettings
 import org.softeg.slartus.forpdaplus.core.repositories.ForumRepository
 import org.softeg.slartus.forpdaplus.core.repositories.UserInfoRepository
@@ -22,6 +21,7 @@ import org.softeg.slartus.forpdaplus.forum.impl.entities.ForumItem
 import org.softeg.slartus.forpdaplus.forum.impl.ui.fingerprints.CrumbItem
 import org.softeg.slartus.forpdaplus.forum.impl.ui.fingerprints.ForumDataItem
 import org.softeg.slartus.forpdaplus.forum.impl.ui.fingerprints.TopicsItemItem
+import ru.softeg.slartus.forum.api.Forum
 import javax.inject.Inject
 
 @HiltViewModel

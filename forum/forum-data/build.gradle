@@ -35,6 +35,7 @@ android {
 
 dependencies {
     implementation project(':core')
+    implementation project(':forum:forum-api')
     implementation project(':hosthelper')
     implementation project(':forpdacommon')
 

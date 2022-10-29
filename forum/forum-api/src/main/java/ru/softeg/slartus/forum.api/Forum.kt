@@ -1,4 +1,4 @@
-package org.softeg.slartus.forpdaplus.core.entities
+package ru.softeg.slartus.forum.api
 
 interface Forum {
     val id: String?

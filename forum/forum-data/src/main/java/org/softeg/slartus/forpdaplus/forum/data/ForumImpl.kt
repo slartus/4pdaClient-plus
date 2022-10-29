@@ -1,6 +1,7 @@
 package org.softeg.slartus.forpdaplus.forum.data
 
-import org.softeg.slartus.forpdaplus.core.entities.Forum
+import ru.softeg.slartus.forum.api.Forum
+
 
 data class ForumImpl(
     override val id: String?,

@@ -3,7 +3,7 @@ package org.softeg.slartus.forpdaplus.forum.data
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import org.softeg.slartus.forpdaplus.core.db.ForumTable
-import org.softeg.slartus.forpdaplus.core.entities.Forum
+import ru.softeg.slartus.forum.api.Forum
 import org.softeg.slartus.forpdaplus.core.repositories.ForumRepository
 import org.softeg.slartus.forpdaplus.core.services.ForumService
 import javax.inject.Inject

@@ -40,6 +40,7 @@ dependencies {
     implementation project(':core')
     implementation project(':core-res')
     implementation project(":core-lib")
+    implementation project(':forum:forum-api')
 
     implementation "androidx.core:core-ktx:$rootProject.coreCtx"
     implementation "androidx.appcompat:appcompat:$rootProject.appcompat"
