@@ -1,7 +1,6 @@
-package org.softeg.slartus.forpdaplus.core.repositories
+package ru.softeg.slartus.forum.api
 
 import kotlinx.coroutines.flow.Flow
-import ru.softeg.slartus.forum.api.Forum
 
 interface ForumRepository {
     val forum: Flow<List<Forum>>

@@ -8,9 +8,9 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import org.softeg.slartus.forpdaapi.Forum
 import org.softeg.slartus.forpdaplus.common.AppLog
-import org.softeg.slartus.forpdaplus.core.repositories.ForumRepository
+import ru.softeg.slartus.forum.api.ForumRepository
 
-@Deprecated("use org.softeg.slartus.forpdaplus.core.repositories.ForumRepository instead.")
+@Deprecated("use ru.softeg.slartus.forum.api.ForumRepository instead.")
 class ForumsRepository private constructor() {
     private object Holder {
         val INSTANCE = ForumsRepository()

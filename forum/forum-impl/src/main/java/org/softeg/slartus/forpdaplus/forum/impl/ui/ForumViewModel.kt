@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 import org.softeg.slartus.forpdaplus.core.AppActions
 import org.softeg.slartus.forpdaplus.core.ForumPreferences
 import org.softeg.slartus.forpdaplus.core.entities.SearchSettings
-import org.softeg.slartus.forpdaplus.core.repositories.ForumRepository
+import ru.softeg.slartus.forum.api.ForumRepository
 import org.softeg.slartus.forpdaplus.core.repositories.UserInfoRepository
 import org.softeg.slartus.forpdaplus.core_lib.ui.adapter.Item
 import org.softeg.slartus.forpdaplus.impl.R
