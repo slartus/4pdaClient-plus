@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment
 import org.softeg.slartus.forpdaplus.MainActivity
 import org.softeg.slartus.forpdaplus.fragments.BaseBrickContainerFragment
 import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo
-import ru.slartus.feature_qms_contact_threads.QmsContactThreadsFragment
+import org.softeg.slartus.forpdaplus.qms.impl.screens.threads.QmsContactThreadsFragment
 
 class QmsContactThemes : BaseBrickContainerFragment() {
     private var contactId: String? = null

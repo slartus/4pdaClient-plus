@@ -136,11 +136,10 @@ dependencies {
     api project(':hosthelper')
     implementation project(":core-lib")
     implementation project(":core-db")
-    implementation project(":domain-qms")
     implementation project(":forum:forum-impl")
     implementation project(":forum:forum-data")
-    implementation project(":feature-qms-contact-threads")
-    implementation project(":feature-qms-contacts")
+    implementation project(":qms:qms-impl")
+    implementation project(":qms:qms-data")
 
     implementation "androidx.appcompat:appcompat:$rootProject.appcompat"
     implementation 'androidx.cardview:cardview:1.0.0'
