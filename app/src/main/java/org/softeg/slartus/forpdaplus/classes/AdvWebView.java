@@ -59,6 +59,10 @@ public class AdvWebView extends WebView {
     @SuppressLint("SetJavaScriptEnabled")
     private void init() {
         // gd = new GestureDetector(context, sogl);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            // даём разрешение подгружать несекьюрные ресурсы из assets
+            getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        }
         getSettings().setJavaScriptEnabled(true);
 
         getSettings().setJavaScriptCanOpenWindowsAutomatically(false);
@@ -66,12 +70,10 @@ public class AdvWebView extends WebView {
         getSettings().setDomStorageEnabled(true);
         getSettings().setAllowFileAccess(true);
         getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+        getSettings().setAllowFileAccessFromFileURLs(true); //Maybe you don't need this rule
+        getSettings().setAllowUniversalAccessFromFileURLs(true);
 
-        if (Build.VERSION.SDK_INT > 15) {
-            getSettings().setAllowFileAccessFromFileURLs(true); //Maybe you don't need this rule
-            getSettings().setAllowUniversalAccessFromFileURLs(true);
-        }
-        if (Build.VERSION.SDK_INT < 18)
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2)
             getSettings().setPluginState(WebSettings.PluginState.ON);// для воспроизведения видео
 
 
