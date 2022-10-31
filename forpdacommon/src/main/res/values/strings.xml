@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">Forpdacommon</string>
     <string name="default_action">Действие по умолчанию</string>
     <string name="assign_default">Назначить по умолчанию?</string>
     <string name="yes">Да</string>
