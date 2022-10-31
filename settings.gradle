@@ -1,6 +1,5 @@
 include ':app', ':forpdaapi', ':forpdacommon', ':forpdanotifyservice', ':sqliteannotations', ':4pdasources', ':http'
 include ':hosthelper'
-include ':core-db'
 include ':core-lib'
 include ':core-res'
 include ':core'

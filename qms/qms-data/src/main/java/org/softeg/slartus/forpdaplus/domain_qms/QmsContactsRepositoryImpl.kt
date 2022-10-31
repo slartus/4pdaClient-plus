@@ -6,7 +6,7 @@ import ru.softeg.slartus.qms.api.models.QmsContact
 import ru.softeg.slartus.qms.api.models.QmsContacts
 import org.softeg.slartus.forpdaplus.core.interfaces.Parser
 import ru.softeg.slartus.qms.api.repositories.QmsContactsRepository
-import org.softeg.slartus.forpdaplus.core.services.QmsService
+import ru.softeg.slartus.qms.api.QmsService
 import javax.inject.Inject
 
 class QmsContactsRepositoryImpl @Inject constructor(

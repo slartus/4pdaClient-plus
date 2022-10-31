@@ -1,4 +1,4 @@
-package org.softeg.slartus.forpdaplus.domain_qms.db
+package org.softeg.slartus.forpdaplus.forum.data.db
 
 import android.content.Context
 import androidx.room.Room
@@ -11,18 +11,18 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class QmsDbModule {
+class AppDbModule {
 
     @Provides
     @Singleton
-    fun provideDb(@ApplicationContext app: Context): QmsDatabase {
+    fun provideDb(@ApplicationContext app: Context): ForumDatabase {
         return Room
-            .databaseBuilder(app, QmsDatabase::class.java, QmsDatabase.NAME)
+            .databaseBuilder(app, ForumDatabase::class.java, ForumDatabase.NAME)
             .fallbackToDestructiveMigration()
             .build()
     }
 
     @Provides
     @Singleton
-    fun provideQmsContactsDao(db: QmsDatabase): QmsContactsDao = db.qmsContactsDao()
+    fun provideForumDao(db: ForumDatabase): ForumDao = db.forumDao()
 }

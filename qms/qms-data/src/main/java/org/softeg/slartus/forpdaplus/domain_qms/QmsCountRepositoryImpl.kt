@@ -5,7 +5,7 @@ import kotlinx.coroutines.launch
 import ru.softeg.slartus.qms.api.models.QmsCount
 import org.softeg.slartus.forpdaplus.core.interfaces.Parser
 import ru.softeg.slartus.qms.api.repositories.QmsCountRepository
-import org.softeg.slartus.forpdaplus.core.services.QmsService
+import ru.softeg.slartus.qms.api.QmsService
 import org.softeg.slartus.forpdaplus.core_lib.coroutines.AppIOScope
 import javax.inject.Inject
 

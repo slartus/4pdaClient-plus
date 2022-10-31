@@ -23,6 +23,7 @@ import com.afollestad.materialdialogs.MaterialDialog
 import kotlinx.android.synthetic.main.device_edit.*
 import org.softeg.slartus.forpdacommon.FileUtils
 import org.softeg.slartus.forpdacommon.NotReportException
+import org.softeg.slartus.forpdacommon.loadAssetsText
 import org.softeg.slartus.forpdaplus.App
 import org.softeg.slartus.forpdaplus.AppTheme.currentTheme
 import org.softeg.slartus.forpdaplus.AppTheme.getThemeCssFileName
@@ -41,6 +42,7 @@ import org.softeg.slartus.forpdaplus.styles.CssStyle
 import org.softeg.slartus.forpdaplus.styles.StyleInfoActivity
 import org.softeg.slartus.hosthelper.HostHelper
 import ru.slartus.http.PersistentCookieStore.Companion.getInstance
+import timber.log.Timber
 import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -900,24 +902,15 @@ class PreferencesActivity : BasePreferencesActivity() {
         }
 
         private fun showAboutHistory() {
-            val sb = StringBuilder()
-            try {
-                val br = BufferedReader(
-                    InputStreamReader(
-                        App.getInstance().assets.open("history.txt"),
-                        "UTF-8"
-                    )
-                )
-                var line: String?
-                while (br.readLine().also { line = it } != null) {
-                    sb.append(line).append("\n")
-                }
-            } catch (e: IOException) {
-                AppLog.e(activity, e)
-            }
+            val content = kotlin.runCatching {
+                App.getInstance().loadAssetsText("history.txt")
+            }.onFailure {
+                Timber.e(it)
+            }.getOrNull() ?: "Ошибка загрузки ресурса"
+
             MaterialDialog.Builder(activity)
                 .title(getString(R.string.ChangesHistory))
-                .content(sb)
+                .content(content)
                 .positiveText(R.string.ok)
                 .show()
             //TextView textView = (TextView) dialog.findViewById(android.R.id.message);

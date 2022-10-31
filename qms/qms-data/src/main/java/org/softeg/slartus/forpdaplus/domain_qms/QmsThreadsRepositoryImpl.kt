@@ -6,7 +6,7 @@ import ru.softeg.slartus.qms.api.models.QmsThread
 import ru.softeg.slartus.qms.api.models.QmsThreads
 import org.softeg.slartus.forpdaplus.core.interfaces.Parser
 import ru.softeg.slartus.qms.api.repositories.QmsThreadsRepository
-import org.softeg.slartus.forpdaplus.core.services.QmsService
+import ru.softeg.slartus.qms.api.QmsService
 import javax.inject.Inject
 
 class QmsThreadsRepositoryImpl @Inject constructor(

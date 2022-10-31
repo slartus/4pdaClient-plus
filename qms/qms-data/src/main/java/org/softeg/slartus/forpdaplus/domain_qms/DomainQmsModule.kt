@@ -10,7 +10,7 @@ import org.softeg.slartus.forpdaplus.core.interfaces.Parser
 import ru.softeg.slartus.qms.api.repositories.QmsContactsRepository
 import ru.softeg.slartus.qms.api.repositories.QmsCountRepository
 import ru.softeg.slartus.qms.api.repositories.QmsThreadsRepository
-import org.softeg.slartus.forpdaplus.core.services.QmsService
+import ru.softeg.slartus.qms.api.QmsService
 import org.softeg.slartus.forpdaplus.domain_qms.parsers.*
 import ru.softeg.slartus.qms.api.models.QmsCount
 import ru.softeg.slartus.qms.api.models.QmsContact

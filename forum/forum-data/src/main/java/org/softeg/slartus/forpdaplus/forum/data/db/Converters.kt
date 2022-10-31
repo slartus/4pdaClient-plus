@@ -1,4 +1,4 @@
-package org.softeg.slartus.forpdaplus.core_db
+package org.softeg.slartus.forpdaplus.forum.data.db
 
 import androidx.room.TypeConverter
 import java.util.*

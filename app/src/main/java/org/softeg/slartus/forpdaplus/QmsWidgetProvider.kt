@@ -16,7 +16,7 @@ import org.softeg.slartus.forpdaplus.core.entities.MentionsCount
 import ru.softeg.slartus.qms.api.models.QmsCount
 import org.softeg.slartus.forpdaplus.core.interfaces.Parser
 import org.softeg.slartus.forpdaplus.core.services.AppHttpClient
-import org.softeg.slartus.forpdaplus.core.services.QmsService
+import ru.softeg.slartus.qms.api.QmsService
 import org.softeg.slartus.forpdaplus.core_lib.coroutines.AppMainScope
 import org.softeg.slartus.hosthelper.HostHelper
 import javax.inject.Inject

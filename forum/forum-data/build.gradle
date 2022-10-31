@@ -51,6 +51,11 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$rootProject.coroutines"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.coroutines"
+    
+    api "androidx.room:room-runtime:$rootProject.room" // api for access in AppDatabaseImpl
+    implementation "androidx.room:room-ktx:$rootProject.room"
+    kapt "androidx.room:room-compiler:$rootProject.room"
+    kapt "androidx.room:room-ktx:$rootProject.room"
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

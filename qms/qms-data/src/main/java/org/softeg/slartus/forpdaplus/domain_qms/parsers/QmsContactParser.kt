@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import ru.softeg.slartus.qms.api.models.QmsContact
 import ru.softeg.slartus.qms.api.models.QmsContacts
 import org.softeg.slartus.forpdaplus.core.interfaces.Parser
-import org.softeg.slartus.forpdaplus.core.services.QmsService
+import ru.softeg.slartus.qms.api.QmsService
 import javax.inject.Inject
 
 class QmsContactParser @Inject constructor(private val parser: Parser<QmsContacts>) :

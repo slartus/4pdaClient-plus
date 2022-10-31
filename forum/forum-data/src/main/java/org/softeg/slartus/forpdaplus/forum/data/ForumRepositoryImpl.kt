@@ -2,32 +2,39 @@ package org.softeg.slartus.forpdaplus.forum.data
 
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import org.softeg.slartus.forpdaplus.core.db.ForumTable
-import ru.softeg.slartus.forum.api.Forum
 import ru.softeg.slartus.forum.api.ForumRepository
-import org.softeg.slartus.forpdaplus.core.services.ForumService
+import ru.softeg.slartus.forum.api.ForumService
+import ru.softeg.slartus.forum.api.ForumItem
+import timber.log.Timber
 import javax.inject.Inject
 
 class ForumRepositoryImpl @Inject constructor(
     private val forumService: ForumService,
-    private val forumTable: ForumTable
+    private val forumTable: LocalForumDataSource,
+    private val assetsForumDataSource: AssetsForumDataSource
 ) : ForumRepository {
 
-    private val _forum = MutableStateFlow<List<Forum>>(emptyList())
+    private val _forum = MutableStateFlow<List<ForumItem>>(emptyList())
     override val forum
         get() = _forum.asStateFlow()
 
     override suspend fun load() {
         _forum.value = forumTable.getAll()
 
-        val forums = try {
-            forumService.getGithubForum()
-        } catch (ex: Throwable) {
-            forumService.getSlartusForum()
-        }
-        forumTable.merge(forums)
+        val forums =
+            kotlin.runCatching {
+                forumService.getGithubForum()
+            }.onFailure {
+                Timber.e(it)
+            }.getOrNull() ?: kotlin.runCatching {
+                forumService.getSlartusForum()
+            }.getOrNull() ?: emptyList()
 
-        _forum.value = forumTable.getAll()
+        if (forums.isNotEmpty()) {
+            forumTable.merge(forums)
+        }
+
+        _forum.value = forumTable.getAll().getNullIfEmpty() ?: assetsForumDataSource.getAll()
     }
 
     override suspend fun markAsRead(forumId: String) {
@@ -38,4 +45,8 @@ class ForumRepositoryImpl @Inject constructor(
         return forumService.getForumUrl(forumId)
     }
 
+}
+
+fun <T> List<T>?.getNullIfEmpty(): List<T>? {
+    return if (this?.isEmpty() == true) null else this
 }

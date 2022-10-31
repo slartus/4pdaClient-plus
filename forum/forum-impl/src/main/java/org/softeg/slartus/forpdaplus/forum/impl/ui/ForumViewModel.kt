@@ -13,15 +13,13 @@ import kotlinx.coroutines.launch
 import org.softeg.slartus.forpdaplus.core.AppActions
 import org.softeg.slartus.forpdaplus.core.ForumPreferences
 import org.softeg.slartus.forpdaplus.core.entities.SearchSettings
-import ru.softeg.slartus.forum.api.ForumRepository
 import org.softeg.slartus.forpdaplus.core.repositories.UserInfoRepository
 import org.softeg.slartus.forpdaplus.core_lib.ui.adapter.Item
 import org.softeg.slartus.forpdaplus.forum.impl.R
-import org.softeg.slartus.forpdaplus.forum.impl.entities.ForumItem
 import org.softeg.slartus.forpdaplus.forum.impl.ui.fingerprints.CrumbItem
 import org.softeg.slartus.forpdaplus.forum.impl.ui.fingerprints.ForumDataItem
 import org.softeg.slartus.forpdaplus.forum.impl.ui.fingerprints.TopicsItemItem
-import ru.softeg.slartus.forum.api.Forum
+import ru.softeg.slartus.forum.api.ForumRepository
 import javax.inject.Inject
 
 @HiltViewModel
@@ -46,8 +44,8 @@ class ForumViewModel @Inject constructor(
     private val _loading = MutableStateFlow(true)
     val loading: StateFlow<Boolean> = _loading.asStateFlow()
 
-    private var items = emptyList<Forum>()
-    private var crumbs = emptyList<Forum>()
+    private var items = emptyList<ForumItemModel>()
+    private var crumbs = emptyList<ForumItemModel>()
     private var userLogined = false
 
     var forumId: String? = state.get(ForumFragment.FORUM_ID_KEY)
@@ -64,7 +62,7 @@ class ForumViewModel @Inject constructor(
                     .distinctUntilChanged()
                     .collect { rawItems ->
                         items = rawItems.map {
-                            ForumItem(
+                            ForumItemModel(
                                 id = it.id,
                                 title = it.title,
                                 description = it.description,
@@ -179,18 +177,18 @@ class ForumViewModel @Inject constructor(
         _uiState.value = UiState.Items(crumbItems, items, scrollToTop)
     }
 
-    private fun buildCrumbs(items: List<Forum>): List<Forum> {
+    private fun buildCrumbs(items: List<ForumItemModel>): List<ForumItemModel> {
         if (items.isEmpty()) return emptyList()
-        val crumbs = ArrayList<Forum>()
+        val crumbs = ArrayList<ForumItemModel>()
         var f = forumId
         while (true) {
             if (f == null) {
-                crumbs.add(0, ForumItem(null, "4PDA"))
+                crumbs.add(0, ForumItemModel(null, "4PDA"))
                 break
             } else {
                 val parent = items.firstOrNull { it.id == f }
                 f = if (parent == null) {
-                    crumbs.add(0, ForumItem(f, parent?.title ?: "Not Found"))
+                    crumbs.add(0, ForumItemModel(f, parent?.title ?: "Not Found"))
                     null
                 } else {
                     crumbs.add(0, parent)
@@ -209,7 +207,7 @@ class ForumViewModel @Inject constructor(
         return false
     }
 
-    private fun getCurrentForum(): Forum? = items.firstOrNull { it.id == forumId }
+    private fun getCurrentForum(): ForumItemModel? = items.firstOrNull { it.id == forumId }
 
     private fun markForumRead(forumId: String) {
         viewModelScope.launch(errorHandler) {

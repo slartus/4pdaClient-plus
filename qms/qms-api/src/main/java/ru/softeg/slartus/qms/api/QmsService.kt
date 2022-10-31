@@ -1,4 +1,4 @@
-package org.softeg.slartus.forpdaplus.core.services
+package ru.softeg.slartus.qms.api
 
 import ru.softeg.slartus.qms.api.models.QmsContact
 import ru.softeg.slartus.qms.api.models.QmsThread
