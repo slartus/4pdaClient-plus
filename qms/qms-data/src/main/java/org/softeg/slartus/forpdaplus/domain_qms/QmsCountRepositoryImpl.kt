@@ -2,7 +2,7 @@ package org.softeg.slartus.forpdaplus.domain_qms
 
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import org.softeg.slartus.forpdaplus.core.entities.QmsCount
+import ru.softeg.slartus.qms.api.QmsCount
 import org.softeg.slartus.forpdaplus.core.interfaces.Parser
 import org.softeg.slartus.forpdaplus.core.repositories.QmsCountRepository
 import org.softeg.slartus.forpdaplus.core.services.QmsService

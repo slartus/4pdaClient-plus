@@ -139,6 +139,7 @@ dependencies {
     implementation project(":forum:forum-api")
     implementation project(":forum:forum-impl")
     implementation project(":forum:forum-data")
+    implementation project(":qms:qms-api")
     implementation project(":qms:qms-impl")
     implementation project(":qms:qms-data")
 

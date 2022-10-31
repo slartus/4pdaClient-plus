@@ -12,6 +12,7 @@ import org.softeg.slartus.forpdaplus.core.repositories.QmsCountRepository
 import org.softeg.slartus.forpdaplus.core.repositories.QmsThreadsRepository
 import org.softeg.slartus.forpdaplus.core.services.QmsService
 import org.softeg.slartus.forpdaplus.domain_qms.parsers.*
+import ru.softeg.slartus.qms.api.QmsCount
 import javax.inject.Singleton
 
 @Suppress("unused")

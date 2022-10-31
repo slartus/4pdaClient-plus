@@ -38,6 +38,7 @@ dependencies {
     implementation project(':core-lib')
     implementation project(':hosthelper')
     implementation project(':forpdacommon')
+    implementation project(':qms:qms-api')
 
     implementation "androidx.core:core-ktx:$rootProject.coreCtx"
     implementation "androidx.appcompat:appcompat:$rootProject.appcompat"

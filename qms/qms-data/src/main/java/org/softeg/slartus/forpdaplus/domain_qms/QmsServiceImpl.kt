@@ -4,7 +4,7 @@ import androidx.core.os.bundleOf
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.softeg.slartus.forpdaplus.core.entities.QmsContact
-import org.softeg.slartus.forpdaplus.core.entities.QmsCount
+import ru.softeg.slartus.qms.api.QmsCount
 import org.softeg.slartus.forpdaplus.core.entities.QmsThread
 import org.softeg.slartus.forpdaplus.core.interfaces.ParseFactory
 import org.softeg.slartus.forpdaplus.core.services.AppHttpClient
