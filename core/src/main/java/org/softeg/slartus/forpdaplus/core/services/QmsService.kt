@@ -1,7 +1,7 @@
 package org.softeg.slartus.forpdaplus.core.services
 
-import org.softeg.slartus.forpdaplus.core.entities.QmsContact
-import org.softeg.slartus.forpdaplus.core.entities.QmsThread
+import ru.softeg.slartus.qms.api.models.QmsContact
+import ru.softeg.slartus.qms.api.models.QmsThread
 
 interface QmsService {
     suspend fun getContacts(resultParserId: String): List<QmsContact>

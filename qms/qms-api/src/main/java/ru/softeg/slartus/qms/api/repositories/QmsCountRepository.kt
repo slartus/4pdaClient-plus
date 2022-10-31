@@ -1,4 +1,4 @@
-package org.softeg.slartus.forpdaplus.core.repositories
+package ru.softeg.slartus.qms.api.repositories
 
 import kotlinx.coroutines.flow.Flow
 

@@ -3,7 +3,7 @@ package org.softeg.slartus.forpdaplus.core_db.qms_contacts
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.softeg.slartus.forpdaplus.core.db.QmsContactsTable
-import org.softeg.slartus.forpdaplus.core.entities.QmsContact
+import ru.softeg.slartus.qms.api.models.QmsContact
 import javax.inject.Inject
 import org.softeg.slartus.forpdaplus.core_db.qms_contacts.QmsContact as QmsContactDb
 

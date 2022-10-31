@@ -4,8 +4,8 @@ import android.os.Bundle
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import org.softeg.slartus.forpdacommon.fromHtml
-import org.softeg.slartus.forpdaplus.core.entities.QmsContact
-import org.softeg.slartus.forpdaplus.core.entities.QmsContacts
+import ru.softeg.slartus.qms.api.models.QmsContact
+import ru.softeg.slartus.qms.api.models.QmsContacts
 import org.softeg.slartus.forpdaplus.core.interfaces.Parser
 import org.softeg.slartus.forpdaplus.domain_qms.entities.QmsContactImpl
 import java.util.regex.Pattern

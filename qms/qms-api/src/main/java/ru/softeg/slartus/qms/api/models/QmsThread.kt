@@ -1,4 +1,4 @@
-package org.softeg.slartus.forpdaplus.core.entities
+package ru.softeg.slartus.qms.api.models
 
 interface QmsThread {
     val id: String?

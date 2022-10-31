@@ -1,6 +1,6 @@
 package org.softeg.slartus.forpdaplus.domain_qms.entities
 
-import org.softeg.slartus.forpdaplus.core.entities.QmsThread
+import ru.softeg.slartus.qms.api.models.QmsThread
 
 class QmsThreadImpl(
     override val id: String?,

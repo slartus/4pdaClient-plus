@@ -3,9 +3,9 @@ package org.softeg.slartus.forpdaplus.domain_qms
 import androidx.core.os.bundleOf
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import org.softeg.slartus.forpdaplus.core.entities.QmsContact
-import ru.softeg.slartus.qms.api.QmsCount
-import org.softeg.slartus.forpdaplus.core.entities.QmsThread
+import ru.softeg.slartus.qms.api.models.QmsContact
+import ru.softeg.slartus.qms.api.models.QmsCount
+import ru.softeg.slartus.qms.api.models.QmsThread
 import org.softeg.slartus.forpdaplus.core.interfaces.ParseFactory
 import org.softeg.slartus.forpdaplus.core.services.AppHttpClient
 import org.softeg.slartus.forpdaplus.core.services.QmsService

@@ -3,7 +3,7 @@ package org.softeg.slartus.forpdaplus.domain_qms.parsers
 import android.os.Bundle
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import ru.softeg.slartus.qms.api.QmsCount
+import ru.softeg.slartus.qms.api.models.QmsCount
 import org.softeg.slartus.forpdaplus.core.interfaces.Parser
 import java.util.regex.Pattern
 import javax.inject.Inject

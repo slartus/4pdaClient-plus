@@ -3,8 +3,8 @@ package org.softeg.slartus.forpdaplus.domain_qms.parsers
 import android.os.Bundle
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import org.softeg.slartus.forpdaplus.core.entities.QmsThread
-import org.softeg.slartus.forpdaplus.core.entities.QmsThreads
+import ru.softeg.slartus.qms.api.models.QmsThread
+import ru.softeg.slartus.qms.api.models.QmsThreads
 import org.softeg.slartus.forpdaplus.core.interfaces.Parser
 import org.softeg.slartus.forpdaplus.domain_qms.entities.QmsThreadImpl
 import java.util.regex.Pattern

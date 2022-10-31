@@ -1,6 +1,6 @@
 package org.softeg.slartus.forpdaplus.domain_qms.entities
 
-import org.softeg.slartus.forpdaplus.core.entities.QmsContact
+import ru.softeg.slartus.qms.api.models.QmsContact
 
 data class QmsContactImpl(
     override val id: String?,

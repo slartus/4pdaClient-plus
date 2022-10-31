@@ -1,6 +1,6 @@
 package org.softeg.slartus.forpdaplus.core.db
 
-import org.softeg.slartus.forpdaplus.core.entities.QmsContact
+import ru.softeg.slartus.qms.api.models.QmsContact
 
 interface QmsContactsTable {
     suspend fun getAll(): List<QmsContact>

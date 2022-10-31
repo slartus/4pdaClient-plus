@@ -1,7 +1,7 @@
-package org.softeg.slartus.forpdaplus.core.repositories
+package ru.softeg.slartus.qms.api.repositories
 
 import kotlinx.coroutines.flow.Flow
-import org.softeg.slartus.forpdaplus.core.entities.QmsContact
+import ru.softeg.slartus.qms.api.models.QmsContact
 
 interface QmsContactsRepository {
     val contacts: Flow<List<QmsContact>>

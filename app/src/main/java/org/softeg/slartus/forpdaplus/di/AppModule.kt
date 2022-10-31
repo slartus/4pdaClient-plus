@@ -22,6 +22,9 @@ import org.softeg.slartus.forpdaplus.prefs.AppPreferencesImpl
 import org.softeg.slartus.forpdaplus.prefs.ForumPreferencesImpl
 import org.softeg.slartus.forpdaplus.prefs.QmsPreferencesImpl
 import org.softeg.slartus.forpdaplus.repositories.UserInfoRepositoryImpl
+import ru.softeg.slartus.qms.api.models.QmsContact
+import ru.softeg.slartus.qms.api.models.QmsContacts
+import ru.softeg.slartus.qms.api.models.QmsThreads
 import javax.inject.Singleton
 
 @Module

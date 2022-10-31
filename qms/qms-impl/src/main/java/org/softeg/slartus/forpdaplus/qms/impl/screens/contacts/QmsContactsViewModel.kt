@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.softeg.slartus.forpdaplus.core.AppPreferences
 import org.softeg.slartus.forpdaplus.core.QmsPreferences
-import org.softeg.slartus.forpdaplus.core.repositories.QmsContactsRepository
+import ru.softeg.slartus.qms.api.repositories.QmsContactsRepository
 import org.softeg.slartus.forpdaplus.qms.impl.R
 
 import org.softeg.slartus.forpdaplus.qms.impl.screens.contacts.fingerprints.QmsContactItem

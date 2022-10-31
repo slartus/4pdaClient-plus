@@ -10,9 +10,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import org.softeg.slartus.forpdaplus.core.AppPreferences
-import org.softeg.slartus.forpdaplus.core.entities.QmsContact
-import org.softeg.slartus.forpdaplus.core.repositories.QmsContactsRepository
-import org.softeg.slartus.forpdaplus.core.repositories.QmsThreadsRepository
+import ru.softeg.slartus.qms.api.models.QmsContact
+import ru.softeg.slartus.qms.api.repositories.QmsContactsRepository
+import ru.softeg.slartus.qms.api.repositories.QmsThreadsRepository
 import org.softeg.slartus.forpdaplus.qms.impl.screens.threads.fingerprints.QmsThreadItem
 import org.softeg.slartus.forpdaplus.qms.impl.screens.threads.fingerprints.QmsThreadSelectableItem
 import org.softeg.slartus.forpdaplus.qms.impl.screens.threads.fingerprints.ThreadItem

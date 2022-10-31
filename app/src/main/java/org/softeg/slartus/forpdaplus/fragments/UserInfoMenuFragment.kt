@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 import org.softeg.slartus.forpdaplus.*
 import org.softeg.slartus.forpdaplus.common.AppLog
 import org.softeg.slartus.forpdaplus.core.entities.UserInfo
-import org.softeg.slartus.forpdaplus.core.repositories.QmsCountRepository
+import ru.softeg.slartus.qms.api.repositories.QmsCountRepository
 import org.softeg.slartus.forpdaplus.core.repositories.UserInfoRepository
 import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment
 import org.softeg.slartus.forpdaplus.listfragments.mentions.MentionsListFragment.Companion.newFragment

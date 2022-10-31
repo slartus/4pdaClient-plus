@@ -2,10 +2,10 @@ package org.softeg.slartus.forpdaplus.domain_qms
 
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import org.softeg.slartus.forpdaplus.core.entities.QmsThread
-import org.softeg.slartus.forpdaplus.core.entities.QmsThreads
+import ru.softeg.slartus.qms.api.models.QmsThread
+import ru.softeg.slartus.qms.api.models.QmsThreads
 import org.softeg.slartus.forpdaplus.core.interfaces.Parser
-import org.softeg.slartus.forpdaplus.core.repositories.QmsThreadsRepository
+import ru.softeg.slartus.qms.api.repositories.QmsThreadsRepository
 import org.softeg.slartus.forpdaplus.core.services.QmsService
 import javax.inject.Inject
 
