@@ -51,10 +51,10 @@ class QmsContactsViewModel @Inject constructor(
                     .collect { rawItems ->
                         val contacts = rawItems.map {
                             QmsContactItem(
-                                id = it.id ?: "",
-                                nick = it.nick ?: "",
+                                id = it.id,
+                                nick = it.nick,
                                 avatarUrl = it.avatarUrl,
-                                newMessagesCount = it.newMessagesCount ?: 0
+                                newMessagesCount = it.newMessagesCount
                             )
                         }
 

@@ -7,7 +7,6 @@ import org.softeg.slartus.forpdacommon.fromHtml
 import ru.softeg.slartus.qms.api.models.QmsContact
 import ru.softeg.slartus.qms.api.models.QmsContacts
 import org.softeg.slartus.forpdaplus.core.interfaces.Parser
-import org.softeg.slartus.forpdaplus.domain_qms.entities.QmsContactImpl
 import java.util.regex.Pattern
 import javax.inject.Inject
 
@@ -36,7 +35,7 @@ class QmsContactsParser @Inject constructor() : Parser<QmsContacts> {
             if (countString != "")
                 newMessagesCount = countString.filter { it.isDigit() }.toIntOrNull()
 
-            val qmsUser = QmsContactImpl(id, nick, avatarUrl, newMessagesCount)
+            val qmsUser = QmsContact(id, nick, avatarUrl.orEmpty(), newMessagesCount ?: 0)
 
 
             res.add(qmsUser)

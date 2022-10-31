@@ -1,4 +1,4 @@
-package org.softeg.slartus.forpdaplus.core_db.qms_contacts
+package org.softeg.slartus.forpdaplus.domain_qms.db
 
 import androidx.room.Dao
 import androidx.room.Insert
@@ -7,16 +7,15 @@ import androidx.room.Query
 
 @Dao
 interface QmsContactsDao {
-
     @Query("SELECT * FROM qms_contacts ORDER BY `sort`")
-    suspend fun getAll(): List<QmsContact>
+    suspend fun getAll(): List<QmsContactEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(vararg items: QmsContact)
+    suspend fun insertAll(vararg items: QmsContactEntity)
 
     @Query("DELETE FROM qms_contacts")
     suspend fun deleteAll()
 
     @Query("SELECT * FROM qms_contacts WHERE id=:id")
-    suspend fun findById(id: Long): QmsContact?
+    suspend fun findById(id: Long): QmsContactEntity?
 }

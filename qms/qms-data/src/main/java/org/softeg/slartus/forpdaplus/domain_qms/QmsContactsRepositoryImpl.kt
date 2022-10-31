@@ -2,7 +2,6 @@ package org.softeg.slartus.forpdaplus.domain_qms
 
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import org.softeg.slartus.forpdaplus.core.db.QmsContactsTable
 import ru.softeg.slartus.qms.api.models.QmsContact
 import ru.softeg.slartus.qms.api.models.QmsContacts
 import org.softeg.slartus.forpdaplus.core.interfaces.Parser
@@ -12,7 +11,7 @@ import javax.inject.Inject
 
 class QmsContactsRepositoryImpl @Inject constructor(
     private val qmsService: QmsService,
-    private val qmsContactsTable: QmsContactsTable,
+    private val qmsContactsTable: LocalQmsContactsDataSource,
     private val qmsContactsParser: Parser<QmsContacts>,
     private val qmsContactParser: Parser<QmsContact>
 ) :
@@ -26,7 +25,7 @@ class QmsContactsRepositoryImpl @Inject constructor(
         _contacts.emit(qmsContactsTable.getAll())
         val contacts = qmsService.getContacts(qmsContactsParser.id)
 
-        qmsContactsTable.insertAll(*contacts.toTypedArray())
+        qmsContactsTable.replaceAll(*contacts.toTypedArray())
         _contacts.emit(qmsContactsTable.getAll())
     }
 

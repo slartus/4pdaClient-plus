@@ -1,10 +1,11 @@
 package ru.softeg.slartus.qms.api.models
 
-interface QmsContact {
-    val id: String?
-    val nick: String?
-    val avatarUrl: String?
-    val newMessagesCount: Int?
-}
+data class QmsContact(
+    val id: String,
+    val nick: String,
+    val avatarUrl: String?,
+    val newMessagesCount: Int
+)
+
 
 class QmsContacts(list: List<QmsContact>) : List<QmsContact> by list
