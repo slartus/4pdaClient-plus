@@ -83,13 +83,5 @@ public class ClientPreferences {
                 return prefs.getBoolean("notifiers.silent_mode.enabled", false);
             }
         }
-
-        public static class Qms {
-
-        }
-
-        public static class Favorites {
-
-        }
     }
 }
