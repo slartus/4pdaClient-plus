@@ -178,30 +178,6 @@ public class TopicApi {
         return res;
     }
 
-    public static ArrayList<PostAttach> getTopicAttachment(IHttpClient httpClient, String topicId) throws IOException {
-        String body = httpClient.performGet("https://"+ HostHelper.getHost() +"/forum/index.php?act=attach&code=showtopic&tid=" + topicId).getResponseBody();
-
-        Matcher m = Pattern.compile("<tr id=\"(\\d+)\"><td align=\"center\" class=\"row1\"><img src=\"[^\"]*/([^.]*)\\..*?\" alt=\"Прикрепленный файл\" /></td><td class=\"row2\"><a href=\"([^\"]*)\" target=\"_blank\">([^<]*)</a><div class=\"desc\">\\(([^)]*)\\)</div></td><td align=\"center\" class=\"row1\">([^<]*)</td><td class=\"row2\" align=\"center\"><a href=\"#\" onclick=\"opener.location='[^']*pid=(\\d+)';\">\\d+</a></td></tr>"
-                , Pattern.CASE_INSENSITIVE).matcher(body);
-        ArrayList<PostAttach> res = new ArrayList<>();
-        String today = Functions.getToday();
-        String yesterday = Functions.getYesterToday();
-        while (m.find()) {
-            PostAttach item = new PostAttach();
-            item.setId(m.group(1));
-
-            item.setFileType(m.group(2));
-            item.setUrl("https://"+HostHelper.getHost() + m.group(3));
-            item.setName(m.group(4));
-            item.setAdditionDate(Functions.parseForumDateTime(m.group(5).replace("Добавлено ", ""), today, yesterday));
-            item.setFileSize(FileUtils.parseFileSize(m.group(6)));
-            item.setPostId(m.group(7));
-            res.add( item);// обратная сортировка
-        }
-
-        return res;
-    }
-
     public static String pinFavorite(IHttpClient httpClient, String topicId, String trackType) throws IOException{
         FavTopic favTopic = findTopicInFav(topicId);
 

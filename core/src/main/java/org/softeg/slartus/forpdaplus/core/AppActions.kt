@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.annotation.StringRes
 
 interface AppActions {
-    fun showUrlActions(context: Context, @StringRes titleRes: Int, url: String)
+    fun startDownload(url: String)
     fun showForumTopicsList(forumId: String?, forumTitle: String?)
     fun showQmsContactThreads(contactId: String, contactNick: String?)
     fun showQmsThread(
@@ -16,4 +16,7 @@ interface AppActions {
 
     fun showUserProfile(contactId: String, contactNick: String?)
     fun showNewQmsContactThread(contactId: String, contactNick: String?)
+    fun showUrlActions(context: Context, @StringRes titleRes: Int, url: String)
+    fun showUrlActions(context: Context, title: String, url: String)
+    fun openTopic(topicUrl: String)
 }

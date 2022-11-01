@@ -39,7 +39,7 @@ ext {
     fragmentCtx='1.4.0'
     gson= '2.8.9'
     hilt = '2.40.5'
-    jsoup = '1.14.3'
+    jsoup = '1.15.1'
     lifecycle='2.4.0'
     material='1.4.0'
     moshi='1.12.0'

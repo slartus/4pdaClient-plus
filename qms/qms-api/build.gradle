@@ -4,8 +4,6 @@ plugins {
 }
 
 android {
-    compileSdkVersion 32
-
     compileSdkVersion rootProject.compileSdkVersion
     defaultConfig {
         minSdkVersion rootProject.minSdk

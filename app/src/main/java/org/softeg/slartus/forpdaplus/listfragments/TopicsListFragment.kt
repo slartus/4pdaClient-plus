@@ -31,7 +31,6 @@ import org.softeg.slartus.forpdaplus.controls.ListViewLoadMoreFooter
 import org.softeg.slartus.forpdaplus.core_lib.coroutines.AppIOScope
 import org.softeg.slartus.forpdaplus.fragments.ForumFragment.Companion.showActivity
 import org.softeg.slartus.forpdaplus.fragments.topic.editpost.EditPostFragment.Companion.newPostWithAttach
-import org.softeg.slartus.forpdaplus.listfragments.TopicAttachmentListFragment.Companion.showActivity
 import org.softeg.slartus.forpdaplus.listfragments.adapters.SortedListAdapter
 import org.softeg.slartus.forpdaplus.listtemplates.FavoritesBrickInfo
 import org.softeg.slartus.forpdaplus.listtemplates.NotesBrickInfo
@@ -228,7 +227,7 @@ abstract class TopicsListFragment : BaseTaskListFragment() {
             }
             optionsMenu.add(MenuListDialog(context.getString(R.string.open_topics_forum)) { showActivity(topic.forumId, topic.id) })
         }
-        optionsMenu.add(MenuListDialog(getString(R.string.attachments)) { showActivity(listItem.id) })
+        optionsMenu.add(MenuListDialog(getString(R.string.attachments)) { TopicAttachmentListFragment.showActivity(listItem.id.toString()) })
     }
 
     private fun showTopicActivity(topic: IListItem, args: String) {
