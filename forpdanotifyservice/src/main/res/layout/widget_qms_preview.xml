@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    style="@style/Widget.4pdaClientplus.AppWidget.Container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="@style/Theme.4pdaClientplus.AppWidgetContainer">
+
+    <LinearLayout
+        style="@style/Widget.4pdaClientplus.AppWidget.InnerView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:gravity="center_horizontal"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/info_icon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/account" />
+
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progress_view"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:visibility="gone" />
+</RelativeLayout>

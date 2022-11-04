@@ -41,6 +41,7 @@ dependencies {
     implementation project(':core')
     implementation project(':core-res')
     implementation project(":core-lib")
+    implementation project(":qms:qms-api")
 
     implementation "androidx.core:core-ktx:$rootProject.coreCtx"
     implementation "androidx.appcompat:appcompat:$rootProject.appcompat"

@@ -14,9 +14,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
 import org.softeg.slartus.forpdaplus.core.entities.UserProfile
-import org.softeg.slartus.forpdaplus.core.repositories.QmsThreadsRepository
 import org.softeg.slartus.forpdaplus.core.repositories.UserProfileRepository
 import org.softeg.slartus.forpdaplus.core_res.R
+import ru.softeg.slartus.qms.api.repositories.QmsThreadsRepository
 import javax.inject.Inject
 
 @HiltViewModel

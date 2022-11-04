@@ -18,7 +18,7 @@
     </item>
 
     <item
-        android:id="@+id/user_item"
+        android:id="@id/menu_item_profile"
         android:icon="@drawable/account"
         android:orderInCategory="0"
         android:title="@string/guest"

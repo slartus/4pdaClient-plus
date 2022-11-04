@@ -10,7 +10,7 @@
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/search_item"
+        android:id="@id/menu_item_forum_search"
         android:icon="@drawable/magnify"
         android:orderInCategory="2"
         android:title="@string/menu_main_forum_search"

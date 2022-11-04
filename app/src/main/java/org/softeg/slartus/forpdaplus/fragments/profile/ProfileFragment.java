@@ -9,9 +9,11 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.AsyncTaskLoader;
 import androidx.loader.content.Loader;
+
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -74,7 +76,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
 
     @Override
     public String getUrl() {
-        return "https://"+ HostHelper.getHost() +"/forum/index.php?showuser=" + getUserId();
+        return "https://" + HostHelper.getHost() + "/forum/index.php?showuser=" + getUserId();
     }
 
     @Override
@@ -137,7 +139,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
     }
 
     public static void showProfile(String userId, String userNick) {
-        MainActivity.addTab(userNick, "https://"+ HostHelper.getHost() +"/forum/index.php?showuser=" + userId, newInstance(userId, userNick));
+        MainActivity.addTab(userNick, "https://" + HostHelper.getHost() + "/forum/index.php?showuser=" + userId, newInstance(userId, userNick));
     }
 
     public static ProfileFragment newInstance(String userId, String userNick) {
@@ -239,7 +241,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
 
         title = nick != null ? nick.toString() : "unknown";
         super.showBody();
-        m_WebView.loadDataWithBaseURL("https://"+ HostHelper.getHost() +"/forum/", profile.getHtmlBody(), "text/html", "UTF-8", null);
+        m_WebView.loadDataWithBaseURL("https://" + HostHelper.getHost() + "/forum/", profile.getHtmlBody(), "text/html", "UTF-8", null);
         if (nick != null)
             args.putString(USER_NAME_KEY, profile.getNick().toString());
         if (getMainActivity() != null)
@@ -301,7 +303,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
 
         @SuppressWarnings("unused")
         boolean tryShowQms_2_0(Activity context, String url) {
-            Matcher m = PatternExtensions.compile(HostHelper.getHost()+"/forum/index.php\\?act=qms&mid=(\\d+)&t=(\\d+)").matcher(url);
+            Matcher m = PatternExtensions.compile(HostHelper.getHost() + "/forum/index.php\\?act=qms&mid=(\\d+)&t=(\\d+)").matcher(url);
             if (m.find()) {
                 //QmsChatActivity.openChat(context, m.group(1), getUserNick(), m.group(2), null);
                 QmsChatFragment.Companion.openChat(m.group(1), getUserNick(), m.group(2), null);
@@ -309,7 +311,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
 
                 return true;
             }
-            m = PatternExtensions.compile(HostHelper.getHost()+"/forum/index.php\\?act=qms&mid=(\\d+)").matcher(url);
+            m = PatternExtensions.compile(HostHelper.getHost() + "/forum/index.php\\?act=qms&mid=(\\d+)").matcher(url);
             if (m.find()) {
                 //QmsContactThemesActivity.showThemes(context, m.group(1), getUserNick());
 
@@ -439,7 +441,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
                 Map<String, String> additionalHeaders = new HashMap<>();
                 additionalHeaders.put("auth_key", Client.getInstance().getAuthKey());
                 try {
-                    Client.getInstance().performPost("https://"+ HostHelper.getHost() +"/forum/index.php?act=profile-xhr&action=dev-primary&md_id=" + id, additionalHeaders);
+                    Client.getInstance().performPost("https://" + HostHelper.getHost() + "/forum/index.php?act=profile-xhr&action=dev-primary&md_id=" + id, additionalHeaders);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -452,58 +454,54 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
+        if (inflater != null)
+            inflater.inflate(R.menu.profile, menu);
+        menu.findItem(R.id.start_message_item).setOnMenuItemClickListener(item -> {
+            QmsContactThemes.showThemes(getUserId(), getUserNick());
+            return true;
+        });
 
-        if (Client.getInstance().getLogined() && getUserId() != null && !getUserId().equals(UserInfoRepositoryImpl.Companion.getInstance().getId())) {
-            menu.add(getString(R.string.MessagesQms)).setIcon(R.drawable.pencil)
-                    .setOnMenuItemClickListener(menuItem -> {
-                        QmsContactThemes.showThemes(getUserId(), getUserNick());
-                        return true;
+        menu.findItem(R.id.reputation_item).setOnMenuItemClickListener(item -> {
+            CharSequence[] items = {getString(R.string.look), getString(R.string.change_reputation)};
+            new MaterialDialog.Builder(getMainActivity())
+                    .title(R.string.reputation)
+                    .items(items)
+                    .itemsCallback((dialog, view, i, items1) -> {
+                        switch (i) {
+                            case 0:
+                                UserReputationFragment.showActivity(getUserId(), false);
+                                break;
+                            case 1:
+                                UserReputationFragment.showActivity(getUserId(), true);
+                                break;
+                        }
                     })
-                    .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-        }
+                    .show();
 
-        menu.add(getString(R.string.Reputation))
-                .setOnMenuItemClickListener(menuItem -> {
-                    CharSequence[] items = {getString(R.string.look), getString(R.string.change_reputation)};
-                    new MaterialDialog.Builder(getMainActivity())
-                            .title(R.string.reputation)
-                            .items(items)
-                            .itemsCallback((dialog, view, i, items1) -> {
-                                switch (i) {
-                                    case 0:
-                                        UserReputationFragment.showActivity(getUserId(), false);
-                                        break;
-                                    case 1:
-                                        UserReputationFragment.showActivity(getUserId(), true);
-                                        break;
-                                }
-                            })
-                            .show();
+            return true;
+        });
 
-                    return true;
-                })
-                .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+        menu.findItem(R.id.topics_item).setOnMenuItemClickListener(item -> {
+            MainActivity.startForumSearch(SearchSettingsDialogFragment.createUserTopicsSearchSettings(getUserNick()));
+            return true;
+        });
 
-        menu.add(R.string.topics)
-                .setOnMenuItemClickListener(menuItem -> {
-                    MainActivity.startForumSearch(SearchSettingsDialogFragment.createUserTopicsSearchSettings(getUserNick()));
-                    return true;
-                })
-                .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+        menu.findItem(R.id.posts_item).setOnMenuItemClickListener(item -> {
+            MainActivity.startForumSearch(SearchSettingsDialogFragment.createUserPostsSearchSettings(getUserNick()));
+            return true;
+        });
 
-        menu.add(R.string.posts)
-                .setOnMenuItemClickListener(menuItem -> {
-                    MainActivity.startForumSearch(SearchSettingsDialogFragment.createUserPostsSearchSettings(getUserNick()));
-                    return true;
-                })
-                .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+        menu.findItem(R.id.link_item).setOnMenuItemClickListener(item -> {
+            ExtUrl.showSelectActionDialog(getMainActivity(), getString(R.string.link_to_profile), "https://" + HostHelper.getHost() + "/forum/index.php?showuser=" + getUserId());
+            return true;
+        });
+    }
 
-        menu.add(R.string.link)
-                .setOnMenuItemClickListener(menuItem -> {
-                    ExtUrl.showSelectActionDialog(getMainActivity(), getString(R.string.link_to_profile), "https://"+ HostHelper.getHost() +"/forum/index.php?showuser=" + getUserId());
-                    return true;
-                })
-                .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu();
+        menu.findItem(R.id.start_message_item).setVisible(
+                Client.getInstance().getLogined() && getUserId() != null && !getUserId().equals(UserInfoRepositoryImpl.Companion.getInstance().getId())
+        );
     }
 }

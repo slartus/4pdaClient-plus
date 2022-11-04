@@ -13,7 +13,7 @@ repositories {
 android {
     compileSdkVersion rootProject.compileSdkVersion
 
-    def appVersionCode = 659
+    def appVersionCode = 662
     // именование версий:
     // первое число не трогаем никогда. только если весь клиент переписали, но тогда это другой репозиторий
     // второе число только при серьезных изменениях, затрагивающих интерфейс или архитектуру
@@ -23,7 +23,7 @@ android {
     // после фикса в релизе мержим в мастер.
     // мастер - рабочая ветка для следуюшего релиза
 
-    def appVersionName = "3.6"
+    def appVersionName = "3.6.1"
 
     defaultConfig {
         applicationId 'org.softeg.slartus.forpdaplus'
@@ -80,7 +80,7 @@ android {
         }
         beta {
             applicationId 'org.softeg.slartus.forpdaplus.beta'
-            versionCode 669// у беты свой номер, чтобы не инкрементить релизный
+            versionCode 676// у беты свой номер, чтобы не инкрементить релизный
             versionName "${appVersionName}beta" //beta - С МАЛЕНЬКОЙ БУКВЫ ПЛЗ.))
             signingConfig defaultSigningVariable
             dimension "wtf"
@@ -135,13 +135,16 @@ dependencies {
     api project(':4pdasources')
     api project(':hosthelper')
     implementation project(":core-lib")
-    implementation project(":core-db")
-    implementation project(":domain-forum")
-    implementation project(":domain-qms")
+    implementation project(":forum:forum-api")
+    implementation project(":forum:forum-impl")
+    implementation project(":forum:forum-data")
     implementation project(":domain-user-profile")
-    implementation project(":feature-forum")
-    implementation project(":feature-qms-contact-threads")
-    implementation project(":feature-qms-contacts")
+    implementation project(":qms:qms-api")
+    implementation project(":qms:qms-impl")
+    implementation project(":qms:qms-data")
+    implementation project(":topic:topic-api")
+    implementation project(":topic:topic-data")
+    implementation project(":topic:topic-impl")
     implementation project(":feature-qms-new-thread")
 
     implementation "androidx.appcompat:appcompat:$rootProject.appcompat"

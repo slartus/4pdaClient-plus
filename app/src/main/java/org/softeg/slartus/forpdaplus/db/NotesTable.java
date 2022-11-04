@@ -95,7 +95,7 @@ public class NotesTable {
         }
     }
 
-    public static ArrayList<Note> getNotes(SQLiteDatabase db, String topicId) throws ParseException {
+    public static ArrayList<Note> getNotes(SQLiteDatabase db, String topicId) {
         ArrayList<Note> notes = new ArrayList<>();
 
         Cursor c = null;
@@ -133,7 +133,7 @@ public class NotesTable {
                     note.UserId = c.getString(columnUserIdIndex);
                     note.User = c.getString(columnUserIndex);
                     note.Topic = c.getString(columnTopicIndex);
-                    note.Date = DbHelper.parseDate(c.getString(columnDateIndex));
+                    note.Date = DbHelper.parseDateOrNull(c.getString(columnDateIndex));
                     notes.add(note);
                 } while (c.moveToNext());
             }
@@ -147,7 +147,7 @@ public class NotesTable {
         return notes;
     }
 
-    public static Note getNote(String id) throws IOException, ParseException {
+    public static Note getNote(String id) throws IOException {
         SQLiteDatabase db = null;
         Cursor c = null;
         try {
@@ -182,7 +182,7 @@ public class NotesTable {
                 note.UserId = c.getString(columnUserIdIndex);
                 note.User = c.getString(columnUserIndex);
                 note.Topic = c.getString(columnTopicIndex);
-                note.Date = DbHelper.parseDate(c.getString(columnDateIndex));
+                note.Date = DbHelper.parseDateOrNull(c.getString(columnDateIndex));
 
                 return note;
 

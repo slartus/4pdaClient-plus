@@ -459,4 +459,6 @@
     <string name="menu_topic_attachments_invert_sorting">Invert sorting</string>
     <string name="registration">Registration</string>
     <string name="error_on_new_thread">No new dialog ID found. The user may have blocked you</string>
+    <string name="qms_contacts_search">Find contact</string>
+
 </resources>

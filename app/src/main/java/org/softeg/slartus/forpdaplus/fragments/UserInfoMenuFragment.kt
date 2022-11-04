@@ -1,5 +1,6 @@
 package org.softeg.slartus.forpdaplus.fragments
 
+import android.app.Application
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -18,13 +19,14 @@ import kotlinx.coroutines.launch
 import org.softeg.slartus.forpdaplus.*
 import org.softeg.slartus.forpdaplus.common.AppLog
 import org.softeg.slartus.forpdaplus.core.entities.UserInfo
-import org.softeg.slartus.forpdaplus.core.repositories.QmsCountRepository
+import ru.softeg.slartus.qms.api.repositories.QmsCountRepository
 import org.softeg.slartus.forpdaplus.core.repositories.UserInfoRepository
 import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment
 import org.softeg.slartus.forpdaplus.listfragments.mentions.MentionsListFragment.Companion.newFragment
 import org.softeg.slartus.forpdaplus.listfragments.next.UserReputationFragment.Companion.showActivity
 import org.softeg.slartus.forpdaplus.listtemplates.QmsContactsBrickInfo
 import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class UserInfoMenuFragment : Fragment() {
@@ -64,7 +66,7 @@ class UserInfoMenuFragment : Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.user, menu)
         guestMenuItem = menu.findItem(R.id.guest_item)
-        userMenuItem = menu.findItem(R.id.user_item)
+        userMenuItem = menu.findItem(R.id.menu_item_profile)
         qmsMenuItem = menu.findItem(R.id.qms_item)
         mentionsMenuItem = menu.findItem(R.id.mentions_item)
     }
@@ -168,7 +170,8 @@ class UserInfoMenuFragment : Fragment() {
 @HiltViewModel
 class UserInfoMenuViewModel @Inject constructor(
     private val userInfoRepository: UserInfoRepository,
-    private val qmsCountRepository: QmsCountRepository
+    private val qmsCountRepository: QmsCountRepository,
+    private val application: Application
 ) : ViewModel() {
     private val _uiState = MutableStateFlow<ViewState>(ViewState.Initialize)
     val uiState: StateFlow<ViewState> = _uiState
@@ -187,11 +190,12 @@ class UserInfoMenuViewModel @Inject constructor(
                     }
             }
             launch(SupervisorJob() + errorHandler) {
-                qmsCountRepository.count
+                qmsCountRepository.countFlow
                     .filterNotNull()
                     .distinctUntilChanged()
                     .collect {
                         userInfoRepository.setQmsCount(it)
+                        QmsWidgetProvider.sendUpdateIntent(application)
                     }
             }
         }

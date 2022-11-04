@@ -31,7 +31,9 @@ android {
 }
 
 dependencies {
-
+    implementation project(":forum:forum-api")
+    implementation project(":qms:qms-api")
+    implementation project(":topic:topic-api")
     implementation "androidx.core:core-ktx:$rootProject.coreCtx"
     implementation "androidx.appcompat:appcompat:$rootProject.appcompat"
     implementation "com.google.android.material:material:$rootProject.material"

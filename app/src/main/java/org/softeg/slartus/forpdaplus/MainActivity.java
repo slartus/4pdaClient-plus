@@ -588,6 +588,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
     @Override
     public void onResume() {
         super.onResume();
+        QmsWidgetProvider.sendUpdateIntent(this.getApplicationContext());
         if (lang == null) {
             lang = appPreferences.getLanguage();
         }
@@ -653,6 +654,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
     @Override
     protected void onPause() {
         super.onPause();
+        QmsWidgetProvider.sendUpdateIntent(this.getApplicationContext());
         activityPaused = true;
         if (!(String.valueOf(TabsManager.getInstance().getCurrentFragmentTag())).equals("null")) {
             Fragment fragment = getSupportFragmentManager().findFragmentByTag(TabsManager.getInstance().getCurrentFragmentTag());
@@ -769,7 +771,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
             case R.id.tabs_item:
                 mTabDrawerMenu.toggleOpenState();
                 return true;
-            case R.id.search_item:
+            case R.id.menu_item_forum_search:
                 SearchSettingsDialogFragment.showSearchSettingsDialog(MainActivity.this, getSearchSettings());
                 return true;
             case R.id.exit_item:

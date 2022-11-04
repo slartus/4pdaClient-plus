@@ -549,14 +549,14 @@ function isdef(typestr) {
  */
 
 function getSelectedText() {
-    var selection = null;
+    console.log("getSelectedText");
+    var selectedText = null;
     if (window.getSelection) {
-        selection = window.getSelection();
+        var selection = window.getSelection();
     } else if (document.getSelection) {
         selection = document.getSelection();
     } else if (document.selection) {
         selection = document.selection;
     }
-
-    return selection ? selection.getRangeAt(0).toString() : "";
+    return (selection && selection.rangeCount) ? selection.getRangeAt(0).toString() : "";
 };

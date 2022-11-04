@@ -1,18 +1,15 @@
 
 function getSelectionPostInfo() {
-    var text = "", containerElement = null;
-
+    var text = undefined, containerElement = null;
+    console.log("getSelectionPostInfo");
     if (typeof window.getSelection != "undefined") {
-        console.log("window");
         var sel = window.getSelection();
         if (sel.rangeCount) {
             var node = sel.getRangeAt(0).commonAncestorContainer;
             containerElement = node.nodeType == 1 ? node : node.parentNode;
             text = sel.toString();
         }
-    } else if (typeof document.selection != "undefined" &&
-        document.selection.type != "Control") {
-        console.log("document");
+    } else if (typeof document.selection != "undefined" && document.selection.type != "Control") {
         var textRange = document.selection.createRange();
         containerElement = textRange.parentElement();
         text = textRange.text;
@@ -30,6 +27,8 @@ function getSelectionPostInfo() {
             };
         }
     }
+    if (!text)
+        return undefined;
     return {
         selection: text
     };

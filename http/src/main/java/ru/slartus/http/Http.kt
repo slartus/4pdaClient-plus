@@ -121,6 +121,7 @@ class Http private constructor(context: Context, appName: String, appVersion: St
                 .readTimeout(30, TimeUnit.SECONDS)
                 .addInterceptor(UnzippingInterceptor())
                 .sslSocketFactory(sslSocketFactory, trustManager)
+                .hostnameVerifier { _, _ -> true }
             if (BuildConfig.DEBUG)
                 builder
                     .addInterceptor(LoggingInterceptor())
@@ -262,7 +263,7 @@ class Http private constructor(context: Context, appName: String, appVersion: St
     fun performGetRedirectUrlElseRequestUrl(url: String): String {
         val response = response(url)
         val redirectUrl = response.request.url.toString()
-        return if (redirectUrl.isEmpty()) url else redirectUrl
+        return redirectUrl.ifEmpty { url }
     }
 
     fun performGetFull(url: String): AppResponse {
@@ -347,8 +348,8 @@ class Http private constructor(context: Context, appName: String, appVersion: St
             val response = client.newCall(request).execute()
             if (!response.isSuccessful) throw HttpException("Unexpected code $response")
 
-            val body = response.body?.string()
-            return AppResponse(url, response.request.url.toString(), body ?: "")
+            val body2 = response.body?.string()
+            return AppResponse(url, response.request.url.toString(), body2 ?: "")
         } catch (ex: IOException) {
             throw HttpException(ex)
         }
@@ -383,9 +384,9 @@ class Http private constructor(context: Context, appName: String, appVersion: St
         } else {
             builder.addFormDataPart(fileFormDataName, fileName, file.asRequestBody(mediaType))
         }
-        if (!formDataParts.any { it.first?.toLowerCase() == "size" })
+        if (!formDataParts.any { it.first.equals("size", ignoreCase = true) })
             builder.addFormDataPart("size", file.length().toString())
-        if (!formDataParts.any { it.first?.toLowerCase() == "md5" })
+        if (!formDataParts.any { it.first.equals("md5", ignoreCase = true) })
             builder.addFormDataPart("md5", FileUtils.calculateMD5(file))
         formDataParts.filter { it.first != null && it.second != null }.forEach {
             builder.addFormDataPart(it.first!!, it.second!!)

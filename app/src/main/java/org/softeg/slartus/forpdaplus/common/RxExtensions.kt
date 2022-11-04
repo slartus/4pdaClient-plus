@@ -9,6 +9,3 @@ import io.reactivex.subjects.Subject
 fun <T> Subject<T>.runFromIoToUi() =
     this.subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-
-class RxExtensions {
-}

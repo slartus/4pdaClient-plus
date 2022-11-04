@@ -10,21 +10,21 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import org.softeg.slartus.forpdaplus.core.*
-import org.softeg.slartus.forpdaplus.core.entities.QmsContact
-import org.softeg.slartus.forpdaplus.core.entities.QmsContacts
-import org.softeg.slartus.forpdaplus.core.entities.QmsThreads
-import org.softeg.slartus.forpdaplus.core.entities.UserProfile
+import org.softeg.slartus.forpdaplus.core.entities.*
 import org.softeg.slartus.forpdaplus.core.interfaces.ParseFactory
 import org.softeg.slartus.forpdaplus.core.interfaces.Parser
 import org.softeg.slartus.forpdaplus.core.repositories.UserInfoRepository
 import org.softeg.slartus.forpdaplus.core.services.AppHttpClient
-import org.softeg.slartus.forpdaplus.domain_qms.di.QmsCountParserInt
-import org.softeg.slartus.forpdaplus.domain_qms.di.QmsNewThreadParserString
 import org.softeg.slartus.forpdaplus.prefs.AppPreferencesImpl
 import org.softeg.slartus.forpdaplus.prefs.ForumPreferencesImpl
 import org.softeg.slartus.forpdaplus.prefs.ListPreferencesImpl
 import org.softeg.slartus.forpdaplus.prefs.QmsPreferencesImpl
 import org.softeg.slartus.forpdaplus.repositories.UserInfoRepositoryImpl
+import org.softeg.slartus.forpdaplus.topic.data.screens.attachments.models.TopicAttachmentsResponse
+import ru.softeg.slartus.qms.api.models.QmsContact
+import ru.softeg.slartus.qms.api.models.QmsContacts
+import ru.softeg.slartus.qms.api.models.QmsCount
+import ru.softeg.slartus.qms.api.models.QmsThreads
 import javax.inject.Singleton
 
 @Module
@@ -43,12 +43,13 @@ class AppModule {
     @Provides
     @Singleton
     fun provideParseFactoryImpl(
+        qmsCountParser: Parser<QmsCount>,
         qmsContactsParser: Parser<QmsContacts>,
-        @QmsCountParserInt qmsCountParser: Parser<Int>,
         qmsContactParser: Parser<QmsContact>,
         qmsThreadsParser: Parser<QmsThreads>,
         profileParser: Parser<UserProfile>,
-        @QmsNewThreadParserString qmsChatParser: Parser<String>,
+        qmsChatParser: Parser<String>,
+        topicAttachmentsParser: Parser<TopicAttachmentsResponse>,
     ): ParseFactory =
         ParseFactoryImpl.Builder()
             .add(profileParser)
@@ -57,6 +58,7 @@ class AppModule {
             .add(qmsContactParser)
             .add(qmsCountParser)
             .add(qmsThreadsParser)
+            .add(topicAttachmentsParser)
             .build()
 }
 

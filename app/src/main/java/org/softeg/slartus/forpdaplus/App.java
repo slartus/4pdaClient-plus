@@ -27,7 +27,7 @@ import org.softeg.slartus.forpdanotifyservice.favorites.FavoritesNotifier;
 import org.softeg.slartus.forpdanotifyservice.qms.QmsNotifier;
 import org.softeg.slartus.forpdaplus.acra.AcraExtensionsKt;
 import org.softeg.slartus.forpdaplus.core.AppPreferences;
-import org.softeg.slartus.forpdaplus.core.repositories.ForumRepository;
+import ru.softeg.slartus.forum.api.ForumRepository;
 import org.softeg.slartus.forpdaplus.db.DbHelper;
 import org.softeg.slartus.forpdaplus.prefs.PreferencesActivity;
 import org.softeg.slartus.forpdaplus.repositories.ForumsRepository;

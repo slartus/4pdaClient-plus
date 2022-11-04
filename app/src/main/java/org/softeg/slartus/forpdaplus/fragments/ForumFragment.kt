@@ -8,7 +8,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.softeg.slartus.forpdaplus.MainActivity
 import org.softeg.slartus.forpdaplus.core.entities.SearchSettings
 import org.softeg.slartus.forpdaplus.core.interfaces.SearchSettingsListener
-import org.softeg.slartus.forpdaplus.feature_forum.ui.ForumFragment
+import org.softeg.slartus.forpdaplus.forum.impl.ui.ForumFragment
 import org.softeg.slartus.forpdaplus.fragments.search.SearchSettingsDialogFragment
 import org.softeg.slartus.forpdaplus.listfragments.TopicsListFragment
 import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo

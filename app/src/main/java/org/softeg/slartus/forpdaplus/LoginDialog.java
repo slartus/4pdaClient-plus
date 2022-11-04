@@ -24,6 +24,8 @@ import org.softeg.slartus.forpdaplus.common.AppLog;
 
 import java.lang.ref.WeakReference;
 
+import timber.log.Timber;
+
 /**
  * User: slinkin
  * Date: 08.02.12
@@ -220,23 +222,27 @@ public class LoginDialog {
 
         // can use UI thread here
         protected void onPostExecute(final Boolean success) {
-            if (this.dialog.isShowing()) {
-                this.dialog.dismiss();
-            }
-
             App.getInstance().getPreferences().edit().putBoolean("needLoadRepImage", success).apply();
-            if (success) {
-                Toast.makeText(mContext.get(), R.string.login_performed,
-                        Toast.LENGTH_SHORT).show();
-            } else {
-                if (ex != null)
-                    AppLog.e(mContext.get(), ex);
-                else
-                    new MaterialDialog.Builder(mContext.get())
-                            .title(R.string.error)
-                            .content(Client.getInstance().getLoginFailedReason())
-                            .positiveText(R.string.ok)
-                            .show();
+
+            try {
+                if (this.dialog.isShowing()) {
+                    this.dialog.dismiss();
+                }
+                if (success) {
+                    Toast.makeText(mContext.get(), R.string.login_performed,
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    if (ex != null)
+                        AppLog.e(mContext.get(), ex);
+                    else
+                        new MaterialDialog.Builder(mContext.get())
+                                .title(R.string.error)
+                                .content(Client.getInstance().getLoginFailedReason())
+                                .positiveText(R.string.ok)
+                                .show();
+                }
+            } catch (Throwable ex) {
+                Timber.e(ex);
             }
         }
 

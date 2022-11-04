@@ -1,0 +1,11 @@
+<resources>
+    <style name="Widget.4pdaClientplus.AppWidget.Container" parent="android:Widget">
+        <item name="android:id">@android:id/background</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="Widget.4pdaClientplus.AppWidget.InnerView" parent="android:Widget">
+        <item name="android:background">#0998c6</item>
+        <item name="android:textColor">#fff</item>
+    </style>
+</resources>

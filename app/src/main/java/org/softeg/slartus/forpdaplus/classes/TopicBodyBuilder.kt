@@ -63,9 +63,9 @@ class TopicBodyBuilder(context: Context?, logined: Boolean, topic: ExtTopic?, ur
                     m_IsWebviewAllowJavascriptInterface, useSelectTextAsNumbers = false, top = false)
         }
         if (Preferences.Topic.readersAndWriters) {
-            m_Body.append("<div class=\"who\"><a id=\"viewers\" ").append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "showReadingUsers"))
+            m_Body.append("<div class=\"who\" title=\"Кто читает тему\" ><a id=\"viewers\" ").append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "showReadingUsers"))
                     .append("><span>Кто читает тему</span></a>\n")
-            m_Body.append("<a id=\"writers\" ").append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "showWriters"))
+            m_Body.append("<a id=\"writers\" title=\"Кто писал сообщения\" ").append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "showWriters"))
                     .append("><span>Кто писал сообщения</span></a></div>\n")
         }
         m_Body.append(titleBlock).append("</div><div id=\"bottomMargin\"></div>")
@@ -150,7 +150,7 @@ class TopicBodyBuilder(context: Context?, logined: Boolean, topic: ExtTopic?, ur
         }
         sb.append("><div class=\"img\" style=\"background-image:url(").append(if (m_IsShowAvatars) avatar else "file:///android_asset/profile/av.png").append(");\"></div></div>")
         //Ник
-        sb.append("<a class=\"inf nick ")
+        sb.append("<a title=\"Меню пользователя\" class=\"inf nick ")
                 .append(if (msg.userState) "online " else "")
                 .append(if (msg.isCurator) "curator\"" else "\" ")
                 .append(if (!TextUtils.isEmpty(msg.userId)) getHtmlout(m_IsWebviewAllowJavascriptInterface, "showUserMenu", arrayOf(msg.id, msg.userId, nickParam)) else "")
@@ -159,19 +159,19 @@ class TopicBodyBuilder(context: Context?, logined: Boolean, topic: ExtTopic?, ur
         sb.append("<div class=\"inf group\">").append(if (msg.userGroup == null) "" else msg.userGroup).append("</div>")
         //Репутация
         if (!TextUtils.isEmpty(msg.userId)) {
-            sb.append("<a class=\"inf reputation\" ")
+            sb.append("<a class=\"inf reputation\" title=\"Репутация\" ")
                     .append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "showRepMenu", arrayOf(msg.id, msg.userId, msg.nickParam, if (msg.canPlusRep) "1" else "0", if (msg.canMinusRep) "1" else "0")))
                     .append("><span>").append(msg.userReputation).append("</span></a>")
         }
         //Дата
         sb.append("<div class=\"date-link\"><span class=\"inf date\"><span>").append(msg.date).append("</span></span>")
         //Ссылка на пост
-        sb.append("<a class=\"inf link\" ")
+        sb.append("<a class=\"inf link\" title=\"Меню поста\" ")
                 .append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "showPostLinkMenu", msg.id))
                 .append("><span><span class=\"sharp\">#</span>").append(msg.number).append("</span></a></div>")
         //Меню
         if (Client.getInstance().logined) {
-            sb.append("<a class=\"inf menu\" ")
+            sb.append("<a class=\"inf menu\" title=\"Меню\" ")
                     .append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "showPostMenu", arrayOf(msg.id, msg.date, msg.userId, nickParam, if (msg.canEdit) "1" else "0", if (msg.canDelete) "1" else "0")))
                     .append("><span>Меню</span></a>")
         }
@@ -191,25 +191,25 @@ class TopicBodyBuilder(context: Context?, logined: Boolean, topic: ExtTopic?, ur
                 postNumber = (post.number.toInt() - 1).toString()
             } catch (ignored: Throwable) {
             }
-            sb.append(String.format("<a class=\"link button claim\" href=\"/forum/index.php?act=report&t=%s&p=%s&st=%s\"><span>Жалоба</span></a>",
+            sb.append(String.format("<a class=\"link button claim\" href=\"/forum/index.php?act=report&t=%s&p=%s&st=%s\" title=\"Жалоба\"><span>Жалоба</span></a>",
                     topic!!.id, post.id, postNumber))
-            sb.append("<a class=\"button nick\" ")
+            sb.append("<a class=\"button nick\" title=\"$nickParam\" ")
                     .append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "insertTextToPost", String.format("[SNAPBACK]%s[/SNAPBACK] [B]%s,[/B] \\n", post.id, nickParam)))
                     .append("><span>Ник</span></a>")
-            sb.append("<a class=\"button quote\" ")
+            sb.append("<a class=\"button quote\" title=\"Цитата\" ")
                     .append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "quote", arrayOf(topic!!.forumId, topic!!.id, post.id, post.date, post.userId, nickParam)))
                     .append("><span>Цитата</span></a>")
             if ((instance.getId() != post.userId) and topic!!.isPostVote) {
-                sb.append("<a class=\"button vote bad\" ")
+                sb.append("<a class=\"button vote bad\" title=\"Плохо\" ")
                         .append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "postVoteBad", post.id))
                         .append("><span>Плохо</span></a>")
-                sb.append("<a class=\"button vote good\" ")
+                sb.append("<a class=\"button vote good\" title=\"Хорошо\" ")
                         .append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "postVoteGood", post.id))
                         .append("><span>Хорошо</span></a>")
             }
-            if (post.canEdit) sb.append(String.format("<a class=\"button edit\" id=\"edit-but-%s\" href=\"/forum/index.php?act=post&do=edit_post&f=%s&t=%s&p=%s&st=%s\"><span>Изменить</span></a>",
+            if (post.canEdit) sb.append(String.format("<a class=\"button edit\" id=\"edit-but-%s\" href=\"/forum/index.php?act=post&do=edit_post&f=%s&t=%s&p=%s&st=%s\" title=\"Изменить\"><span>Изменить</span></a>",
                     post.id, topic!!.forumId, topic!!.id, post.id, postNumber))
-            if (post.canDelete) sb.append(String.format("<a class=\"button delete\" href=\"/forum/index.php?act=Mod&CODE=04&f=%s&t=%s&p=%s&st=%s&auth_key=%s\"><span>Удалить</span></a>",
+            if (post.canDelete) sb.append(String.format("<a class=\"button delete\" href=\"/forum/index.php?act=Mod&CODE=04&f=%s&t=%s&p=%s&st=%s&auth_key=%s\" title=\"Удалить\"><span>Удалить</span></a>",
                     topic!!.forumId, topic!!.id, post.id, postNumber, topic!!.authKey))
         }
         sb.append("</div>\n\n")
@@ -224,11 +224,11 @@ class TopicBodyBuilder(context: Context?, logined: Boolean, topic: ExtTopic?, ur
             val prevDisabled = currentPage == 1
             val nextDisabled = currentPage == pagesCount
             sb.append("\n<div class=\"navi ").append(if (top) "top" else "bottom").append("\">\n")
-            sb.append("<a class=\"button first").append(if (prevDisabled) " disable\"" else "\"" + getHtmlout(isUseJs, "firstPage")).append("><span>&lt;&lt;</span></a>\n")
-            sb.append("<a class=\"button prev").append(if (prevDisabled) " disable\"" else "\"" + getHtmlout(isUseJs, "prevPage")).append("><span>&lt;</span></a>\n")
-            sb.append("<a class=\"button page\" ").append(getHtmlout(isUseJs, "jumpToPage")).append("><span>").append(if (useSelectTextAsNumbers) "$currentPage/$pagesCount" else "Выбор").append("</span></a>\n")
-            sb.append("<a class=\"button next").append(if (nextDisabled) " disable\"" else "\"" + getHtmlout(isUseJs, "nextPage")).append("><span>&gt;</span></a>\n")
-            sb.append("<a class=\"button last").append(if (nextDisabled) " disable\"" else "\"" + getHtmlout(isUseJs, "lastPage")).append("><span>&gt;&gt;</span></a>\n")
+            sb.append("<a title=\"Первая страница\" class=\"button first").append(if (prevDisabled) " disable\"" else "\"" + getHtmlout(isUseJs, "firstPage")).append("><span>&lt;&lt;</span></a>\n")
+            sb.append("<a title=\"Предыдущая страница\" class=\"button prev").append(if (prevDisabled) " disable\"" else "\"" + getHtmlout(isUseJs, "prevPage")).append("><span>&lt;</span></a>\n")
+            sb.append("<a title=\"Выбрать страницу\" class=\"button page\" ").append(getHtmlout(isUseJs, "jumpToPage")).append("><span>").append(if (useSelectTextAsNumbers) "$currentPage/$pagesCount" else "Выбор").append("</span></a>\n")
+            sb.append("<a title=\"Следующая страница\" class=\"button next").append(if (nextDisabled) " disable\"" else "\"" + getHtmlout(isUseJs, "nextPage")).append("><span>&gt;</span></a>\n")
+            sb.append("<a title=\"Последняя страница\" class=\"button last").append(if (nextDisabled) " disable\"" else "\"" + getHtmlout(isUseJs, "lastPage")).append("><span>&gt;&gt;</span></a>\n")
             sb.append("</div>\n")
         }
 

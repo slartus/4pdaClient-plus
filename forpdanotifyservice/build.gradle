@@ -32,6 +32,8 @@ android {
 dependencies {
     api project(':forpdaapi')
     api project(':hosthelper')
+    implementation project(":core-lib")
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$rootProject.coroutines"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 repositories {

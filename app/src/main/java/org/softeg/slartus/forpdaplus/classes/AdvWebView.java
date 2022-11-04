@@ -4,13 +4,18 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Point;
+import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
+
 import androidx.annotation.RequiresApi;
+
 import android.util.AttributeSet;
+import android.view.ActionMode;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewParent;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
@@ -19,6 +24,8 @@ import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 
 import java.util.Calendar;
+
+import timber.log.Timber;
 
 /**
  * User: slinkin
@@ -52,6 +59,10 @@ public class AdvWebView extends WebView {
     @SuppressLint("SetJavaScriptEnabled")
     private void init() {
         // gd = new GestureDetector(context, sogl);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            // даём разрешение подгружать несекьюрные ресурсы из assets
+            getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        }
         getSettings().setJavaScriptEnabled(true);
 
         getSettings().setJavaScriptCanOpenWindowsAutomatically(false);
@@ -59,12 +70,10 @@ public class AdvWebView extends WebView {
         getSettings().setDomStorageEnabled(true);
         getSettings().setAllowFileAccess(true);
         getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+        getSettings().setAllowFileAccessFromFileURLs(true); //Maybe you don't need this rule
+        getSettings().setAllowUniversalAccessFromFileURLs(true);
 
-        if (Build.VERSION.SDK_INT > 15) {
-            getSettings().setAllowFileAccessFromFileURLs(true); //Maybe you don't need this rule
-            getSettings().setAllowUniversalAccessFromFileURLs(true);
-        }
-        if (Build.VERSION.SDK_INT < 18)
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2)
             getSettings().setPluginState(WebSettings.PluginState.ON);// для воспроизведения видео
 
 
@@ -72,7 +81,7 @@ public class AdvWebView extends WebView {
             setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
             setScrollbarFadingEnabled(true);
         }
-        if(Preferences.System.getWebviewCompatMode())
+        if (Preferences.System.getWebviewCompatMode())
             this.setLayerType(LAYER_TYPE_SOFTWARE, null);
         /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             try {
@@ -133,6 +142,7 @@ public class AdvWebView extends WebView {
     private long startClickTime;
     private Boolean m_InTouch = false;
     private Point m_MotionDown = null;
+
     @Override
     public boolean onTouchEvent(android.view.MotionEvent event) {
         boolean b = super.onTouchEvent(event);
@@ -158,14 +168,14 @@ public class AdvWebView extends WebView {
                 case MotionEvent.ACTION_UP: {
                     m_InTouch = false;
                     long clickDuration = Calendar.getInstance().getTimeInMillis() - startClickTime;
-                    if (clickDuration < MAX_CLICK_DURATION &&m_MotionDown!=null&& Math.abs(m_MotionDown.y - event.getY()) < MAX_TOUCH__Y_DISTANCE) {
+                    if (clickDuration < MAX_CLICK_DURATION && m_MotionDown != null && Math.abs(m_MotionDown.y - event.getY()) < MAX_TOUCH__Y_DISTANCE) {
                         mOnScrollChangedCallback.onTouch();
                     }
                 }
             }
         } catch (Throwable ex) {
             AppLog.e(getContext(), ex);
-        }finally {
+        } finally {
             m_LastMotionEvent = new Point((int) event.getX(), (int) event.getY());
         }
 
@@ -217,16 +227,17 @@ public class AdvWebView extends WebView {
                 loadUrl("javascript:" + js);
             }
         } catch (IllegalStateException ex) {
-            android.util.Log.e("AdvWebView", ex.toString());
+            Timber.e(ex);
             Preferences.System.setEvaluateJavascriptEnabled(false);
         } catch (Throwable ex) {
-            android.util.Log.e("AdvWebView", ex.toString());
+            Timber.e(ex);
         }
     }
+
     private OnStartActionModeListener actionModeListener;
 
     public interface OnStartActionModeListener {
-        void OnStart(android.view.ActionMode actionMode, android.view.ActionMode.Callback callback, int type);
+        void onCreateActionMode(android.view.ActionMode actionMode, Menu menu);
     }
 
     public void setActionModeListener(OnStartActionModeListener actionModeListener) {
@@ -235,29 +246,35 @@ public class AdvWebView extends WebView {
 
     @Override
     public android.view.ActionMode startActionMode(android.view.ActionMode.Callback callback) {
-        return myActionMode(callback, 0);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            ActionModeCallbackWrapper actionModeCallback = new ActionModeCallbackWrapper(callback, actionModeListener);
+            return super.startActionMode(actionModeCallback);
+        } else {
+            ActionMode actionMode = super.startActionMode(callback);
+            if (actionModeListener != null)
+                actionModeListener.onCreateActionMode(actionMode, actionMode.getMenu());
+            return actionMode;
+        }
     }
 
+    /**
+     * Start an action mode with the given type.
+     *
+     * @param callback ActionMode.Callback: Callback that will control the lifecycle of the action mode
+     * @param type     ActionMode#TYPE_PRIMARY or ActionMode#TYPE_FLOATING.
+     * @return The new action mode if it is started, null otherwise
+     */
     @Override
     public android.view.ActionMode startActionMode(android.view.ActionMode.Callback callback, int type) {
-        return myActionMode(callback, type);
-    }
-
-
-    private android.view.ActionMode myActionMode(android.view.ActionMode.Callback callback, int type) {
-        ViewParent parent = getParent();
-        if (parent == null) {
-            return null;
-        }
-        android.view.ActionMode actionMode;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            actionMode = super.startActionMode(callback, type);
+            ActionModeCallbackWrapper actionModeCallback = new ActionModeCallbackWrapper(callback, actionModeListener);
+            return super.startActionMode(actionModeCallback, type);
         } else {
-            actionMode = super.startActionMode(callback);
+            ActionMode actionMode = super.startActionMode(callback, type);
+            if (actionModeListener != null)
+                actionModeListener.onCreateActionMode(actionMode, actionMode.getMenu());
+            return actionMode;
         }
-        if (actionModeListener != null)
-            actionModeListener.OnStart(actionMode, callback, type);
-        return actionMode;
     }
 
 }

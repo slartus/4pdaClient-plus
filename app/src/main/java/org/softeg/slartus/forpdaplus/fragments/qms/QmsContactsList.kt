@@ -2,7 +2,7 @@ package org.softeg.slartus.forpdaplus.fragments.qms
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import org.softeg.slartus.forpdaplus.feature_qms_contacts.ui.QmsContactsFragment
+import org.softeg.slartus.forpdaplus.qms.impl.screens.contacts.QmsContactsFragment
 import org.softeg.slartus.forpdaplus.fragments.BaseBrickContainerFragment
 
 class QmsContactsList : BaseBrickContainerFragment() {

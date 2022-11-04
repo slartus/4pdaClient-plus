@@ -467,4 +467,6 @@
     <string name="menu_topic_load_imgs_for_session">Загр-ть изобр-я (для сессии)</string>
     <string name="menu_topic_attachments_invert_sorting">Инвертировать сортировку</string>
     <string name="error_on_new_thread">Не найден идентификатор нового диалога. Возможно, пользователь заблокировал вас</string>
+    <string name="qms_contacts_search">Найти контакт</string>
+
 </resources>
