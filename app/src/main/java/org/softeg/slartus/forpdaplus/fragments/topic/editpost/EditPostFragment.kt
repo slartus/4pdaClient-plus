@@ -407,7 +407,7 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
         if (mEditpost!!.attaches.size == 0) {
             MaterialDialog.Builder(mainActivity)
                 .content(R.string.no_attachments)
-                .positiveText(R.string.do_download)
+                .positiveText(R.string.upload)
                 .negativeText(R.string.cancel)
                 .onPositive { _, _ -> startAddAttachment() }
                 .show()

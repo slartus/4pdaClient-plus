@@ -140,7 +140,7 @@
     <string name="text_not_empty">Text field is not empty! Close topic?</string>
     <string name="is_sure">Are you sure?</string>
     <string name="confirm_sending">Confirm sending</string>
-    <string name="no_attachments">There are no attachments, download?</string>
+    <string name="no_attachments">There are no attachments, upload?</string>
     <string name="do_download">Download</string>
     <string name="attachments">Attachments</string>
     <string name="in_spoiler">Spoiler</string>
@@ -457,5 +457,5 @@
     <string name="menu_topic_attachments_invert_sorting">Invert sorting</string>
     <string name="registration">Registration</string>
     <string name="qms_contacts_search">Find contact</string>
-
+    <string name="upload">Upload</string>
 </resources>
