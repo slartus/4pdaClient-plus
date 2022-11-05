@@ -1,4 +1,4 @@
-package ru.slartus.feature_qms_new_thread
+package org.softeg.slartus.forpdaplus.qms.impl.screens.newthread
 
 import android.os.Bundle
 import android.os.Parcelable
@@ -138,7 +138,7 @@ class QmsNewThreadViewModel @Inject constructor(
                 if (threadId.isNullOrEmpty()) {
                     _events.emit(Event.Toast(R.string.error_on_new_thread))
                 } else {
-                    _events.emit(Event.OpenChat(contactId,userNick, threadId, subject))
+                    _events.emit(Event.OpenChat(contactId, userNick, threadId, subject))
                 }
             } finally {
                 _events.emit(Event.Progress(false))

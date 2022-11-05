@@ -8,7 +8,7 @@ import org.softeg.slartus.forpdaplus.MainActivity
 import org.softeg.slartus.forpdaplus.R
 import org.softeg.slartus.forpdaplus.fragments.BaseBrickContainerFragment
 import org.softeg.slartus.forpdaplus.tabs.TabsManager
-import ru.slartus.feature_qms_new_thread.QmsNewThreadFragment as FeatureFragment
+import org.softeg.slartus.forpdaplus.qms.impl.screens.newthread.QmsNewThreadFragment as FeatureFragment
 
 class QmsNewThreadFragment : BaseBrickContainerFragment() {
 
@@ -17,10 +17,10 @@ class QmsNewThreadFragment : BaseBrickContainerFragment() {
         super.onCreate(savedInstanceState)
         setTitleByNick(null)
         childFragmentManager.setFragmentResultListener(
-            FeatureFragment.ARG_CONTACT_NICK,
+            org.softeg.slartus.forpdaplus.qms.impl.screens.newthread.QmsNewThreadFragment.ARG_CONTACT_NICK,
             this
         ) { _, bundle ->
-            val nick = bundle.getString(FeatureFragment.ARG_CONTACT_NICK)
+            val nick = bundle.getString(org.softeg.slartus.forpdaplus.qms.impl.screens.newthread.QmsNewThreadFragment.ARG_CONTACT_NICK)
             setTitleByNick(nick)
         }
     }
@@ -69,7 +69,7 @@ class QmsNewThreadFragment : BaseBrickContainerFragment() {
         //        mPopupPanelView.hidePopupWindow();
         //    }
         fun showUserNewThread(userId: String?, userNick: String?) {
-            val args = bundleOf(FeatureFragment.ARG_CONTACT_ID to userId)
+            val args = bundleOf(org.softeg.slartus.forpdaplus.qms.impl.screens.newthread.QmsNewThreadFragment.ARG_CONTACT_ID to userId)
             val fragment = QmsNewThreadFragment().apply {
                 arguments = args
             }

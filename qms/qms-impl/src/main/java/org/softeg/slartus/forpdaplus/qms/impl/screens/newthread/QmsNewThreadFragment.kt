@@ -1,4 +1,4 @@
-package ru.slartus.feature_qms_new_thread
+package org.softeg.slartus.forpdaplus.qms.impl.screens.newthread
 
 import android.os.Bundle
 import android.view.View
@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 import org.softeg.slartus.forpdaplus.core.AppActions
 import org.softeg.slartus.forpdaplus.core_lib.ui.fragments.BaseFragment
-import ru.slartus.feature_qms_new_thread.databinding.FragmentQmsNewThreadBinding
+import org.softeg.slartus.forpdaplus.qms.impl.databinding.FragmentQmsNewThreadBinding
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Provider

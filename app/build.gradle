@@ -145,7 +145,6 @@ dependencies {
     implementation project(":topic:topic-api")
     implementation project(":topic:topic-data")
     implementation project(":topic:topic-impl")
-    implementation project(":feature-qms-new-thread")
 
     implementation "androidx.appcompat:appcompat:$rootProject.appcompat"
     implementation 'androidx.cardview:cardview:1.0.0'
