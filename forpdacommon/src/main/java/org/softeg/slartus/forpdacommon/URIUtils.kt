@@ -31,24 +31,7 @@ class URIUtils {
             scheme: String,
             authority: String,
             path: String,
-            params: MutableList<NameValuePair>,
-            encoding: String
-        ): String {
-            return createURI(
-                scheme,
-                authority,
-                path,
-                params.map { it.name to (it.value ?: "") }.toMap(),
-                encoding
-            )
-        }
-
-        @JvmStatic
-        fun createURI(
-            scheme: String,
-            authority: String,
-            path: String,
-            params: Map<String, String>,
+            params: List<NameValuePair>,
             encoding: String
         ): String {
             val builder =
@@ -61,8 +44,9 @@ class URIUtils {
             }
 
             var url = builder.build().toString()
+            // params may contains same names: for example: forums[]=1&forums[]=all
             url += "?" + params
-                .map { "${it.key}=${URLEncoder.encode(escapeHTML(it.value) ?: "", encoding)}" }
+                .map { "${it.name}=${URLEncoder.encode(escapeHTML(it.value) ?: "", encoding)}" }
                 .joinToString("&")
             return url
         }

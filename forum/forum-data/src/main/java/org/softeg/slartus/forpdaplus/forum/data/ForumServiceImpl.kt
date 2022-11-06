@@ -4,6 +4,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.softeg.slartus.forpdacommon.NameValuePair
 import org.softeg.slartus.forpdacommon.URIUtils
 import org.softeg.slartus.forpdaplus.core.services.AppHttpClient
 import ru.softeg.slartus.forum.api.ForumService
@@ -37,6 +38,9 @@ class ForumServiceImpl @Inject constructor(private val httpClient: AppHttpClient
     override suspend fun markAsRead(forumId: String) = withContext(Dispatchers.IO) {
         val queryParams =
             mapOf("act" to "login", "CODE" to "04", "f" to forumId, "fromforum" to forumId)
+                .map {
+                    NameValuePair(it.key, it.value)
+                }
 
         val uri =
             URIUtils.createURI("http", HostHelper.host, "/forum/index.php", queryParams, "UTF-8")
