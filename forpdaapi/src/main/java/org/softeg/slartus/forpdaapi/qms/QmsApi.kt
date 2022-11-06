@@ -1,6 +1,8 @@
 package org.softeg.slartus.forpdaapi.qms
 
+import android.net.Uri
 import androidx.core.util.Pair
+import org.jsoup.Jsoup
 import org.softeg.slartus.forpdaapi.IHttpClient
 import org.softeg.slartus.forpdaapi.ProgressState
 import org.softeg.slartus.forpdaapi.post.EditAttach
@@ -36,22 +38,23 @@ object QmsApi {
         ).responseBody
     }
 
-    @Throws(Exception::class)
-    private fun checkChatError(pageBody: String) {
-
-        val m = Pattern.compile("<div class=\"error\">([\\s\\S]*?)</div>").matcher(pageBody)
-        if (m.find()) {
-            throw Exception(m.group(1).fromHtml().toString())
-        }
-
-    }
-
     @Throws(Throwable::class)
     fun getChat(httpClient: IHttpClient, mid: String, themeId: String, daysCount: Int?): QmsPage {
         val pageBody = getChatPage(httpClient, mid, themeId)
-        checkChatError(pageBody)
 
+        val document = Jsoup.parse(pageBody)
+        document.selectFirst("div.error")?.let { element ->
+            throw Exception(element.text())
+        }
         val qmsPage = QmsPage()
+        document.selectFirst("span#navbar-title")?.let { element ->
+            element.selectFirst("a[href~=showuser=\\d+]")?.let { userElement ->
+                qmsPage.userId = Uri.parse(userElement.attr("href")).getQueryParameter("showuser")
+                qmsPage.userNick = userElement.text()
+            }
+            qmsPage.title = element.children().last()?.text()
+        }
+
         val m =
             Pattern.compile("<[^>]*?\"navbar-title\"[^>]*?>[\\s\\S]*?<a[^>]*?showuser=(\\d+)[^>]*?>(.*?)<\\/a>:<\\/b>\\s*([\\s\\S]*?)\\s*<\\/span>")
                 .matcher(pageBody)

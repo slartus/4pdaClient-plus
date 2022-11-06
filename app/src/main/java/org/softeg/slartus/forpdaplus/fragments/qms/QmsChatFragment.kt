@@ -28,33 +28,42 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import com.afollestad.materialdialogs.MaterialDialog
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.qms_chat.*
+import kotlinx.coroutines.*
 import org.softeg.slartus.forpdaapi.post.EditAttach
-import org.softeg.slartus.forpdaapi.qms.QmsApi
 import org.softeg.slartus.forpdacommon.ExtPreferences
+import org.softeg.slartus.forpdacommon.HtmlOutUtils
 import org.softeg.slartus.forpdanotifyservice.qms.QmsNotifier
 import org.softeg.slartus.forpdaplus.*
 import org.softeg.slartus.forpdaplus.classes.*
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl
 import org.softeg.slartus.forpdaplus.common.AppLog
 import org.softeg.slartus.forpdaplus.controls.quickpost.PopupPanelView
-import org.softeg.slartus.forpdaplus.emotic.Smiles
 import org.softeg.slartus.forpdaplus.fragments.WebViewFragment
 import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment
 import org.softeg.slartus.forpdaplus.fragments.qms.tasks.*
 import org.softeg.slartus.forpdaplus.prefs.HtmlPreferences
 import org.softeg.slartus.forpdaplus.prefs.Preferences
-import java.io.IOException
+import org.softeg.slartus.forpdaplus.qms.data.screens.thread.buildHtml
+import ru.softeg.slartus.qms.api.repositories.QmsThreadRepository
 import java.util.*
 import java.util.regex.Pattern
+import javax.inject.Inject
 
 /*
  * Created by radiationx on 12.11.15.
  */
+
+@AndroidEntryPoint
 class QmsChatFragment : WebViewFragment() {
+    @Inject
+    lateinit var qmsThreadRepository: QmsThreadRepository
+
+    private var reloadChatJob: Job? = null
     private var emptyText = true
-    private val uiHandler = Handler()
     private val mHandler = Handler()
     private var wvChat: AdvWebView? = null
     private var contactId: String? = null
@@ -96,11 +105,11 @@ class QmsChatFragment : WebViewFragment() {
     }
 
     override fun reload() {
-        Thread(Runnable { this.reLoadChatSafe() }).start()
+        reLoadChatSafe()
     }
 
     fun reload(loadMore: Boolean = false) {
-        Thread(Runnable { this.reLoadChatSafe(loadMore) }).start()
+        reLoadChatSafe(loadMore)
     }
 
     override fun getAsyncTask(): AsyncTask<*, *, *>? {
@@ -502,17 +511,7 @@ class QmsChatFragment : WebViewFragment() {
         ) * 1000).toLong()
     }
 
-    private fun checkNewQms() {
-        try {
-            Client.getInstance().setQmsCount(QmsApi.getNewQmsCount(Client.getInstance()))
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
-    }
-
     fun transformChatBody(chatBody: String, loadMore: Boolean = false): String {
-
-        checkNewQms()
         if ((themeTitle == null) or (contactNick == null)) {
             val m = Pattern.compile("<span id=\"chatInfo\"[^>]*>([^>]*?)\\|:\\|([^<]*)</span>")
                 .matcher(chatBody)
@@ -528,70 +527,66 @@ class QmsChatFragment : WebViewFragment() {
     }
 
     private fun reLoadChatSafe(loadMore: Boolean = false) {
-        uiHandler.post { setSubtitle(App.getContext().getString(R.string.refreshing)) }
+        val contactId = contactId ?: return
+        val themeId = themeId ?: return
 
-        var chatBody: String? = null
-        var ex: Throwable? = null
-        try {
-            val body: String
+        reloadChatJob?.cancel()
+        reloadChatJob = lifecycleScope.launch {
+            kotlin.runCatching {
+                setSubtitle(App.getContext().getString(R.string.refreshing))
+                daysCount = 1
+                val qmsPage = qmsThreadRepository.getQmsThread(contactId, themeId, daysCount)
 
-            val qmsPage = QmsApi.getChat(Client.getInstance(), contactId!!, themeId!!, daysCount)
-            body = qmsPage.body ?: ""
-            if (!qmsPage.userNick.isNullOrEmpty())
-                contactNick = qmsPage.userNick?.toString() ?: contactNick
-            if (!qmsPage.title.isNullOrEmpty())
-                themeTitle = qmsPage.title?.toString() ?: themeTitle
+                contactNick = qmsPage.userNick?.ifEmpty { null } ?: contactNick
+                themeTitle = qmsPage.title?.ifEmpty { null } ?: themeTitle
 
-            if (body.length.toLong() == lastBodyLength) {
-                checkNewQms()
-                uiHandler.post {
-                    //                        setLoading(false);
-                    setSubtitle("")
-                }
-                return
-            }
-            lastBodyLength = body.length.toLong()
-            chatBody = transformChatBody(body, loadMore)
-        } catch (e: Throwable) {
-            ex = e
-        }
-
-        val finalEx = ex
-        val finalChatBody = chatBody
-
-        uiHandler.post {
-            if (finalEx == null) {
-                title = themeTitle
-                setSubtitle(contactNick)
-                wvChat?.loadDataWithBaseURL(
-                    "https://" + App.Host + "/forum/",
-                    finalChatBody ?: "",
-                    "text/html",
-                    "UTF-8",
-                    null
-                )
-            } else {
-                if ("Такого диалога не существует." == finalEx.message) {
-                    MaterialDialog.Builder(mainActivity)
-                        .title(R.string.error)
-                        .content(finalEx.message ?: "неизвестная ошибка")
-                        .positiveText(R.string.ok)
-                        .show()
-                    updateTimer.cancel()
-                    updateTimer.purge()
-
-                } else {
-                    Toast.makeText(
-                        mainActivity, AppLog.getLocalizedMessage(finalEx, finalEx.localizedMessage),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                val chatBody = withContext(Dispatchers.Default) {
+                    val body = buildHtml(qmsPage, daysCount ?: qmsPage.days.size) {
+                        HtmlOutUtils.getHtmlout(it)
+                    }
+                    return@withContext QmsHtmlBuilder().apply {
+                        buildBody(loadMore, body, htmlPreferences)
+                    }.html.toString()
                 }
 
-            }
-            //                setLoading(false);
-            setSubtitle("")
-        }
+                if (chatBody.length.toLong() != lastBodyLength) {
+                    lastBodyLength = chatBody.length.toLong()
 
+                    if (!isActive) return@launch
+
+                    wvChat?.loadDataWithBaseURL(
+                        "https://${App.Host}/forum/",
+                        chatBody,
+                        "text/html",
+                        "UTF-8",
+                        null
+                    )
+
+                }
+            }.onFailure { finalEx ->
+                if (finalEx !is CancellationException) {
+                    if ("Такого диалога не существует." == finalEx.message) {
+                        MaterialDialog.Builder(mainActivity)
+                            .title(R.string.error)
+                            .content(finalEx.message ?: "неизвестная ошибка")
+                            .positiveText(R.string.ok)
+                            .show()
+                        updateTimer.cancel()
+                        updateTimer.purge()
+
+                    } else {
+                        Toast.makeText(
+                            mainActivity,
+                            AppLog.getLocalizedMessage(finalEx, finalEx.localizedMessage),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+
+            title = themeTitle
+            setSubtitle(contactNick.orEmpty())
+        }
     }
 
     fun clearAttaches() {

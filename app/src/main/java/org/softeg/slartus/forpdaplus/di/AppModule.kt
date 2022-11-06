@@ -15,18 +15,14 @@ import org.softeg.slartus.forpdaplus.core.ForumPreferences
 import org.softeg.slartus.forpdaplus.core.QmsPreferences
 import org.softeg.slartus.forpdaplus.core.entities.*
 import org.softeg.slartus.forpdaplus.core.interfaces.ParseFactory
-import org.softeg.slartus.forpdaplus.core.interfaces.Parser
 import org.softeg.slartus.forpdaplus.core.repositories.UserInfoRepository
 import org.softeg.slartus.forpdaplus.core.services.AppHttpClient
 import org.softeg.slartus.forpdaplus.prefs.AppPreferencesImpl
 import org.softeg.slartus.forpdaplus.prefs.ForumPreferencesImpl
 import org.softeg.slartus.forpdaplus.prefs.QmsPreferencesImpl
+import org.softeg.slartus.forpdaplus.qms.data.parsers.MentionsCountParser
+import org.softeg.slartus.forpdaplus.qms.data.parsers.QmsCountParser
 import org.softeg.slartus.forpdaplus.repositories.UserInfoRepositoryImpl
-import org.softeg.slartus.forpdaplus.topic.data.screens.attachments.models.TopicAttachmentResponse
-import org.softeg.slartus.forpdaplus.topic.data.screens.attachments.models.TopicAttachmentsResponse
-import ru.softeg.slartus.qms.api.models.QmsContact
-import ru.softeg.slartus.qms.api.models.QmsContacts
-import ru.softeg.slartus.qms.api.models.QmsThreads
 import javax.inject.Singleton
 
 @Module
@@ -45,17 +41,10 @@ class AppModule {
     @Provides
     @Singleton
     fun provideParseFactoryImpl(
-        qmsContactsParser: Parser<QmsContacts>,
-        qmsContactParser: Parser<QmsContact>,
-        qmsThreadsParser: Parser<QmsThreads>,
-        topicAttachmentsParser: Parser<TopicAttachmentsResponse>,
+        qmsCountParser: QmsCountParser,
+        qmsMentionsCountParser: MentionsCountParser
     ): ParseFactory =
-        ParseFactoryImpl.Builder()
-            .add(qmsContactsParser)
-            .add(qmsContactParser)
-            .add(qmsThreadsParser)
-            .add(topicAttachmentsParser)
-            .build()
+        ParseFactoryImpl(setOf(qmsCountParser, qmsMentionsCountParser))
 }
 
 @Suppress("unused")

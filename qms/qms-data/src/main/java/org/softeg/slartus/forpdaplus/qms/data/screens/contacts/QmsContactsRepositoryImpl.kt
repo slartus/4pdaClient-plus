@@ -1,19 +1,15 @@
-package org.softeg.slartus.forpdaplus.domain_qms
+package org.softeg.slartus.forpdaplus.qms.data.screens.contacts
 
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import ru.softeg.slartus.qms.api.models.QmsContact
-import ru.softeg.slartus.qms.api.models.QmsContacts
-import org.softeg.slartus.forpdaplus.core.interfaces.Parser
 import ru.softeg.slartus.qms.api.repositories.QmsContactsRepository
 import ru.softeg.slartus.qms.api.QmsService
 import javax.inject.Inject
 
 class QmsContactsRepositoryImpl @Inject constructor(
     private val qmsService: QmsService,
-    private val qmsContactsTable: LocalQmsContactsDataSource,
-    private val qmsContactsParser: Parser<QmsContacts>,
-    private val qmsContactParser: Parser<QmsContact>
+    private val qmsContactsTable: LocalQmsContactsDataSource
 ) :
     QmsContactsRepository {
 
@@ -23,7 +19,7 @@ class QmsContactsRepositoryImpl @Inject constructor(
 
     override suspend fun load() {
         _contacts.emit(qmsContactsTable.getAll())
-        val contacts = qmsService.getContacts(qmsContactsParser.id)
+        val contacts = qmsService.getContacts()
 
         qmsContactsTable.replaceAll(*contacts.toTypedArray())
         _contacts.emit(qmsContactsTable.getAll())
@@ -34,6 +30,6 @@ class QmsContactsRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getContact(contactId: String): QmsContact? {
-        return qmsContactsTable.findById(contactId) ?: qmsService.getContact(contactId, qmsContactParser.id)
+        return qmsContactsTable.findById(contactId) ?: qmsService.getContact(contactId)
     }
 }

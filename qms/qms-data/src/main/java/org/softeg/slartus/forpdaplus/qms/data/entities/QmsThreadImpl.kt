@@ -1,4 +1,4 @@
-package org.softeg.slartus.forpdaplus.domain_qms.entities
+package org.softeg.slartus.forpdaplus.qms.data.entities
 
 import ru.softeg.slartus.qms.api.models.QmsThread
 

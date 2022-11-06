@@ -1,4 +1,4 @@
-package org.softeg.slartus.forpdaplus.domain_qms.db
+package org.softeg.slartus.forpdaplus.qms.data.screens.contacts.db
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

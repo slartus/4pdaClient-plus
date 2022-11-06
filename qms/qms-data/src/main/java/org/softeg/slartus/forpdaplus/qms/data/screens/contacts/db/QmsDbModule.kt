@@ -1,4 +1,4 @@
-package org.softeg.slartus.forpdaplus.domain_qms.db
+package org.softeg.slartus.forpdaplus.qms.data.screens.contacts.db
 
 import android.content.Context
 import androidx.room.Room

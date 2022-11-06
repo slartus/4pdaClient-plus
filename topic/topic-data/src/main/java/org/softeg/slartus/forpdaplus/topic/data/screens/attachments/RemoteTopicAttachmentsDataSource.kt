@@ -10,18 +10,13 @@ import javax.inject.Inject
 
 class RemoteTopicAttachmentsDataSource @Inject constructor(
     private val httpClient: AppHttpClient,
-    private val parseFactory: ParseFactory
+    private val parseFactory: ParseFactory,
+    private val topicAttachmentsParser: TopicAttachmentsParser
 ) {
-    suspend fun fetchTopicAttachments(
-        topicId: String,
-        resultParserId: String
-    ): List<TopicAttachmentResponse>? = withContext(Dispatchers.IO) {
+    suspend fun fetchTopicAttachments(topicId: String): List<TopicAttachmentResponse> = withContext(Dispatchers.IO) {
         val url = "https://${host}/forum/index.php?act=attach&code=showtopic&tid=$topicId"
         val response = httpClient.performGet(url)
-        parseFactory.parse<List<TopicAttachmentResponse>>(
-            url = url,
-            body = response,
-            resultParserId = resultParserId
-        )
+        parseFactory.parseAsync(url = url, body = response)
+        topicAttachmentsParser.parse(response)
     }
 }

@@ -53,6 +53,9 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$rootProject.coroutines"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.coroutines"
 
+
+    implementation "org.jsoup:jsoup:$rootProject.jsoup"
+
     api "androidx.room:room-runtime:$rootProject.room" // api for access in AppDatabaseImpl
     implementation "androidx.room:room-ktx:$rootProject.room"
     kapt "androidx.room:room-compiler:$rootProject.room"

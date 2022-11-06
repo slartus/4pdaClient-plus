@@ -1,17 +1,14 @@
-package org.softeg.slartus.forpdaplus.domain_qms
+package org.softeg.slartus.forpdaplus.qms.data.screens.threads
 
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import ru.softeg.slartus.qms.api.models.QmsThread
-import ru.softeg.slartus.qms.api.models.QmsThreads
-import org.softeg.slartus.forpdaplus.core.interfaces.Parser
 import ru.softeg.slartus.qms.api.repositories.QmsThreadsRepository
 import ru.softeg.slartus.qms.api.QmsService
 import javax.inject.Inject
 
 class QmsThreadsRepositoryImpl @Inject constructor(
-    private val qmsService: QmsService,
-    private val parser: Parser<QmsThreads>
+    private val qmsService: QmsService
 ) :
     QmsThreadsRepository {
     private val _threads = MutableStateFlow<List<QmsThread>?>(null)
@@ -19,7 +16,7 @@ class QmsThreadsRepositoryImpl @Inject constructor(
         get() = _threads.asStateFlow()
 
     override suspend fun load(contactId: String) {
-        val items = qmsService.getContactThreads(contactId, parser.id)
+        val items = qmsService.getContactThreads(contactId)
         _threads.emit(items)
     }
 

@@ -14,17 +14,17 @@ object HtmlOutUtils {
     }
 
     @JvmStatic
-    fun getHtmlout(methodName: String): String? {
+    fun getHtmlout(methodName: String): String {
         return getHtmlout( methodName, arrayOfNulls(0))
     }
 
     @JvmStatic
-    private fun getHtmlout(methodName: String, paramValues: Array<String?>): String? {
+    private fun getHtmlout(methodName: String, paramValues: Array<String?>): String {
         return getHtmlout(methodName, paramValues, true)
     }
 
     @JvmStatic
-    fun getHtmlout(methodName: String?, paramValues: Array<String?>, modifyParams: Boolean): String? {
+    fun getHtmlout(methodName: String?, paramValues: Array<String?>, modifyParams: Boolean): String {
         var sb = StringBuilder()
         if (!Functions.isWebviewAllowJavascriptInterface()) {
             sb.append("href=\"https://www.HTMLOUT.ru/")

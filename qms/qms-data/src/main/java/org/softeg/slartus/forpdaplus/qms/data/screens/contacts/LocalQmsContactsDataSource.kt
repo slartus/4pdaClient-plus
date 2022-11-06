@@ -1,9 +1,9 @@
-package org.softeg.slartus.forpdaplus.domain_qms
+package org.softeg.slartus.forpdaplus.qms.data.screens.contacts
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import org.softeg.slartus.forpdaplus.domain_qms.db.QmsContactsDao
-import org.softeg.slartus.forpdaplus.domain_qms.db.map
+import org.softeg.slartus.forpdaplus.qms.data.screens.contacts.db.QmsContactsDao
+import org.softeg.slartus.forpdaplus.qms.data.screens.contacts.db.map
 import ru.softeg.slartus.qms.api.models.QmsContact
 import javax.inject.Inject
 

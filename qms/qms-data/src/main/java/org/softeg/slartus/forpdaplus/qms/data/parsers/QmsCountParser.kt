@@ -1,17 +1,16 @@
-package org.softeg.slartus.forpdaplus.domain_qms.parsers
+package org.softeg.slartus.forpdaplus.qms.data.parsers
 
 import android.os.Bundle
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.withContext
 import ru.softeg.slartus.qms.api.models.QmsCount
 import org.softeg.slartus.forpdaplus.core.interfaces.Parser
 import java.util.regex.Pattern
 import javax.inject.Inject
 
 class QmsCountParser @Inject constructor() : Parser<QmsCount> {
-    override val id: String
-        get() = QmsCountParser::class.java.simpleName
-
     private val _data = MutableStateFlow(QmsCount())
     override val data
         get() = _data.asStateFlow()
@@ -20,7 +19,7 @@ class QmsCountParser @Inject constructor() : Parser<QmsCount> {
         return true
     }
 
-    override suspend fun parse(page: String, args: Bundle?): QmsCount {
+    override suspend fun parse(page: String, args: Bundle?): QmsCount = withContext(Dispatchers.Default){
         var result = QmsCount()
         listOf(pattern, pattern2).forEach {
             val m = it.matcher(page)
@@ -29,7 +28,7 @@ class QmsCountParser @Inject constructor() : Parser<QmsCount> {
                 _data.emit(result)
             }
         }
-        return result
+        return@withContext result
     }
 
     companion object {

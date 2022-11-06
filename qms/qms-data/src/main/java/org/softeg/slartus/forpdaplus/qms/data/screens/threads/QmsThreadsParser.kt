@@ -1,32 +1,19 @@
-package org.softeg.slartus.forpdaplus.domain_qms.parsers
+package org.softeg.slartus.forpdaplus.qms.data.screens.threads
 
-import android.os.Bundle
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import ru.softeg.slartus.qms.api.models.QmsThread
 import ru.softeg.slartus.qms.api.models.QmsThreads
-import org.softeg.slartus.forpdaplus.core.interfaces.Parser
-import org.softeg.slartus.forpdaplus.domain_qms.entities.QmsThreadImpl
+import org.softeg.slartus.forpdaplus.qms.data.entities.QmsThreadImpl
 import java.util.regex.Pattern
 import javax.inject.Inject
 
-class QmsThreadsParser @Inject constructor() : Parser<QmsThreads> {
-    override val id: String
-        get() = QmsThreadsParser::class.java.simpleName
-
-    private val _data = MutableStateFlow(QmsThreads(emptyList()))
-    override val data
-        get() = _data.asStateFlow()
-
-    override fun isOwn(url: String, args: Bundle?): Boolean {
-        return url.contains("""act=qms&mid=\d+""".toRegex())
-    }
-
-    override suspend fun parse(page: String, args: Bundle?): QmsThreads {
+class QmsThreadsParser @Inject constructor() {
+    suspend fun parse(page: String): QmsThreads = withContext(Dispatchers.Default) {
         var matcher = listGroupPattern
             .matcher(page)
 
-        if (!matcher.find()) return QmsThreads(emptyList())
+        if (!matcher.find()) return@withContext QmsThreads(emptyList())
 
         matcher = listGroupItemPattern.matcher(matcher.group(2) ?: "")
 
@@ -67,10 +54,7 @@ class QmsThreadsParser @Inject constructor() : Parser<QmsThreads> {
                 )
             )
         }
-        val result = QmsThreads(items)
-        _data.emit(result)
-
-        return result
+        return@withContext QmsThreads(items)
     }
 
     companion object {

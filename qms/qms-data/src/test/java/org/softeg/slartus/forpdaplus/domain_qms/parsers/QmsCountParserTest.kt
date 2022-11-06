@@ -3,6 +3,7 @@ package org.softeg.slartus.forpdaplus.domain_qms.parsers
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Test
+import org.softeg.slartus.forpdaplus.qms.data.parsers.QmsCountParser
 
 class QmsCountParserTest {
     @Test

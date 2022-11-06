@@ -1,24 +1,16 @@
-package org.softeg.slartus.forpdaplus.domain_qms.parsers
+package org.softeg.slartus.forpdaplus.qms.data.screens.contacts
 
-import android.os.Bundle
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.softeg.slartus.forpdacommon.fromHtml
 import ru.softeg.slartus.qms.api.models.QmsContact
 import ru.softeg.slartus.qms.api.models.QmsContacts
-import org.softeg.slartus.forpdaplus.core.interfaces.Parser
 import java.util.regex.Pattern
 import javax.inject.Inject
 
-class QmsContactsParser @Inject constructor() : Parser<QmsContacts> {
-    override val id: String
-        get() = QmsContactsParser::class.java.simpleName
+class QmsContactsParser @Inject constructor() {
 
-    private val _data = MutableStateFlow(QmsContacts(emptyList()))
-    override val data
-        get() = _data.asStateFlow()
-
-    override suspend fun parse(page: String, args: Bundle?): QmsContacts {
+    suspend fun parse(page: String): QmsContacts = withContext(Dispatchers.Default) {
         val res = mutableListOf<QmsContact>()
         val m = QmsContactsPattern.matcher(page)
 
@@ -40,13 +32,7 @@ class QmsContactsParser @Inject constructor() : Parser<QmsContacts> {
 
             res.add(qmsUser)
         }
-        val result = QmsContacts(res)
-        _data.emit(result)
-        return result
-    }
-
-    override fun isOwn(url: String, args: Bundle?): Boolean {
-        return UrlActPattern.matcher(url).find() && UrlActionPattern.matcher(url).find()
+        return@withContext QmsContacts(res)
     }
 
     companion object {
@@ -56,14 +42,5 @@ class QmsContactsParser @Inject constructor() : Parser<QmsContacts> {
                 Pattern.CASE_INSENSITIVE
             )
         }
-
-        private val UrlActPattern by lazy {
-            Pattern.compile("act=qms-xhr", Pattern.CASE_INSENSITIVE)
-        }
-
-        private val UrlActionPattern by lazy {
-            Pattern.compile("action=userlist", Pattern.CASE_INSENSITIVE)
-        }
     }
-
 }
