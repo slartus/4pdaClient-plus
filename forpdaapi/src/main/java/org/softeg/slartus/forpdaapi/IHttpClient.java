@@ -22,8 +22,6 @@ public interface IHttpClient {
 
     AppResponse performPost(String s, Map<String, String> additionalHeaders) throws IOException;
 
-    AppResponse performPost(String s, Map<String, String> additionalHeaders, String encoding) throws IOException;
-
     AppResponse performPost(String s, List<NameValuePair> additionalHeaders) throws IOException;
 
     AppResponse uploadFile(String url, String filePath, Map<String, String> additionalHeaders, ProgressState progress) throws Exception;

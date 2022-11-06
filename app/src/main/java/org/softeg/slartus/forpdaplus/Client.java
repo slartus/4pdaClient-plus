@@ -156,10 +156,6 @@ public class Client implements IHttpClient {
         return UploadUtils.okUploadFile(url, filePath, additionalHeaders, progress);
     }
 
-    public AppResponse performPost(String s, Map<String, String> additionalHeaders, String encoding) throws IOException {
-        return HttpHelper.performPost(s, additionalHeaders);
-    }
-
     @Override
     public AppResponse performPost(String s, List<NameValuePair> additionalHeaders) {
         return HttpHelper.performPost(s, additionalHeaders);

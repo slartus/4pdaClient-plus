@@ -284,7 +284,7 @@ public class QmsNewThreadFragment extends GeneralFragment {
             try {
                 outParams = new HashMap<>();
                 m_ChatBody = QmsApi.INSTANCE.createThread(Client.getInstance(), userId, userNick, title, body,
-                        outParams, QmsChatFragment.Companion.getEncoding());
+                        outParams);
 
                 return true;
             } catch (Exception e) {

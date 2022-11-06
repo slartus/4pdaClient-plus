@@ -544,7 +544,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
                     additionalHeaders.put("submit", "Отправить комментарий");
                     additionalHeaders.put("comment_reply_ID", ReplyId);
                     additionalHeaders.put("comment_reply_dp", Dp);
-                    m_ThemeBody = transformBody(client.performPost("https://" + App.Host + "/wp-comments-post.php", additionalHeaders, "UTF-8").getResponseBody());
+                    m_ThemeBody = transformBody(client.performPost("https://" + App.Host + "/wp-comments-post.php", additionalHeaders).getResponseBody());
                 }
                 return true;
             } catch (Throwable e) {

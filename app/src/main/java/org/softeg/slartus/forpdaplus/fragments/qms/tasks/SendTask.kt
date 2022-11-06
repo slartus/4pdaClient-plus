@@ -29,9 +29,10 @@ class SendTask internal constructor(
 
     override fun doInBackground(vararg params: ArrayList<String>): Boolean? {
         return try {
+
             val qmsPage = QmsApi.sendMessage(
                 Client.getInstance(), contactId, themeId, messageText,
-                QmsChatFragment.encoding, attachs, daysCount
+                attachs, daysCount
             )
             chatBody = qmsChatFragment.get()?.transformChatBody(qmsPage.body ?: "")
             true

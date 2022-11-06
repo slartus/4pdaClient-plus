@@ -13,12 +13,4 @@
         android:summary="Частота обновления"
         android:inputType="number" />
 
-    <ListPreference
-        android:key="qms.chat.encoding"
-        android:defaultValue="UTF-8"
-        android:title="Кодировка"
-        android:summary="Смените кодировку при проблемах с отображением символов"
-        android:entries="@array/EncodingArray"
-        android:entryValues="@array/EncodingValues" />
-
 </PreferenceScreen>

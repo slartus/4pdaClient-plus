@@ -34,6 +34,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.qms_chat.*
 import kotlinx.coroutines.*
 import org.softeg.slartus.forpdaapi.post.EditAttach
+import org.softeg.slartus.forpdaapi.qms.QmsApi
 import org.softeg.slartus.forpdacommon.ExtPreferences
 import org.softeg.slartus.forpdacommon.HtmlOutUtils
 import org.softeg.slartus.forpdanotifyservice.qms.QmsNotifier
@@ -42,6 +43,7 @@ import org.softeg.slartus.forpdaplus.classes.*
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl
 import org.softeg.slartus.forpdaplus.common.AppLog
 import org.softeg.slartus.forpdaplus.controls.quickpost.PopupPanelView
+import org.softeg.slartus.forpdaplus.core_lib.coroutines.AppIOScope
 import org.softeg.slartus.forpdaplus.fragments.WebViewFragment
 import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment
 import org.softeg.slartus.forpdaplus.fragments.qms.tasks.*
@@ -49,6 +51,7 @@ import org.softeg.slartus.forpdaplus.prefs.HtmlPreferences
 import org.softeg.slartus.forpdaplus.prefs.Preferences
 import org.softeg.slartus.forpdaplus.qms.data.screens.thread.buildHtml
 import ru.softeg.slartus.qms.api.repositories.QmsThreadRepository
+import timber.log.Timber
 import java.util.*
 import java.util.regex.Pattern
 import javax.inject.Inject
@@ -534,8 +537,7 @@ class QmsChatFragment : WebViewFragment() {
         reloadChatJob = lifecycleScope.launch {
             kotlin.runCatching {
                 setSubtitle(App.getContext().getString(R.string.refreshing))
-                daysCount = 1
-                val qmsPage = qmsThreadRepository.getQmsThread(contactId, themeId, daysCount)
+                val qmsPage = qmsThreadRepository.getThread(contactId, themeId)
 
                 contactNick = qmsPage.userNick?.ifEmpty { null } ?: contactNick
                 themeTitle = qmsPage.title?.ifEmpty { null } ?: themeTitle
@@ -592,6 +594,38 @@ class QmsChatFragment : WebViewFragment() {
     fun clearAttaches() {
         attachList.clear()
         refreshAttachmentsInfo()
+    }
+
+    private fun sendMessage(
+        userId: String,
+        threadId: String,
+        message: String,
+        attachIds: List<String>
+    ) {
+        val dialog = MaterialDialog.Builder(requireContext())
+            .progress(true, 0)
+            .content(requireContext().getString(R.string.sending_message))
+            .build().apply {
+                show()
+            }
+
+        val qmsPageJob = AppIOScope().launch {
+            runCatching {
+                qmsThreadRepository.sendMessage(
+                    userId, threadId, message, attachIds
+                )
+            }.onFailure {
+                Timber.e(it)
+            }.getOrNull()
+        }
+        lifecycleScope.launch {
+            qmsPageJob.join()
+            dialog.dismiss()
+
+            edMessage?.text?.clear()
+            clearAttaches()
+            reLoadChatSafe()
+        }
     }
 
     fun onPostChat(chatBody: String, success: Boolean, ex: Throwable?) {
@@ -656,12 +690,12 @@ class QmsChatFragment : WebViewFragment() {
             toast.show()
             return
         }
-        messageText = edMessage!!.text.toString()
-        sendTask = SendTask(
-            this, contactId ?: "", themeId ?: "",
-            messageText ?: "", attachList, daysCount
-        )
-        sendTask?.execute()
+        messageText = edMessage?.text.toString()
+        val messageText = messageText ?: return
+        val userId = contactId ?: return
+        val threadId = themeId ?: return
+
+        sendMessage(userId, threadId, messageText, attachList.map { it.id })
     }
 
     override fun Prefix(): String? {
@@ -896,13 +930,6 @@ class QmsChatFragment : WebViewFragment() {
             return fragment
         }
 
-        val encoding: String
-            get() {
-                val prefs = App.getInstance().preferences
-
-                return prefs?.getString("qms.chat.encoding", "UTF-8") ?: "UTF-8"
-
-            }
         private const val MY_INTENT_CLICK = 302
     }
 

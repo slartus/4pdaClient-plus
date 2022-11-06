@@ -26,7 +26,7 @@ class RemoteQmsContactsDatasourceImpl @Inject constructor(
         withContext(Dispatchers.IO) {
             val url = "https://${HostHelper.host}/forum/index.php?&act=qms-xhr&action=userlist"
             val pageBody = httpClient.performGet(url)
-            parseFactory.parseAsync(url, pageBody)
+            parseFactory.parseAsync(pageBody)
             return@withContext qmsContactsParser.parse(pageBody)
         }
 
@@ -36,14 +36,14 @@ class RemoteQmsContactsDatasourceImpl @Inject constructor(
                 mapOf("act" to "qms-xhr", "action" to "del-member", "del-mid" to contactId)
             val url = "https://${HostHelper.host}/forum/index.php"
             val pageBody = httpClient.performPost(url, headers)
-            parseFactory.parseAsync(url, pageBody)
+            parseFactory.parseAsync(pageBody)
             return@withContext
         }
 
     override suspend fun getQmsCount(): Int = withContext(Dispatchers.IO) {
         val url = "https://${HostHelper.host}/about"
         val pageBody = httpClient.performGet(url)
-        parseFactory.parseAsync(url, pageBody, qmsCountParser)
+        parseFactory.parseAsync(pageBody, qmsCountParser)
         return@withContext qmsCountParser.parse(pageBody).count ?: 0
     }
 
@@ -51,7 +51,7 @@ class RemoteQmsContactsDatasourceImpl @Inject constructor(
         withContext(Dispatchers.IO) {
             val url = "https://${HostHelper.host}/forum/index.php?act=qms&mid=$contactId"
             val pageBody = httpClient.performGet(url)
-            parseFactory.parseAsync(url, pageBody)
+            parseFactory.parseAsync(pageBody)
             return@withContext qmsThreadsParser.parse(pageBody)
         }
 
@@ -59,7 +59,7 @@ class RemoteQmsContactsDatasourceImpl @Inject constructor(
         withContext(Dispatchers.IO) {
             val url = "https://${HostHelper.host}/forum/index.php?&act=qms-xhr&action=userlist"
             val pageBody = httpClient.performGet(url)
-            parseFactory.parseAsync(url, pageBody)
+            parseFactory.parseAsync(pageBody)
 
             return@withContext qmsContactParser.parse(
                 pageBody,

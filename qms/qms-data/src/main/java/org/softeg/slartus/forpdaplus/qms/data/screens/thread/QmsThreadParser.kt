@@ -14,6 +14,9 @@ class QmsThreadParser @Inject constructor() {
             document.selectFirst("div.error")?.let { element ->
                 throw Exception(element.text())
             }
+            document.selectFirst("div.form-error")?.let { element ->
+                throw Exception(element.text())
+            }
 
             var userId: String? = null
             var userNick: String? = null

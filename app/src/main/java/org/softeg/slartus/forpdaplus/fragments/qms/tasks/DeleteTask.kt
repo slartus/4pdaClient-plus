@@ -25,8 +25,10 @@ class DeleteTask internal constructor(qmsChatFragment: QmsChatFragment,
 
     override fun doInBackground(vararg params: ArrayList<String>): Boolean? {
         return try {
-            chatBody = qmsChatFragment.get()?.transformChatBody(QmsApi.deleteMessages(Client.getInstance(),
-                    contactId, themeId, postIds, QmsChatFragment.encoding,daysCount))
+            chatBody = qmsChatFragment.get()?.transformChatBody(QmsApi.deleteMessages(
+                Client.getInstance(),
+                contactId, themeId, postIds, daysCount
+            ))
             true
         } catch (e: Throwable) {
             ex = e

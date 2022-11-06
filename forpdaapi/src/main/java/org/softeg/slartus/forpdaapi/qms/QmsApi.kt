@@ -128,8 +128,12 @@ object QmsApi {
 
     @Throws(Throwable::class)
     fun sendMessage(
-        httpClient: IHttpClient, mid: String, tid: String, message: String, encoding: String,
-        attachs: ArrayList<EditAttach>, daysCount: Int?
+        httpClient: IHttpClient,
+        mid: String,
+        tid: String,
+        message: String,
+        attachs: ArrayList<EditAttach>,
+        daysCount: Int?
     ): QmsPage {
         val additionalHeaders = HashMap<String, String>()
         additionalHeaders["action"] = "send-message"
@@ -140,7 +144,7 @@ object QmsApi {
             additionalHeaders["attaches"] = attachs.joinToString { it.id }
         val response = httpClient.performPost(
             "https://${HostHelper.host}/forum/index.php?act=qms-xhr",
-            additionalHeaders, encoding
+            additionalHeaders
         )
         parseError(response.responseBody)
         return getChat(httpClient, mid, tid, daysCount)
@@ -149,7 +153,7 @@ object QmsApi {
     @Throws(IOException::class)
     fun createThread(
         httpClient: IHttpClient, userID: String, userNick: String, title: String, message: String,
-        outParams: MutableMap<String, String>, encoding: String
+        outParams: MutableMap<String, String>
     ): String {
         val additionalHeaders = HashMap<String, String>()
         additionalHeaders["action"] = "create-thread"
@@ -158,8 +162,7 @@ object QmsApi {
         additionalHeaders["message"] = message
         val pageBody = httpClient.performPost(
             "https://${HostHelper.host}/forum/index.php?act=qms&mid=$userID&xhr=body&do=1",
-            additionalHeaders,
-            encoding
+            additionalHeaders
         )
 
         var m =
@@ -213,7 +216,7 @@ object QmsApi {
     @Throws(IOException::class)
     fun deleteMessages(
         httpClient: IHttpClient, mid: String, threadId: String, ids: List<String>,
-        encoding: String, daysCount: Int?
+        daysCount: Int?
     ): String {
         val additionalHeaders = HashMap<String, String>()
         additionalHeaders["act"] = "qms"
@@ -232,7 +235,7 @@ object QmsApi {
         return matchChatBody(
             httpClient.performPost(
                 "https://${HostHelper.host}/forum/index.php?act=qms&mid$mid&t=$threadId&xhr=body&do=1",
-                additionalHeaders, encoding
+                additionalHeaders
             ).responseBody, daysCount
         )
     }

@@ -8,14 +8,12 @@ import org.softeg.slartus.forpdaplus.core_lib.coroutines.AppDefaultScope
 class ParseFactoryImpl(private val parsers: Set<Parser<*>>) :
     ParseFactory {
     override fun parseAsync(
-        url: String,
         body: String,
         exclude: Parser<*>?
     ) {
         AppDefaultScope().launch {
             parsers
                 .filter { it != exclude }
-                .filter { it.isOwn(url) }
                 .forEach { parser ->
                     launch {
                         parser.parse(body)

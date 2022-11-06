@@ -16,7 +16,7 @@ class RemoteTopicAttachmentsDataSource @Inject constructor(
     suspend fun fetchTopicAttachments(topicId: String): List<TopicAttachmentResponse> = withContext(Dispatchers.IO) {
         val url = "https://${host}/forum/index.php?act=attach&code=showtopic&tid=$topicId"
         val response = httpClient.performGet(url)
-        parseFactory.parseAsync(url = url, body = response)
+        parseFactory.parseAsync(body = response)
         topicAttachmentsParser.parse(response)
     }
 }
