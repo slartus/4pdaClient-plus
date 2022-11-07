@@ -9,5 +9,6 @@ interface QmsThreadRepository {
         threadId: String,
         message: String,
         attachIds: List<String>
-    ): QmsThreadPage
+    )
+    suspend fun deleteMessages(userId: String, threadId: String, postIds: List<String>)
 }

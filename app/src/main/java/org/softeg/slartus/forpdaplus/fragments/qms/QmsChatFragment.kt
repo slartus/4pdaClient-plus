@@ -42,8 +42,10 @@ import org.softeg.slartus.forpdaplus.*
 import org.softeg.slartus.forpdaplus.classes.*
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl
 import org.softeg.slartus.forpdaplus.common.AppLog
+import org.softeg.slartus.forpdaplus.common.showProgress
 import org.softeg.slartus.forpdaplus.controls.quickpost.PopupPanelView
 import org.softeg.slartus.forpdaplus.core_lib.coroutines.AppIOScope
+import org.softeg.slartus.forpdaplus.core_lib.extensions.dismissSafe
 import org.softeg.slartus.forpdaplus.fragments.WebViewFragment
 import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment
 import org.softeg.slartus.forpdaplus.fragments.qms.tasks.*
@@ -350,11 +352,10 @@ class QmsChatFragment : WebViewFragment() {
                 )
                 .positiveText(R.string.delete)
                 .onPositive { _, _ ->
-                    sendTask = DeleteTask(
-                        this, contactId ?: "",
-                        themeId ?: "", ids, daysCount
+                    deleteMessages(
+                        contactId ?: "",
+                        themeId ?: "", ids
                     )
-                    sendTask?.execute()
                 }
                 .negativeText(R.string.cancel)
                 .show()
@@ -363,7 +364,7 @@ class QmsChatFragment : WebViewFragment() {
 
     @JavascriptInterface
     fun loadMore() {
-        mainActivity.runOnUiThread {
+        activity?.runOnUiThread {
             daysCount = (daysCount ?: 0) + DAYS_PART_COUNT
             reload(true)
         }
@@ -602,25 +603,21 @@ class QmsChatFragment : WebViewFragment() {
         message: String,
         attachIds: List<String>
     ) {
-        val dialog = MaterialDialog.Builder(requireContext())
-            .progress(true, 0)
-            .content(requireContext().getString(R.string.sending_message))
-            .build().apply {
-                show()
-            }
+        val dialog = showProgress(R.string.sending_message)
 
         val qmsPageJob = AppIOScope().launch {
             runCatching {
                 qmsThreadRepository.sendMessage(
                     userId, threadId, message, attachIds
                 )
+                delay(5000)
             }.onFailure {
                 Timber.e(it)
             }.getOrNull()
         }
         lifecycleScope.launch {
             qmsPageJob.join()
-            dialog.dismiss()
+            dialog.dismissSafe()
 
             edMessage?.text?.clear()
             clearAttaches()
@@ -628,31 +625,29 @@ class QmsChatFragment : WebViewFragment() {
         }
     }
 
-    fun onPostChat(chatBody: String, success: Boolean, ex: Throwable?) {
-        if (success) {
-            edMessage!!.text.clear()
+    private fun deleteMessages(
+        userId: String,
+        threadId: String,
+        messageIds: List<String>
+    ) {
+        val dialog = showProgress(R.string.deleting_messages)
 
-            wvChat!!.loadDataWithBaseURL(
-                "https://" + App.Host + "/forum/",
-                chatBody,
-                "text/html",
-                "UTF-8",
-                null
-            )
-        } else {
-            if (ex != null)
-                AppLog.e(mainActivity, ex) {
-                    sendTask = SendTask(
-                        this, contactId ?: "", themeId ?: "", messageText
-                            ?: "", attachList, daysCount
-                    )
-                    sendTask!!.execute()
-                }
-            else
-                Toast.makeText(
-                    mainActivity, R.string.unknown_error,
-                    Toast.LENGTH_SHORT
-                ).show()
+        val qmsPageJob = AppIOScope().launch {
+            runCatching {
+                qmsThreadRepository.deleteMessages(
+                    userId, threadId, messageIds
+                )
+            }.onFailure {
+                Timber.e(it)
+            }.getOrNull()
+        }
+        lifecycleScope.launch {
+            qmsPageJob.join()
+            dialog.dismissSafe()
+
+            edMessage?.text?.clear()
+            clearAttaches()
+            reLoadChatSafe()
         }
     }
 

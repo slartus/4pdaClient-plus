@@ -35,4 +35,26 @@ class RemoteQmsThreadDataSource @Inject constructor(private val httpClient: AppH
             url, additionalHeaders
         )
     }
+
+    suspend fun deleteMessages(userId: String, threadId: String, postIds: List<String>): String {
+        val additionalHeaders = buildMap {
+            put("act", "qms")
+            put("mid", userId)
+            put("t", threadId)
+            put("xhr", "body")
+            put("do", "1")
+            put("action", "delete-messages")
+            put("forward-messages-username", "")
+            put("forward-thread-username", "")
+            put("message", "")
+            postIds.forEach { id ->
+                put("message-id[$id]", id)
+            }
+        }
+
+        return httpClient.performPost(
+                "https://${HostHelper.host}/forum/index.php?act=qms&mid$userId&t=$threadId&xhr=body&do=1",
+                additionalHeaders
+            )
+    }
 }

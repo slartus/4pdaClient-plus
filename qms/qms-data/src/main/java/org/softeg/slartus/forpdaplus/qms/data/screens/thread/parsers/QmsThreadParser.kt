@@ -1,9 +1,10 @@
-package org.softeg.slartus.forpdaplus.qms.data.screens.thread
+package org.softeg.slartus.forpdaplus.qms.data.screens.thread.parsers
 
 import android.net.Uri
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.jsoup.Jsoup
+import org.softeg.slartus.forpdacommon.NotReportException
 import ru.softeg.slartus.qms.api.models.QmsThreadPage
 import javax.inject.Inject
 
@@ -12,10 +13,10 @@ class QmsThreadParser @Inject constructor() {
         withContext(Dispatchers.Default) {
             val document = Jsoup.parse(page)
             document.selectFirst("div.error")?.let { element ->
-                throw Exception(element.text())
+                throw NotReportException(element.text())
             }
             document.selectFirst("div.form-error")?.let { element ->
-                throw Exception(element.text())
+                throw NotReportException(element.text())
             }
 
             var userId: String? = null

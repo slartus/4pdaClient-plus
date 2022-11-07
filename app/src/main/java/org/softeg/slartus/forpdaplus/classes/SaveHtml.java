@@ -23,12 +23,7 @@ public class SaveHtml {
         final String[] fileName = {defaultFileName};
         new MaterialDialog.Builder(activity)
                 .title(R.string.file_name)
-                .input(defaultFileName, defaultFileName, new MaterialDialog.InputCallback() {
-                    @Override
-                    public void onInput(MaterialDialog materialDialog, CharSequence charSequence) {
-                        fileName[0] = charSequence.toString();
-                    }
-                })
+                .input(defaultFileName, defaultFileName, (materialDialog, charSequence) -> fileName[0] = charSequence.toString())
                 .alwaysCallInputCallback()
                 .positiveText(R.string.ok)
                 .negativeText(R.string.cancel)
