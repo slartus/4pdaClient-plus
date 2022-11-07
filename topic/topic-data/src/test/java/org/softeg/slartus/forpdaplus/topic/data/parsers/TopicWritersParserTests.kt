@@ -17,4 +17,15 @@ class TopicWritersParserTests {
         val writers = runBlocking { parser.parse(page) }
         Assert.assertEquals(writers.size, 1999)
     }
+
+    @Test
+    fun parseModerator() {
+        val parser = TopicWritersParser()
+        val page =
+            javaClass.classLoader?.getResource("TopicAttachments_1057753_moderator.html")
+                ?.readText(charset = Charset.forName("windows-1251")) ?: ""
+
+        val writers = runBlocking { parser.parse(page) }
+        Assert.assertEquals(writers.size, 2)
+    }
 }

@@ -13,13 +13,22 @@ class TopicWritersParser @Inject constructor() {
         val document = Jsoup.parse(page)
 
         document.select("div.post_header")?.mapNotNull { divElement ->
-            val userA = divElement.selectFirst("a[href*=showuser]") ?: return@mapNotNull null
+            val aElements = divElement.select("a")
+            val userA = aElements.firstOrNull() ?: return@mapNotNull null
             val id = userA.attr("href").toUriOrNull()?.getQueryParameterOrNull("showuser")
 
             val nick = userA.text()
-            val messagesCount = divElement.ownText()?.toIntOrNull() ?: 0
+            val messagesCount = when (aElements.size) {
+                MODERATOR_A_COUNT -> aElements[1].text().toIntOrNull()
+                else -> divElement.ownText().toIntOrNull()
+            }
+
             return@mapNotNull TopicWriterResponse(id, nick, messagesCount)
         } ?: emptyList()
+    }
+
+    companion object {
+        private const val MODERATOR_A_COUNT = 2
     }
 }
 
