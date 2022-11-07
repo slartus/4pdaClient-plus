@@ -173,10 +173,6 @@ public class Client implements IHttpClient {
         return Http.Companion.getInstance().getCookieStore().getCookies();
     }
 
-    public Users getTopicWritersUsers(String topicId) throws IOException {
-        return org.softeg.slartus.forpdaapi.TopicApi.getWriters(this, topicId);
-    }
-
     public static Client getInstance() {
         return INSTANCE;  //To change body of created methods use File | Settings | File Templates.
     }
