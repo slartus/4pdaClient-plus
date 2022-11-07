@@ -1,16 +1,17 @@
 package org.softeg.slartus.forpdaplus.topic.data.screens.users.parsers
 
 import android.net.Uri
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.jsoup.Jsoup
 import ru.softeg.slartus.forum.api.TopicReader
-import ru.softeg.slartus.forum.api.TopicReaders
 import javax.inject.Inject
 
 class TopicReadersParser @Inject constructor() {
-    fun parse(page: String): List<TopicReaderResponse> {
+    suspend fun parse(page: String): List<TopicReaderResponse> = withContext(Dispatchers.Default) {
         val document = Jsoup.parse(page)
 
-        return document.select("a[title\$=читает]").map { element ->
+        return@withContext document.select("a[title\$=читает]").map { element ->
             val id = Uri.parse(element.attr("href")).getQueryParameter("showuser").orEmpty()
             TopicReaderResponse(
                 id = id,
