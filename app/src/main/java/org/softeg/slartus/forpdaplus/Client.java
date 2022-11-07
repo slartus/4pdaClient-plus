@@ -414,10 +414,6 @@ public class Client implements IHttpClient {
 
     }
 
-    public TopicReadingUsers getTopicReadingUsers(String topicId) throws IOException {
-        return TopicApi.getReadingUsers(this, topicId);
-    }
-
     void markAllForumAsRead() throws Throwable {
         ForumsApi.Companion.markAllAsRead(this);
     }
