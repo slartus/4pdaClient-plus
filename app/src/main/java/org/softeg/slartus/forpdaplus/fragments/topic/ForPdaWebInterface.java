@@ -49,6 +49,8 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
+import timber.log.Timber;
+
 /*
  * Created by slinkin on 23.06.2015.
  */
@@ -188,9 +190,21 @@ public class ForPdaWebInterface {
 
     @JavascriptInterface
     public void showUserMenu(final String postId, final String userId, final String userNick) {
-        run(() -> ForumUser.showUserQuickAction(getMainActivity(), getContext().getTopic().getId(), postId, userId, userNick,
-                this::insertTextToPost
-        ));
+        run(() -> {
+            try {
+                ForumUser.showUserQuickAction(
+                        getMainActivity(),
+                        getContext().getTopic().getId(),
+                        postId,
+                        userId,
+                        userNick,
+                        this::insertTextToPost
+                );
+            } catch (Exception ex) {
+                // some time getTopic return null
+                Timber.e(ex);
+            }
+        });
     }
 
     @JavascriptInterface
@@ -401,7 +415,7 @@ public class ForPdaWebInterface {
     public void go_gadget_show() {
         run(() -> {
 
-            String url = "https://"+ HostHelper.getHost() +"/forum/index.php?&showtopic=" + getContext().getTopic().getId() + "&mode=show&poll_open=true&st=" +
+            String url = "https://" + HostHelper.getHost() + "/forum/index.php?&showtopic=" + getContext().getTopic().getId() + "&mode=show&poll_open=true&st=" +
                     getContext().getTopic().getCurrentPage() * getContext().getTopic().getPostsPerPageCount(getContext().getLastUrl());
             getContext().showTheme(url);
         });
@@ -411,7 +425,7 @@ public class ForPdaWebInterface {
     @JavascriptInterface
     public void go_gadget_vote() {
         run(() -> {
-            String url = "https://"+ HostHelper.getHost() +"/forum/index.php?&showtopic=" + getContext().getTopic().getId() + "&poll_open=true&st=" +
+            String url = "https://" + HostHelper.getHost() + "/forum/index.php?&showtopic=" + getContext().getTopic().getId() + "&poll_open=true&st=" +
                     getContext().getTopic().getCurrentPage() * getContext().getTopic().getPostsPerPageCount(getContext().getLastUrl());
             getContext().showTheme(url);
         });
