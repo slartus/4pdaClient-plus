@@ -36,6 +36,7 @@ import org.softeg.slartus.forpdaplus.classes.FilePath
 import org.softeg.slartus.forpdaplus.common.AppLog
 import org.softeg.slartus.forpdaplus.common.TrueQueue
 import org.softeg.slartus.forpdaplus.controls.quickpost.PopupPanelView
+import org.softeg.slartus.forpdaplus.forum.data.getNullIfEmpty
 import org.softeg.slartus.forpdaplus.fragments.GeneralFragment
 import org.softeg.slartus.forpdaplus.fragments.topic.PostPreviewFragment
 import org.softeg.slartus.forpdaplus.fragments.topic.ThemeFragment
@@ -524,32 +525,37 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
     }
 
     private fun helperTask(uri: Uri) {
-
         UpdateTask(this, mEditpost?.id ?: "", uri).execute()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-
+    override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
         if (resultCode == Activity.RESULT_OK) {
+            intent ?: return
+            val uriList = when {
+                (intent.clipData?.itemCount ?: 0) > 0 -> (0 until (intent.clipData?.itemCount ?: 0))
+                    .map { index -> intent.clipData?.getItemAt(index)?.uri }
+                intent.data != null -> listOf(intent.data)
+                else -> null
+            }?.filterNotNull()?.getNullIfEmpty() ?: return
             if (requestCode == MY_INTENT_CLICK_I) {
-                data?.data?.let {
-                    uploadFile(it)
-                }
-
+                uploadFiles(uriList)
             } else if (requestCode == MY_INTENT_CLICK_F) {
-                data?.data?.let {
-                    uploadFile(it)
-                }
+                uploadFiles(uriList)
             }
         }
+    }
+
+    private fun uploadFiles(uri: List<Uri>) {
+        uri.forEach(::uploadFile)
     }
 
     private fun uploadFile(uri: Uri) {
         val fileName = FilePath.getFileName(requireContext(), uri)
         if (fileName != null) {
-            val imageExt = "jpeg|jpg|png|gif"
-            val fileExt = "7z|zip|rar|tar.gz|exe|cab|xap|txt|log|mp3|mp4|apk|ipa|img|mtz"
-            if (fileName.matches("(?i)(.*)($imageExt|$fileExt)$".toRegex())) {
+            val imageExt = "jpeg|jpg|png|gif".split("|")
+            val fileExt = "7z|zip|rar|tar.gz|exe|cab|xap|txt|log|mp3|mp4|apk|ipa|img|mtz".split("|")
+            val exts = fileExt + imageExt
+            if (exts.any { ext -> fileName.endsWith(ext, ignoreCase = true) }) {
                 helperTask(uri)
             } else {
                 Toast.makeText(
