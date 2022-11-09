@@ -23,7 +23,7 @@ android {
     // после фикса в релизе мержим в мастер.
     // мастер - рабочая ветка для следуюшего релиза
 
-    def appVersionName = "3.6.1.2 beta"
+    def appVersionName = "3.6.1.2"
 
     defaultConfig {
         applicationId 'org.softeg.slartus.forpdaplus'
