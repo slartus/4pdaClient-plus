@@ -39,7 +39,6 @@ import java.util.regex.Pattern;
  * Created by radiationx on 07.11.15.
  */
 public class DeviceEdit {
-    private final View mView;
     private String requestText="";
     private final ArrayList<String> deviceNames = new ArrayList<String>();
     private final ArrayList<String> deviceIds = new ArrayList<String>();
@@ -72,7 +71,7 @@ public class DeviceEdit {
         parentTag = tag;
         mContext = context;
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        mView = inflater.inflate(R.layout.device_edit, null);
+        View mView = inflater.inflate(R.layout.device_edit, null);
 
         final long[] lastTimeStamp = {System.currentTimeMillis()};
 

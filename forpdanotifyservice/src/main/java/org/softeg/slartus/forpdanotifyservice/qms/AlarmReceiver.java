@@ -5,8 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import org.softeg.slartus.forpdanotifyservice.favorites.FavoritesNotifier;
-
 
 /**
  * Created with IntelliJ IDEA.

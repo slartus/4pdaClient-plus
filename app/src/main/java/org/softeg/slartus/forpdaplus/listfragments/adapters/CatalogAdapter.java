@@ -63,7 +63,7 @@ public class CatalogAdapter extends BaseAdapter {
         return view;
     }
 
-    class ViewHolder {
+    static class ViewHolder {
         TextView Main;
         TextView SubMain;
     }

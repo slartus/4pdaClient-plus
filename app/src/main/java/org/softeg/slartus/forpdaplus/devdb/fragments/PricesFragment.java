@@ -30,10 +30,6 @@ import java.util.List;
 public class PricesFragment extends BaseDevDbFragment implements FLifecycleUtil {
     private static final int LAYOUT = R.layout.dev_db_list_fragment;
 
-    private RecyclerView mRecyclerView;
-    private PricesAdapter mAdapter;
-    private List<PricesModel> mModelList;
-
     public static PricesFragment newInstance(Context context, String list) {
         PricesFragment f = new PricesFragment();
         Bundle args = new Bundle();
@@ -49,11 +45,12 @@ public class PricesFragment extends BaseDevDbFragment implements FLifecycleUtil 
 //        recLifeCycle(getClass(), CALL_TO_SUPER);
         view = inflater.inflate(LAYOUT, container, false);
 //        recLifeCycle(getClass(), RETURN_FROM_SUPER);
-        mModelList = new Gson().fromJson(getArguments().getString(LIST_ARG),  new TypeToken<ArrayList<PricesModel>>() {}.getType());
+        List<PricesModel> mModelList = new Gson().fromJson(getArguments().getString(LIST_ARG), new TypeToken<ArrayList<PricesModel>>() {
+        }.getType());
         if (mModelList.size() != 0) {
-            mRecyclerView = view.findViewById(R.id.devDbRecyclerView);
+            RecyclerView mRecyclerView = view.findViewById(R.id.devDbRecyclerView);
             mRecyclerView.setVisibility(View.VISIBLE);
-            mAdapter = new PricesAdapter(getActivity(), mModelList);
+            PricesAdapter mAdapter = new PricesAdapter(getActivity(), mModelList);
             mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
             mRecyclerView.setAdapter(mAdapter);
             mAdapter.notifyDataSetChanged();

@@ -102,9 +102,7 @@ public class Forum implements ForumItem {
     }
 
     public void getAllThemes(Themes toCollection) {
-        for (int i = 0; i < m_Themes.size(); i++) {
-            toCollection.add(m_Themes.get(i));
-        }
+        toCollection.addAll(m_Themes);
         for (int i = 0; i < m_Forums.size(); i++) {
             m_Forums.get(i).getAllThemes(toCollection);
         }

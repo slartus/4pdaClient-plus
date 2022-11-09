@@ -128,11 +128,11 @@ public class ExpandableMyListAdapter extends BaseExpandableListAdapter {
     }
 
 
-    public class GroupViewHolder {
+    public static class GroupViewHolder {
         public TextView text;
     }
 
-    class ViewHolder {
+    static class ViewHolder {
         LinearLayout Flag;
         TextView TopLeft;
         TextView TopRight;

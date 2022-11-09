@@ -1,10 +1,6 @@
 package org.softeg.slartus.forpdaplus.classes.common;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.text.TextUtils;
-
-import org.softeg.slartus.forpdaplus.App;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

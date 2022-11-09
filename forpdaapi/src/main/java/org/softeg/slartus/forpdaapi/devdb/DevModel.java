@@ -12,7 +12,6 @@ public class DevModel implements IListItem {
     private final String id;
     private CharSequence description;
     private String imgUrl;
-    private String rate;
 
     public DevModel(String id, String name) {
         this.id = id;
@@ -81,6 +80,5 @@ public class DevModel implements IListItem {
     }
 
     public void setRate(String rate) {
-        this.rate = rate;
     }
 }

@@ -442,7 +442,7 @@ super();
         mAdapter.notifyDataSetChanged();
     }
 
-    public class ExpandableGroup {
+    public static class ExpandableGroup {
         private final String mTitle;
         private final ArrayList<IListItem> mData = new ArrayList<>();
 

@@ -41,7 +41,7 @@ public class DeviceDelete {
                 })
                 .build();
     }
-    public class getDevice extends AsyncTask<String, Void, Void> {
+    public static class getDevice extends AsyncTask<String, Void, Void> {
         String res;
         @Override
         protected void onPreExecute() {

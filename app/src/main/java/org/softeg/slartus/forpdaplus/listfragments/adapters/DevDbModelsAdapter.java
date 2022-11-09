@@ -97,7 +97,7 @@ public class DevDbModelsAdapter extends BaseAdapter {
         return view;
     }
 
-    class ViewHolder {
+    static class ViewHolder {
         ImageView imageView;
         View progressView;
         TextView titleTextView;

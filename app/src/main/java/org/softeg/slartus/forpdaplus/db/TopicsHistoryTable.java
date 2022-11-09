@@ -12,7 +12,6 @@ import org.softeg.slartus.forpdaplus.classes.forum.HistoryTopic;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.repositories.ForumsRepository;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 

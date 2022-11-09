@@ -235,7 +235,7 @@ public class FilePath {
         return LocalStorageProvider.AUTHORITY.equals(uri.getAuthority());
     }
 
-    class LocalStorageProvider {
+    static class LocalStorageProvider {
         static final String AUTHORITY = "org.softeg.slartus.forpdaplus.localstorage.documents";
     }
 
