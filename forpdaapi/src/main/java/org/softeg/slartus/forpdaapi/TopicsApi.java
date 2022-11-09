@@ -188,14 +188,14 @@ public class TopicsApi {
                 if (trElement.children().size() < 3)
                     continue;
                 Element tdElement = trElement.child(2);
-                Element el = tdElement.select("a[id~=tid-link]").last();
+                Element el = tdElement.select("a[id^=tid-link]").last();
                 if (el == null)
                     continue;
                 Matcher m = idPattern.matcher(el.attr("href"));
                 if (!m.find())
                     continue;
                 Topic theme = new Topic(m.group(1), el.text());
-                el = tdElement.select("span[id~=tid-desc]").first();
+                el = tdElement.select("span[id^=tid-desc]").first();
                 if (el != null)
                     theme.setDescription(el.text());
                 theme.setIsNew(tdElement.select("a[href*=view=getnewpost]").first() != null);
