@@ -2,10 +2,9 @@ package org.softeg.slartus.forpdaplus.forum.data
 
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import ru.softeg.slartus.forum.api.ForumItem
 import ru.softeg.slartus.forum.api.ForumRepository
 import ru.softeg.slartus.forum.api.ForumService
-import ru.softeg.slartus.forum.api.ForumItem
-import timber.log.Timber
 import javax.inject.Inject
 
 class ForumRepositoryImpl @Inject constructor(
@@ -25,9 +24,11 @@ class ForumRepositoryImpl @Inject constructor(
             kotlin.runCatching {
                 forumService.getGithubForum()
             }.onFailure {
-                Timber.e(it)
+                it.printStackTrace()
             }.getOrNull() ?: kotlin.runCatching {
                 forumService.getSlartusForum()
+            }.onFailure {
+                it.printStackTrace()
             }.getOrNull() ?: emptyList()
 
         if (forums.isNotEmpty()) {
