@@ -122,9 +122,6 @@ class Http private constructor(context: Context, appName: String, appVersion: St
                 .addInterceptor(UnzippingInterceptor())
                 .sslSocketFactory(sslSocketFactory, trustManager)
                 .hostnameVerifier { _, _ -> true }
-            if (BuildConfig.DEBUG)
-                builder
-                    .addInterceptor(LoggingInterceptor())
             return builder
         }
 
@@ -371,15 +368,18 @@ class Http private constructor(context: Context, appName: String, appVersion: St
             throw HttpException("File is empty")
         val mediaType = "text/plain".toMediaTypeOrNull()
 
-
+        var progress = 0L
         if (progressListener != null) {
             builder.addPart(Headers.of(
                 "Content-Disposition",
                 "form-data; name=\"$fileFormDataName\"; filename=\"$fileName\""
             ),
                 CountingFileRequestBody(file, mediaType) { num ->
-                    val progress = num.toFloat() / totalSize.toFloat() * 100.0
-                    progressListener.transferred(progress.toLong())
+                    val newProgress = (num.toFloat() / totalSize.toFloat() * 100.0).toLong()
+                    if (progress != newProgress) {
+                        progress = newProgress
+                        progressListener.transferred(progress)
+                    }
                 })
         } else {
             builder.addFormDataPart(fileFormDataName, fileName, file.asRequestBody(mediaType))
