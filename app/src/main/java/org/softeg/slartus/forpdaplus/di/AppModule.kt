@@ -9,10 +9,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import org.softeg.slartus.forpdaplus.core.AppActions
-import org.softeg.slartus.forpdaplus.core.AppPreferences
-import org.softeg.slartus.forpdaplus.core.ForumPreferences
-import org.softeg.slartus.forpdaplus.core.QmsPreferences
+import org.softeg.slartus.forpdaplus.core.*
 import org.softeg.slartus.forpdaplus.core.entities.*
 import org.softeg.slartus.forpdaplus.core.interfaces.ParseFactory
 import org.softeg.slartus.forpdaplus.core.interfaces.Parser
@@ -20,12 +17,13 @@ import org.softeg.slartus.forpdaplus.core.repositories.UserInfoRepository
 import org.softeg.slartus.forpdaplus.core.services.AppHttpClient
 import org.softeg.slartus.forpdaplus.prefs.AppPreferencesImpl
 import org.softeg.slartus.forpdaplus.prefs.ForumPreferencesImpl
+import org.softeg.slartus.forpdaplus.prefs.ListPreferencesImpl
 import org.softeg.slartus.forpdaplus.prefs.QmsPreferencesImpl
 import org.softeg.slartus.forpdaplus.repositories.UserInfoRepositoryImpl
-import org.softeg.slartus.forpdaplus.topic.data.screens.attachments.models.TopicAttachmentResponse
 import org.softeg.slartus.forpdaplus.topic.data.screens.attachments.models.TopicAttachmentsResponse
 import ru.softeg.slartus.qms.api.models.QmsContact
 import ru.softeg.slartus.qms.api.models.QmsContacts
+import ru.softeg.slartus.qms.api.models.QmsCount
 import ru.softeg.slartus.qms.api.models.QmsThreads
 import javax.inject.Singleton
 
@@ -45,14 +43,20 @@ class AppModule {
     @Provides
     @Singleton
     fun provideParseFactoryImpl(
+        qmsCountParser: Parser<QmsCount>,
         qmsContactsParser: Parser<QmsContacts>,
         qmsContactParser: Parser<QmsContact>,
         qmsThreadsParser: Parser<QmsThreads>,
+        profileParser: Parser<UserProfile>,
+        qmsChatParser: Parser<String>,
         topicAttachmentsParser: Parser<TopicAttachmentsResponse>,
     ): ParseFactory =
         ParseFactoryImpl.Builder()
+            .add(profileParser)
+            .add(qmsChatParser)
             .add(qmsContactsParser)
             .add(qmsContactParser)
+            .add(qmsCountParser)
             .add(qmsThreadsParser)
             .add(topicAttachmentsParser)
             .build()
@@ -68,6 +72,16 @@ interface ManagersModule {
 
     @Binds
     @Singleton
+    fun bindAppHttpClientImpl(appHttpClientImpl: AppHttpClientImpl): AppHttpClient
+}
+
+@Suppress("unused")
+@Module
+@InstallIn(SingletonComponent::class)
+interface PreferencesModule {
+
+    @Binds
+    @Singleton
     fun bindAppPreferencesImpl(appPreferencesImpl: AppPreferencesImpl): AppPreferences
 
     @Binds
@@ -76,9 +90,9 @@ interface ManagersModule {
 
     @Binds
     @Singleton
-    fun bindQmsPreferencesImpl(qmsPreferencesImpl: QmsPreferencesImpl): QmsPreferences
+    fun bindListPreferencesImpl(listPreferencesImpl: ListPreferencesImpl): ListPreferences
 
     @Binds
     @Singleton
-    fun bindAppHttpClientImpl(appHttpClientImpl: AppHttpClientImpl): AppHttpClient
+    fun bindQmsPreferencesImpl(qmsPreferencesImpl: QmsPreferencesImpl): QmsPreferences
 }

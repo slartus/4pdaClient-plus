@@ -2,7 +2,6 @@ package org.softeg.slartus.forpdaplus.di
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import org.softeg.slartus.forpdacommon.UrlExtensions
 import org.softeg.slartus.forpdaplus.core.services.AppHttpClient
 import ru.slartus.http.Http
 import javax.inject.Inject

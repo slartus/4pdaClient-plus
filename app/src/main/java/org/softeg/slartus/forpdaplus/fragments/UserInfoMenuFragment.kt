@@ -13,7 +13,7 @@ import androidx.lifecycle.*
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.softeg.slartus.forpdaplus.*
@@ -181,17 +181,17 @@ class UserInfoMenuViewModel @Inject constructor(
     }
 
     init {
-        viewModelScope.launch(Dispatchers.IO + errorHandler) {
-            launch {
+        viewModelScope.launch {
+            launch(SupervisorJob() + errorHandler) {
                 userInfoRepository.userInfo
                     .distinctUntilChanged()
                     .collect {
                         _uiState.value = ViewState.Success(it)
                     }
             }
-            launch {
+            launch(SupervisorJob() + errorHandler) {
                 qmsCountRepository.countFlow
-                    .drop(1)
+                    .filterNotNull()
                     .distinctUntilChanged()
                     .collect {
                         userInfoRepository.setQmsCount(it)

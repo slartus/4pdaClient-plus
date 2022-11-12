@@ -53,6 +53,10 @@ interface DomainQmsModule {
     @Binds
     @Singleton
     fun provideQmsThreadsParser(parser: QmsThreadsParser): Parser<QmsThreads>
+
+    @Binds
+    @Singleton
+    fun provideQmsNewThreadParser(parser: QmsNewThreadParser): Parser<String?>
 }
 
 @Suppress("unused")

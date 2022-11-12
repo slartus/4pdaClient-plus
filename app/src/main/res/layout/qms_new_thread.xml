@@ -61,6 +61,7 @@
         </EditText>
     </LinearLayout>
 
+
     <LinearLayout
         android:id="@+id/bottomPanel"
         style="?post_panel"

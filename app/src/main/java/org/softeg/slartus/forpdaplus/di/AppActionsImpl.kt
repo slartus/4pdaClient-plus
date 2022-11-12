@@ -1,6 +1,8 @@
 package org.softeg.slartus.forpdaplus.di
 
 import android.content.Context
+import androidx.fragment.app.Fragment
+import org.softeg.slartus.forpdaplus.MainActivity
 import dagger.hilt.android.qualifiers.ApplicationContext
 import org.softeg.slartus.forpdaplus.IntentActivity
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl
@@ -11,6 +13,7 @@ import org.softeg.slartus.forpdaplus.fragments.qms.QmsChatFragment
 import org.softeg.slartus.forpdaplus.fragments.qms.QmsContactThemes
 import org.softeg.slartus.forpdaplus.fragments.qms.QmsNewThreadFragment
 import org.softeg.slartus.forpdaplus.listfragments.ForumTopicsListFragment
+import org.softeg.slartus.forpdaplus.listfragments.IBrickFragment
 import javax.inject.Inject
 
 class AppActionsImpl @Inject constructor(
@@ -58,5 +61,18 @@ class AppActionsImpl @Inject constructor(
 
     override fun showNewQmsContactThread(contactId: String, contactNick: String?) {
         QmsNewThreadFragment.showUserNewThread(contactId, contactNick)
+    }
+
+    override fun back(fragment: Fragment) {
+        val brickFragment = fragment.getBrickFragment() ?: return
+
+        (fragment.activity as? MainActivity?)?.tryRemoveTab(brickFragment.tag)
+    }
+
+    companion object {
+        private fun Fragment.getBrickFragment(): Fragment? {
+            return if (this is IBrickFragment) this else this.parentFragment?.getBrickFragment()
+        }
+
     }
 }

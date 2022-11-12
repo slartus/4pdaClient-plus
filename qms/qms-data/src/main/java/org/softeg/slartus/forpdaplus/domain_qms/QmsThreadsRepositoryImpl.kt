@@ -11,7 +11,8 @@ import javax.inject.Inject
 
 class QmsThreadsRepositoryImpl @Inject constructor(
     private val qmsService: QmsService,
-    private val parser: Parser<QmsThreads>
+    private val parser: Parser<QmsThreads>,
+    private val qmsNewThreadParser: Parser<String>
 ) :
     QmsThreadsRepository {
     private val _threads = MutableStateFlow<List<QmsThread>?>(null)
@@ -26,4 +27,11 @@ class QmsThreadsRepositoryImpl @Inject constructor(
     override suspend fun delete(contactId: String, threadIds: List<String>) {
         qmsService.deleteThreads(contactId, threadIds)
     }
+
+    override suspend fun createNewThread(
+        contactId: String,
+        userNick: String,
+        subject: String,
+        message: String
+    ) = qmsService.createNewThread(contactId, userNick, subject, message, qmsNewThreadParser.id)
 }

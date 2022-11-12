@@ -1,4 +1,5 @@
 <resources>
+    <string name="app_name" translatable="false">ForPDA</string>
     <string name="widget_description">Проверка qms и упоминаний</string>
     <string name="app_name" translatable="false">ForPDA</string>
 </resources>

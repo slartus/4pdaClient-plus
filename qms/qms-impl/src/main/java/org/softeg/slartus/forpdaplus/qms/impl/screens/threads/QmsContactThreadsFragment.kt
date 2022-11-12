@@ -5,7 +5,6 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
@@ -140,8 +139,7 @@ class QmsContactThreadsFragment :
                 // ignore
             }
             is QmsContactThreadsViewModel.Event.Error -> Timber.e(event.exception)
-            is QmsContactThreadsViewModel.Event.ShowToast ->
-                Toast.makeText(requireContext(), event.resId, event.duration).show()
+
             is QmsContactThreadsViewModel.Event.ShowQmsThread ->
                 appActions.get().showQmsThread(
                     event.contactId,

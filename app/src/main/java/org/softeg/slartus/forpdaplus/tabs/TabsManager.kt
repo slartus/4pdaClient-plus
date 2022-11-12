@@ -1,7 +1,5 @@
 package org.softeg.slartus.forpdaplus.tabs
 
-import java.util.*
-
 class TabsManager {
     private object Holder {
         val INSTANCE = TabsManager()
@@ -42,9 +40,9 @@ class TabsManager {
         currentFragmentTag = s
     }
 
-    private val mTabItems: List<TabItem> = ArrayList()
+    private val mTabItems = mutableListOf<TabItem>()
 
-    fun getTabItems(): List<TabItem> {
+    fun getTabItems(): MutableList<TabItem> {
         return mTabItems
     }
 

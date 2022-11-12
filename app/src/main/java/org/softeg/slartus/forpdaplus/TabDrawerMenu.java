@@ -5,12 +5,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.os.Handler;
 import android.os.Process;
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 import android.util.DisplayMetrics;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +17,11 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.softeg.slartus.forpdaplus.listtemplates.ListCore;
@@ -29,13 +29,14 @@ import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.tabs.TabItem;
 import org.softeg.slartus.forpdaplus.tabs.TabsManager;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TabDrawerMenu {
     private final DrawerLayout mDrawerLayout;
     private final RelativeLayout mDrawer;
-    private final Activity mActivity;
+    private final WeakReference<Context> mActivity;
     private final SelectItemListener mSelectItemListener;
     public static TabAdapter adapter;
     private final ListView mListView;
@@ -46,7 +47,7 @@ public class TabDrawerMenu {
         void selectTab(TabItem tabItem);
     }
 
-    TabDrawerMenu(Activity activity, SelectItemListener listener) {
+    public TabDrawerMenu(Activity activity, SelectItemListener listener) {
         Resources resources = App.getInstance().getResources();
         DisplayMetrics displayMetrics = resources.getDisplayMetrics();
         float dpWidth = displayMetrics.widthPixels;
@@ -54,10 +55,10 @@ public class TabDrawerMenu {
             dpWidth = displayMetrics.density * 400;
         }
         dpWidth -= 80 * displayMetrics.density;
-        mActivity = activity;
+        mActivity = new WeakReference<>(activity);
         mSelectItemListener = listener;
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        Button closeAll = (Button) findViewById(R.id.closeAll);
+        mDrawerLayout = (DrawerLayout) activity.findViewById(R.id.drawer_layout);
+        Button closeAll = (Button) activity.findViewById(R.id.closeAll);
         closeAll.setOnClickListener(v -> {
             if (TabsManager.getInstance().getTabItems().size() > 1)
                 closeAllTabs();
@@ -73,22 +74,22 @@ public class TabDrawerMenu {
         });
 
 
-        mDrawer = (RelativeLayout) findViewById(R.id.tab_drawer);
-        mListView = (ListView) findViewById(R.id.tab_list);
+        mDrawer = (RelativeLayout) activity.findViewById(R.id.tab_drawer);
+        mListView = (ListView) activity.findViewById(R.id.tab_list);
         mListView.setOnItemClickListener(new TabOnClickListener());
         mListView.setStackFromBottom(App.getInstance().getPreferences().getBoolean("tabsBottom", false));
 
         DrawerLayout.LayoutParams params = (DrawerLayout.LayoutParams) mDrawer.getLayoutParams();
         params.width = (int) dpWidth;
         if ("right".equals(Preferences.System.getDrawerMenuPosition())) {
-            params.gravity = Gravity.START;
+            params.gravity = GravityCompat.START;
             mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow_start, GravityCompat.START);
         } else {
             mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow_end, GravityCompat.END);
         }
         mDrawer.setLayoutParams(params);
 
-        adapter = new TabAdapter(getContext(), R.layout.tab_drawer_item, TabsManager.getInstance().getTabItems());
+        adapter = new TabAdapter(activity, R.layout.tab_drawer_item, TabsManager.getInstance().getTabItems());
         mListView.setAdapter(adapter);
     }
 
@@ -101,12 +102,13 @@ public class TabDrawerMenu {
             for (TabItem item : TabsManager.getInstance().getTabItems())
                 if (!lastBrick.equals(item.getTag()))
                     itemsForClose.add(item);
-            ((MainActivity) getContext()).removeTabs(itemsForClose);
+            MainActivity activity = (MainActivity) getContext();
+            activity.removeTabs(itemsForClose);
             TabsManager.getInstance().setCurrentFragmentTag(lastBrick);
             if (!TabsManager.getInstance().isContainsByTag(lastBrick)) {
-                ((MainActivity) getContext()).selectItem(ListCore.getRegisteredBrick(lastBrick));
+                activity.selectItem(ListCore.getRegisteredBrick(lastBrick));
             } else {
-                ((MainActivity) getContext()).selectTab(TabsManager.getInstance().getTabByTag(lastBrick));
+                activity.selectTab(TabsManager.getInstance().getTabByTag(lastBrick));
             }
             refreshAdapter();
             notifyDataSetChanged();
@@ -149,8 +151,9 @@ public class TabDrawerMenu {
     }
 
     void removeTab(String tag) {
+        MainActivity mainActivity = (MainActivity) getContext();
         if (TabsManager.getInstance().getTabItems().size() <= 1) {
-            ((MainActivity) getContext()).appExit();
+            mainActivity.appExit();
             return;
         }
 
@@ -165,9 +168,9 @@ public class TabDrawerMenu {
                 else if (tag.equals(TabsManager.getInstance().getCurrentFragmentTag()))
                     TabsManager.getInstance().setCurrentFragmentTag(TabsManager.getInstance().getTabItems().get(TabsManager.getInstance().getLastTabPosition(i)).getTag());
 
-                ((MainActivity) getContext()).showFragment(TabsManager.getInstance().getCurrentFragmentTag(), true);
-                ((MainActivity) getContext()).endActionFragment(TabsManager.getInstance().getTabByTag(TabsManager.getInstance().getCurrentFragmentTag()).getTitle());
-                ((MainActivity) getContext()).getmMainDrawerMenu().setItemCheckable(TabsManager.getInstance().getTabByTag(TabsManager.getInstance().getCurrentFragmentTag()).getTitle());
+                mainActivity.showFragment(TabsManager.getInstance().getCurrentFragmentTag(), true);
+                mainActivity.endActionFragment(TabsManager.getInstance().getTabByTag(TabsManager.getInstance().getCurrentFragmentTag()).getTitle());
+                mainActivity.getmMainDrawerMenu().setItemCheckable(TabsManager.getInstance().getTabByTag(TabsManager.getInstance().getCurrentFragmentTag()).getTitle());
                 refreshAdapter();
                 return;
             }
@@ -192,11 +195,7 @@ public class TabDrawerMenu {
     }
 
     private Context getContext() {
-        return mActivity;
-    }
-
-    private View findViewById(int id) {
-        return mActivity.findViewById(id);
+        return mActivity.get();
     }
 
     public class TabAdapter extends ArrayAdapter {

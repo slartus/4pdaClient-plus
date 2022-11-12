@@ -1,5 +1,7 @@
 package org.softeg.slartus.forpdaplus.qms.impl.screens.contacts
 
+import android.widget.Toast
+import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -8,6 +10,7 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.softeg.slartus.forpdaplus.core.AppPreferences
 import org.softeg.slartus.forpdaplus.core.QmsPreferences
+import org.softeg.slartus.forpdaplus.core_lib.ui.adapter.Item
 import ru.softeg.slartus.qms.api.repositories.QmsContactsRepository
 import org.softeg.slartus.forpdaplus.qms.impl.R
 
@@ -24,9 +27,9 @@ class QmsContactsViewModel @Inject constructor(
     val showAvatars: Boolean = qmsPreferences.showAvatars
     val squareAvatars: Boolean = qmsPreferences.squareAvatars
     val accentColor: AccentColor = when (appPreferences.accentColor) {
-        "blue" -> AccentColor.Blue
-        "gray" -> AccentColor.Gray
-        else -> AccentColor.Standard
+        AppPreferences.ACCENT_COLOR_BLUE_NAME -> AccentColor.Blue
+        AppPreferences.ACCENT_COLOR_GRAY_NAME -> AccentColor.Gray
+        else -> AccentColor.Pink
     }
 
     private val errorHandler = CoroutineExceptionHandler { _, ex ->
@@ -108,6 +111,24 @@ class QmsContactsViewModel @Inject constructor(
         }
     }
 
+    sealed class UiState {
+        object Initialize : UiState()
+        data class Items(val items: List<Item>) : UiState()
+    }
+
+    sealed class Event {
+        object Empty : Event()
+        data class Error(val exception: Throwable) : Event()
+        data class ShowToast(
+            @StringRes val resId: Int,// maybe need use enum for clear model
+            val duration: Int = Toast.LENGTH_SHORT
+        ) : Event()
+
+    }
+
+    enum class AccentColor {
+        Pink, Blue, Gray
+    }
     private fun handleOnSearchTextChanged(text: String) {
         _uiState.value = _uiState.value.copy(
             filteredItems = _uiState.value.items.filter { text.isEmpty() || it.nick.contains(text, ignoreCase = true) }

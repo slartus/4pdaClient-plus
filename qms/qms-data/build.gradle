@@ -48,6 +48,8 @@ dependencies {
     implementation "com.google.dagger:hilt-android:$rootProject.hilt"
     kapt "com.google.dagger:hilt-compiler:$rootProject.hilt"
 
+    implementation "org.jsoup:jsoup:$rootProject.jsoup"
+
     implementation "com.jakewharton.timber:timber:$rootProject.timber"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$rootProject.coroutines"

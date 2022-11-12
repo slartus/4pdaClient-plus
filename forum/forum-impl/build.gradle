@@ -57,6 +57,7 @@ dependencies {
     kapt "com.google.dagger:hilt-compiler:$rootProject.hilt"
 
     implementation("io.coil-kt:coil:$rootProject.coil")
+    implementation("io.coil-kt:coil-gif:$rootProject.coil")
 
     implementation "com.jakewharton.timber:timber:$rootProject.timber"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"

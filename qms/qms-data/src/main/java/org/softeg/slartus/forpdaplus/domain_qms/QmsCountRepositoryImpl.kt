@@ -15,8 +15,8 @@ class QmsCountRepositoryImpl @Inject constructor(
 ) :
     QmsCountRepository {
 
-    private val _countFlow = MutableStateFlow(0)
-    override val countFlow: Flow<Int>
+    private val _countFlow = MutableStateFlow<Int?>(null)
+    override val countFlow: Flow<Int?>
         get() = _countFlow.asStateFlow()
 
     init {

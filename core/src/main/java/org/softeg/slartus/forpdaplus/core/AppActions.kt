@@ -2,6 +2,7 @@ package org.softeg.slartus.forpdaplus.core
 
 import android.content.Context
 import androidx.annotation.StringRes
+import androidx.fragment.app.Fragment
 
 interface AppActions {
     fun startDownload(url: String)
@@ -16,6 +17,7 @@ interface AppActions {
 
     fun showUserProfile(contactId: String, contactNick: String?)
     fun showNewQmsContactThread(contactId: String, contactNick: String?)
+    fun back(fragment: Fragment)
     fun showUrlActions(context: Context, @StringRes titleRes: Int, url: String)
     fun showUrlActions(context: Context, title: String, url: String)
     fun openTopic(topicUrl: String)

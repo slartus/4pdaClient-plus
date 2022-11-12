@@ -190,9 +190,9 @@ class QmsContactsFragment :
     @DrawableRes
     private fun getAccentBackgroundRes(): Int {
         return when (viewModel.accentColor) {
-            AccentColor.Blue -> R.drawable.qmsnewblue
-            AccentColor.Gray -> R.drawable.qmsnewgray
-            else -> R.drawable.qmsnew
+            QmsContactsViewModel.AccentColor.Pink -> R.drawable.qmsnew
+            QmsContactsViewModel.AccentColor.Blue -> R.drawable.qmsnewblue
+            QmsContactsViewModel.AccentColor.Gray -> R.drawable.qmsnewgray
         }
     }
 

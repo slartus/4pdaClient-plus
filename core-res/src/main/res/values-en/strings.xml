@@ -293,7 +293,7 @@
     <string name="error_getting_nick">Error getting username</string>
     <string name="new_thread">New thread</string>
     <string name="ask_deleting_dialogs" formatted="false">Are you sure you want to remove the selected dialogues (%d) with the user %s?</string>
-    <string name="qms_title_new_thread">QMS: New topic</string>
+    <string name="qms_title_new_thread">%s: New dialog</string>
     <string name="enter_nick">Enter nick</string>
     <string name="file_name">File name</string>
     <string name="error_external_storage">Remote storage not available!</string>
@@ -393,7 +393,9 @@
     <string name="open_link">Open link</string>
     <string name="comment_hint">Comment</string>
     <string name="message_hint">Message</string>
+    <string name="subject">Subject</string>
     <string name="enter_subject">Enter Title</string>
+    <string name="message">Message</string>
     <string name="enter_message">Enter Message</string>
     <string name="to_whom">To Whom</string>
     <string name="user__">Username: </string>
@@ -456,6 +458,7 @@
     <string name="menu_topic_load_imgs_for_session">Load images (for session)</string>
     <string name="menu_topic_attachments_invert_sorting">Invert sorting</string>
     <string name="registration">Registration</string>
+    <string name="error_on_new_thread">No new dialog ID found. The user may have blocked you</string>
     <string name="qms_contacts_search">Find contact</string>
     <string name="upload">Upload</string>
 </resources>

@@ -18,6 +18,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import com.afollestad.materialdialogs.DialogAction
 import com.afollestad.materialdialogs.MaterialDialog
 import kotlinx.android.synthetic.main.device_edit.*
@@ -32,6 +33,10 @@ import org.softeg.slartus.forpdaplus.R
 import org.softeg.slartus.forpdacommon.FilePath
 import org.softeg.slartus.forpdaplus.classes.InputFilterMinMax
 import org.softeg.slartus.forpdaplus.common.AppLog
+import org.softeg.slartus.forpdaplus.controls.OpenFileDialog
+import org.softeg.slartus.forpdaplus.core.AppPreferences
+import org.softeg.slartus.forpdaplus.db.NotesDbHelper
+import org.softeg.slartus.forpdaplus.db.NotesTable
 import org.softeg.slartus.forpdaplus.fragments.base.ProgressDialog
 import org.softeg.slartus.forpdaplus.fragments.topic.ThemeFragment
 import org.softeg.slartus.forpdaplus.listtemplates.ListCore
@@ -496,9 +501,9 @@ class PreferencesActivity : BasePreferencesActivity() {
                 val string = prefs.getString("mainAccentColor", "pink")
                 var position = -1
                 when (string) {
-                    "pink" -> position = 0
-                    "blue" -> position = 1
-                    "gray" -> position = 2
+                    AppPreferences.ACCENT_COLOR_PINK_NAME -> position = 0
+                    AppPreferences.ACCENT_COLOR_BLUE_NAME -> position = 1
+                    AppPreferences.ACCENT_COLOR_GRAY_NAME -> position = 2
                 }
                 val selected = intArrayOf(0)
                 MaterialDialog.Builder(activity)
@@ -518,7 +523,7 @@ class PreferencesActivity : BasePreferencesActivity() {
                     .onPositive { _: MaterialDialog?, _: DialogAction? ->
                         when (selected[0]) {
                             0 -> {
-                                prefs.edit().putString("mainAccentColor", "pink").apply()
+                                prefs.edit().putString("mainAccentColor", AppPreferences.ACCENT_COLOR_PINK_NAME).apply()
                                 if (!prefs.getBoolean("accentColorEdited", false)) {
                                     prefs.edit()
                                         .putInt("accentColor", Color.rgb(2, 119, 189))
@@ -527,7 +532,7 @@ class PreferencesActivity : BasePreferencesActivity() {
                                 }
                             }
                             1 -> {
-                                prefs.edit().putString("mainAccentColor", "blue").apply()
+                                prefs.edit().putString("mainAccentColor", AppPreferences.ACCENT_COLOR_BLUE_NAME).apply()
                                 if (!prefs.getBoolean("accentColorEdited", false)) {
                                     prefs.edit()
                                         .putInt("accentColor", Color.rgb(233, 30, 99))
@@ -536,7 +541,7 @@ class PreferencesActivity : BasePreferencesActivity() {
                                 }
                             }
                             2 -> {
-                                prefs.edit().putString("mainAccentColor", "gray").apply()
+                                prefs.edit().putString("mainAccentColor", AppPreferences.ACCENT_COLOR_GRAY_NAME).apply()
                                 if (!prefs.getBoolean("accentColorEdited", false)) {
                                     prefs.edit()
                                         .putInt("accentColor", Color.rgb(117, 117, 117))

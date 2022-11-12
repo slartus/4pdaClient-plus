@@ -1,8 +1,6 @@
 package org.softeg.slartus.forpdaplus.qms.impl.screens.threads
 
 import android.os.Bundle
-import android.widget.Toast
-import androidx.annotation.StringRes
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,6 +8,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import org.softeg.slartus.forpdaplus.core.AppPreferences
+import org.softeg.slartus.forpdaplus.core_lib.utils.fromHtml
 import ru.softeg.slartus.qms.api.models.QmsContact
 import ru.softeg.slartus.qms.api.repositories.QmsContactsRepository
 import ru.softeg.slartus.qms.api.repositories.QmsThreadsRepository
@@ -53,9 +52,9 @@ class QmsContactThreadsViewModel @Inject constructor(
         }
 
     val accentColor: AccentColor = when (appPreferences.accentColor) {
-        "blue" -> AccentColor.Blue
-        "gray" -> AccentColor.Gray
-        else -> AccentColor.Standard
+        AppPreferences.ACCENT_COLOR_BLUE_NAME -> AccentColor.Blue
+        AppPreferences.ACCENT_COLOR_GRAY_NAME -> AccentColor.Gray
+        else -> AccentColor.Pink
     }
 
     init {
@@ -69,7 +68,7 @@ class QmsContactThreadsViewModel @Inject constructor(
                         val items = rawItems.map {
                             QmsThreadItem(
                                 id = it.id ?: "",
-                                title = it.title ?: "",
+                                title = it.title?.fromHtml()?.toString() ?: "",
                                 messagesCount = it.messagesCount ?: 0,
                                 newMessagesCount = it.newMessagesCount ?: 0,
                                 lastMessageDate = it.lastMessageDate
@@ -257,10 +256,6 @@ class QmsContactThreadsViewModel @Inject constructor(
         object Empty : Event()
         data class Progress(val visible: Boolean) : Event()
         data class Error(val exception: Throwable) : Event()
-        data class ShowToast(
-            @StringRes val resId: Int,// maybe need use enum for clear model
-            val duration: Int = Toast.LENGTH_SHORT
-        ) : Event()
 
         data class ShowQmsThread(
             val contactId: String,
@@ -286,6 +281,6 @@ class QmsContactThreadsViewModel @Inject constructor(
     }
 
     enum class AccentColor {
-        Standard, Blue, Gray
+        Pink, Blue, Gray
     }
 }
