@@ -30,10 +30,6 @@ import java.util.ArrayList;
 public class ReviewsFragment extends BaseDevDbFragment implements FLifecycleUtil {
     private static final int LAYOUT = R.layout.dev_db_list_fragment;
 
-    private RecyclerView mRecyclerView;
-    private ReviewsAdapter mAdapter;
-    private ArrayList<ReviewsModel> mModelList;
-
     public static ReviewsFragment newInstance(Context context, String list) {
         ReviewsFragment f = new ReviewsFragment();
         Bundle args = new Bundle();
@@ -59,11 +55,12 @@ public class ReviewsFragment extends BaseDevDbFragment implements FLifecycleUtil
 //        recLifeCycle(getClass(), CALL_TO_SUPER);
         view = inflater.inflate(LAYOUT, container, false);
 //        recLifeCycle(getClass(), RETURN_FROM_SUPER);
-        mModelList = new Gson().fromJson(getArguments().getString(LIST_ARG),  new TypeToken<ArrayList<ReviewsModel>>() {}.getType());
+        ArrayList<ReviewsModel> mModelList = new Gson().fromJson(getArguments().getString(LIST_ARG), new TypeToken<ArrayList<ReviewsModel>>() {
+        }.getType());
         if (mModelList.size() != 0) {
-            mRecyclerView = view.findViewById(R.id.devDbRecyclerView);
+            RecyclerView mRecyclerView = view.findViewById(R.id.devDbRecyclerView);
             mRecyclerView.setVisibility(View.VISIBLE);
-            mAdapter = new ReviewsAdapter(getActivity(), mModelList, ImageLoader.getInstance());
+            ReviewsAdapter mAdapter = new ReviewsAdapter(getActivity(), mModelList, ImageLoader.getInstance());
             mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
             mRecyclerView.setAdapter(mAdapter);
             mAdapter.notifyDataSetChanged();

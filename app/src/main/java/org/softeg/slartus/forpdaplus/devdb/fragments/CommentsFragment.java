@@ -29,9 +29,6 @@ import java.util.ArrayList;
 public class CommentsFragment extends BaseDevDbFragment implements FLifecycleUtil {
     private static final int LAYOUT = R.layout.dev_db_list_fragment;
 
-    private CommentsAdapter mAdapter;
-    private ArrayList<CommentsModel> mModelList;
-
     public static CommentsFragment newInstance(Context context, String list) {
         CommentsFragment f = new CommentsFragment();
         Bundle args = new Bundle();
@@ -48,11 +45,12 @@ public class CommentsFragment extends BaseDevDbFragment implements FLifecycleUti
 //        recLifeCycle(getClass(), CALL_TO_SUPER);
         view = inflater.inflate(LAYOUT, container, false);
 //        recLifeCycle(getClass(), RETURN_FROM_SUPER);
-        mModelList = new Gson().fromJson(getArguments().getString(LIST_ARG),  new TypeToken<ArrayList<CommentsModel>>() {}.getType());
+        ArrayList<CommentsModel> mModelList = new Gson().fromJson(getArguments().getString(LIST_ARG), new TypeToken<ArrayList<CommentsModel>>() {
+        }.getType());
         if (mModelList.size() != 0) {
             RecyclerView recyclerView = view.findViewById(R.id.devDbRecyclerView);
             recyclerView.setVisibility(View.VISIBLE);
-            mAdapter = new CommentsAdapter(getActivity(), mModelList);
+            CommentsAdapter mAdapter = new CommentsAdapter(getActivity(), mModelList);
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
             recyclerView.setAdapter(mAdapter);
             mAdapter.notifyDataSetChanged();

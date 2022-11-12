@@ -15,7 +15,6 @@ import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.hosthelper.HostHelper;
 
 import java.io.IOException;
-import java.lang.annotation.Documented;
 import java.net.HttpCookie;
 import java.util.ArrayList;
 import java.util.HashMap;

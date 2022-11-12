@@ -18,24 +18,32 @@ import android.view.*
 import android.widget.*
 import androidx.appcompat.app.ActionBar
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.materialdialogs.MaterialDialog
+import dagger.hilt.android.AndroidEntryPoint
 import io.paperdb.Paper
 import io.reactivex.Single
 import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.SingleSubject
 import kotlinx.android.synthetic.main.edit_post_plus.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.cancellable
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.softeg.slartus.forpdaapi.post.EditAttach
 import org.softeg.slartus.forpdaapi.post.EditPost
 import org.softeg.slartus.forpdaapi.post.PostApi
 import org.softeg.slartus.forpdaplus.App
 import org.softeg.slartus.forpdaplus.MainActivity
 import org.softeg.slartus.forpdaplus.R
-import org.softeg.slartus.forpdaplus.classes.FilePath
+import org.softeg.slartus.forpdacommon.FilePath
 import org.softeg.slartus.forpdaplus.common.AppLog
 import org.softeg.slartus.forpdaplus.common.TrueQueue
 import org.softeg.slartus.forpdaplus.controls.quickpost.PopupPanelView
+import org.softeg.slartus.forpdaplus.forum.data.getNullIfEmpty
 import org.softeg.slartus.forpdaplus.fragments.GeneralFragment
 import org.softeg.slartus.forpdaplus.fragments.topic.PostPreviewFragment
 import org.softeg.slartus.forpdaplus.fragments.topic.ThemeFragment
@@ -43,10 +51,17 @@ import org.softeg.slartus.forpdaplus.fragments.topic.editpost.tasks.*
 import org.softeg.slartus.forpdaplus.prefs.Preferences
 import org.softeg.slartus.forpdaplus.tabs.TabsManager
 import org.softeg.slartus.hosthelper.HostHelper
+import ru.softeg.slartus.forum.api.TopicPostRepository
+import ru.softeg.slartus.forum.api.UploadState
+import timber.log.Timber
 import java.util.*
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
 
+    @Inject
+    lateinit var topicPostRepository: TopicPostRepository
     private var txtPost: EditText? = null
     private var txtPostEditReason: EditText? = null
     private var btnAttachments: Button? = null
@@ -523,52 +538,114 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
             .show()
     }
 
-    private fun helperTask(uri: Uri) {
-
-        UpdateTask(this, mEditpost?.id ?: "", uri).execute()
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-
+    override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
         if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == MY_INTENT_CLICK_I) {
-                data?.data?.let {
-                    uploadFile(it)
-                }
+            intent ?: return
+            val uriList = when {
+                (intent.clipData?.itemCount ?: 0) > 0 -> (0 until (intent.clipData?.itemCount ?: 0))
+                    .map { index -> intent.clipData?.getItemAt(index)?.uri }
+                intent.data != null -> listOf(intent.data)
+                else -> null
+            }?.filterNotNull()?.getNullIfEmpty() ?: return
 
+            if (requestCode == MY_INTENT_CLICK_I) {
+                uploadFiles(uriList)
             } else if (requestCode == MY_INTENT_CLICK_F) {
-                data?.data?.let {
-                    uploadFile(it)
-                }
+                uploadFiles(uriList)
             }
         }
     }
 
-    private fun uploadFile(uri: Uri) {
-        val fileName = FilePath.getFileName(requireContext(), uri)
-        if (fileName != null) {
-            val imageExt = "jpeg|jpg|png|gif"
-            val fileExt = "7z|zip|rar|tar.gz|exe|cab|xap|txt|log|mp3|mp4|apk|ipa|img|mtz"
-            if (fileName.matches("(?i)(.*)($imageExt|$fileExt)$".toRegex())) {
-                helperTask(uri)
+    private fun uploadFiles(uris: List<Uri>) {
+        val postId = mEditpost?.id ?: return
+        var job: Job? = null
+        val dialog = MaterialDialog.Builder(requireContext())
+            .progress(false, 100, false)
+            .cancelListener {
+                job?.cancel()
+            }
+            .content(R.string.sending_file)
+            .build().apply {
+                setCancelable(true)
+                setCanceledOnTouchOutside(false)
+                setOnCancelListener {
+                    job?.cancel()
+                }
+                setProgress(0)
+                show()
+            }
+
+        job = lifecycleScope.launch {
+            if (!prepareUploadFiles(uris)) return@launch
+            topicPostRepository.uploadPostAttachesFlow(postId, uris).cancellable()
+                .collect { state ->
+                    when (state) {
+                        UploadState.Init -> dialog.setContent(R.string.sending_file)
+
+                        is UploadState.Uploading -> dialog.apply {
+                            val message = String.format(
+                                App.getContext().getString(R.string.format_sending_file),
+                                state.index + 1,
+                                uris.size
+                            )
+                            setContent(message)
+                            setProgress(state.percents)
+                        }
+                        is UploadState.AttachUploaded -> {
+                            onUpdateTaskSuccess(state.postAttach?.let { postAttach ->
+                                EditAttach(postAttach.id, postAttach.name)
+                            })
+                        }
+                        is UploadState.AttachError -> {
+                            Timber.e(state.error)
+                        }
+                        UploadState.Completed -> runCatching {
+                            dialog.dismiss()
+                        }.onFailure { it.printStackTrace() }
+
+                        is UploadState.Error -> runCatching {
+                            dialog.dismiss()
+                            Timber.e(state.error)
+                        }.onFailure { it.printStackTrace() }
+                    }
+                }
+        }
+    }
+
+    private suspend fun prepareUploadFiles(uris: List<Uri>): Boolean = withContext(Dispatchers.IO) {
+        uris.forEachIndexed { index, uri ->
+            val fileName = FilePath.getFileName(requireContext(), uri)
+            if (fileName != null) {
+                val imageExt = "jpeg|jpg|png|gif".split("|")
+                val fileExt =
+                    "7z|zip|rar|tar.gz|exe|cab|xap|txt|log|mp3|mp4|apk|ipa|img|mtz".split("|")
+                val exts = fileExt + imageExt
+                if (!exts.any { ext -> fileName.endsWith(ext, ignoreCase = true) }) {
+                    Toast.makeText(
+                        mainActivity,
+                        getString(R.string.file_not_support_forum) + " $index $fileName",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return@withContext false
+                }
             } else {
                 Toast.makeText(
-                    mainActivity,
-                    R.string.file_not_support_forum,
+                    context,
+                    "Не могу прикрепить файл $index ${uri.path}",
                     Toast.LENGTH_SHORT
                 )
                     .show()
+                return@withContext false
             }
-        } else
-            Toast.makeText(context, "Не могу прикрепить файл", Toast.LENGTH_SHORT).show()
+        }
+        return@withContext true
     }
 
     override fun onLoadTaskSuccess(editPost: EditPost?) {
         setEditPost(editPost)
 
         if (mAttachfilepaths.any())
-            UpdateTask(this, mEditpost?.id ?: "", mAttachfilepaths)
-                .execute()
+            uploadFiles(mAttachfilepaths)
         mAttachfilepaths = ArrayList()
     }
 

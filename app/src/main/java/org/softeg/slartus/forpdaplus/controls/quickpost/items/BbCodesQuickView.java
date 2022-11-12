@@ -24,7 +24,6 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
-import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.AppTheme;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.common.ArrayUtils;
@@ -187,7 +186,7 @@ public class BbCodesQuickView extends BaseQuickView {
 
     }
 
-    private class BBColor {
+    private static class BBColor {
         public String ColorName;
         public String ColorValue;
 

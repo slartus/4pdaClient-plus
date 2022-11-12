@@ -140,7 +140,7 @@ public class NewsListFragment extends BaseTaskListFragment implements ActionBar.
             return view;
         }
 
-        class ViewHolder {
+        static class ViewHolder {
             TextView text1;
 
 

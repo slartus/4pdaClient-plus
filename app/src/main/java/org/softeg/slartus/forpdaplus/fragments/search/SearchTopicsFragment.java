@@ -95,8 +95,6 @@ public class SearchTopicsFragment extends TopicsListFragment
 
     }
 
-    private int m_PrevVisible = 0;
-
     @Override
     public void onScroll(AbsListView absListView, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 //        if (firstVisibleItem < m_PrevVisible || firstVisibleItem == 0)
@@ -104,7 +102,6 @@ public class SearchTopicsFragment extends TopicsListFragment
 //        else if (firstVisibleItem > m_PrevVisible) {
 //            getMainActivity().getActionBar().hide();
 //        }
-        m_PrevVisible = firstVisibleItem;
     }
     @Override
     public void onPause() {

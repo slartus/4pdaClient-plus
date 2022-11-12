@@ -15,12 +15,9 @@ import org.softeg.slartus.forpdaapi.OnProgressChangedListener;
 import org.softeg.slartus.forpdaapi.ProfileApi;
 import org.softeg.slartus.forpdaapi.ProgressState;
 import org.softeg.slartus.forpdaapi.ReputationsApi;
-import org.softeg.slartus.forpdaapi.TopicApi;
-import org.softeg.slartus.forpdaapi.TopicReadingUsers;
 import org.softeg.slartus.forpdaapi.parsers.MentionsParser;
 import org.softeg.slartus.forpdaapi.post.PostApi;
 import org.softeg.slartus.forpdaapi.qms.QmsApi;
-import org.softeg.slartus.forpdaapi.users.Users;
 import org.softeg.slartus.forpdacommon.HttpHelper;
 import org.softeg.slartus.forpdacommon.NameValuePair;
 import org.softeg.slartus.forpdacommon.NotReportException;
@@ -167,10 +164,6 @@ public class Client implements IHttpClient {
 
     public List<HttpCookie> getCookies() {
         return Http.Companion.getInstance().getCookieStore().getCookies();
-    }
-
-    public Users getTopicWritersUsers(String topicId) throws IOException {
-        return org.softeg.slartus.forpdaapi.TopicApi.getWriters(this, topicId);
     }
 
     public static Client getInstance() {
@@ -408,10 +401,6 @@ public class Client implements IHttpClient {
             topic.setCurrentPage("1");
         return topic;
 
-    }
-
-    public TopicReadingUsers getTopicReadingUsers(String topicId) throws IOException {
-        return TopicApi.getReadingUsers(this, topicId);
     }
 
     void markAllForumAsRead() throws Throwable {

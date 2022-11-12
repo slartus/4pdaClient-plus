@@ -1,13 +1,7 @@
 package org.softeg.slartus.forpdacommon;
 
-import android.net.Uri;
-
-import org.softeg.slartus.hosthelper.HostHelper;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.Dictionary;
-import java.util.Hashtable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,27 +9,15 @@ import java.util.regex.Pattern;
  * Created by slinkin on 28.01.14.
  */
 public class UrlExtensions {
+    public static String getFileNameFromUrl(String url) throws UnsupportedEncodingException {
+        String decodedUrl = UrlExtensions.decodeUrl(url).toString();
+        int index = decodedUrl.lastIndexOf("/");
 
-    public static Dictionary<CharSequence, CharSequence> get4pdaUrlParams(CharSequence url,
-                                                                          CharSequence[] constParams,
-                                                                          CharSequence[] patterns) {
-        if (!Pattern.compile(HostHelper.getHost(), Pattern.CASE_INSENSITIVE)
-                .matcher(url).find())
-            return null;
-        Dictionary<CharSequence, CharSequence> res = new Hashtable<>();
-        for (CharSequence pattern : patterns) {
-            Matcher m = Pattern.compile(pattern.toString(), Pattern.CASE_INSENSITIVE)
-                    .matcher(url);
-            if (!m.find())// если хоть один паттерн не найден, возвращаем нулл
-                return null;
-            if (m.groupCount() == 2)
-                res.put(m.group(1), m.group(2));
-        }
-        return res;
+        return normalize(decodedUrl.substring(index + 1));
     }
 
-    public static Uri getUri(CharSequence uriString) {
-        return Uri.parse((String) uriString);
+    private static String normalize(String fileName) {
+        return fileName.replaceAll("[^а-яА-Яa-zA-z0-9._-]", "_");
     }
 
     public static CharSequence decodeUrl(CharSequence url) throws UnsupportedEncodingException {

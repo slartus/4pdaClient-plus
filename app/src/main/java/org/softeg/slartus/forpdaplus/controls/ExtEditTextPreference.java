@@ -6,7 +6,6 @@ import android.content.res.TypedArray;
 import android.os.Build;
 import android.preference.EditTextPreference;
 import android.util.AttributeSet;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
@@ -14,8 +13,6 @@ import androidx.annotation.RequiresApi;
 import org.softeg.slartus.forpdacommon.StringUtilsKt;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
-
-import static org.softeg.slartus.forpdaplus.utils.Utils.getS;
 
 /*
  * Created by slinkin on 15.08.13.

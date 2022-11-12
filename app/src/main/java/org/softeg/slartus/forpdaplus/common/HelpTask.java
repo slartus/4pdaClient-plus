@@ -26,17 +26,15 @@ public class HelpTask extends AsyncTask<HelpTask.OnMethodListener, String, Boole
 
 
     private final MaterialDialog dialog;
-    private String m_ProcessMessage = App.getInstance().getString(R.string.Loading_);
     private Context mContext;
 
     public HelpTask(Context context, String processMessage) {
         mContext = context;
 
-        m_ProcessMessage = processMessage;
         dialog = new MaterialDialog.Builder(context)
                 .progress(true,0)
                 .cancelable(false)
-                .content(m_ProcessMessage)
+                .content(processMessage)
                 .build();
     }
 

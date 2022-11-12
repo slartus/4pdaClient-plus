@@ -3,12 +3,13 @@ package org.softeg.slartus.forpdaplus.classes.common;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.widget.ImageView;
+
+import androidx.appcompat.widget.AppCompatImageView;
 
 /**
  * Created by radiationx on 17.06.15.
  */
-public class ResizeImageView extends ImageView {
+public class ResizeImageView extends AppCompatImageView {
 
     public ResizeImageView(Context context, AttributeSet attrs) {
         super(context, attrs);

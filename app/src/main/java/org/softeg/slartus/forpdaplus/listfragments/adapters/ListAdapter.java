@@ -210,7 +210,7 @@ public class ListAdapter extends BaseAdapter implements Filterable {
 
     }
 
-    class ViewHolder {
+    static class ViewHolder {
         LinearLayout Flag;
         View progress;
         TextView TopLeft;

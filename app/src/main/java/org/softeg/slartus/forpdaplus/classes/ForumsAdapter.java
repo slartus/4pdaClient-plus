@@ -89,7 +89,7 @@ public class ForumsAdapter extends ArrayAdapter<CheckableForumItem> {
         notifyDataSetChanged();
     }
 
-    public class ViewHolder {
+    public static class ViewHolder {
         CheckBox checkBox;
         TextView text;
     }

@@ -20,7 +20,6 @@ import org.softeg.slartus.hosthelper.HostHelper;
  */
 public class ThemeCurator {
     private final FragmentActivity mTopicActivity;
-    private CuratorFragment context;
     private final String topicId;
 
     public ThemeCurator(FragmentActivity topicActivity, String topicId) {
@@ -29,7 +28,6 @@ public class ThemeCurator {
     }
     public ThemeCurator(FragmentActivity topicActivity, CuratorFragment context, String topicId) {
         mTopicActivity = topicActivity;
-        this.context = context;
         this.topicId = topicId;
     }
 

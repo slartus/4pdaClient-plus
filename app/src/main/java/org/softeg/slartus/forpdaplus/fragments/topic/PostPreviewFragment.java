@@ -35,7 +35,6 @@ public class PostPreviewFragment extends WebViewFragment {
     private String url;
     private String title;
     private WebViewClient webViewClient;
-    private HtmlBuilder builder;
     private final List<BBCode> bbCodes = new ArrayList<>();
 
 
@@ -88,7 +87,7 @@ public class PostPreviewFragment extends WebViewFragment {
     }
 
     public void load(String body) {
-        builder = new HtmlBuilder();
+        HtmlBuilder builder = new HtmlBuilder();
         builder.beginHtml("preview");
         builder.beginBody("preview");
 
@@ -251,7 +250,7 @@ public class PostPreviewFragment extends WebViewFragment {
 
     }
 
-    private class BBCode {
+    private static class BBCode {
         public String bbcode;
         public String htmlcode;
 

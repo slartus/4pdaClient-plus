@@ -35,16 +35,16 @@ public abstract class BaseTaskListFragment extends BaseListFragment {
         }
     }
 
-    public void loadCache(){
-        mCacheList=new ArrayList<>();
+    public void loadCache() {
+        mCacheList = new ArrayList<>();
         mCacheList.addAll(
                 Paper.book().read(getListName(), new ArrayList<>())
         );
     }
 
     public void saveCache() {
-        if(getMData()!=null)
-        Paper.book().write(getListName(), getMData());
+        if (getMData() != null)
+            Paper.book().write(getListName(), getMData());
     }
 
     public void trySaveCache() {
@@ -99,7 +99,6 @@ public abstract class BaseTaskListFragment extends BaseListFragment {
     protected Task createTask(Boolean isRefresh) {
         return new Task(isRefresh);
     }
-
 
 
     public void loadData(final boolean isRefresh) {

@@ -42,6 +42,7 @@ import com.google.android.material.navigation.NavigationView;
 
 import org.softeg.slartus.forpdaapi.search.SearchSettings;
 import org.softeg.slartus.forpdacommon.ExtPreferences;
+import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.common.SearchSettingsMapperKt;
 import org.softeg.slartus.forpdaplus.core.interfaces.SearchSettingsListener;
@@ -151,8 +152,12 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
 
     @Override
     public void startActivityForResult(android.content.Intent intent, int requestCode) {
-        super.startActivityForResult(intent, requestCode);
-        hack = true;
+        try {
+            super.startActivityForResult(intent, requestCode);
+            hack = true;
+        } catch (Exception ex) {
+            Timber.e(new NotReportException(ex.getMessage(), ex));
+        }
     }
 
     private final TimberTree timberTree = new TimberTree(new WeakReference<>(this));

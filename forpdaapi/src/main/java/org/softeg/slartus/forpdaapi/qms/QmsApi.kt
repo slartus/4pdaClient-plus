@@ -5,8 +5,10 @@ import org.softeg.slartus.forpdaapi.IHttpClient
 import org.softeg.slartus.forpdaapi.ProgressState
 import org.softeg.slartus.forpdaapi.post.EditAttach
 import org.softeg.slartus.forpdacommon.*
+import org.softeg.slartus.forpdacommon.UrlExtensions.getFileNameFromUrl
 import org.softeg.slartus.hosthelper.HostHelper
 import ru.slartus.http.CountingFileRequestBody
+import ru.slartus.http.FileForm
 import ru.slartus.http.Http
 import java.io.IOException
 import java.io.UnsupportedEncodingException
@@ -242,7 +244,7 @@ object QmsApi {
     ): EditAttach {
         var nameValue = "file"
         try {
-            nameValue = FileUtils.getFileNameFromUrl(pathToFile)
+            nameValue = getFileNameFromUrl(pathToFile)
         } catch (e: UnsupportedEncodingException) {
             e.printStackTrace()
         }
@@ -256,7 +258,7 @@ object QmsApi {
         val (_, _, responseBody) = Http.instance.uploadFile("https://${HostHelper.host}/forum/index.php?act=attach",
             nameValue,
             pathToFile,
-            "FILE_UPLOAD",
+            FileForm.FileUpload,
             params
         ) { num ->
             progress.update(

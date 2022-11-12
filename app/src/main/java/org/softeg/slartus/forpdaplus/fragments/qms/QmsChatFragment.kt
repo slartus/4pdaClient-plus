@@ -29,6 +29,7 @@ import android.widget.ImageButton
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import androidx.core.content.ContextCompat
 import com.afollestad.materialdialogs.MaterialDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.qms_chat.*
@@ -36,6 +37,7 @@ import kotlinx.coroutines.*
 import org.softeg.slartus.forpdaapi.post.EditAttach
 import org.softeg.slartus.forpdacommon.ExtPreferences
 import org.softeg.slartus.forpdacommon.HtmlOutUtils
+import org.softeg.slartus.forpdacommon.FilePath
 import org.softeg.slartus.forpdanotifyservice.qms.QmsNotifier
 import org.softeg.slartus.forpdaplus.*
 import org.softeg.slartus.forpdaplus.classes.*
@@ -46,6 +48,7 @@ import org.softeg.slartus.forpdaplus.controls.quickpost.PopupPanelView
 import org.softeg.slartus.forpdaplus.core_lib.coroutines.AppIOScope
 import org.softeg.slartus.forpdaplus.core_lib.coroutines.AppMainScope
 import org.softeg.slartus.forpdaplus.core_lib.extensions.dismissSafe
+import org.softeg.slartus.forpdaplus.forum.data.getNullIfEmpty
 import org.softeg.slartus.forpdaplus.fragments.WebViewFragment
 import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment
 import org.softeg.slartus.forpdaplus.fragments.qms.tasks.*
@@ -265,12 +268,17 @@ class QmsChatFragment : WebViewFragment() {
 
     override fun onActivityResult(
         requestCode: Int, resultCode: Int,
-        data: Intent?
+        intent: Intent?
     ) {
         if (resultCode == Activity.RESULT_OK) {
+            intent ?: return
+            val uri = when {
+                intent.data != null -> listOf(intent.data)
+                (intent.clipData?.itemCount ?: 0) > 0 -> (0 until (intent.clipData?.itemCount ?: 0))
+                    .map { index -> intent.clipData?.getItemAt(index)?.uri }
+                else -> null
+            }?.filterNotNull()?.getNullIfEmpty()?.firstOrNull() ?: return
             if (requestCode == MY_INTENT_CLICK) {
-                val uri = data?.data
-                if (uri == null) return
                 val fileName = FilePath.getFileName(App.getInstance(), uri)
                 if (fileName != null) {
                     if (fileName.matches("(?i)(.*)(7z|zip|rar|tar.gz|exe|cab|xap|txt|log|jpeg|jpg|png|gif|mp3|mp4|apk|ipa|img|.mtz)$".toRegex())) {
@@ -286,10 +294,8 @@ class QmsChatFragment : WebViewFragment() {
                     Toast.makeText(activity, "Не могу прикрепить файл", Toast.LENGTH_SHORT).show()
 
             } else if (requestCode == FILECHOOSER_RESULTCODE) {
-                val attachFilePath = org.softeg.slartus.forpdacommon.FileUtils.getRealPathFromURI(
-                    context,
-                    data!!.data!!
-                )
+                val attachFilePath =
+                    org.softeg.slartus.forpdacommon.FileUtils.getRealPathFromURI(context, uri)
                 val cssData = org.softeg.slartus.forpdacommon.FileUtils.readFileText(attachFilePath)
                     .replace("\\", "\\\\")
                     .replace("'", "\\'").replace("\"", "\\\"").replace("\n", "\\n")

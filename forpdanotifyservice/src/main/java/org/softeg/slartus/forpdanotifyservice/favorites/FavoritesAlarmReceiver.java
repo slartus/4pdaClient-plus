@@ -4,9 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-import android.widget.Toast;
-
-import org.softeg.slartus.forpdanotifyservice.BuildConfig;
 
 /**
  * Created by slinkin on 26.08.13.
