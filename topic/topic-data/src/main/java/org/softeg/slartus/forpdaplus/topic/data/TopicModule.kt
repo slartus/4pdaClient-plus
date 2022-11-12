@@ -5,7 +5,6 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import org.softeg.slartus.forpdaplus.topic.data.screens.attachments.TopicAttachmentsRepositoryImpl
-import org.softeg.slartus.forpdaplus.topic.data.screens.attachments.models.TopicAttachmentsResponse
 import org.softeg.slartus.forpdaplus.topic.data.screens.post.TopicPostRepositoryImpl
 import org.softeg.slartus.forpdaplus.topic.data.screens.users.TopicUsersRepositoryImpl
 import ru.softeg.slartus.forum.api.TopicAttachmentsRepository
@@ -28,7 +27,4 @@ interface TopicModule {
     @Singleton
     fun provideTopicPostRepository(topicPostRepository: TopicPostRepositoryImpl): TopicPostRepository
 
-    @Binds
-    @Singleton
-    fun provideAttachmentsParser(parser: TopicAttachmentsParser): Parser<TopicAttachmentsResponse>
 }

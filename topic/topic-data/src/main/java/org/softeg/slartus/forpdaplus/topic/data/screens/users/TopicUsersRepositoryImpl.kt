@@ -18,21 +18,13 @@ class TopicUsersRepositoryImpl @Inject constructor(
 ): TopicUsersRepository {
     override suspend fun getTopicReaders(topicId: String): TopicReaders {
         val page = remoteTopicUsersDataSource.loadTopicReaders(topicId)
-        parseFactory.parse<Any>(
-            url = "",
-            body = page,
-            resultParserId = null
-        )
+        parseFactory.parseAsync(body = page)
         return TopicReaders(topicReadersParser.parse(page).mapNotNull { it.toTopicReaderOrNull() })
     }
 
     override suspend fun getTopicWriters(topicId: String): TopicWriters {
         val page = remoteTopicUsersDataSource.loadTopicWriters(topicId)
-        parseFactory.parse<Any>(
-            url = "",
-            body = page,
-            resultParserId = null
-        )
+        parseFactory.parseAsync(body = page)
         return TopicWriters(topicWritersParser.parse(page).mapNotNull { it.toTopicWriterOrNull() })
     }
 }

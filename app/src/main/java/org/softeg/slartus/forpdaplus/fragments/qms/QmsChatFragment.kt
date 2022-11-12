@@ -29,15 +29,14 @@ import android.widget.ImageButton
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
-import androidx.core.content.ContextCompat
 import com.afollestad.materialdialogs.MaterialDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.qms_chat.*
 import kotlinx.coroutines.*
 import org.softeg.slartus.forpdaapi.post.EditAttach
 import org.softeg.slartus.forpdacommon.ExtPreferences
-import org.softeg.slartus.forpdacommon.HtmlOutUtils
 import org.softeg.slartus.forpdacommon.FilePath
+import org.softeg.slartus.forpdacommon.HtmlOutUtils
 import org.softeg.slartus.forpdanotifyservice.qms.QmsNotifier
 import org.softeg.slartus.forpdaplus.*
 import org.softeg.slartus.forpdaplus.classes.*
