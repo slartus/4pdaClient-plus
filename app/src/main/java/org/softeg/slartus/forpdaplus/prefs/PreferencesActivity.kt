@@ -29,7 +29,7 @@ import org.softeg.slartus.forpdaplus.AppTheme.currentTheme
 import org.softeg.slartus.forpdaplus.AppTheme.getThemeCssFileName
 import org.softeg.slartus.forpdaplus.IntentActivity
 import org.softeg.slartus.forpdaplus.R
-import org.softeg.slartus.forpdaplus.classes.FilePath
+import org.softeg.slartus.forpdacommon.FilePath
 import org.softeg.slartus.forpdaplus.classes.InputFilterMinMax
 import org.softeg.slartus.forpdaplus.common.AppLog
 import org.softeg.slartus.forpdaplus.fragments.base.ProgressDialog

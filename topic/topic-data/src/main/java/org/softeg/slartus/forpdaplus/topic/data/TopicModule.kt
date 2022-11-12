@@ -8,8 +8,10 @@ import org.softeg.slartus.forpdaplus.core.interfaces.Parser
 import org.softeg.slartus.forpdaplus.topic.data.screens.attachments.TopicAttachmentsParser
 import org.softeg.slartus.forpdaplus.topic.data.screens.attachments.TopicAttachmentsRepositoryImpl
 import org.softeg.slartus.forpdaplus.topic.data.screens.attachments.models.TopicAttachmentsResponse
+import org.softeg.slartus.forpdaplus.topic.data.screens.post.TopicPostRepositoryImpl
 import org.softeg.slartus.forpdaplus.topic.data.screens.users.TopicUsersRepositoryImpl
 import ru.softeg.slartus.forum.api.TopicAttachmentsRepository
+import ru.softeg.slartus.forum.api.TopicPostRepository
 import ru.softeg.slartus.forum.api.TopicUsersRepository
 import javax.inject.Singleton
 
@@ -23,6 +25,10 @@ interface TopicModule {
     @Binds
     @Singleton
     fun provideTopicUsersRepository(topicUsersRepositoryImpl: TopicUsersRepositoryImpl): TopicUsersRepository
+
+    @Binds
+    @Singleton
+    fun provideTopicPostRepository(topicPostRepository: TopicPostRepositoryImpl): TopicPostRepository
 
     @Binds
     @Singleton

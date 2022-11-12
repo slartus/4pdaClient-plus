@@ -22,6 +22,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.materialdialogs.MaterialDialog
+import dagger.hilt.android.AndroidEntryPoint
 import io.paperdb.Paper
 import io.reactivex.Single
 import io.reactivex.disposables.Disposable
@@ -30,7 +31,6 @@ import kotlinx.android.synthetic.main.edit_post_plus.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.cancellable
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.softeg.slartus.forpdaapi.post.EditAttach
@@ -39,7 +39,7 @@ import org.softeg.slartus.forpdaapi.post.PostApi
 import org.softeg.slartus.forpdaplus.App
 import org.softeg.slartus.forpdaplus.MainActivity
 import org.softeg.slartus.forpdaplus.R
-import org.softeg.slartus.forpdaplus.classes.FilePath
+import org.softeg.slartus.forpdacommon.FilePath
 import org.softeg.slartus.forpdaplus.common.AppLog
 import org.softeg.slartus.forpdaplus.common.TrueQueue
 import org.softeg.slartus.forpdaplus.controls.quickpost.PopupPanelView
@@ -51,11 +51,17 @@ import org.softeg.slartus.forpdaplus.fragments.topic.editpost.tasks.*
 import org.softeg.slartus.forpdaplus.prefs.Preferences
 import org.softeg.slartus.forpdaplus.tabs.TabsManager
 import org.softeg.slartus.hosthelper.HostHelper
+import ru.softeg.slartus.forum.api.TopicPostRepository
+import ru.softeg.slartus.forum.api.UploadState
 import timber.log.Timber
 import java.util.*
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
 
+    @Inject
+    lateinit var topicPostRepository: TopicPostRepository
     private var txtPost: EditText? = null
     private var txtPostEditReason: EditText? = null
     private var btnAttachments: Button? = null
@@ -571,26 +577,38 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
 
         job = lifecycleScope.launch {
             if (!prepareUploadFiles(uris)) return@launch
-            uploadFilesFlow(postId, uris).cancellable().collect { state ->
-                when (state) {
-                    is UploadState.Init -> dialog.setContent(state.message)
+            topicPostRepository.uploadPostAttachesFlow(postId, uris).cancellable()
+                .collect { state ->
+                    when (state) {
+                        UploadState.Init -> dialog.setContent(R.string.sending_file)
 
-                    is UploadState.Uploading -> dialog.apply {
-                        setContent(state.message)
-                        setProgress(state.percents.toInt())
+                        is UploadState.Uploading -> dialog.apply {
+                            val message = String.format(
+                                App.getContext().getString(R.string.format_sending_file),
+                                state.index + 1,
+                                uris.size
+                            )
+                            setContent(message)
+                            setProgress(state.percents)
+                        }
+                        is UploadState.AttachUploaded -> {
+                            onUpdateTaskSuccess(state.postAttach?.let { postAttach ->
+                                EditAttach(postAttach.id, postAttach.name)
+                            })
+                        }
+                        is UploadState.AttachError -> {
+                            Timber.e(state.error)
+                        }
+                        UploadState.Completed -> runCatching {
+                            dialog.dismiss()
+                        }.onFailure { it.printStackTrace() }
+
+                        is UploadState.Error -> runCatching {
+                            dialog.dismiss()
+                            Timber.e(state.error)
+                        }.onFailure { it.printStackTrace() }
                     }
-                    is UploadState.Uploaded -> onUpdateTaskSuccess(state.editAttach)
-
-                    UploadState.Completed -> runCatching {
-                        dialog.dismiss()
-                    }.onFailure { it.printStackTrace() }
-
-                    is UploadState.Error -> runCatching {
-                        dialog.dismiss()
-                        Timber.e(state.error)
-                    }.onFailure { it.printStackTrace() }
                 }
-            }
         }
     }
 

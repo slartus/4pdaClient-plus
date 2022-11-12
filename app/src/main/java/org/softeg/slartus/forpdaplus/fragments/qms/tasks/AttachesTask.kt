@@ -14,7 +14,7 @@ import org.softeg.slartus.forpdaapi.qms.QmsApi
 import org.softeg.slartus.forpdacommon.FileUtils
 import org.softeg.slartus.forpdaplus.App
 import org.softeg.slartus.forpdaplus.R
-import org.softeg.slartus.forpdaplus.classes.FilePath
+import org.softeg.slartus.forpdacommon.FilePath
 import org.softeg.slartus.forpdaplus.common.AppLog
 import org.softeg.slartus.forpdaplus.fragments.qms.QmsChatFragment
 import java.io.File

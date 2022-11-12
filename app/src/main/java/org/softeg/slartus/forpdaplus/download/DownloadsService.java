@@ -17,6 +17,7 @@ import androidx.core.content.ContextCompat;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.softeg.slartus.forpdacommon.FileUtils;
+import org.softeg.slartus.forpdacommon.UrlExtensions;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.ActionSelectDialogFragment;
@@ -56,7 +57,7 @@ public class DownloadsService {
                             else
                                 new GetTempUrlTask(context1, uri -> {
                                     try {
-                                        systemDownload(context1, FileUtils.getFileNameFromUrl(url), uri.toString());
+                                        systemDownload(context1, UrlExtensions.getFileNameFromUrl(url), uri.toString());
                                         if (finish)
                                             ((Activity)context1).finish();
                                     } catch (Throwable e) {
