@@ -1,10 +1,8 @@
 package ru.softeg.slartus.qms.api.repositories
 
-import kotlinx.coroutines.flow.Flow
 import ru.softeg.slartus.qms.api.models.QmsThread
 
 interface QmsThreadsRepository {
-    val threads: Flow<List<QmsThread>?>
-    suspend fun load(contactId: String)
+    suspend fun load(contactId: String):List<QmsThread>
     suspend fun delete(contactId: String, threadIds: List<String>)
 }

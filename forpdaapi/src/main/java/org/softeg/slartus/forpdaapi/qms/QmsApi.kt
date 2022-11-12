@@ -1,8 +1,6 @@
 package org.softeg.slartus.forpdaapi.qms
 
-import android.net.Uri
 import androidx.core.util.Pair
-import org.jsoup.Jsoup
 import org.softeg.slartus.forpdaapi.IHttpClient
 import org.softeg.slartus.forpdaapi.ProgressState
 import org.softeg.slartus.forpdaapi.post.EditAttach
@@ -27,46 +25,6 @@ object QmsApi {
                 Http.instance.performGet("https://${HostHelper.host}/forum/index.php?&act=qms-xhr&action=userlist").responseBody
             return parseQmsUsers(pageBody)
         }
-
-    @Throws(Throwable::class)
-    fun getChatPage(httpClient: IHttpClient, mid: String, themeId: String): String {
-        val additionalHeaders = HashMap<String, String>()
-        additionalHeaders["xhr"] = "body"
-        return httpClient.performPost(
-            "https://${HostHelper.host}/forum/index.php?act=qms&mid=$mid&t=$themeId",
-            additionalHeaders
-        ).responseBody
-    }
-
-    @Throws(Throwable::class)
-    fun getChat(httpClient: IHttpClient, mid: String, themeId: String, daysCount: Int?): QmsPage {
-        val pageBody = getChatPage(httpClient, mid, themeId)
-
-        val document = Jsoup.parse(pageBody)
-        document.selectFirst("div.error")?.let { element ->
-            throw Exception(element.text())
-        }
-        val qmsPage = QmsPage()
-        document.selectFirst("span#navbar-title")?.let { element ->
-            element.selectFirst("a[href~=showuser=\\d+]")?.let { userElement ->
-                qmsPage.userId = Uri.parse(userElement.attr("href")).getQueryParameter("showuser")
-                qmsPage.userNick = userElement.text()
-            }
-            qmsPage.title = element.children().last()?.text()
-        }
-
-        val m =
-            Pattern.compile("<[^>]*?\"navbar-title\"[^>]*?>[\\s\\S]*?<a[^>]*?showuser=(\\d+)[^>]*?>(.*?)<\\/a>:<\\/b>\\s*([\\s\\S]*?)\\s*<\\/span>")
-                .matcher(pageBody)
-        if (m.find()) {
-            qmsPage.userId = m.group(1)
-            qmsPage.userNick = m.group(2).fromHtml()
-            qmsPage.title = m.group(3).fromHtml()
-        }
-
-        qmsPage.body = matchChatBody(pageBody, daysCount)
-        return qmsPage
-    }
 
     private fun matchChatBody(pageBod: String, daysCount: Int?): String {
         var pageBody = pageBod
@@ -126,30 +84,6 @@ object QmsApi {
         return pageBody
     }
 
-    @Throws(Throwable::class)
-    fun sendMessage(
-        httpClient: IHttpClient,
-        mid: String,
-        tid: String,
-        message: String,
-        attachs: ArrayList<EditAttach>,
-        daysCount: Int?
-    ): QmsPage {
-        val additionalHeaders = HashMap<String, String>()
-        additionalHeaders["action"] = "send-message"
-        additionalHeaders["mid"] = mid
-        additionalHeaders["t"] = tid
-        additionalHeaders["message"] = message
-        if (attachs.any())
-            additionalHeaders["attaches"] = attachs.joinToString { it.id }
-        val response = httpClient.performPost(
-            "https://${HostHelper.host}/forum/index.php?act=qms-xhr",
-            additionalHeaders
-        )
-        parseError(response.responseBody)
-        return getChat(httpClient, mid, tid, daysCount)
-    }
-
     @Throws(IOException::class)
     fun createThread(
         httpClient: IHttpClient, userID: String, userNick: String, title: String, message: String,
@@ -196,48 +130,6 @@ object QmsApi {
             if (m.find())
                 throw NotReportException(m.group(1)?.fromHtml()?.toString()?.trim())
         }
-    }
-
-    @Throws(IOException::class)
-    fun deleteDialogs(httpClient: IHttpClient, mid: String, ids: List<String>) {
-        val additionalHeaders = HashMap<String, String>()
-        additionalHeaders["action"] = "delete-threads"
-        additionalHeaders["title"] = ""
-        additionalHeaders["message"] = ""
-        for (id in ids) {
-            additionalHeaders["thread-id[$id]"] = id
-        }
-        httpClient.performPost(
-            "https://${HostHelper.host}/forum/index.php?act=qms&xhr=body&do=1&mid=$mid",
-            additionalHeaders
-        )
-    }
-
-    @Throws(IOException::class)
-    fun deleteMessages(
-        httpClient: IHttpClient, mid: String, threadId: String, ids: List<String>,
-        daysCount: Int?
-    ): String {
-        val additionalHeaders = HashMap<String, String>()
-        additionalHeaders["act"] = "qms"
-        additionalHeaders["mid"] = mid
-        additionalHeaders["t"] = threadId
-        additionalHeaders["xhr"] = "body"
-        additionalHeaders["do"] = "1"
-        additionalHeaders["action"] = "delete-messages"
-        additionalHeaders["forward-messages-username"] = ""
-        additionalHeaders["forward-thread-username"] = ""
-        additionalHeaders["message"] = ""
-        for (id in ids) {
-            additionalHeaders["message-id[$id]"] = id
-        }
-
-        return matchChatBody(
-            httpClient.performPost(
-                "https://${HostHelper.host}/forum/index.php?act=qms&mid$mid&t=$threadId&xhr=body&do=1",
-                additionalHeaders
-            ).responseBody, daysCount
-        )
     }
 
     private fun parseQmsUsers(pageBody: String?): ArrayList<QmsUser> {
@@ -333,12 +225,6 @@ object QmsApi {
         return if (m.find()) {
             Integer.parseInt(m.group(1))
         } else 0
-    }
-
-    @Throws(IOException::class)
-    fun getNewQmsCount(client: IHttpClient): Int {
-        val body = client.performGet("https://${HostHelper.host}/forum/index.php?showforum=200")
-        return getNewQmsCount(body.responseBody)
     }
 
     private fun fromCharCode(vararg codePoints: Int): String {

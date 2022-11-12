@@ -34,7 +34,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.qms_chat.*
 import kotlinx.coroutines.*
 import org.softeg.slartus.forpdaapi.post.EditAttach
-import org.softeg.slartus.forpdaapi.qms.QmsApi
 import org.softeg.slartus.forpdacommon.ExtPreferences
 import org.softeg.slartus.forpdacommon.HtmlOutUtils
 import org.softeg.slartus.forpdanotifyservice.qms.QmsNotifier
@@ -45,6 +44,7 @@ import org.softeg.slartus.forpdaplus.common.AppLog
 import org.softeg.slartus.forpdaplus.common.showProgress
 import org.softeg.slartus.forpdaplus.controls.quickpost.PopupPanelView
 import org.softeg.slartus.forpdaplus.core_lib.coroutines.AppIOScope
+import org.softeg.slartus.forpdaplus.core_lib.coroutines.AppMainScope
 import org.softeg.slartus.forpdaplus.core_lib.extensions.dismissSafe
 import org.softeg.slartus.forpdaplus.fragments.WebViewFragment
 import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment
@@ -53,6 +53,7 @@ import org.softeg.slartus.forpdaplus.prefs.HtmlPreferences
 import org.softeg.slartus.forpdaplus.prefs.Preferences
 import org.softeg.slartus.forpdaplus.qms.data.screens.thread.buildHtml
 import ru.softeg.slartus.qms.api.repositories.QmsThreadRepository
+import ru.softeg.slartus.qms.api.repositories.QmsThreadsRepository
 import timber.log.Timber
 import java.util.*
 import java.util.regex.Pattern
@@ -66,6 +67,9 @@ import javax.inject.Inject
 class QmsChatFragment : WebViewFragment() {
     @Inject
     lateinit var qmsThreadRepository: QmsThreadRepository
+
+    @Inject
+    lateinit var qmsThreadsRepository: QmsThreadsRepository
 
     private var reloadChatJob: Job? = null
     private var emptyText = true
@@ -82,7 +86,6 @@ class QmsChatFragment : WebViewFragment() {
     private var htmlPreferences: HtmlPreferences? = null
     private var mPopupPanelView: PopupPanelView? = null
     private var messageText: String? = null
-    private var sendTask: AsyncTask<ArrayList<String>, Void, Boolean>? = null
     private var btnAttachments: Button? = null
 
     private var mMode: ActionMode? = null
@@ -118,7 +121,7 @@ class QmsChatFragment : WebViewFragment() {
     }
 
     override fun getAsyncTask(): AsyncTask<*, *, *>? {
-        return sendTask
+        return null
     }
 
     override fun closeTab(): Boolean {
@@ -422,26 +425,62 @@ class QmsChatFragment : WebViewFragment() {
     }
 
     fun stopDeleteMode(finishActionMode: Boolean?) {
-        if (finishActionMode!! && mMode != null)
-            mMode!!.finish()
+        if (finishActionMode == true)
+            mMode?.finish()
         deleteMode = false
     }
 
     private fun deleteDialog() {
-        themeId?.let {
+        val contactId = contactId ?: return
+        themeId?.let { threadId ->
             MaterialDialog.Builder(mainActivity)
                 .title(R.string.confirm_action)
                 .cancelable(true)
                 .content(R.string.ask_delete_dialog)
                 .positiveText(R.string.delete)
                 .onPositive { _, _ ->
-                    val ids = ArrayList<String>()
-                    ids.add(it)
-                    sendTask = DeleteDialogTask(this, contactId ?: "", ids)
-                    sendTask!!.execute()
+                    deleteDialogAsync(threadId = threadId, contactId = contactId)
                 }
                 .negativeText(R.string.cancel)
                 .show()
+        }
+    }
+
+    private fun deleteDialogAsync(threadId: String, contactId: String) {
+        updateTimer.apply {
+            cancel()
+            purge()
+        }
+        val dialog: MaterialDialog = MaterialDialog.Builder(requireContext())
+            .progress(true, 0)
+            .cancelable(false)
+            .canceledOnTouchOutside(false)
+            .content(R.string.deleting_dialogs)
+            .build().apply {
+                show()
+            }
+        AppMainScope().launch {
+            kotlin.runCatching {
+                qmsThreadsRepository.delete(contactId, listOf(threadId))
+            }.onFailure {
+                dialog.dismissSafe()
+                Timber.e(it)
+                lifecycleScope.launch {
+                    if(isAdded) {
+                        mainActivity.tryRemoveTab(tag)
+                    }
+                    stopDeleteMode(true)
+                }
+            }.onSuccess {
+                dialog.dismissSafe()
+
+                lifecycleScope.launch {
+                    if(isAdded) {
+                        mainActivity.tryRemoveTab(tag)
+                    }
+                    stopDeleteMode(true)
+                }
+            }
         }
     }
 
@@ -515,7 +554,7 @@ class QmsChatFragment : WebViewFragment() {
         ) * 1000).toLong()
     }
 
-    fun transformChatBody(chatBody: String, loadMore: Boolean = false): String {
+    private fun transformChatBody(chatBody: String, loadMore: Boolean = false): String {
         if ((themeTitle == null) or (contactNick == null)) {
             val m = Pattern.compile("<span id=\"chatInfo\"[^>]*>([^>]*?)\\|:\\|([^<]*)</span>")
                 .matcher(chatBody)
@@ -592,7 +631,7 @@ class QmsChatFragment : WebViewFragment() {
         }
     }
 
-    fun clearAttaches() {
+    private fun clearAttaches() {
         attachList.clear()
         refreshAttachmentsInfo()
     }
@@ -658,8 +697,6 @@ class QmsChatFragment : WebViewFragment() {
         updateTimer.schedule(object : TimerTask() { // Определяем задачу
             override fun run() {
                 try {
-                    if (sendTask != null && sendTask!!.status != AsyncTask.Status.FINISHED)
-                        return
                     reLoadChatSafe()
                 } catch (ex: Throwable) {
                     AppLog.e(mainActivity, ex)

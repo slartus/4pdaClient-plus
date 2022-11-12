@@ -3,7 +3,6 @@ package org.softeg.slartus.forpdaplus.qms.data
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.components.SingletonComponent
 import org.softeg.slartus.forpdaplus.core.entities.*
 import org.softeg.slartus.forpdaplus.core.interfaces.Parser
@@ -41,6 +40,11 @@ interface DomainQmsModule {
     @Singleton
     fun provideQmsThreadRepositoryImpl(qmsThreadRepositoryImpl: QmsThreadRepositoryImpl): QmsThreadRepository
 
+
+    @Binds
+    @Singleton
+    fun provideQmsThreadsRepositoryImpl(qmsThreadsRepositoryImpl: QmsThreadsRepositoryImpl): QmsThreadsRepository
+
     @Binds
     @Singleton
     fun provideQmsCountParser(parser: QmsCountParser): Parser<QmsCount>
@@ -48,13 +52,4 @@ interface DomainQmsModule {
     @Binds
     @Singleton
     fun provideMentionsCountParser(parser: MentionsCountParser): Parser<MentionsCount>
-}
-
-@Suppress("unused")
-@Module
-@InstallIn(ViewModelComponent::class)
-interface DomainQmsVieModelModule {
-
-    @Binds
-    fun provideQmsThreadsRepositoryImpl(qmsThreadsRepositoryImpl: QmsThreadsRepositoryImpl): QmsThreadsRepository
 }

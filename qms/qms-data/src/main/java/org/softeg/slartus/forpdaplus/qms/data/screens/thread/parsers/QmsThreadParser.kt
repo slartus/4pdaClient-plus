@@ -32,13 +32,13 @@ class QmsThreadParser @Inject constructor() {
 
             val days = mutableListOf<QmsThreadPage.Day>()
             var dayHeader = ""
-            val dayMessages = mutableListOf<String>()
+            var dayMessages = mutableListOf<String>()
             document.select("div.date, div.list-group-item").map { element ->
                 val isDate = "date" in element.classNames()
                 if (isDate && dayHeader.isNotEmpty()) {
                     days.add(QmsThreadPage.Day(headerHtml = dayHeader, messagesHtml = dayMessages))
                     dayHeader = ""
-                    dayMessages.clear()
+                    dayMessages= mutableListOf()
                 }
                 if (isDate) {
                     dayHeader = element.outerHtml()

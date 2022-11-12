@@ -61,23 +61,7 @@ class QmsContactThreadsViewModel @Inject constructor(
     init {
         reload()
         viewModelScope.launch {
-            launch(errorHandler) {
-                qmsThreadsRepository.threads
-                    .filterNotNull()
-                    .distinctUntilChanged()
-                    .collect { rawItems ->
-                        val items = rawItems.map {
-                            QmsThreadItem(
-                                id = it.id ?: "",
-                                title = it.title ?: "",
-                                messagesCount = it.messagesCount ?: 0,
-                                newMessagesCount = it.newMessagesCount ?: 0,
-                                lastMessageDate = it.lastMessageDate
-                            )
-                        }
-                        _uiState.emit(UiState.Items(items))
-                    }
-            }
+
             launch {
                 _selectionMode
                     .drop(1)
@@ -123,7 +107,17 @@ class QmsContactThreadsViewModel @Inject constructor(
             launch(SupervisorJob() + errorHandler + CoroutineName("qms_threads")) {
                 _loading.emit(true)
                 try {
-                    qmsThreadsRepository.load(contactId)
+                    val rawItems = qmsThreadsRepository.load(contactId)
+                    val items = rawItems.map {
+                        QmsThreadItem(
+                            id = it.id ?: "",
+                            title = it.title ?: "",
+                            messagesCount = it.messagesCount ?: 0,
+                            newMessagesCount = it.newMessagesCount ?: 0,
+                            lastMessageDate = it.lastMessageDate
+                        )
+                    }
+                    _uiState.emit(UiState.Items(items))
                 } finally {
                     _loading.emit(false)
                 }
