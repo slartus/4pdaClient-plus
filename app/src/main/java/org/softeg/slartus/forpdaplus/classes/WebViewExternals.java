@@ -42,14 +42,11 @@ public class WebViewExternals {
     private Boolean m_UseVolumesScroll = false;
 
 
-    private Boolean m_LoadsImagesAutomatically = true;
     private Boolean m_KeepScreenOn = false;
 
 
-
-    private final Boolean m_CurrentFullScreen = false;
-
     protected Boolean getCurrentFullScreen() {
+        Boolean m_CurrentFullScreen = false;
         return m_CurrentFullScreen;
     }
 
@@ -94,7 +91,7 @@ public class WebViewExternals {
 
         m_UseVolumesScroll = prefs.getBoolean(prefix + ".UseVolumesScroll", false);
 
-        m_LoadsImagesAutomatically = isLoadImages(prefs, prefix);
+        Boolean m_LoadsImagesAutomatically = isLoadImages(prefs, prefix);
 
         m_KeepScreenOn = prefs.getBoolean(prefix + ".KeepScreenOn", false);
     }

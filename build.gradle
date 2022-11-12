@@ -33,7 +33,7 @@ ext {
     minSdk = 16
 
     appcompat = '1.4.0'
-    coroutines = '1.5.2'
+    coroutines = '1.6.4'
     coil = '1.4.0'
     coreCtx='1.7.0'
     fragmentCtx='1.4.0'

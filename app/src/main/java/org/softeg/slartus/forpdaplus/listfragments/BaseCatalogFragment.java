@@ -149,7 +149,7 @@ public abstract class BaseCatalogFragment extends BaseTaskListFragment {
         }
     }
 
-    public class Crumbs extends ArrayList<ICatalogItem> {
+    public static class Crumbs extends ArrayList<ICatalogItem> {
         public void rebuildCrumbs(ICatalogItem catalogItem) {
             clear();
             while (catalogItem != null) {

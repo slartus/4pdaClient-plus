@@ -22,15 +22,13 @@ import java.io.IOException;
 
 public class LazyAdapter extends BaseAdapter {
 
-    private final Activity activity;
     private final String[] data;
     private static LayoutInflater inflater=null;
     public ImageLoader imageLoader;
 
     public LazyAdapter(Activity a, String[] d) throws IOException {
-        activity = a;
         data=d;
-        inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        inflater = (LayoutInflater) a.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         imageLoader = ImageLoader.getInstance();
     }
 

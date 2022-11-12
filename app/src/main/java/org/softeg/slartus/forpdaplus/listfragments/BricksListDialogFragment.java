@@ -128,7 +128,7 @@ public class BricksListDialogFragment extends DialogFragment implements AdapterV
     }
 
 
-    public class ListAdapter extends BaseAdapter {
+    public static class ListAdapter extends BaseAdapter {
         private final LayoutInflater mInflater;
         private ArrayList<BrickInfo> mData;
 

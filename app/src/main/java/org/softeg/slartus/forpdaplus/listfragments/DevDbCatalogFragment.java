@@ -127,9 +127,7 @@ public class DevDbCatalogFragment extends BaseCatalogFragment {
 
         super.deliveryResult(isRefresh);
         mData.clear();
-        for (DevCatalog item : mLoadResultList) {
-            mData.add(item);
-        }
+        mData.addAll(mLoadResultList);
         mLoadResultList.clear();
     }
 

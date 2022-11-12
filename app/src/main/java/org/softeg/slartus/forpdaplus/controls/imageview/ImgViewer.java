@@ -52,7 +52,6 @@ public class ImgViewer extends AppCompatActivity implements PullBackLayout.Callb
     private static final String IMAGE_URLS_KEY = "IMAGE_URLS_KEY";
     private static final String SELECTED_INDEX_KEY = "SELECTED_INDEX_KEY";
     private ArrayList<String> urls = new ArrayList<>();
-    private SystemBarTintManager tintManager;
     private int index = 0;
     private ShareActionProvider shareActionProvider;
 
@@ -111,7 +110,7 @@ public class ImgViewer extends AppCompatActivity implements PullBackLayout.Callb
             statusBar.setMinimumHeight(getStatusBarHeight());
             statusBar.setBackgroundColor(ContextCompat.getColor(App.getContext(), R.color.background_toolbar));
 
-            tintManager = new SystemBarTintManager(ImgViewer.this);
+            SystemBarTintManager tintManager = new SystemBarTintManager(ImgViewer.this);
             if (tintManager.isNavBarTintEnabled()) {
                 tintManager.setNavigationBarTintColor(ContextCompat.getColor(App.getContext(), R.color.background_toolbar));
             }
@@ -225,7 +224,6 @@ public class ImgViewer extends AppCompatActivity implements PullBackLayout.Callb
     class ImgAdapter extends PagerAdapter {
         SparseArray<View> views = new SparseArray<>();
         private final LayoutInflater inflater;
-        private PhotoView photoView;
         private ProgressBar progress;
         private final ImageLoader imageLoader;
         private final DisplayImageOptions options;
@@ -285,7 +283,7 @@ public class ImgViewer extends AppCompatActivity implements PullBackLayout.Callb
         private void loadImage(View imageLayout) {
             assert imageLayout != null;
             progress = imageLayout.findViewById(R.id.progress);
-            photoView = imageLayout.findViewById(R.id.photo_view);
+            PhotoView photoView = imageLayout.findViewById(R.id.photo_view);
             imageLoader.displayImage(urls.get(index), photoView, options, new SimpleImageLoadingListener() {
                 @Override
                 public void onLoadingStarted(String imageUri, View view) {

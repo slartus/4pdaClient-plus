@@ -1,13 +1,8 @@
 package org.softeg.slartus.forpdaapi;
 
-import android.text.Html;
 import android.text.TextUtils;
 
-import org.softeg.slartus.forpdaapi.post.PostAttach;
-import org.softeg.slartus.forpdaapi.users.Users;
 import org.softeg.slartus.forpdacommon.BasicNameValuePair;
-import org.softeg.slartus.forpdacommon.FileUtils;
-import org.softeg.slartus.forpdacommon.Functions;
 import org.softeg.slartus.forpdacommon.NameValuePair;
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdacommon.PatternExtensions;
@@ -18,7 +13,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /*
  * Created by slartus on 25.02.14.
@@ -133,49 +127,6 @@ public class TopicApi {
 
     public static String deleteFromFavorites(IHttpClient httpClient, String id) throws IOException{
         return changeFavorite(httpClient, id, TRACK_TYPE_DELETE);
-    }
-
-
-    /**
-     * Кто читает тему
-     */
-    public static TopicReadingUsers getReadingUsers(IHttpClient httpClient, String topicId) throws IOException {
-        String body = httpClient.performGetFullVersion("https://"+ HostHelper.getHost() +"/forum/index.php?showtopic=" + topicId).getResponseBody();
-
-        Matcher m = Pattern.compile("<a href=\".*?/forum/index.php\\?showuser=(\\d+)\" title=\"\\(([^)]*)\\)[^\"]*\"><span style='color:(.*?)'>(.*?)</span></a>").matcher(body);
-        TopicReadingUsers res = new TopicReadingUsers();
-        while (m.find()) {
-            OldUser user = new OldUser();
-            user.setMid(m.group(1));
-            user.setNick(Html.fromHtml(m.group(4)).toString());
-            user.setHtmlColor(m.group(3));
-            res.add(user);
-        }
-        m = Pattern.compile("<div class=\"formsubtitle\" style=\"padding: 4px;\"><b>\\d+</b> чел. читают эту тему \\(гостей: (\\d+), скрытых пользователей: (\\d+)\\)</div>")
-                .matcher(body);
-        if (m.find()) {
-            res.setGuestsCount(m.group(1));
-            res.setHideCount(m.group(2));
-        }
-        return res;
-    }
-
-    public static Users getWriters(IHttpClient httpClient, String topicId) throws IOException {
-        String body = httpClient.performGet("https://"+ HostHelper.getHost() +"/forum/index.php?s=&act=Stats&CODE=who&t=" + topicId).getResponseBody();
-
-        Matcher m = Pattern.compile("<div[^>]*?>[^<]*<span[^>]*?><a[^>]*?showuser=(\\d+)[^>]*?>([\\s\\S]*?)<\\/a><\\/span>[^<]*?(\\d+)<\\/div>", Pattern.CASE_INSENSITIVE).matcher(body);
-        Users res = new Users();
-        while (m.find()) {
-            OldUser user = new OldUser();
-            user.setMid(m.group(1));
-            user.setNick(m.group(2));
-            user.MessagesCount = m.group(3);
-            res.add(user);
-        }
-        m = Pattern.compile("<div class=\"maintitle\" align=\"center\">(.*?)</div>").matcher(body);
-        if (m.find())
-            res.setTag(m.group(1));
-        return res;
     }
 
     public static String pinFavorite(IHttpClient httpClient, String topicId, String trackType) throws IOException{

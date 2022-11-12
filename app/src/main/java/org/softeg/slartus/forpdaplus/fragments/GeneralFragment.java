@@ -173,12 +173,8 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
     @Override
     public void onSaveInstanceState(@NotNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.i(TAG, "onSaveInstanceState");
         try {
             TabItem tab = getThisTab();
-            Log.i(TAG, tab.getTitle());
-            Log.i(TAG, tab.getUrl());
-            Log.i(TAG, tab.getParentTag());
             outState.putString("generalTitle", tab.getTitle());
             outState.putString("generalUrl", tab.getUrl());
             outState.putString("generalParentTag", tab.getParentTag());

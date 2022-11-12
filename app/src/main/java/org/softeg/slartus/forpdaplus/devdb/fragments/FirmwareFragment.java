@@ -29,10 +29,6 @@ import java.util.List;
 public class FirmwareFragment extends BaseDevDbFragment implements FLifecycleUtil {
     private static final int LAYOUT = R.layout.dev_db_list_fragment;
 
-    private RecyclerView mRecyclerView;
-    private FirmwareAdapter mAdapter;
-    private List<FirmwareModel> mModelList;
-
     public static FirmwareFragment newInstance(Context context, String list) {
         FirmwareFragment f = new FirmwareFragment();
         Bundle args = new Bundle();
@@ -50,11 +46,12 @@ public class FirmwareFragment extends BaseDevDbFragment implements FLifecycleUti
 //        recLifeCycle(getClass(), CALL_TO_SUPER);
         view = inflater.inflate(LAYOUT, container, false);
 //        recLifeCycle(getClass(), RETURN_FROM_SUPER);
-        mModelList = new Gson().fromJson(getArguments().getString(LIST_ARG),  new TypeToken<ArrayList<FirmwareModel>>() {}.getType());
+        List<FirmwareModel> mModelList = new Gson().fromJson(getArguments().getString(LIST_ARG), new TypeToken<ArrayList<FirmwareModel>>() {
+        }.getType());
         if (mModelList.size() != 0) {
-            mRecyclerView = view.findViewById(R.id.devDbRecyclerView);
+            RecyclerView mRecyclerView = view.findViewById(R.id.devDbRecyclerView);
             mRecyclerView.setVisibility(View.VISIBLE);
-            mAdapter = new FirmwareAdapter(getActivity(), mModelList);
+            FirmwareAdapter mAdapter = new FirmwareAdapter(getActivity(), mModelList);
             mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
             mRecyclerView.setAdapter(mAdapter);
             mAdapter.notifyDataSetChanged();

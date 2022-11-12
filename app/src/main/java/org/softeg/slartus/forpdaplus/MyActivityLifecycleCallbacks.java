@@ -58,7 +58,7 @@ public final class MyActivityLifecycleCallbacks implements Application.ActivityL
 
                 entry.getValue().finish();
             } catch (Throwable ex) {
-                Log.e("", "finishActivities:" + ex.toString());
+                Log.e("", "finishActivities:" + ex);
             }
         }
     }

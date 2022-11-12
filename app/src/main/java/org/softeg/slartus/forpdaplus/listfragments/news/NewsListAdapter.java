@@ -1,7 +1,6 @@
 package org.softeg.slartus.forpdaplus.listfragments.news;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,6 @@ import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
-import com.squareup.picasso.Picasso;
 
 import org.softeg.slartus.forpdaapi.News;
 import org.softeg.slartus.forpdaplus.App;
@@ -129,7 +127,7 @@ public class NewsListAdapter extends BaseAdapter {
 
         return rowView;
     }
-    public class ViewHolder {
+    public static class ViewHolder {
         public View image_panel;
         public ImageView imageImage;
         public TextView textTitle;

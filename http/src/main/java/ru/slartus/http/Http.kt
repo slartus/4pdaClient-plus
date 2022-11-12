@@ -12,10 +12,7 @@ import androidx.core.util.Pair
 import okhttp3.*
 import okio.Buffer
 import org.softeg.slartus.hosthelper.HostHelper
-import java.io.BufferedInputStream
-import java.io.File
-import java.io.IOException
-import java.io.InputStream
+import java.io.*
 import java.net.CookieManager
 import java.net.CookiePolicy.ACCEPT_ALL
 import java.net.HttpCookie
@@ -122,9 +119,6 @@ class Http private constructor(context: Context, appName: String, appVersion: St
                 .addInterceptor(UnzippingInterceptor())
                 .sslSocketFactory(sslSocketFactory, trustManager)
                 .hostnameVerifier { _, _ -> true }
-            if (BuildConfig.DEBUG)
-                builder
-                    .addInterceptor(LoggingInterceptor())
             return builder
         }
 
@@ -356,13 +350,15 @@ class Http private constructor(context: Context, appName: String, appVersion: St
 
     }
 
-
     fun uploadFile(
-        url: String, fileNameO: String, filePath: String, fileFormDataName: String,
+        url: String,
+        fileNameO: String,
+        filePath: String,
+        fileForm: FileForm = FileForm.FileUpload,
         formDataParts: List<Pair<String, String>> = emptyList(),
         progressListener: CountingFileRequestBody.ProgressListener? = null
     ): AppResponse {
-        val builder = MultipartBody.Builder().setType(MultipartBody.FORM)
+
 
         val fileName = Translit.translit(fileNameO).replace(' ', '_')
         val file = File(filePath)
@@ -371,28 +367,35 @@ class Http private constructor(context: Context, appName: String, appVersion: St
             throw HttpException("File is empty")
         val mediaType = "text/plain".toMediaTypeOrNull()
 
+        var progress = 0L
+        val fileFormDataName = fileForm.formName
 
-        if (progressListener != null) {
-            builder.addPart(Headers.of(
-                "Content-Disposition",
-                "form-data; name=\"$fileFormDataName\"; filename=\"$fileName\""
-            ),
-                CountingFileRequestBody(file, mediaType) { num ->
-                    val progress = num.toFloat() / totalSize.toFloat() * 100.0
-                    progressListener.transferred(progress.toLong())
-                })
-        } else {
-            builder.addFormDataPart(fileFormDataName, fileName, file.asRequestBody(mediaType))
-        }
-        if (!formDataParts.any { it.first.equals("size", ignoreCase = true) })
-            builder.addFormDataPart("size", file.length().toString())
-        if (!formDataParts.any { it.first.equals("md5", ignoreCase = true) })
-            builder.addFormDataPart("md5", FileUtils.calculateMD5(file))
-        formDataParts.filter { it.first != null && it.second != null }.forEach {
-            builder.addFormDataPart(it.first!!, it.second!!)
-        }
+        val requestBody = MultipartBody.Builder().setType(MultipartBody.FORM).apply {
+            if (progressListener != null) {
+                addPart(
+                    Headers.of(
+                        "Content-Disposition",
+                        "form-data; name=\"$fileFormDataName\"; filename=\"$fileName\""
+                    ),
+                    CountingFileRequestBody(file, mediaType) { num ->
+                        val newProgress = (num.toFloat() / totalSize.toFloat() * 100.0).toLong()
+                        if (progress != newProgress) {
+                            progress = newProgress
+                            progressListener.transferred(progress)
+                        }
+                    })
+            } else {
+                addFormDataPart(fileFormDataName, fileName, file.asRequestBody(mediaType))
+            }
+            if (!formDataParts.any { it.first.equals("size", ignoreCase = true) })
+                addFormDataPart("size", file.length().toString())
+            if (!formDataParts.any { it.first.equals("md5", ignoreCase = true) })
+                addFormDataPart("md5", FileUtils.calculateMD5(file))
+            formDataParts.filter { it.first != null && it.second != null }.forEach {
+                addFormDataPart(it.first!!, it.second!!)
+            }
+        }.build()
 
-        val requestBody = builder.build()
         val request = Request.Builder()
             .headers(buildRequestHeaders(userAgent))
             .url(prepareUrl(url))
@@ -452,4 +455,8 @@ class Http private constructor(context: Context, appName: String, appVersion: St
             return response
         }
     }
+}
+
+enum class FileForm(val formName: String) {
+    FileUpload("FILE_UPLOAD")
 }

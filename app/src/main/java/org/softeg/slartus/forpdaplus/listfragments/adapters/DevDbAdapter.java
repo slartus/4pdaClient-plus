@@ -71,7 +71,7 @@ public class DevDbAdapter extends BaseAdapter {
         return view;
     }
 
-    class ViewHolder {
+    static class ViewHolder {
         TextView Main;
         TextView SubMain;
     }

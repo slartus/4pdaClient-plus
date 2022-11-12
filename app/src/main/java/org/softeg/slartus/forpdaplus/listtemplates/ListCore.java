@@ -2,8 +2,6 @@ package org.softeg.slartus.forpdaplus.listtemplates;
 
 import android.text.TextUtils;
 
-import org.softeg.slartus.forpdaplus.MainActivity;
-
 import java.util.ArrayList;
 
 public class ListCore {

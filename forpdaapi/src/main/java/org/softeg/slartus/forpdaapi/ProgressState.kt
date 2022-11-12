@@ -8,14 +8,5 @@ package org.softeg.slartus.forpdaapi
  * To change this template use File | Settings | File Templates.
  */
 abstract class ProgressState {
-
-    val isCanceled: Boolean
-        get() = canceled!!
-
-    private var canceled: Boolean? = false
     abstract fun update(message: String, percents: Long)
-
-    fun cancel() {
-        canceled = true
-    }
 }
