@@ -7,5 +7,6 @@ data class QmsThreadPage(
     val days: List<Day> = emptyList()
 ) {
     data class Day(val headerHtml: String, val messagesHtml: List<String>)
+    val totalMessagesCount = days.sumOf { it.messagesHtml.size }
 }
 

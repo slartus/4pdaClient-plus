@@ -1,11 +1,13 @@
+
+var MESSAGES_PAGE_SIZE = 20;
 function scrollPageQMS() {
     try {
         if (document.body.id == "qms"){
             window.scrollTo(0, document.body.scrollHeight);
         }else if(document.body.id == "qms_more"){
-            var elements = document.getElementsByClassName("date");
-            if (elements.length > 7){
-                var el = elements[Math.max(elements.length % 7,7)];
+            var elements = document.getElementsByClassName("list-group-item");
+            if (elements.length > MESSAGES_PAGE_SIZE){
+                var el = elements[Math.max(elements.length % MESSAGES_PAGE_SIZE,MESSAGES_PAGE_SIZE)];
                 var x = 0;
                 var y = 0;
                 while (el != null) {
@@ -13,7 +15,7 @@ function scrollPageQMS() {
                     y += el.offsetTop;
                     el = el.parent;
                 }
-                window.scrollTo(0, y);
+                window.scrollTo(0, y - 100);
             }
         }
 	}catch(err){

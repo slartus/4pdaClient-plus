@@ -90,7 +90,7 @@ class QmsChatFragment : WebViewFragment() {
 
     private var mMode: ActionMode? = null
     private var deleteMode: Boolean? = false
-    private var daysCount: Int? = DAYS_PART_COUNT
+    private var messagesCount: Int? = MESSAGES_PAGE_SIZE
 
     //Upload file to savepic.ru
     private val attachList = ArrayList<EditAttach>()
@@ -138,7 +138,7 @@ class QmsChatFragment : WebViewFragment() {
         themeTitle = extras?.getString(THEME_TITLE_KEY)
         title = if (TextUtils.isEmpty(contactNick)) "QMS" else themeTitle
         if (extras?.containsKey(KEY_DAYSCOUNT) == true)
-            daysCount = extras.getInt(KEY_DAYSCOUNT)
+            messagesCount = extras.getInt(KEY_DAYSCOUNT)
         if (supportActionBar != null)
             setSubtitle(contactNick)
     }
@@ -368,7 +368,16 @@ class QmsChatFragment : WebViewFragment() {
     @JavascriptInterface
     fun loadMore() {
         activity?.runOnUiThread {
-            daysCount = (daysCount ?: 0) + DAYS_PART_COUNT
+            val messagesCount = messagesCount ?: return@runOnUiThread
+            this@QmsChatFragment.messagesCount = messagesCount + MESSAGES_PAGE_SIZE
+            reload(true)
+        }
+    }
+
+    @JavascriptInterface
+    fun loadAll() {
+        activity?.runOnUiThread {
+            messagesCount = null
             reload(true)
         }
     }
@@ -466,7 +475,7 @@ class QmsChatFragment : WebViewFragment() {
                 dialog.dismissSafe()
                 Timber.e(it)
                 lifecycleScope.launch {
-                    if(isAdded) {
+                    if (isAdded) {
                         mainActivity.tryRemoveTab(tag)
                     }
                     stopDeleteMode(true)
@@ -475,7 +484,7 @@ class QmsChatFragment : WebViewFragment() {
                 dialog.dismissSafe()
 
                 lifecycleScope.launch {
-                    if(isAdded) {
+                    if (isAdded) {
                         mainActivity.tryRemoveTab(tag)
                     }
                     stopDeleteMode(true)
@@ -491,7 +500,7 @@ class QmsChatFragment : WebViewFragment() {
         outState.putString(TID_KEY, themeId)
         outState.putString(THEME_TITLE_KEY, themeTitle)
         outState.putString(POST_TEXT_KEY, edMessage!!.text.toString())
-        daysCount?.let {
+        messagesCount?.let {
             outState.putInt(KEY_DAYSCOUNT, it)
         }
     }
@@ -583,7 +592,7 @@ class QmsChatFragment : WebViewFragment() {
                 themeTitle = qmsPage.title?.ifEmpty { null } ?: themeTitle
 
                 val chatBody = withContext(Dispatchers.Default) {
-                    val body = buildHtml(qmsPage, daysCount ?: qmsPage.days.size) {
+                    val body = buildHtml(qmsPage, messagesCount ?: qmsPage.totalMessagesCount) {
                         HtmlOutUtils.getHtmlout(it)
                     }
                     return@withContext QmsHtmlBuilder().apply {
@@ -903,7 +912,8 @@ class QmsChatFragment : WebViewFragment() {
         private const val PAGE_BODY_KEY = "page_body"
         private const val POST_TEXT_KEY = "PostText"
         private const val FILECHOOSER_RESULTCODE = 1
-        private const val DAYS_PART_COUNT = 7
+        // не забыть изменять и в qms.js
+        private const val MESSAGES_PAGE_SIZE = 20
         fun openChat(
             userId: String,
             userNick: String?,

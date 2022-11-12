@@ -4,7 +4,7 @@ import ru.softeg.slartus.qms.api.models.QmsThreadPage
 
 fun buildHtml(
     page: QmsThreadPage,
-    daysCount: Int,
+    messagesCount: Int,
     addHtmlOut: (methodName: String) -> String
 ): String {
     val days = page.days
@@ -13,37 +13,54 @@ fun buildHtml(
 
     return buildString {
         appendLine("<span id=\"chatInfo\" style=\"display:none;\">${page.userNick}|:|${page.title}</span>")
-        if (days.size > daysCount) {
-            appendLoadMoreButton(addHtmlOut, daysCount, days)
+        if (page.totalMessagesCount > messagesCount) {
+            appendLoadMoreButton(addHtmlOut, messagesCount, page.totalMessagesCount)
         }
         if (days.isNotEmpty()) {
-            appendMessages(days, daysCount)
+            appendMessages(days, messagesCount)
         }
     }
 }
 
 private fun StringBuilder.appendMessages(
     days: List<QmsThreadPage.Day>,
-    daysCount: Int
+    messagesCount: Int
 ) {
     appendHtml("<div id=\"thread_form\"><div id=\"thread-inside-top\"></div>", "</div>") {
-        days.takeLast(daysCount).forEach { day ->
-            appendLine(day.headerHtml)
-            day.messagesHtml.forEach { msg ->
-                appendLine(msg)
-            }
+        val messages = days.takeHtmlLast(messagesCount)
+        messages.forEach { html ->
+            appendLine(html)
         }
     }
 }
 
+private fun List<QmsThreadPage.Day>.takeHtmlLast(messagesCount: Int): List<String> {
+    val days = this
+    var messagesCounter = messagesCount
+    return buildList {
+        days.reversed().takeWhile { day ->
+            day.messagesHtml.reversed().takeWhile {
+                messagesCounter--
+                messagesCounter >= 0
+            }.forEach { msg ->
+                add(msg)
+            }
+            add(day.headerHtml)
+            messagesCounter > 0
+        }
+    }.reversed()
+}
+
 private fun StringBuilder.appendLoadMoreButton(
     addHtmlOut: (methodName: String) -> String,
-    daysCount: Int,
-    days: List<QmsThreadPage.Day>
+    messagesCount: Int,
+    totalMessagesCount: Int
 ) {
     val loadMoreJs = addHtmlOut("loadMore")
+    val loadAllJs = addHtmlOut("loadAll")
     appendHtml("<div class=\"panel\"><div class=\"navi\">", "</div></div>") {
-        appendLine("<a id=\"chat_more_button\" class=\"button page\" $loadMoreJs >Загрузить ещё (${daysCount}/${days.size}дн.)</a>")
+        appendLine("<a id=\"chat_more_button\" class=\"button page\" $loadAllJs >все ($totalMessagesCount сообщ.)</a>")
+        appendLine("<a id=\"chat_more_button\" class=\"button page\" $loadMoreJs >ещё ($messagesCount сообщ.)</a>")
     }
 }
 
