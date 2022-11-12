@@ -1,7 +1,10 @@
 package org.softeg.slartus.forpdaplus.qms.data.screens.thread
 
+import androidx.core.util.Pair
 import org.softeg.slartus.forpdaplus.core.services.AppHttpClient
 import org.softeg.slartus.hosthelper.HostHelper
+import ru.slartus.http.Http
+import java.util.ArrayList
 import javax.inject.Inject
 
 class RemoteQmsThreadDataSource @Inject constructor(private val httpClient: AppHttpClient) {
@@ -53,8 +56,19 @@ class RemoteQmsThreadDataSource @Inject constructor(private val httpClient: AppH
         }
 
         return httpClient.performPost(
-                "https://${HostHelper.host}/forum/index.php?act=qms&mid$userId&t=$threadId&xhr=body&do=1",
-                additionalHeaders
-            )
+            "https://${HostHelper.host}/forum/index.php?act=qms&mid$userId&t=$threadId&xhr=body&do=1",
+            additionalHeaders
+        )
+    }
+
+    suspend fun deleteAttach(attachId: String) {
+        val params = buildMap {
+            put("code", "remove")
+            put("relType", "MSG")
+            put("relId", "0")
+            put("index", "1")
+            put("id", attachId)
+        }
+        httpClient.performPost("https://${HostHelper.host}/forum/index.php?act=attach", params)
     }
 }

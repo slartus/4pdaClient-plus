@@ -11,4 +11,6 @@ interface QmsThreadRepository {
         attachIds: List<String>
     )
     suspend fun deleteMessages(userId: String, threadId: String, postIds: List<String>)
+
+    suspend fun deleteAttach(attachId: String)
 }

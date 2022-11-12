@@ -36,4 +36,8 @@ class QmsThreadRepositoryImpl @Inject constructor(
         parseFactory.parseAsync(page)
         checkDeleteMessagesResponse(page)
     }
+
+    override suspend fun deleteAttach(attachId: String) {
+        remoteQmsThreadDataSource.deleteAttach(attachId)
+    }
 }

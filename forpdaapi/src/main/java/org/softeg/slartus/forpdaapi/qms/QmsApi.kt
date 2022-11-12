@@ -257,13 +257,13 @@ object QmsApi {
             nameValue,
             pathToFile,
             "FILE_UPLOAD",
-            params,
-            CountingFileRequestBody.ProgressListener { num ->
-                progress.update(
-                    finalNameValue,
-                    num
-                )
-            })
+            params
+        ) { num ->
+            progress.update(
+                finalNameValue,
+                num
+            )
+        }
 
         val body = ("" + responseBody).replace("(^\\x03|\\x03$)".toRegex(), "")
 
@@ -294,19 +294,5 @@ object QmsApi {
 //        val md5 = parts[5]
 
         return EditAttach(id, "$name.$ext")
-    }
-
-    fun deleteAttach(attachId: String): Boolean {
-
-        val params = ArrayList<Pair<String, String>>()
-
-        params.add(Pair("code", "remove"))
-        params.add(Pair("relType", "MSG"))
-        params.add(Pair("relId", "0"))
-        params.add(Pair("index", "1"))
-        params.add(Pair("id", attachId))
-        Http.instance.performPost("https://${HostHelper.host}/forum/index.php?act=attach", params)
-
-        return true
     }
 }

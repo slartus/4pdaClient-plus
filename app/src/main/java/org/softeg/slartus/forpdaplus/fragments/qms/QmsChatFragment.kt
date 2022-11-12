@@ -13,7 +13,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.preference.PreferenceManager
-import androidx.core.content.ContextCompat
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
@@ -28,6 +27,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.afollestad.materialdialogs.MaterialDialog
 import dagger.hilt.android.AndroidEntryPoint
@@ -850,10 +850,7 @@ class QmsChatFragment : WebViewFragment() {
                     .content(R.string.SureDeleteFile)
                     .positiveText(R.string.delete)
                     .onPositive { _, _ ->
-                        DeleteAttachTask(
-                            this@QmsChatFragment,
-                            item.id
-                        ).execute()
+                        deleteAttachAsync(item.id)
                     }
                     .negativeText(R.string.cancel)
                     .show()
@@ -862,6 +859,30 @@ class QmsChatFragment : WebViewFragment() {
             .onPositive { _, _ -> startAddAttachment() }
             .negativeText(R.string.ok)
             .show()
+    }
+
+    private fun deleteAttachAsync(attachId: String) {
+        val dialog = MaterialDialog.Builder(requireContext())
+            .progress(true, 0)
+            .content("Удаление")
+            .build().apply {
+                show()
+            }
+        AppMainScope().launch {
+            runCatching {
+                qmsThreadRepository.deleteAttach(attachId)
+            }.onFailure {
+                lifecycleScope.launch {
+                    dialog.dismissSafe()
+                    Timber.e(it)
+                }
+            }.onSuccess {
+                lifecycleScope.launch {
+                    dialog.dismissSafe()
+                    onAttachDeleted(attachId)
+                }
+            }
+        }
     }
 
     private fun startAddAttachment() {
@@ -912,6 +933,7 @@ class QmsChatFragment : WebViewFragment() {
         private const val PAGE_BODY_KEY = "page_body"
         private const val POST_TEXT_KEY = "PostText"
         private const val FILECHOOSER_RESULTCODE = 1
+
         // не забыть изменять и в qms.js
         private const val MESSAGES_PAGE_SIZE = 20
         fun openChat(
