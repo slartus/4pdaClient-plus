@@ -26,6 +26,7 @@ import org.softeg.slartus.forpdaplus.topic.data.screens.attachments.models.Topic
 import org.softeg.slartus.forpdaplus.topic.data.screens.attachments.models.TopicAttachmentsResponse
 import ru.softeg.slartus.qms.api.models.QmsContact
 import ru.softeg.slartus.qms.api.models.QmsContacts
+import ru.softeg.slartus.qms.api.models.QmsCount
 import ru.softeg.slartus.qms.api.models.QmsThreads
 import javax.inject.Singleton
 
@@ -45,12 +46,16 @@ class AppModule {
     @Provides
     @Singleton
     fun provideParseFactoryImpl(
+        qmsCountParser: Parser<QmsCount>,
+        qmsMentionsCountParser: Parser<MentionsCount>,
         qmsContactsParser: Parser<QmsContacts>,
         qmsContactParser: Parser<QmsContact>,
         qmsThreadsParser: Parser<QmsThreads>,
         topicAttachmentsParser: Parser<TopicAttachmentsResponse>,
     ): ParseFactory =
         ParseFactoryImpl.Builder()
+            .add(qmsCountParser)
+            .add(qmsMentionsCountParser)
             .add(qmsContactsParser)
             .add(qmsContactParser)
             .add(qmsThreadsParser)
