@@ -576,7 +576,11 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
             }
 
         job = lifecycleScope.launch {
-            if (!prepareUploadFiles(uris)) return@launch
+            if (!prepareUploadFiles(uris)) {
+                runCatching { dialog.dismiss() }
+
+                return@launch
+            }
             topicPostRepository.uploadPostAttachesFlow(postId, uris).cancellable()
                 .collect { state ->
                     when (state) {
@@ -621,20 +625,24 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
                     "7z|zip|rar|tar.gz|exe|cab|xap|txt|log|mp3|mp4|apk|ipa|img|mtz".split("|")
                 val exts = fileExt + imageExt
                 if (!exts.any { ext -> fileName.endsWith(ext, ignoreCase = true) }) {
-                    Toast.makeText(
-                        mainActivity,
-                        getString(R.string.file_not_support_forum) + " $index $fileName",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(
+                            mainActivity,
+                            getString(R.string.file_not_support_forum) + " $index $fileName",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                     return@withContext false
                 }
             } else {
-                Toast.makeText(
-                    context,
-                    "Не могу прикрепить файл $index ${uri.path}",
-                    Toast.LENGTH_SHORT
-                )
-                    .show()
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(
+                        context,
+                        "Не могу прикрепить файл $index ${uri.path}",
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
+                }
                 return@withContext false
             }
         }
