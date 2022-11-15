@@ -3,16 +3,6 @@ package org.softeg.slartus.forpdaplus.tabs
 import java.util.*
 
 class TabsManager {
-    private object Holder {
-        val INSTANCE = TabsManager()
-    }
-
-    companion object {
-        const val TAG = "TabsManager"
-
-        @JvmStatic
-        val instance by lazy { Holder.INSTANCE }
-    }
 
     private var currentFragmentTag: String? = null
 
@@ -54,23 +44,22 @@ class TabsManager {
         return delPos
     }
 
-    fun isContainsByTag(tag: String?): Boolean {
-        for (item in getTabItems()) if (item.tag == tag) return true
-        return false
+    fun isContainsByTag(tag: String?): Boolean = mTabItems.any { it.tag == tag }
+
+    fun isContainsByUrl(url: String?): Boolean = mTabItems.any { it.url == url }
+
+    fun getTabByTag(tag: String?): TabItem? = mTabItems.firstOrNull { it.tag == tag }
+
+    fun getTabByUrl(url: String?): TabItem? = mTabItems.firstOrNull { it.url == url }
+
+    private object Holder {
+        val INSTANCE = TabsManager()
     }
 
-    fun isContainsByUrl(url: String?): Boolean {
-        for (item in getTabItems()) if (item.url == url) return true
-        return false
-    }
+    companion object {
+        const val TAG = "TabsManager"
 
-    fun getTabByTag(tag: String?): TabItem? {
-        for (item in getTabItems()) if (item.tag == tag) return item
-        return null
-    }
-
-    fun getTabByUrl(url: String): TabItem? {
-        for (item in getTabItems()) if (item.url == url) return item
-        return null
+        @JvmStatic
+        val instance by lazy { Holder.INSTANCE }
     }
 }
