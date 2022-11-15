@@ -212,7 +212,12 @@ class QmsChatFragment : WebViewFragment() {
             setWebViewSettings(true)
         }
         wvChat?.webViewClient = MyWebViewClient()
-
+        findViewById(R.id.btnUp).setOnClickListener {
+            wvChat?.pageUp(true)
+        }
+        findViewById(R.id.btnDown).setOnClickListener {
+            wvChat?.pageDown(true)
+        }
         val extras = arguments ?: savedInstanceState
         val pageBody = extras?.getString(PAGE_BODY_KEY, "") ?: ""
 
