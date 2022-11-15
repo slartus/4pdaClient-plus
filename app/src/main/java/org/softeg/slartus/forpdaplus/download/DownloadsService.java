@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.DownloadManager;
 import android.app.IntentService;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -17,6 +18,7 @@ import androidx.core.content.ContextCompat;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.softeg.slartus.forpdacommon.FileUtils;
+import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdacommon.UrlExtensions;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.R;
@@ -45,7 +47,9 @@ public class DownloadsService {
                                     Intent marketIntent = new Intent(Intent.ACTION_VIEW, uri);
                                     context1.startActivity(marketIntent);
                                     if (finish)
-                                        ((Activity)context1).finish();
+                                        ((Activity) context1).finish();
+                                } catch (ActivityNotFoundException e) {
+                                    AppLog.e(context1, new NotReportException("Приложения для запуска не найдены", e));
                                 } catch (Throwable e) {
                                     AppLog.e(context1, e);
                                 }
@@ -59,7 +63,7 @@ public class DownloadsService {
                                     try {
                                         systemDownload(context1, UrlExtensions.getFileNameFromUrl(url), uri.toString());
                                         if (finish)
-                                            ((Activity)context1).finish();
+                                            ((Activity) context1).finish();
                                     } catch (Throwable e) {
                                         AppLog.e(context1, e);
                                     }

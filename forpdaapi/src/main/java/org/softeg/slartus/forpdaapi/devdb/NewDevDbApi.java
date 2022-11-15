@@ -18,6 +18,7 @@ import java.util.regex.Pattern;
 /**
  * Created by isanechek on 03.11.15.
  */
+@SuppressWarnings("RegExpRedundantEscape")
 public class NewDevDbApi {
 
     public static ArrayList<DevCatalog> getStandartDevicesTypes() {
@@ -51,18 +52,30 @@ public class NewDevDbApi {
         String pageBody = client.performGet(brandUrl + "/all").getResponseBody();
 
         Document doc = Jsoup.parse(pageBody);
-        Elements con = doc.selectFirst("div.device-frame").getElementById("device-brand-items-list").children();
+        Element deviceFrame = doc.selectFirst("div.device-frame");
+        if (deviceFrame == null) return res;
+        Element brandItems = deviceFrame.getElementById("device-brand-items-list");
+        if (brandItems == null) return res;
+        Elements con = brandItems.children();
 
         for (int i = 0; i < con.size(); i++) {
             Element box = con.get(i).selectFirst("div.box-holder");
             if (box != null) {
-                String link = box.selectFirst("a").attr("href");
-                String title = box.selectFirst("a").attr("title");
-                String image = box.selectFirst("img").attr("src");
-
+                Element a = box.selectFirst("a");
+                if (a == null) continue;
+                String link = a.attr("href");
+                String title = a.attr("title");
                 DevModel model = new DevModel(link, title);
-                model.setImgUrl(image);
-                model.setDescription(box.select(".frame .specifications-list").first().text());
+
+                Element img = box.selectFirst("img");
+                if (img != null) {
+                    String image = img.attr("src");
+                    model.setImgUrl(image);
+                }
+                Element desc = box.selectFirst(".frame .specifications-list");
+                if (desc != null) {
+                    model.setDescription(desc.text());
+                }
 
                 res.add(model);
             }
@@ -72,19 +85,19 @@ public class NewDevDbApi {
 
     public static Boolean isCatalogUrl(String url) {
         return Pattern
-                .compile(HostHelper.getHostPattern()+"\\/devdb\\/(?:phones|ebook|pad|smartwatch)?(?:\\/all\\/?|\\/?$)", Pattern.CASE_INSENSITIVE)
+                .compile(HostHelper.getHostPattern() + "\\/devdb\\/(?:phones|ebook|pad|smartwatch)?(?:\\/all\\/?|\\/?$)", Pattern.CASE_INSENSITIVE)
                 .matcher(url).find();
     }
 
     public static Boolean isDevicesListUrl(String url) {
         return Pattern
-                .compile(HostHelper.getHostPattern()+"\\/devdb\\/(?:phones|ebook|pad|smartwatch)\\/(?!all)", Pattern.CASE_INSENSITIVE)
+                .compile(HostHelper.getHostPattern() + "\\/devdb\\/(?:phones|ebook|pad|smartwatch)\\/(?!all)", Pattern.CASE_INSENSITIVE)
                 .matcher(url).find();
     }
 
     public static Boolean isDeviceUrl(String url) {
         return Pattern
-                .compile(HostHelper.getHostPattern()+"\\/devdb\\/(?!phones|ebook|pad|smartwatch)[^$]+", Pattern.CASE_INSENSITIVE)
+                .compile(HostHelper.getHostPattern() + "\\/devdb\\/(?!phones|ebook|pad|smartwatch)[^$]+", Pattern.CASE_INSENSITIVE)
                 .matcher(url).find();
     }
 
@@ -98,7 +111,7 @@ public class NewDevDbApi {
         if (uri.getPathSegments() == null || uri.getPathSegments().size() <= 0)
             return root;
 
-        String title = uri.getPathSegments().get(0);
+        String title;
         switch (uri.getPathSegments().get(0).toLowerCase()) {
             case "phone":
                 title = "Сотовые телефоны";
@@ -111,6 +124,7 @@ public class NewDevDbApi {
                 break;
             case "smartwatch":
                 title = "Смарт часы";
+                break;
             default:
                 return root;
         }
