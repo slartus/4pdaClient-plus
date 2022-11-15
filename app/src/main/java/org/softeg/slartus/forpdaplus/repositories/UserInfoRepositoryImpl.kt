@@ -5,7 +5,6 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.launch
 import org.softeg.slartus.forpdaplus.App
 import org.softeg.slartus.forpdaplus.R
@@ -14,12 +13,11 @@ import org.softeg.slartus.forpdaplus.core.entities.UserInfo
 import org.softeg.slartus.forpdaplus.core.interfaces.Parser
 import org.softeg.slartus.forpdaplus.core.repositories.UserInfoRepository
 import org.softeg.slartus.forpdaplus.core_lib.coroutines.AppIOScope
-import org.softeg.slartus.forpdaplus.domain_qms.parsers.MentionsCountParser
-import org.softeg.slartus.forpdaplus.domain_qms.parsers.QmsCountParser
+import org.softeg.slartus.forpdaplus.qms.data.parsers.MentionsCountParser
+import org.softeg.slartus.forpdaplus.qms.data.parsers.QmsCountParser
 import ru.slartus.http.Http
 import ru.slartus.http.PersistentCookieStore
 import ru.softeg.slartus.qms.api.models.QmsCount
-import ru.softeg.slartus.qms.api.repositories.QmsCountRepository
 
 class UserInfoRepositoryImpl(
     cookieStore: PersistentCookieStore,
