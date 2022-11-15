@@ -23,6 +23,12 @@ import org.softeg.slartus.forpdaplus.prefs.QmsPreferencesImpl
 import org.softeg.slartus.forpdaplus.qms.data.parsers.MentionsCountParser
 import org.softeg.slartus.forpdaplus.qms.data.parsers.QmsCountParser
 import org.softeg.slartus.forpdaplus.repositories.UserInfoRepositoryImpl
+import org.softeg.slartus.forpdaplus.topic.data.screens.attachments.models.TopicAttachmentResponse
+import org.softeg.slartus.forpdaplus.topic.data.screens.attachments.models.TopicAttachmentsResponse
+import ru.softeg.slartus.qms.api.models.QmsContact
+import ru.softeg.slartus.qms.api.models.QmsContacts
+import ru.softeg.slartus.qms.api.models.QmsCount
+import ru.softeg.slartus.qms.api.models.QmsThreads
 import javax.inject.Singleton
 
 @Module

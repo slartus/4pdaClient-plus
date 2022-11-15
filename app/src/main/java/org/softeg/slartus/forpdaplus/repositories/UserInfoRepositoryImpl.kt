@@ -4,16 +4,30 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.drop
+import kotlinx.coroutines.launch
 import org.softeg.slartus.forpdaplus.App
 import org.softeg.slartus.forpdaplus.R
+import org.softeg.slartus.forpdaplus.core.entities.MentionsCount
 import org.softeg.slartus.forpdaplus.core.entities.UserInfo
+import org.softeg.slartus.forpdaplus.core.interfaces.Parser
 import org.softeg.slartus.forpdaplus.core.repositories.UserInfoRepository
+import org.softeg.slartus.forpdaplus.core_lib.coroutines.AppIOScope
+import org.softeg.slartus.forpdaplus.domain_qms.parsers.MentionsCountParser
+import org.softeg.slartus.forpdaplus.domain_qms.parsers.QmsCountParser
 import ru.slartus.http.Http
 import ru.slartus.http.PersistentCookieStore
+import ru.softeg.slartus.qms.api.models.QmsCount
+import ru.softeg.slartus.qms.api.repositories.QmsCountRepository
 
-class UserInfoRepositoryImpl(cookieStore: PersistentCookieStore) : UserInfoRepository {
+class UserInfoRepositoryImpl(
+    cookieStore: PersistentCookieStore,
+    private val qmsCountParser: Parser<QmsCount>,
+    private val mentionsCountParser: Parser<MentionsCount>,
+) : UserInfoRepository {
     private object Holder {
-        val INSTANCE = UserInfoRepositoryImpl(Http.instance.cookieStore)
+        val INSTANCE = UserInfoRepositoryImpl(Http.instance.cookieStore, QmsCountParser(), MentionsCountParser())
     }
 
     private val _userInfo =
@@ -45,6 +59,24 @@ class UserInfoRepositoryImpl(cookieStore: PersistentCookieStore) : UserInfoRepos
                             )
                     )
                 })
+        AppIOScope().launch {
+            qmsCountParser.data
+                .distinctUntilChanged()
+                .collect { item ->
+                    if(item.count!=0) {
+                        setQmsCount(item.count ?: 0)
+                    }
+                }
+        }
+        AppIOScope().launch {
+            mentionsCountParser.data
+                .distinctUntilChanged()
+                .collect { item ->
+                    if(item.count!=0) {
+                        setMentionsCount(item.count ?: 0)
+                    }
+                }
+        }
     }
 
     private fun setNewUserInfo(value: UserInfo) {
