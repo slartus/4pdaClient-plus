@@ -920,10 +920,7 @@ class QmsChatFragment : WebViewFragment() {
             startAddAttachment()
             return
         }
-        val listItems = ArrayList<String>()
-        for (attach in attachList)
-            listItems.add(attach.name)
-        val items = listItems.toTypedArray<CharSequence>()
+        val items = attachList.map { it.name }.toTypedArray<CharSequence>()
         MaterialDialog.Builder(mainActivity)
             .cancelable(true)
             .title(R.string.attachments)
@@ -941,7 +938,7 @@ class QmsChatFragment : WebViewFragment() {
                     .negativeText(R.string.cancel)
                     .show()
             }
-            .positiveText(R.string.do_download)
+            .positiveText(R.string.upload)
             .onPositive { _, _ -> startAddAttachment() }
             .negativeText(R.string.ok)
             .show()
