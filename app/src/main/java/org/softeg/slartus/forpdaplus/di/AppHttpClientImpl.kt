@@ -20,7 +20,7 @@ class AppHttpClientImpl @Inject constructor() : AppHttpClient {
         withContext(Dispatchers.IO) {
             return@withContext Http.instance.performPost(
                 url,
-                headers.map { androidx.core.util.Pair(it.key, it.value) }
+                headers.map { Pair(it.key, it.value) }
             ).responseBody
         }
 
@@ -28,6 +28,7 @@ class AppHttpClientImpl @Inject constructor() : AppHttpClient {
         url: String,
         filePath: String,
         fileName: String,
+        formDataParts: List<Pair<String, String>>,
         onProgressChange: (percents: Int) -> Unit
     ): String =
         withContext(Dispatchers.IO)
@@ -36,7 +37,7 @@ class AppHttpClientImpl @Inject constructor() : AppHttpClient {
                 url = url,
                 filePath = filePath,
                 fileNameO = fileName,
-                formDataParts = emptyList(),
+                formDataParts = formDataParts,
                 progressListener = {
                     onProgressChange(it.toInt())
                 }

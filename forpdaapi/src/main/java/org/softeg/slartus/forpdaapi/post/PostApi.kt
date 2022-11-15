@@ -1,6 +1,5 @@
 package org.softeg.slartus.forpdaapi.post
 
-import androidx.core.util.Pair
 import android.text.Html
 import android.text.TextUtils
 import org.jsoup.Jsoup
@@ -43,16 +42,26 @@ object PostApi {
      * @param postId NEW_POST_ID, для создания нового поста
      */
     @Throws(IOException::class)
-    fun getEditPage(httpClient: IHttpClient, forumId: String, topicId: String, postId: String, authKey: String): String {
+    fun getEditPage(
+        httpClient: IHttpClient,
+        forumId: String,
+        topicId: String,
+        postId: String,
+        authKey: String
+    ): String {
         val res: AppResponse
         if (postId == NEW_POST_ID)
-            res = httpClient.performGet("https://${HostHelper.host}/forum/index.php?act=post&do=reply_post&f=" + forumId
-                    + "&t=" + topicId)
+            res = httpClient.performGet(
+                "https://${HostHelper.host}/forum/index.php?act=post&do=reply_post&f=" + forumId
+                        + "&t=" + topicId
+            )
         else
-            res = httpClient.performGet("https://${HostHelper.host}/forum/index.php?act=post&do=edit_post&f=" + forumId
-                    + "&t=" + topicId
-                    + "&p=" + postId
-                    + "&auth_key=" + authKey)
+            res = httpClient.performGet(
+                "https://${HostHelper.host}/forum/index.php?act=post&do=edit_post&f=" + forumId
+                        + "&t=" + topicId
+                        + "&p=" + postId
+                        + "&auth_key=" + authKey
+            )
 
 
         return res.responseBody
@@ -68,12 +77,15 @@ object PostApi {
      * Проверка страницы редактирования поста на ошибки (пост удалён ранее или нет прав на редактирование и т.д. )
      */
     fun checkEditPage(editPage: String): String {
-        val startFlag = "<textarea name=\"post\" rows=\"8\" cols=\"150\" style=\"width:98%; height:160px\" tabindex=\"0\">"
+        val startFlag =
+            "<textarea name=\"post\" rows=\"8\" cols=\"150\" style=\"width:98%; height:160px\" tabindex=\"0\">"
         val startIndex = editPage.indexOf(startFlag)
         if (startIndex == -1) {
-            val pattern = Pattern.compile("<h4>Причина:</h4>\n" +
-                    "\\s*\n" +
-                    "\\s*<p>(.*)</p>", Pattern.MULTILINE)
+            val pattern = Pattern.compile(
+                "<h4>Причина:</h4>\n" +
+                        "\\s*\n" +
+                        "\\s*<p>(.*)</p>", Pattern.MULTILINE
+            )
             val m = pattern.matcher(editPage)
             return if (m.find()) {
                 m.group(1)
@@ -91,9 +103,11 @@ object PostApi {
      * @throws IOException
      */
     @Throws(IOException::class)
-    fun applyEdit(httpClient: IHttpClient, forumId: String, themeId: String, authKey: String, postId: String,
-                  enablesig: Boolean,
-                  enableEmo: Boolean?, postText: String, addedFileList: String?, post_edit_reason: String): String {
+    fun applyEdit(
+        httpClient: IHttpClient, forumId: String, themeId: String, authKey: String, postId: String,
+        enablesig: Boolean,
+        enableEmo: Boolean?, postText: String, addedFileList: String?, post_edit_reason: String
+    ): String {
 
         val additionalHeaders = HashMap<String, String>()
         additionalHeaders["act"] = "post"
@@ -117,7 +131,10 @@ object PostApi {
             additionalHeaders["enableemo"] = "yes"
 
 
-        return httpClient.performPost("https://${HostHelper.host}/forum/index.php", additionalHeaders).responseBody
+        return httpClient.performPost(
+            "https://${HostHelper.host}/forum/index.php",
+            additionalHeaders
+        ).responseBody
     }
 
     /**
@@ -127,8 +144,17 @@ object PostApi {
      * @throws IOException
      */
     @Throws(IOException::class)
-    fun reply(forumId: String, topicId: String, authKey: String, attachPostKey: String?, post: String, enablesig: Boolean?,
-              enableemo: Boolean?, addedFileList: String?, quick: Boolean): AppResponse {
+    fun reply(
+        forumId: String,
+        topicId: String,
+        authKey: String,
+        attachPostKey: String?,
+        post: String,
+        enablesig: Boolean?,
+        enableemo: Boolean?,
+        addedFileList: String?,
+        quick: Boolean
+    ): AppResponse {
 
         val additionalHeaders = HashMap<String, String>()
         if (!quick) {
@@ -147,8 +173,10 @@ object PostApi {
         }
 
 
-        return quickReply(additionalHeaders, forumId, topicId, authKey, attachPostKey, post,
-                enablesig, enableemo)
+        return quickReply(
+            additionalHeaders, forumId, topicId, authKey, attachPostKey, post,
+            enablesig, enableemo
+        )
 
     }
 
@@ -156,46 +184,45 @@ object PostApi {
      * Быстрый ответ
      */
     @Throws(IOException::class)
-    fun quickReply(additionalHeaders: MutableMap<String, String>, forumId: String,
-                   topicId: String, authKey: String, attachPostKey: String?, post: String,
-                   enablesig: Boolean?, enableemo: Boolean?): AppResponse {
-
-        additionalHeaders["act"] = "Post"
-        additionalHeaders["CODE"] = "03"
-        additionalHeaders["f"] = forumId
-        additionalHeaders["t"] = topicId
-
-
-        additionalHeaders["auth_key"] = authKey
-        if (!TextUtils.isEmpty(attachPostKey))
-            additionalHeaders["attach_post_key"] = attachPostKey ?: ""
-        additionalHeaders["Post"] = post
-        if (enablesig!!)
-            additionalHeaders["enablesig"] = "yes"
-        if (enableemo!!)
-            additionalHeaders["enableemo"] = "yes"
-
-
-        // additionalHeaders.put("referer", "https://${HostHelper.host}/forum/index.php?act=Post&CODE=03&f=" + forumId + "&t=" + topicId + "&st=20&auth_key=" + authKey + "&fast_reply_used=1");
-
-        val listParams = ArrayList<Pair<String, String>>()
-        for (key in additionalHeaders.keys) {
-            listParams.add(Pair(key, additionalHeaders[key]))
+    fun quickReply(
+        additionalHeaders: Map<String, String>, forumId: String,
+        topicId: String, authKey: String, attachPostKey: String?, post: String,
+        enablesig: Boolean?, enableemo: Boolean?
+    ): AppResponse {
+        val listParams = buildList {
+            addAll(additionalHeaders.map { it.key to it.value })
+            add("act" to "Post")
+            add("CODE" to "03")
+            add("f" to forumId)
+            add("t" to topicId)
+            add("auth_key" to authKey)
+            if (!attachPostKey.isNullOrEmpty())
+                add("attach_post_key" to attachPostKey)
+            add("Post" to post)
+            if (enablesig == true)
+                add("enablesig" to "yes")
+            if (enableemo == true)
+                add("enableemo" to "yes")
         }
         return Http.instance.performPost("https://${HostHelper.host}/forum/index.php", listParams)
     }
 
     fun checkPostErrors(page: String?): String? {
-        var checkPattern = Pattern.compile("\t\t<h4>Причина:</h4>\n" +
-                "\n" +
-                "\t\t<p>(.*?)</p>", Pattern.MULTILINE)
-        var m = checkPattern.matcher(page?:"")
+        var checkPattern = Pattern.compile(
+            "\t\t<h4>Причина:</h4>\n" +
+                    "\n" +
+                    "\t\t<p>(.*?)</p>", Pattern.MULTILINE
+        )
+        var m = checkPattern.matcher(page ?: "")
         if (m.find()) {
             return m.group(1)
         }
 
-        checkPattern = Pattern.compile("<div class=\".*?\">(<b>)?ОБНАРУЖЕНЫ СЛЕДУЮЩИЕ ОШИБКИ(</b>)?</div>\n" + "\\s*<div class=\".*?\">(.*?)</div>", Pattern.MULTILINE)
-        m = checkPattern.matcher(page?:"")
+        checkPattern = Pattern.compile(
+            "<div class=\".*?\">(<b>)?ОБНАРУЖЕНЫ СЛЕДУЮЩИЕ ОШИБКИ(</b>)?</div>\n" + "\\s*<div class=\".*?\">(.*?)</div>",
+            Pattern.MULTILINE
+        )
+        m = checkPattern.matcher(page ?: "")
         return if (m.find()) {
             Html.fromHtml(m.group(3)).toString()
         } else null
@@ -209,10 +236,12 @@ object PostApi {
      * @throws Exception
      */
     @Throws(Exception::class)
-    fun attachFile(httpClient: IHttpClient, forumId: String, topicId: String, authKey: String,
-                   attachPostKey: String?, postId: String, enablesig: Boolean?, enableEmo: Boolean?,
-                   post: String, filePath: String, addedFileList: String,
-                   progress: ProgressState, post_edit_reason: String): String {
+    fun attachFile(
+        httpClient: IHttpClient, forumId: String, topicId: String, authKey: String,
+        attachPostKey: String?, postId: String, enablesig: Boolean?, enableEmo: Boolean?,
+        post: String, filePath: String, addedFileList: String,
+        progress: ProgressState, post_edit_reason: String
+    ): String {
         val additionalHeaders = HashMap<String, String>()
         additionalHeaders["st"] = "0"
 
@@ -254,10 +283,17 @@ object PostApi {
         additionalHeaders["iconid"] = "0"
 
         if (postId == NEW_POST_ID)
-            return httpClient.uploadFile("https://${HostHelper.host}/forum/index.php", filePath, additionalHeaders,
-                    progress).responseBody
+            return httpClient.uploadFile(
+                "https://${HostHelper.host}/forum/index.php", filePath, additionalHeaders,
+                progress
+            ).responseBody
 
-        httpClient.uploadFile("https://${HostHelper.host}/forum/index.php", filePath, additionalHeaders, progress)
+        httpClient.uploadFile(
+            "https://${HostHelper.host}/forum/index.php",
+            filePath,
+            additionalHeaders,
+            progress
+        )
         progress.update("Файл загружен, получение страницы", 100)
         return getEditPage(httpClient, forumId, topicId, postId, authKey)
     }
@@ -268,10 +304,12 @@ object PostApi {
      * @throws Exception
      */
     @Throws(Exception::class)
-    fun deleteAttachedFile(httpClient: IHttpClient, forumId: String, themeId: String, authKey: String,
-                           postId: String, enablesig: Boolean?, enableemo: Boolean?,
-                           post: String, attachToDeleteId: String, fileList: String,
-                           post_edit_reason: String): String {
+    fun deleteAttachedFile(
+        httpClient: IHttpClient, forumId: String, themeId: String, authKey: String,
+        postId: String, enablesig: Boolean?, enableemo: Boolean?,
+        post: String, attachToDeleteId: String, fileList: String,
+        post_edit_reason: String
+    ): String {
 
         val additionalHeaders = HashMap<String, String>()
         additionalHeaders["st"] = "0"
@@ -308,7 +346,10 @@ object PostApi {
             additionalHeaders["enableemo"] = "yes"
 
         if (postId == NEW_POST_ID)
-            return httpClient.performPost("https://${HostHelper.host}/forum/index.php", additionalHeaders).responseBody
+            return httpClient.performPost(
+                "https://${HostHelper.host}/forum/index.php",
+                additionalHeaders
+            ).responseBody
         httpClient.performPost("https://${HostHelper.host}/forum/index.php", additionalHeaders)
         return getEditPage(httpClient, forumId, themeId, postId, authKey)
     }
@@ -328,12 +369,17 @@ object PostApi {
         additionalHeaders["p"] = postId
         additionalHeaders["message"] = message
 
-        val res = httpClient.performPost("https://${HostHelper.host}/forum/index.php?act=report&amp;send=1&amp;t=$topicId&amp;p=$postId", additionalHeaders)
+        val res = httpClient.performPost(
+            "https://${HostHelper.host}/forum/index.php?act=report&amp;send=1&amp;t=$topicId&amp;p=$postId",
+            additionalHeaders
+        )
 
-        val p = Pattern.compile("<div class=\"errorwrap\">\n" +
-                "\\s*<h4>Причина:</h4>\n" +
-                "\\s*\n" +
-                "\\s*<p>(.*)</p>", Pattern.MULTILINE)
+        val p = Pattern.compile(
+            "<div class=\"errorwrap\">\n" +
+                    "\\s*<h4>Причина:</h4>\n" +
+                    "\\s*\n" +
+                    "\\s*<p>(.*)</p>", Pattern.MULTILINE
+        )
         val m = p.matcher(res.responseBody)
         return if (m.find()) {
 
@@ -367,8 +413,11 @@ object PostApi {
     @Throws(NotReportException::class)
     private fun checkAttachError(page: String) {
         val m = Pattern
-                .compile("pipsatt.status_msg = '([^']*)';\\s*pipsatt.status_is_error = parseInt\\('(\\d+)'\\);", Pattern.CASE_INSENSITIVE)
-                .matcher(page)
+            .compile(
+                "pipsatt.status_msg = '([^']*)';\\s*pipsatt.status_is_error = parseInt\\('(\\d+)'\\);",
+                Pattern.CASE_INSENSITIVE
+            )
+            .matcher(page)
         if (m.find()) {
             if ("1" == m.group(2))
                 throw NotReportException(getStatusMessage(m.group(1)))
@@ -376,28 +425,42 @@ object PostApi {
     }
 
     @Throws(Exception::class)
-    fun deleteAttachedFile(httpClient: IHttpClient,
-                           postId: String,
-                           attachId: String) {
+    fun deleteAttachedFile(
+        httpClient: IHttpClient,
+        postId: String,
+        attachId: String
+    ) {
         val res = httpClient
-                .performGet(String.format("https://${HostHelper.host}/forum/index.php?&act=attach&code=attach_upload_remove&attach_rel_id=%s&attach_id=%s", postId,
-                        attachId))
+            .performGet(
+                String.format(
+                    "https://${HostHelper.host}/forum/index.php?&act=attach&code=attach_upload_remove&attach_rel_id=%s&attach_id=%s",
+                    postId,
+                    attachId
+                )
+            )
         checkAttachError(res.responseBody)
     }
 
     @Throws(Exception::class)
-    fun attachFile(httpClient: IHttpClient,
-                   postId: String,
-                   newFilePath: String,
-                   progress: ProgressState): EditAttach? {
+    fun attachFile(
+        httpClient: IHttpClient,
+        postId: String,
+        newFilePath: String,
+        progress: ProgressState
+    ): EditAttach? {
 
 
-        val res = httpClient.uploadFile("https://${HostHelper.host}/forum/index.php?&act=attach&code=attach_upload_process&attach_rel_id=$postId",
-                newFilePath, HashMap(),
-                progress)
+        val res = httpClient.uploadFile(
+            "https://${HostHelper.host}/forum/index.php?&act=attach&code=attach_upload_process&attach_rel_id=$postId",
+            newFilePath, HashMap(),
+            progress
+        )
         val m = Pattern
-                .compile("add_current_item\\(\\s*'(\\d+)',\\s*'([^']*)',\\s*'([^']*)',\\s*'([^']*)'\\s*\\);", Pattern.CASE_INSENSITIVE)
-                .matcher(res.responseBody)
+            .compile(
+                "add_current_item\\(\\s*'(\\d+)',\\s*'([^']*)',\\s*'([^']*)',\\s*'([^']*)'\\s*\\);",
+                Pattern.CASE_INSENSITIVE
+            )
+            .matcher(res.responseBody)
         if (m.find()) {
             return EditAttach(m.group(1), m.group(2))
         }
@@ -407,9 +470,11 @@ object PostApi {
     }
 
     @Throws(IOException::class)
-    fun sendPost(httpClient: IHttpClient, params: EditPostParams,
-                 postBody: String, postEditReason: String?,
-                 enablesig: Boolean?, enableemo: Boolean?): String {
+    fun sendPost(
+        httpClient: IHttpClient, params: EditPostParams,
+        postBody: String, postEditReason: String?,
+        enablesig: Boolean?, enableemo: Boolean?
+    ): String {
 
         if (!params.containsKey("editor_ids[]"))
             params.put("editor_ids[]", "ed-0")
@@ -435,12 +500,21 @@ object PostApi {
             nameValuePairs.add(BasicNameValuePair("enablesig", "yes"))
 
 
-        return httpClient.performPost("https://${HostHelper.host}/forum/index.php", nameValuePairs).responseBody
+        return httpClient.performPost(
+            "https://${HostHelper.host}/forum/index.php",
+            nameValuePairs
+        ).responseBody
     }
 
 
     @Throws(IOException::class)
-    fun editPost(httpClient: IHttpClient, forumId: String, topicId: String, postId: String, authKey: String): EditPost {
+    fun editPost(
+        httpClient: IHttpClient,
+        forumId: String,
+        topicId: String,
+        postId: String,
+        authKey: String
+    ): EditPost {
         val editPage = getEditPage(httpClient, forumId, topicId, postId, authKey)
         val doc = Jsoup.parse(editPage)
         val editPost = EditPost()
@@ -484,8 +558,11 @@ object PostApi {
             if (attachBody != null) {
 
                 val m = Pattern
-                        .compile("add_current_item\\( '(\\d+)', '([^']*)', '([^']*)', '([^']*)' \\)", Pattern.CASE_INSENSITIVE)
-                        .matcher(attachBody)
+                    .compile(
+                        "add_current_item\\( '(\\d+)', '([^']*)', '([^']*)', '([^']*)' \\)",
+                        Pattern.CASE_INSENSITIVE
+                    )
+                    .matcher(attachBody)
                 while (m.find()) {
                     editPost.addAttach(EditAttach(m.group(1), m.group(2)))
                 }
@@ -494,9 +571,11 @@ object PostApi {
 
 
         if (editPost.body == null) {
-            val pattern = Pattern.compile("<h4>Причина:</h4>\n" +
-                    "\\s*\n" +
-                    "\\s*<p>(.*)</p>", Pattern.MULTILINE)
+            val pattern = Pattern.compile(
+                "<h4>Причина:</h4>\n" +
+                        "\\s*\n" +
+                        "\\s*<p>(.*)</p>", Pattern.MULTILINE
+            )
 
             val m = pattern.matcher(editPage)
             if (m.find()) {
@@ -515,27 +594,38 @@ object PostApi {
      */
     private fun parseInterviewParams(editPage: String, editPost: EditPost) {
         var m = Pattern.compile("poll_questions\\s*=\\s*\\{(.*)?'\\}", Pattern.CASE_INSENSITIVE)
-                .matcher(editPage)
+            .matcher(editPage)
         if (m.find()) {
             val s = m.group(1) + "'"
-            m = Pattern.compile("\\s*(\\d+)\\s*:\\s*'([^']*)'", Pattern.CASE_INSENSITIVE or Pattern.MULTILINE)
-                    .matcher(s)
+            m = Pattern.compile(
+                "\\s*(\\d+)\\s*:\\s*'([^']*)'",
+                Pattern.CASE_INSENSITIVE or Pattern.MULTILINE
+            )
+                .matcher(s)
 
             val choicesText = getChoicesText(editPage)
             while (m.find()) {
                 val questionNum = m.group(1)
                 editPost.params.put("question[$questionNum]", Html.fromHtml(m.group(2)).toString())
 
-                val choiceMatcher = Pattern.compile("\\s*'(" + questionNum + "_\\d+)'\\s*:\\s*'([^']*)'",
-                        Pattern.CASE_INSENSITIVE or Pattern.MULTILINE)
-                        .matcher(choicesText)
+                val choiceMatcher = Pattern.compile(
+                    "\\s*'(" + questionNum + "_\\d+)'\\s*:\\s*'([^']*)'",
+                    Pattern.CASE_INSENSITIVE or Pattern.MULTILINE
+                )
+                    .matcher(choicesText)
                 while (choiceMatcher.find()) {
-                    editPost.params.put("choice[" + choiceMatcher.group(1) + "]", Html.fromHtml(choiceMatcher.group(2)).toString())
+                    editPost.params.put(
+                        "choice[" + choiceMatcher.group(1) + "]",
+                        Html.fromHtml(choiceMatcher.group(2)).toString()
+                    )
                 }
 
 
-                val multiMatcher = Pattern.compile("\\s*$questionNum\\s*:\\s*'([^']*)'", Pattern.CASE_INSENSITIVE or Pattern.MULTILINE)
-                        .matcher(s)
+                val multiMatcher = Pattern.compile(
+                    "\\s*$questionNum\\s*:\\s*'([^']*)'",
+                    Pattern.CASE_INSENSITIVE or Pattern.MULTILINE
+                )
+                    .matcher(s)
                 while (multiMatcher.find()) {
                     if ("1" == multiMatcher.group(1)) {
                         editPost.params.put("multi[$questionNum]", "1")
@@ -548,7 +638,8 @@ object PostApi {
 
     private fun getChoicesText(editPage: String): String {
         var choicesText = ""
-        val choicesMatcher = Pattern.compile("poll_choices\\s*=\\s*\\{(.*)?'\\}", Pattern.CASE_INSENSITIVE)
+        val choicesMatcher =
+            Pattern.compile("poll_choices\\s*=\\s*\\{(.*)?'\\}", Pattern.CASE_INSENSITIVE)
                 .matcher(editPage)
         if (choicesMatcher.find()) {
             choicesText = choicesMatcher.group(1) + "'"
@@ -559,7 +650,7 @@ object PostApi {
 
     private fun getMultiText(editPage: String): String {
         val m = Pattern.compile("poll_multi\\s*=\\s*\\{(.*)?'\\}", Pattern.CASE_INSENSITIVE)
-                .matcher(editPage)
+            .matcher(editPage)
         return if (m.find()) {
             m.group(1) + "'"
 

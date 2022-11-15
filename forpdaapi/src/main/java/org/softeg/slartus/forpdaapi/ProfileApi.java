@@ -1,6 +1,5 @@
 package org.softeg.slartus.forpdaapi;
 
-import androidx.core.util.Pair;
 
 import android.content.Context;
 import android.text.Html;
@@ -23,6 +22,7 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import kotlin.Pair;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -67,6 +67,7 @@ public class ProfileApi {
     public static LoginResult login(String login, String password,
                                     Boolean privacy, String capVal, String capTime, String capSig) throws Exception {
         LoginResult loginResult = new LoginResult();
+
 
         Map<String, String> additionalHeaders = new HashMap<>();
 

@@ -1,17 +1,10 @@
 package org.softeg.slartus.forpdaapi.qms
 
-import androidx.core.util.Pair
 import org.softeg.slartus.forpdaapi.IHttpClient
-import org.softeg.slartus.forpdaapi.ProgressState
-import org.softeg.slartus.forpdaapi.post.EditAttach
 import org.softeg.slartus.forpdacommon.*
-import org.softeg.slartus.forpdacommon.UrlExtensions.getFileNameFromUrl
 import org.softeg.slartus.hosthelper.HostHelper
-import ru.slartus.http.CountingFileRequestBody
-import ru.slartus.http.FileForm
 import ru.slartus.http.Http
 import java.io.IOException
-import java.io.UnsupportedEncodingException
 import java.util.*
 import java.util.regex.Matcher
 import java.util.regex.Pattern
@@ -227,74 +220,5 @@ object QmsApi {
         return if (m.find()) {
             Integer.parseInt(m.group(1))
         } else 0
-    }
-
-    private fun fromCharCode(vararg codePoints: Int): String {
-        val builder = StringBuilder(codePoints.size)
-        for (codePoint in codePoints) {
-            builder.append(Character.toChars(codePoint))
-        }
-        return builder.toString()
-    }
-
-    fun attachFile(
-        pathToFile: String,
-        progress: ProgressState,
-        code: String = "check"
-    ): EditAttach {
-        var nameValue = "file"
-        try {
-            nameValue = getFileNameFromUrl(pathToFile)
-        } catch (e: UnsupportedEncodingException) {
-            e.printStackTrace()
-        }
-
-        val finalNameValue = nameValue
-        val params = ArrayList<Pair<String, String>>()
-        params.add(Pair("name", nameValue))
-        params.add(Pair("code", code))
-        params.add(Pair("relType", "MSG"))
-        params.add(Pair("index", "1"))
-        val (_, _, responseBody) = Http.instance.uploadFile("https://${HostHelper.host}/forum/index.php?act=attach",
-            nameValue,
-            pathToFile,
-            FileForm.FileUpload,
-            params
-        ) { num ->
-            progress.update(
-                finalNameValue,
-                num
-            )
-        }
-
-        val body = ("" + responseBody).replace("(^\\x03|\\x03$)".toRegex(), "")
-
-        val parts =
-            body.split(fromCharCode(2).toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-
-        val k = parts[0].toInt()
-
-        if (k == 0) {
-            Thread.sleep(1000)
-            return attachFile(pathToFile, progress, "upload")
-        }
-        val error = when (k) {
-            -1 -> " no access on server."
-            -2 -> " too big."
-            -3 -> " has invalid mime type"
-            -4 -> " is banned on server."
-            else -> null
-        }
-        if (error != null)
-            throw NotReportException(error)
-
-        val id = parts[0]
-        val name = parts[1]
-        val ext = parts[2]
-//        val url = parts[3]
-//        val length = parts[4]
-//        val md5 = parts[5]
-
-        return EditAttach(id, "$name.$ext")
     }
 }

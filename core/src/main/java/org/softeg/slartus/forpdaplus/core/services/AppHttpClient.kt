@@ -1,5 +1,7 @@
 package org.softeg.slartus.forpdaplus.core.services
 
+import kotlin.Pair
+
 interface AppHttpClient {
     suspend fun performGet(url: String): String
     suspend fun performGetDesktopVersion(url: String): String
@@ -8,6 +10,7 @@ interface AppHttpClient {
         url: String,
         filePath: String,
         fileName: String,
-        onProgressChange: (percents: Int) -> Unit
+        formDataParts: List<Pair<String, String>> = emptyList(),
+        onProgressChange: (percents: Int) -> Unit = {}
     ): String
 }

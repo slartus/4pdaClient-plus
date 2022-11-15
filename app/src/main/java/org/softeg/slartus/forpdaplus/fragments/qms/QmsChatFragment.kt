@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.PorterDuff
+import android.net.Uri
 import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
@@ -33,6 +34,7 @@ import com.afollestad.materialdialogs.MaterialDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.qms_chat.*
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.cancellable
 import org.softeg.slartus.forpdaapi.post.EditAttach
 import org.softeg.slartus.forpdacommon.ExtPreferences
 import org.softeg.slartus.forpdacommon.FilePath
@@ -50,10 +52,10 @@ import org.softeg.slartus.forpdaplus.core_lib.extensions.dismissSafe
 import org.softeg.slartus.forpdaplus.forum.data.getNullIfEmpty
 import org.softeg.slartus.forpdaplus.fragments.WebViewFragment
 import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment
-import org.softeg.slartus.forpdaplus.fragments.qms.tasks.*
 import org.softeg.slartus.forpdaplus.prefs.HtmlPreferences
 import org.softeg.slartus.forpdaplus.prefs.Preferences
 import org.softeg.slartus.forpdaplus.qms.data.screens.thread.buildHtml
+import ru.softeg.slartus.qms.api.models.UploadState
 import ru.softeg.slartus.qms.api.repositories.QmsThreadRepository
 import ru.softeg.slartus.qms.api.repositories.QmsThreadsRepository
 import timber.log.Timber
@@ -271,28 +273,18 @@ class QmsChatFragment : WebViewFragment() {
     ) {
         if (resultCode == Activity.RESULT_OK) {
             intent ?: return
-            val uri = when {
-                intent.data != null -> listOf(intent.data)
+            val uriList = when {
                 (intent.clipData?.itemCount ?: 0) > 0 -> (0 until (intent.clipData?.itemCount ?: 0))
                     .map { index -> intent.clipData?.getItemAt(index)?.uri }
+                intent.data != null -> listOf(intent.data)
                 else -> null
-            }?.filterNotNull()?.getNullIfEmpty()?.firstOrNull() ?: return
+            }?.filterNotNull()?.getNullIfEmpty() ?: return
+
             if (requestCode == MY_INTENT_CLICK) {
-                val fileName = FilePath.getFileName(App.getInstance(), uri)
-                if (fileName != null) {
-                    if (fileName.matches("(?i)(.*)(7z|zip|rar|tar.gz|exe|cab|xap|txt|log|jpeg|jpg|png|gif|mp3|mp4|apk|ipa|img|.mtz)$".toRegex())) {
-                        AttachesTask(this, uri).execute()
-                    } else {
-                        Toast.makeText(
-                            activity,
-                            R.string.file_not_support_forum,
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                } else
-                    Toast.makeText(activity, "Не могу прикрепить файл", Toast.LENGTH_SHORT).show()
+                uploadFiles(uriList)
 
             } else if (requestCode == FILECHOOSER_RESULTCODE) {
+                val uri = uriList.firstOrNull()
                 val attachFilePath =
                     org.softeg.slartus.forpdacommon.FileUtils.getRealPathFromURI(context, uri)
                 val cssData = org.softeg.slartus.forpdacommon.FileUtils.readFileText(attachFilePath)
@@ -310,6 +302,95 @@ class QmsChatFragment : WebViewFragment() {
             }
         }
 
+    }
+
+    private fun uploadFiles(uris: List<Uri>) {
+        var job: Job? = null
+        val dialog = MaterialDialog.Builder(requireContext())
+            .progress(false, 100, false)
+            .cancelListener {
+                job?.cancel()
+            }
+            .content(R.string.sending_file)
+            .build().apply {
+                setCancelable(true)
+                setCanceledOnTouchOutside(false)
+                setOnCancelListener {
+                    job?.cancel()
+                }
+                setProgress(0)
+                show()
+            }
+
+        job = lifecycleScope.launch {
+            if (!prepareUploadFiles(uris)) return@launch
+            qmsThreadRepository.uploadAttachesFlow(uris).cancellable()
+                .collect { state ->
+                    when (state) {
+                        UploadState.Init -> dialog.setContent(R.string.sending_file)
+
+                        is UploadState.Uploading -> dialog.apply {
+                            val message = String.format(
+                                App.getContext().getString(R.string.format_sending_file),
+                                state.index + 1,
+                                uris.size
+                            )
+                            setContent(message)
+                            setProgress(state.percents)
+                        }
+                        is UploadState.AttachUploaded -> {
+                            addAttachesToList(
+                                listOf(
+                                    EditAttach(
+                                        state.postAttach.id,
+                                        state.postAttach.name
+                                    )
+                                )
+                            )
+                        }
+                        is UploadState.AttachError -> {
+                            Timber.e(state.error)
+                        }
+                        UploadState.Completed -> runCatching {
+                            dialog.dismiss()
+                        }.onFailure { it.printStackTrace() }
+
+                        is UploadState.Error -> runCatching {
+                            dialog.dismiss()
+                            Timber.e(state.error)
+                        }.onFailure { it.printStackTrace() }
+                    }
+                }
+        }
+    }
+
+    private suspend fun prepareUploadFiles(uris: List<Uri>): Boolean = withContext(Dispatchers.IO) {
+        uris.forEachIndexed { index, uri ->
+            val fileName = FilePath.getFileName(requireContext(), uri)
+            if (fileName != null) {
+                val imageExt = "jpeg|jpg|png|gif".split("|")
+                val fileExt =
+                    "7z|zip|rar|tar.gz|exe|cab|xap|txt|log|mp3|mp4|apk|ipa|img|mtz".split("|")
+                val exts = fileExt + imageExt
+                if (!exts.any { ext -> fileName.endsWith(ext, ignoreCase = true) }) {
+                    Toast.makeText(
+                        mainActivity,
+                        getString(R.string.file_not_support_forum) + " $index $fileName",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return@withContext false
+                }
+            } else {
+                Toast.makeText(
+                    context,
+                    "Не могу прикрепить файл $index ${uri.path}",
+                    Toast.LENGTH_SHORT
+                )
+                    .show()
+                return@withContext false
+            }
+        }
+        return@withContext true
     }
 
     private fun hideKeyboard() {

@@ -8,7 +8,6 @@ import android.os.Build
 import android.util.Log
 import android.webkit.MimeTypeMap
 import android.webkit.MimeTypeMap.getFileExtensionFromUrl
-import androidx.core.util.Pair
 import okhttp3.*
 import okio.Buffer
 import org.softeg.slartus.hosthelper.HostHelper
@@ -164,10 +163,10 @@ class Http private constructor(context: Context, appName: String, appVersion: St
         val builder = newClientBuiler(context)
             .cookieJar(JavaNetCookieJar(cookieHandler))
 
-        if (BuildConfig.DEBUG)
-            builder.addInterceptor(DebugLoggingInterceptor())
-        else
-            builder.addInterceptor(LoggingInterceptor())
+//        if (BuildConfig.DEBUG)
+//            builder.addInterceptor(DebugLoggingInterceptor())
+//        else
+//            builder.addInterceptor(LoggingInterceptor())
 
         client = builder
             .build()    // socket timeout
@@ -388,11 +387,11 @@ class Http private constructor(context: Context, appName: String, appVersion: St
                 addFormDataPart(fileFormDataName, fileName, file.asRequestBody(mediaType))
             }
             if (!formDataParts.any { it.first.equals("size", ignoreCase = true) })
-                addFormDataPart("size", file.length().toString())
+                addFormDataPart("size", totalSize.toString())
             if (!formDataParts.any { it.first.equals("md5", ignoreCase = true) })
                 addFormDataPart("md5", FileUtils.calculateMD5(file))
-            formDataParts.filter { it.first != null && it.second != null }.forEach {
-                addFormDataPart(it.first!!, it.second!!)
+            formDataParts.forEach {
+                addFormDataPart(it.first, it.second)
             }
         }.build()
 
@@ -409,8 +408,7 @@ class Http private constructor(context: Context, appName: String, appVersion: St
             return AppResponse(url, response.request.url.toString(), body ?: "")
         } catch (ex: IOException) {
             throw HttpException(ex)
-        }
-    }
+        }    }
 
     private class LoggingInterceptor : Interceptor {
         @Throws(IOException::class)
