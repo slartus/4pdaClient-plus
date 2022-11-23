@@ -1,0 +1,8 @@
+appId: org.softeg.slartus.forpdaplus.beta
+---
+- launchApp
+- tapOn: "Разрешить"
+- assertVisible: "Уведомление"
+- tapOn: "Я ПОНЯЛ(А)"
+- assertVisible: "Предупреждение"
+- tapOn: "Я ПОНЯЛ(А)"

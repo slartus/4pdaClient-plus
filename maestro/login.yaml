@@ -1,0 +1,9 @@
+appId: org.softeg.slartus.forpdaplus.beta
+---
+- launchApp
+- tapOn: "гость"
+- tapOn: "Вход"
+- tapOn: "Имя пользователя (login)"
+- inputText: ""
+- tapOn: "Пароль"
+- inputText: ""
