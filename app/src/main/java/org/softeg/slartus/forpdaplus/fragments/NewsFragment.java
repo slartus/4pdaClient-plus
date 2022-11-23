@@ -68,7 +68,8 @@ import java.util.regex.Pattern;
  * Created by radiationx on 17.10.15.
  */
 public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener {
-    private static final String URL_KEY = "Url";
+    private static final String URL_KEY = "NewsFragment.URL_KEY";
+    private static final String TITLE_KEY = "NewsFragment.TITLE_KEY";
 
     private final Handler mHandler = new Handler();
     private AdvWebView webView;
@@ -84,9 +85,14 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
     private FrameLayout buttonsPanel;
 
     public static NewsFragment newInstance(String url) {
+        return newInstance(App.getContext().getString(R.string.news), url);
+    }
+
+    public static NewsFragment newInstance(String title, String url) {
         NewsFragment fragment = new NewsFragment();
         Bundle args = new Bundle();
         args.putString(URL_KEY, url);
+        args.putString(TITLE_KEY, title);
         fragment.setArguments(args);
         return fragment;
     }
@@ -157,9 +163,15 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         webView.setWebViewClient(new MyWebViewClient());
         webView.addJavascriptInterface(this, "HTMLOUT");
 
-        assert getArguments() != null;
-        m_NewsUrl = getArguments().getString(URL_KEY);
+        Bundle args = getArguments();
+        assert args != null;
+        m_NewsUrl = args.getString(URL_KEY);
         assert m_NewsUrl != null;
+
+        if (args.containsKey(TITLE_KEY))
+            m_Title = args.getString(TITLE_KEY);
+        if (m_Title == null)
+            m_Title = App.getContext().getString(R.string.news);
         showNews(m_NewsUrl);
 
 
@@ -239,7 +251,6 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
         if (inflater != null)
             inflater.inflate(R.menu.news, menu);
     }
@@ -557,7 +568,6 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
 
         private String transformBody(String body) {
             NewsHtmlBuilder builder = new NewsHtmlBuilder();
-            m_Title = App.getContext().getString(R.string.news);
             builder.beginHtml(m_Title);
             builder.beginBody("news", null, loadImages);
             builder.append("<div style=\"padding-top:").append(String.valueOf(HtmlBuilder.getMarginTop())).append("px\"/>\n");
