@@ -6,11 +6,11 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.ProducerScope
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.softeg.slartus.forpdacommon.FilePath
-import org.softeg.slartus.forpdacommon.FileUtils
 import org.softeg.slartus.forpdacommon.UrlExtensions
 import ru.softeg.slartus.forum.api.TopicPostRepository
 import ru.softeg.slartus.forum.api.UploadFileState
@@ -69,6 +69,7 @@ private suspend fun ProducerScope<UploadState>.uploadPostAttach(
         )
     )
     val filePath = getTempFilePath(uri = uri, context = context)
+
     val fileName = runCatching { UrlExtensions.getFileNameFromUrl(filePath) }
         .getOrNull() ?: filePath.substringAfterLast("/")
 
@@ -97,7 +98,9 @@ private suspend fun ProducerScope<UploadState>.uploadPostAttach(
 
 private suspend fun getTempFilePath(context: Context, uri: Uri): String {
     return withContext(Dispatchers.IO) {
-        FilePath.getPath(context, uri) ?: copyFileToTemp(context, uri)
+        val filePath = FilePath.getPath(context, uri)
+        return@withContext if (filePath != null && File(filePath).canRead()) filePath
+        else copyFileToTemp(context, uri)
     }
 }
 
