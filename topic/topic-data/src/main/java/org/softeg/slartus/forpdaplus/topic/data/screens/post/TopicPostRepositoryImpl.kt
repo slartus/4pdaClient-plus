@@ -62,7 +62,6 @@ private suspend fun ProducerScope<UploadState>.uploadPostAttach(
     remoteTopicPostDataSource: RemoteTopicPostDataSource,
     topicAttachParser: TopicAttachParser
 ) {
-    println("file $uri")
     send(
         UploadState.Uploading(
             index = uriIndex,
@@ -81,7 +80,6 @@ private suspend fun ProducerScope<UploadState>.uploadPostAttach(
             filePath = filePath,
             onProgressChange = { percents ->
                 scope.launch {
-                    println("precents $uri")
                     send(
                         UploadState.Uploading(
                             index = uriIndex,
@@ -111,7 +109,7 @@ private suspend fun copyFileToTemp(context: Context, uri: Uri): String {
         context.contentResolver.openInputStream(uri)?.use { stream ->
             stream.buffered().use { inputStream ->
                 FileOutputStream(tempFile, false).use { outputStream ->
-                    FileUtils.CopyStream(inputStream, outputStream)
+                    inputStream.copyTo(outputStream)
                 }
             }
         }

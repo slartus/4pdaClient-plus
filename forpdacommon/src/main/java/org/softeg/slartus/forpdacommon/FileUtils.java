@@ -4,9 +4,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
-
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -69,30 +66,6 @@ public class FileUtils {
         if (fileSize > 1024)
             return Math.round(fileSize / 1024 * 100) / 100.0 + " КБ";
         return Math.round(fileSize * 100) / 100.0 + " Б";
-    }
-
-    public static void CopyStream(InputStream is, OutputStream os) {
-        BufferedInputStream bis = null;
-        BufferedOutputStream bos = null;
-
-        try {
-            bis = new BufferedInputStream(is);
-            bos = new BufferedOutputStream(os);
-            byte[] buf = new byte[1024];
-            bis.read(buf);
-            do {
-                bos.write(buf);
-            } while(bis.read(buf) != -1);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (bis != null) bis.close();
-                if (bos != null) bos.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     public static String getUniqueFilePath(String dirPath, String fileName) {

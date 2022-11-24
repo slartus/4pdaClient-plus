@@ -358,8 +358,6 @@ class Http private constructor(context: Context, appName: String, appVersion: St
         formDataParts: List<Pair<String, String>> = emptyList(),
         progressListener: CountingFileRequestBody.ProgressListener? = null
     ): AppResponse {
-
-
         val fileName = Translit.translit(fileNameO).replace(' ', '_')
         val file = File(filePath)
         val totalSize = file.length()

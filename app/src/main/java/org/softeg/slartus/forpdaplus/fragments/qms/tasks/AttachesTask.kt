@@ -49,7 +49,7 @@ class AttachesTask internal constructor(qmsChatFragment: QmsChatFragment,
         tempFile.createNewFile()
         context.contentResolver.openInputStream(uri)?.buffered()?.use { inputStream ->
             FileOutputStream(tempFile, false).use { outputStream ->
-                FileUtils.CopyStream(inputStream, outputStream)
+                inputStream.copyTo(outputStream)
             }
         }
         return tempFile.absolutePath
