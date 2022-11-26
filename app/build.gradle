@@ -144,6 +144,8 @@ dependencies {
     implementation project(":topic:topic-api")
     implementation project(":topic:topic-data")
     implementation project(":topic:topic-impl")
+    implementation project(":attachments:attachments-api")
+    implementation project(":attachments:attachments-data")
 
     implementation "androidx.appcompat:appcompat:$rootProject.appcompat"
     implementation 'androidx.cardview:cardview:1.0.0'

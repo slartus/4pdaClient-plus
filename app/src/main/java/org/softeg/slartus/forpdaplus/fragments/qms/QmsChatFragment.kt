@@ -55,7 +55,8 @@ import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment
 import org.softeg.slartus.forpdaplus.prefs.HtmlPreferences
 import org.softeg.slartus.forpdaplus.prefs.Preferences
 import org.softeg.slartus.forpdaplus.qms.data.screens.thread.buildHtml
-import ru.softeg.slartus.qms.api.models.UploadState
+import ru.softeg.slartus.attachments.api.AttachmentsRepository
+import ru.softeg.slartus.attachments.api.models.UploadState
 import ru.softeg.slartus.qms.api.repositories.QmsThreadRepository
 import ru.softeg.slartus.qms.api.repositories.QmsThreadsRepository
 import timber.log.Timber
@@ -74,6 +75,9 @@ class QmsChatFragment : WebViewFragment() {
 
     @Inject
     lateinit var qmsThreadsRepository: QmsThreadsRepository
+
+    @Inject
+    lateinit var attachmentsRepository: AttachmentsRepository
 
     private var reloadChatJob: Job? = null
     private var emptyText = true
@@ -329,7 +333,7 @@ class QmsChatFragment : WebViewFragment() {
 
         job = lifecycleScope.launch {
             if (!prepareUploadFiles(uris)) return@launch
-            qmsThreadRepository.uploadAttachesFlow(uris).cancellable()
+            attachmentsRepository.uploadAttaches(uris).cancellable()
                 .collect { state ->
                     when (state) {
                         UploadState.Init -> dialog.setContent(R.string.sending_file)
@@ -958,7 +962,7 @@ class QmsChatFragment : WebViewFragment() {
             }
         AppMainScope().launch {
             runCatching {
-                qmsThreadRepository.deleteAttach(attachId)
+                attachmentsRepository.deleteAttach(attachId)
             }.onFailure {
                 lifecycleScope.launch {
                     dialog.dismissSafe()

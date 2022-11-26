@@ -1,12 +1,11 @@
-package ru.softeg.slartus.qms.api.models
+package ru.softeg.slartus.attachments.api.models
 
 import android.net.Uri
 
-data class QmsThreadAttachment(
+data class Attachment(
     val id: String,
     val name: String
 )
-
 
 sealed class UploadState {
     object Init : UploadState()
@@ -18,7 +17,7 @@ sealed class UploadState {
         val percents = currentUploadFile.percents
     }
 
-    class AttachUploaded(val uri: Uri, val postAttach: QmsThreadAttachment) : UploadState()
+    class AttachUploaded(val uri: Uri, val postAttach: Attachment) : UploadState()
     class AttachError(val uri: Uri, val error: Throwable) : UploadState()
 
     object Completed : UploadState()
