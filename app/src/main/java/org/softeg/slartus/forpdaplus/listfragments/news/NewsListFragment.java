@@ -2,6 +2,8 @@ package org.softeg.slartus.forpdaplus.listfragments.news;
 
 import android.content.Context;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.appcompat.app.ActionBar;
 import android.text.TextUtils;
@@ -306,7 +308,7 @@ public class NewsListFragment extends BaseTaskListFragment implements ActionBar.
             final News news = (News) o;
             if (TextUtils.isEmpty(news.getId())) return;
             if(!IntentActivity.tryShowSpecial(news.getUrl()))
-                MainActivity.addTab(news.getTitle().toString(), news.getUrl(), NewsFragment.newInstance(news.getUrl()));
+                MainActivity.addTab(news.getTitle().toString(), news.getUrl(), NewsFragment.newInstance(news.getTitle().toString(), news.getUrl()));
             getAdapter().notifyDataSetChanged();
 
         } catch (Throwable ex) {
@@ -315,7 +317,7 @@ public class NewsListFragment extends BaseTaskListFragment implements ActionBar.
     }
 
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+    public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, ContextMenu.ContextMenuInfo menuInfo) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
         if (info.id == -1) return;
         Object o = getAdapter().getItem((int) info.id);

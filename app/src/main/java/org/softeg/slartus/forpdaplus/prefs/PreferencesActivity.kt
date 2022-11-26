@@ -414,7 +414,7 @@ class PreferencesActivity : BasePreferencesActivity() {
             val tempFile = createImageFile()
             context.contentResolver.openInputStream(uri)?.buffered()?.use { inputStream ->
                 FileOutputStream(tempFile, false).use { outputStream ->
-                    FileUtils.CopyStream(inputStream, outputStream)
+                    inputStream.copyTo(outputStream)
                 }
             }
             return tempFile.absolutePath
