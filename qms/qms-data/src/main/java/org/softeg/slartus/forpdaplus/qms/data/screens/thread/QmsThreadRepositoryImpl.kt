@@ -123,7 +123,9 @@ private suspend fun ProducerScope<UploadState>.uploadPostAttach(
 
 private suspend fun getTempFilePath(context: Context, uri: Uri): String {
     return withContext(Dispatchers.IO) {
-        FilePath.getPath(context, uri) ?: copyFileToTemp(context, uri)
+        val filePath = FilePath.getPath(context, uri)
+        if (filePath != null && File(filePath).canRead()) filePath
+        else copyFileToTemp(context, uri)
     }
 }
 
@@ -135,7 +137,7 @@ private suspend fun copyFileToTemp(context: Context, uri: Uri): String {
         context.contentResolver.openInputStream(uri)?.use { stream ->
             stream.buffered().use { inputStream ->
                 FileOutputStream(tempFile, false).use { outputStream ->
-                    FileUtils.CopyStream(inputStream, outputStream)
+                    inputStream.copyTo(outputStream)
                 }
             }
         }
