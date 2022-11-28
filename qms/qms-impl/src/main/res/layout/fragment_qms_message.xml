@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="48dp"
+    android:orientation="horizontal">
+
+    <ImageButton
+        android:id="@+id/advanced_button"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="bottom"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/additional_input_options"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/plus" />
+
+    <ImageButton
+        android:id="@+id/attaches_button"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="bottom"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/attachments"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/advanced_button"
+        app:srcCompat="@drawable/ic_paperclip" />
+
+    <TextView
+        android:id="@+id/attaches_count_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="2dp"
+        android:layout_marginBottom="4dp"
+        android:textAppearance="@android:style/TextAppearance.Small"
+        app:layout_constraintBottom_toBottomOf="@id/attaches_button"
+        app:layout_constraintEnd_toEndOf="@id/attaches_button"
+        tools:text="1" />
+
+    <EditText
+        android:id="@+id/message_editText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@android:color/transparent"
+        android:hint="@string/message_hint"
+        android:importantForAutofill="no"
+        android:inputType="textCapSentences|textMultiLine"
+        android:maxLines="6"
+        android:minHeight="48dp"
+        android:padding="8dp"
+        android:singleLine="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/send_button"
+        app:layout_constraintStart_toEndOf="@id/attaches_button"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="a\nb\nc\nd\ne\nf\nj" />
+
+    <ImageButton
+        android:id="@+id/send_button"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="bottom"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/send"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/send" />
+</androidx.constraintlayout.widget.ConstraintLayout>
