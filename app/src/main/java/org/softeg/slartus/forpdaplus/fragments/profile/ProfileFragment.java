@@ -460,7 +460,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
             return true;
         });
 
-        menu.findItem(R.id.reputation_item).setOnMenuItemClickListener(item -> {
+        menu.findItem(R.id.profile_reputation_item).setOnMenuItemClickListener(item -> {
             CharSequence[] items = {getString(R.string.look), getString(R.string.change_reputation)};
             new MaterialDialog.Builder(getMainActivity())
                     .title(R.string.reputation)

@@ -9,7 +9,7 @@
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/reputation_item"
+        android:id="@+id/profile_reputation_item"
         android:title="@string/Reputation"
         app:showAsAction="never" />
 
