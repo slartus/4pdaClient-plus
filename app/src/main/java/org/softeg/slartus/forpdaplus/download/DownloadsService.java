@@ -45,7 +45,7 @@ public class DownloadsService {
                             new GetTempUrlTask(context1, uri -> {
                                 try {
                                     Intent marketIntent = new Intent(Intent.ACTION_VIEW, uri);
-                                    context1.startActivity(marketIntent);
+                                    context1.startActivity(Intent.createChooser(marketIntent, "Choose download application"));
                                     if (finish)
                                         ((Activity) context1).finish();
                                 } catch (ActivityNotFoundException e) {
