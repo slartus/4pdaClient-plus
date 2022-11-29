@@ -1,5 +1,7 @@
 package org.softeg.slartus.forpdaplus.download;
 
+import static android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION;
+
 import android.Manifest;
 import android.app.Activity;
 import android.app.DownloadManager;
@@ -17,13 +19,13 @@ import androidx.core.content.ContextCompat;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
-import org.softeg.slartus.forpdacommon.FileUtils;
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdacommon.UrlExtensions;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.ActionSelectDialogFragment;
 import org.softeg.slartus.forpdaplus.common.AppLog;
+import org.softeg.slartus.forpdaplus.common.IntentChooser;
 
 import java.lang.ref.WeakReference;
 import java.net.HttpCookie;
@@ -45,7 +47,12 @@ public class DownloadsService {
                             new GetTempUrlTask(context1, uri -> {
                                 try {
                                     Intent marketIntent = new Intent(Intent.ACTION_VIEW, uri);
-                                    context1.startActivity(Intent.createChooser(marketIntent, "Choose download application"));
+                                    marketIntent
+                                            .addCategory(Intent.CATEGORY_BROWSABLE);
+                                    marketIntent.addFlags(FLAG_GRANT_READ_URI_PERMISSION);
+                                    marketIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+
+                                    IntentChooser.choose(context1, marketIntent, "Choose download application");
                                     if (finish)
                                         ((Activity) context1).finish();
                                 } catch (ActivityNotFoundException e) {

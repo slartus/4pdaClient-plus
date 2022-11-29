@@ -9,6 +9,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.softeg.slartus.forpdacommon.ShowInBrowserException;
 import org.softeg.slartus.forpdaplus.R;
+import org.softeg.slartus.forpdaplus.common.IntentChooser;
 
 /**
  * Created by IntelliJ IDEA.
@@ -36,13 +37,13 @@ public class ShowInBrowserDialog {
                             Intent marketIntent = new Intent(
                                     Intent.ACTION_VIEW,
                                     Uri.parse(url));
-                            context.startActivity(Intent.createChooser(marketIntent, context.getString(R.string.choose)));
+                            IntentChooser.choose(context, marketIntent, context.getString(R.string.choose));
                         }
                     })
                     .negativeText(android.R.string.cancel)
                     .show();
         } catch (Throwable ex) {
-            Log.e(TAG,ex.toString());
+            Log.e(TAG, ex.toString());
         }
 
     }

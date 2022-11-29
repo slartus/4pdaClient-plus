@@ -15,6 +15,7 @@ import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.MenuListDialog;
 import org.softeg.slartus.forpdaplus.common.AppLog;
+import org.softeg.slartus.forpdaplus.common.IntentChooser;
 import org.softeg.slartus.forpdaplus.controls.imageview.ImgViewer;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
 import org.softeg.slartus.forpdaplus.notes.NoteDialog;
@@ -56,7 +57,7 @@ public class ExtUrl {
         }
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setDataAndType(Uri.parse(url), "text/html");
-        context.startActivity(Intent.createChooser(intent, context.getString(R.string.choose)));
+        IntentChooser.choose(context, intent, context.getString(R.string.choose));
     }
 
     public static void shareItUrl(Context context, String url) {
@@ -69,7 +70,7 @@ public class ExtUrl {
         sendMailIntent.putExtra(Intent.EXTRA_TEXT, text);
         sendMailIntent.setType("text/plain");
 
-        context.startActivity(Intent.createChooser(sendMailIntent, context.getString(R.string.chare_via)));
+        IntentChooser.choose(context, sendMailIntent, context.getString(R.string.chare_via));
     }
 
     public static void copyLinkToClipboard(Context context, String link) {

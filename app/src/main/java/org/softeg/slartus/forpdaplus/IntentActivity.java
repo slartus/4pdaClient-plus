@@ -26,6 +26,7 @@ import org.softeg.slartus.forpdacommon.UrlExtensions;
 import org.softeg.slartus.forpdaplus.classes.ForumUser;
 import org.softeg.slartus.forpdaplus.classes.common.StringUtils;
 import org.softeg.slartus.forpdaplus.common.AppLog;
+import org.softeg.slartus.forpdaplus.common.IntentChooser;
 import org.softeg.slartus.forpdaplus.controls.imageview.ImgViewer;
 import org.softeg.slartus.forpdaplus.devdb.ParentFragment;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
@@ -684,7 +685,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
                     Intent.ACTION_VIEW,
                     Uri.parse(url));
             if (is4pdaUrl(url))
-                context.startActivity(Intent.createChooser(intent, context.getString(R.string.open_in)));
+                IntentChooser.choose(context, intent, context.getString(R.string.open_in));
             else {
                 context.startActivity(intent);
             }

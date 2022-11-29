@@ -11,6 +11,7 @@ import android.widget.Toast;
 import org.softeg.slartus.forpdaplus.IntentActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.common.StringUtils;
+import org.softeg.slartus.forpdaplus.common.IntentChooser;
 
 
 /**
@@ -48,7 +49,8 @@ public class DonateActivity extends PreferenceActivity {
             Intent marketIntent = new Intent(
                     Intent.ACTION_VIEW,
                     Uri.parse("https://my.qiwi.com/Artem-Sy0u6mkcdM"));
-            fragment.startActivity(Intent.createChooser(marketIntent, fragment.getString(R.string.Choice)));
+
+            IntentChooser.choose(fragment.getActivity(), marketIntent, fragment.getString(R.string.Choice));
             return true;
         });
 
@@ -56,7 +58,8 @@ public class DonateActivity extends PreferenceActivity {
             Intent marketIntent = new Intent(
                     Intent.ACTION_VIEW,
                     Uri.parse("https://money.yandex.ru/to/41001491859942"));
-            fragment.startActivity(Intent.createChooser(marketIntent, fragment.getString(R.string.Choice)));
+
+            IntentChooser.choose(fragment.getActivity(), marketIntent, fragment.getString(R.string.Choice));
             return true;
         });
 
