@@ -40,7 +40,9 @@ class RemoteAttachmentsDataSource @Inject constructor(private val httpClient: Ap
             formDataParts = params + Pair("code", "upload"),
             onProgressChange = onProgressChange
         )
-        return parseAttachResponse(page) ?: throw NotReportException("Unknown upload error")
+        return parseAttachResponse(page) ?: throw NotReportException(
+            "Unknown upload error"
+        )
     }
 
     suspend fun deleteAttach(attachId: String) {
@@ -60,14 +62,28 @@ class RemoteAttachmentsDataSource @Inject constructor(private val httpClient: Ap
         val code = parts.first().toIntOrNull() ?: 0
         when {
             code == 0 -> return null
-            code == -1 -> throw NotReportException("Нет доступа")
-            code == -2 -> throw NotReportException("Слишком большой размер")
-            code == -3 -> throw NotReportException("Неподдерживаемый тип файла")
-            code == -4 -> throw NotReportException("Запрещен на сервере")
-            code < 0 -> throw NotReportException("Ошибка загрузки: $code")
+            code == -1 -> throw NotReportException(
+                "Нет доступа"
+            )
+            code == -2 -> throw NotReportException(
+                "Слишком большой размер"
+            )
+            code == -3 -> throw NotReportException(
+                "Неподдерживаемый тип файла"
+            )
+            code == -4 -> throw NotReportException(
+                "Запрещен на сервере"
+            )
+            code < 0 -> throw NotReportException(
+                "Ошибка загрузки: $code"
+            )
         }
-        val name = parts.getOrNull(1) ?: throw NotReportException("Name of upload not found")
-        val ext = parts.getOrNull(2) ?: throw NotReportException("Ext of upload not found")
+        val name = parts.getOrNull(1) ?: throw NotReportException(
+            "Name of upload not found"
+        )
+        val ext = parts.getOrNull(2) ?: throw NotReportException(
+            "Ext of upload not found"
+        )
         return Attachment(code.toString(), "$name.$ext")
     }
 }

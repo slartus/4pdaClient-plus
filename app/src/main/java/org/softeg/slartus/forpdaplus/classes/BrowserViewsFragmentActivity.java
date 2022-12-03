@@ -1,25 +1,11 @@
 package org.softeg.slartus.forpdaplus.classes;
 
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.KeyEvent;
-import android.view.View;
 import android.webkit.WebView;
-import android.widget.SeekBar;
-import android.widget.TextView;
 
-import com.afollestad.materialdialogs.MaterialDialog;
+import androidx.appcompat.app.AppCompatActivity;
 
-import org.softeg.slartus.forpdaplus.R;
-import org.softeg.slartus.forpdaplus.prefs.Preferences;
-
-/**
- * Created by IntelliJ IDEA.
- * User: slinkin
- * Date: 16.10.12
- * Time: 8:35
- * To change this template use File | Settings | File Templates.
- */
 public abstract class BrowserViewsFragmentActivity extends AppCompatActivity implements IWebViewContainer {
     public abstract String Prefix();
 
@@ -86,48 +72,4 @@ public abstract class BrowserViewsFragmentActivity extends AppCompatActivity imp
         return super.dispatchKeyEvent(event);
     }
 
-    public void showFontSizeDialog() {
-        View v = getLayoutInflater().inflate(R.layout.font_size_dialog, null);
-
-        assert v != null;
-        final SeekBar seekBar = v.findViewById(R.id.value_seekbar);
-        seekBar.setProgress(Preferences.getFontSize(Prefix()) - 1);
-        final TextView textView = v.findViewById(R.id.value_textview);
-        textView.setText((seekBar.getProgress() + 1) + "");
-
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                getWebView().getSettings().setDefaultFontSize(i + 1);
-                textView.setText((i + 1) + "");
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
-        new MaterialDialog.Builder(this)
-                .title(R.string.font_size)
-                .customView(v,true)
-                .positiveText(R.string.ok)
-                .negativeText(R.string.cancel)
-                .callback(new MaterialDialog.ButtonCallback() {
-                    @Override
-                    public void onPositive(MaterialDialog dialog) {
-                        Preferences.setFontSize(Prefix(), seekBar.getProgress() + 1);
-                    }
-                    @Override
-                    public void onNegative(MaterialDialog dialog) {
-                        getWebView().getSettings().setDefaultFontSize(Preferences.Topic.getFontSize());
-                    }
-                })
-                .show();
-
-    }
 }

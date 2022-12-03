@@ -74,18 +74,6 @@ public class ExtTopic extends Topic implements ForumItem, IListItem, Serializabl
         return m_CurrentPage;
     }
 
-    public void showActivity() {
-        ThemeFragment.showTopicById(m_Id);
-    }
-
-    public void showActivity(String params) {
-        showActivity(m_Id, params);
-    }
-
-    public static void showActivity(CharSequence themeId, CharSequence params) {
-        ThemeFragment.showTopicById(themeId, params);
-    }
-
     public static void showActivity(CharSequence title, CharSequence themeId, CharSequence params) {
         ThemeFragment.showTopicById(title, themeId, params);
     }

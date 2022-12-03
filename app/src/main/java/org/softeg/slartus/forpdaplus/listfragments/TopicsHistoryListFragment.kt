@@ -7,10 +7,8 @@ import android.widget.AdapterView.AdapterContextMenuInfo
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import org.softeg.slartus.forpdaapi.Forum
 import org.softeg.slartus.forpdaapi.IListItem
 import org.softeg.slartus.forpdaapi.ListInfo
-import org.softeg.slartus.forpdacommon.sameContentWith
 import org.softeg.slartus.forpdaplus.Client
 import org.softeg.slartus.forpdaplus.MainActivity
 import org.softeg.slartus.forpdaplus.R

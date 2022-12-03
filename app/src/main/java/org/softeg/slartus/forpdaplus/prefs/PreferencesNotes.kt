@@ -9,26 +9,17 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.Settings
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale
 import androidx.core.content.ContextCompat
-import com.afollestad.materialdialogs.DialogAction
-import com.afollestad.materialdialogs.MaterialDialog
 import org.softeg.slartus.forpdacommon.ExternalStorage
 import org.softeg.slartus.forpdacommon.FileUtils
-import org.softeg.slartus.forpdacommon.NotReportException
 import org.softeg.slartus.forpdaplus.App
-import org.softeg.slartus.forpdaplus.R
 import org.softeg.slartus.forpdaplus.common.AppLog
 import org.softeg.slartus.forpdaplus.controls.OpenFileDialog
 import org.softeg.slartus.forpdaplus.db.NotesDbHelper
 import org.softeg.slartus.forpdaplus.db.NotesTable
-import org.softeg.slartus.forpdaplus.repositories.NotesRepository
 import java.io.File
 import java.util.*
 

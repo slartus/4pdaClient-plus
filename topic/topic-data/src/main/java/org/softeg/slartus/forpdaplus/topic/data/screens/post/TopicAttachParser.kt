@@ -15,7 +15,9 @@ class TopicAttachParser @Inject constructor() {
             .matcher(page)
         if (errorPattern.find()) {
             if ("1" == errorPattern.group(2))
-                throw NotReportException(getStatusMessage(errorPattern.group(1)))
+                throw NotReportException(
+                    getStatusMessage(errorPattern.group(1))
+                )
         }
         val m = Pattern
             .compile(

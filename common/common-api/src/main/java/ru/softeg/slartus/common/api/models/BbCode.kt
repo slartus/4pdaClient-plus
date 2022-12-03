@@ -1,0 +1,25 @@
+package ru.softeg.slartus.common.api.models
+
+enum class BbCode(val code: String) {
+    Bold("B"),
+    Italic("I"),
+    Underline("U"),
+    Strike("S"),
+    Sub("SUB"),
+    Sup("SUP"),
+    Left("LEFT"),
+    Center("CENTER"),
+    Right("RIGHT"),
+    Url("URL"),
+    Quote("QUOTE"),
+    Offtop("OFFTOP"),
+    Code("CODE"),
+    Spoiler("SPOILER"),
+    Hide("HIDE"),
+    List("LIST"),
+    NumList("NUMLIST"),
+    Color("COLOR"),
+    Background("BACKGROUND"),
+    Size("SIZE"),
+    Curator("CUR"),
+}

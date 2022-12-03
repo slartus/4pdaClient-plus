@@ -17,7 +17,6 @@ import androidx.core.content.ContextCompat;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
-import org.softeg.slartus.forpdacommon.FileUtils;
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdacommon.UrlExtensions;
 import org.softeg.slartus.forpdaplus.Client;

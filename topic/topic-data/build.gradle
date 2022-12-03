@@ -40,7 +40,7 @@ dependencies {
     implementation project(':core')
     implementation project(':topic:topic-api')
     implementation project(':hosthelper')
-    implementation project(':forpdacommon')
+    implementation project(':common:common-utils')
 
     api "org.jsoup:jsoup:$rootProject.jsoup"
 

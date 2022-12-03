@@ -163,7 +163,9 @@ object NewsApi {
         val res = ArrayList<News>()
         try {
             var body = httpClient.performGet(url).responseBody
-            if (TextUtils.isEmpty(body)) throw NotReportException("Сервер вернул пустую страницу!")
+            if (TextUtils.isEmpty(body)) throw NotReportException(
+                "Сервер вернул пустую страницу!"
+            )
             val dbf = DocumentBuilderFactory.newInstance()
             val db = dbf.newDocumentBuilder()
             body = normalizeRss(body)

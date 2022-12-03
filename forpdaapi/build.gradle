@@ -30,7 +30,7 @@ android {
 }
 
 dependencies {
-    api project(':forpdacommon')
+    api project(':common:common-utils')
     api project(':sqliteannotations')
     api project(':hosthelper')
     api "org.jsoup:jsoup:$rootProject.jsoup"

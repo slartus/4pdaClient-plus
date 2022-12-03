@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import org.softeg.slartus.forpdaplus.R;
@@ -59,13 +58,10 @@ public class ForumsAdapter extends ArrayAdapter<CheckableForumItem> {
                     .findViewById(R.id.text);
             holder.checkBox = rowView
                     .findViewById(R.id.checkBox);
-            holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    CheckableForumItem item = getItem((int) holder.checkBox.getTag());
-                    item.IsChecked = b;
-                    notifyDataSetChanged();
-                }
+            holder.checkBox.setOnCheckedChangeListener((compoundButton, b) -> {
+                CheckableForumItem item = getItem((int) holder.checkBox.getTag());
+                item.IsChecked = b;
+                notifyDataSetChanged();
             });
 
             rowView.setTag(holder);

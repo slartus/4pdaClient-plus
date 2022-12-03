@@ -12,7 +12,6 @@ import android.widget.Toast
 import com.afollestad.materialdialogs.MaterialDialog
 import com.google.gson.Gson
 import okhttp3.CacheControl
-import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.json.JSONException
 import org.softeg.slartus.forpdacommon.NotReportException
@@ -141,7 +140,10 @@ class ForPdaVersionNotifier(
                 } catch (ex: Exception) {
                     AppLog.e(
                         context,
-                        NotReportException(context.getString(R.string.error_check_new_version), ex)
+                        NotReportException(
+                            context.getString(R.string.error_check_new_version),
+                            ex
+                        )
                     )
                 }
             }

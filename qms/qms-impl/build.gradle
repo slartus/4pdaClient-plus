@@ -41,12 +41,14 @@ dependencies {
     implementation project(':core-res')
     implementation project(":core-lib")
     implementation project(":qms:qms-api")
+    implementation project(':common:common-api')
+    implementation project(':common:common-impl')
 
     implementation "androidx.core:core-ktx:$rootProject.coreCtx"
     implementation "androidx.appcompat:appcompat:$rootProject.appcompat"
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:$rootProject.swiperefreshlayout"
     implementation "androidx.fragment:fragment-ktx:$rootProject.fragmentCtx"
-
+    implementation "androidx.viewpager2:viewpager2:$rootProject.viewpager2"
     implementation "com.google.android.material:material:$rootProject.material"
 
     implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$rootProject.lifecycle"

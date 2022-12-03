@@ -27,7 +27,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.softeg.slartus.forpdaapi.IListItem
 import org.softeg.slartus.forpdaapi.parsers.MentionsParser
 import org.softeg.slartus.forpdaapi.vo.MentionsResult
 import org.softeg.slartus.forpdacommon.FileUtils

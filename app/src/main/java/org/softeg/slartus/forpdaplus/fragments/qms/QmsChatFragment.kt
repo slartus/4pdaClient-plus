@@ -38,6 +38,7 @@ import kotlinx.coroutines.flow.cancellable
 import org.softeg.slartus.forpdaapi.post.EditAttach
 import org.softeg.slartus.forpdacommon.ExtPreferences
 import org.softeg.slartus.forpdacommon.FilePath
+import org.softeg.slartus.forpdacommon.FileUtils
 import org.softeg.slartus.forpdacommon.HtmlOutUtils
 import org.softeg.slartus.forpdanotifyservice.qms.QmsNotifier
 import org.softeg.slartus.forpdaplus.*
@@ -295,8 +296,8 @@ class QmsChatFragment : WebViewFragment() {
             } else if (requestCode == FILECHOOSER_RESULTCODE) {
                 val uri = uriList.firstOrNull()
                 val attachFilePath =
-                    org.softeg.slartus.forpdacommon.FileUtils.getRealPathFromURI(context, uri)
-                val cssData = org.softeg.slartus.forpdacommon.FileUtils.readFileText(attachFilePath)
+                    FileUtils.getRealPathFromURI(context, uri)
+                val cssData = FileUtils.readFileText(attachFilePath)
                     .replace("\\", "\\\\")
                     .replace("'", "\\'").replace("\"", "\\\"").replace("\n", "\\n")
                     .replace("\r", "")

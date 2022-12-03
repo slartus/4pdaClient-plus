@@ -54,7 +54,9 @@ object TopicParser {
             )
                 .matcher(topicBody)
             if (errorMatcher.find()) {
-                throw NotReportException(errorMatcher.group(1))
+                throw NotReportException(
+                    errorMatcher.group(1)
+                )
             }
             val errorPattern =
                 PatternExtensions.compile("<div class=\"errorwrap\">([\\s\\S]*?)</div>")
@@ -63,10 +65,14 @@ object TopicParser {
                 val errorReasonPattern = PatternExtensions.compile("<p>(.*?)</p>")
                 val errorReasonMatcher = errorReasonPattern.matcher(errorMatcher.group(1) ?: "")
                 if (errorReasonMatcher.find()) {
-                    throw NotReportException(errorReasonMatcher.group(1))
+                    throw NotReportException(
+                        errorReasonMatcher.group(1)
+                    )
                 }
             }
-            if (TextUtils.isEmpty(topicBody)) throw NotReportException(context.getString(R.string.server_return_empty_page))
+            if (TextUtils.isEmpty(topicBody)) throw NotReportException(
+                context.getString(R.string.server_return_empty_page)
+            )
             if (topicBody.startsWith("<h1>")) throw NotReportException(
                 context.getString(R.string.site_response) + topicBody.fromHtml()
             )

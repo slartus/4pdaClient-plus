@@ -26,7 +26,7 @@ public class LazyAdapter extends BaseAdapter {
     private static LayoutInflater inflater=null;
     public ImageLoader imageLoader;
 
-    public LazyAdapter(Activity a, String[] d) throws IOException {
+    public LazyAdapter(Activity a, String[] d) {
         data=d;
         inflater = (LayoutInflater) a.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         imageLoader = ImageLoader.getInstance();

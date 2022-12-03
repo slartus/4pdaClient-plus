@@ -1,7 +1,6 @@
 package org.softeg.slartus.forpdaapi.post
 
 import android.text.Html
-import android.text.TextUtils
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 import org.softeg.slartus.forpdaapi.IHttpClient
@@ -420,7 +419,9 @@ object PostApi {
             .matcher(page)
         if (m.find()) {
             if ("1" == m.group(2))
-                throw NotReportException(getStatusMessage(m.group(1)))
+                throw NotReportException(
+                    getStatusMessage(m.group(1))
+                )
         }
     }
 

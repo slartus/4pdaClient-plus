@@ -13,15 +13,4 @@ public class Devices {
             return false;
         return "TF300TG".equalsIgnoreCase(Build.DEVICE);
     }
-
-    public static boolean isNookSimpleTouch() {
-        if (!"nook".equalsIgnoreCase(Build.BRAND))
-            return false;
-        if (!"zoom2".equalsIgnoreCase(Build.BOARD))
-            return false;
-        return "zoom2".equalsIgnoreCase(Build.DEVICE);
-    }
-
-    public static final int NOOK_SIMPLE_TOUCH_RIGHT_NEXTPAGE = 407;
-    public static final int NOOK_SIMPLE_TOUCH_RIGHT_PREVPAGE = 158;
 }

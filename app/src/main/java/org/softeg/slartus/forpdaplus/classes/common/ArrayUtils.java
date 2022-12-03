@@ -15,14 +15,6 @@ public class ArrayUtils {
         return -1;
     }
 
-    public static int indexOf(int needle, int[] haystack) {
-        for (int i = 0; i < haystack.length; i++) {
-            if (haystack[i] == needle) return i;
-        }
-
-        return -1;
-    }
-
     public static int indexOf(String needle, String[] haystack) {
         for (int i = 0; i < haystack.length; i++) {
             if (haystack[i].equals(needle)) return i;

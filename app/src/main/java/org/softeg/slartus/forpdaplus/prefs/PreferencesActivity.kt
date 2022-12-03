@@ -231,7 +231,8 @@ class PreferencesActivity : BasePreferencesActivity() {
                             refreshNotesEnabled()
 
                             AppLog.e(
-                                activity, NotReportException(
+                                activity,
+                                NotReportException(
                                     it.localizedMessage
                                         ?: it.message, it
                                 )

@@ -123,7 +123,11 @@ object QmsApi {
             val m = Pattern.compile(r)
                 .matcher(pageBody)
             if (m.find())
-                throw NotReportException(m.group(1)?.fromHtml()?.toString()?.trim())
+                throw NotReportException(
+                    m.group(
+                        1
+                    )?.fromHtml()?.toString()?.trim()
+                )
         }
     }
 

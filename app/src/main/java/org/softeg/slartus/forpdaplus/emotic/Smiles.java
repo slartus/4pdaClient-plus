@@ -1,148 +1,17 @@
 package org.softeg.slartus.forpdaplus.emotic;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-
-import org.softeg.slartus.forpdaplus.App;
-import org.softeg.slartus.forpdaplus.classes.BbImage;
-import org.softeg.slartus.forpdaplus.classes.common.ExtBitmap;
-
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Hashtable;
 import java.util.Map;
-import java.util.TreeMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-/**
- * Created by IntelliJ IDEA.
- * User: slinkin
- * Date: 17.10.12
- * Time: 9:27
- * To change this template use File | Settings | File Templates.
- */
 public class Smiles extends ArrayList<Smile> {
-
     protected Smiles() {
         fill();
 
     }
 
-    public static Smiles createSmiles() {
-        return new Smiles();
-//        String cssFilePath = MyApp.getInstance().getThemeCssFileName();
-//        if (cssFilePath.startsWith("/android_asset/"))
-//            return new Smiles();
-//        return new SmilesPack(cssFilePath);
-    }
-
-    public void setWeights() {
-        SharedPreferences preferences = App.getInstance().getPreferences();
-        String weights = preferences.getString("smiles.weights", "");
-        Matcher m = Pattern.compile("(.*?):(\\d+);").matcher(weights);
-        while (m.find()) {
-            Smile smile = findByFileName(m.group(1));
-            if (smile == null) continue;
-            smile.Weight = Integer.parseInt(m.group(2));
-        }
-    }
-
-    private void saveWeights() {
-        normalizeWights();
-        App.getInstance().getPreferences().edit()
-                .putString("smiles.weights", getWeightString())
-                .apply();
-
-    }
-
-    private String getWeightString() {
-        StringBuilder sb = new StringBuilder();
-        for (Smile smile : this) {
-            sb.append(smile.FileName).append(":").append(smile.Weight).append(";");
-        }
-        return sb.toString();
-    }
-
-    private void normalizeWights() {
-        int minWeight = Integer.MAX_VALUE;
-        for (Smile smile : this) {
-            minWeight = Math.min(minWeight, smile.Weight);
-        }
-        if (minWeight > 0)
-            for (Smile smile : this) {
-                smile.Weight -= 1;
-            }
-    }
-
-    public void sortByWeights() {
-        Collections.sort(this, new Comparator<Smile>() {
-            @Override
-            public int compare(Smile lhs, Smile rhs) {
-                if (lhs.Weight == rhs.Weight)
-                    return 0;
-                return lhs.Weight > rhs.Weight ? -1 : 1;
-            }
-        });
-    }
-
-    public void addWeight(Smile smile) {
-        smile.Weight += 1;
-        saveWeights();
-    }
-
-    public Smile findByFileName(String fileName) {
-        for (Smile smile : this) {
-            if (smile.FileName.equals(fileName))
-                return smile;
-        }
-        return null;
-    }
-
-    public String getDirPath() {
-        return "forum/style_emoticons/default/";
-    }
-
-    public String getCssPath() {
-        return "file:///android_asset/forum/style_emoticons";
-    }
-
-    public BbImage[] getFilesList() {
-        setWeights();
-        sortByWeights();
-
-        BbImage[] res = new BbImage[size()];
-        String path = getDirPath();
-        for (int i = 0; i < size(); i++) {
-            res[i] = new BbImage(path, this.get(i).FileName, this.get(i).HtmlText);
-        }
-        return res;
-    }
-
-    public static String getPattern(String value, Hashtable<String, String> emoticsDict, String path) {
-
-
-        SmilesComparator bvc = new SmilesComparator(emoticsDict);
-        TreeMap<String, String> sorted_map = new TreeMap<String, String>(bvc);
-        sorted_map.putAll(emoticsDict);
-        StringBuilder sb=new StringBuilder();
-        for (Map.Entry<String, String> entry : sorted_map.entrySet()) {
-            String emo = entry.getKey();
-            if (!emo.startsWith(":") || !emo.endsWith(":")) {
-                value = value.replaceAll("(^|\\s+)" + Pattern.quote(emo) + "($|\\s+)", String.format("$1<img src=\"%s%s\"/>$2", path, entry.getValue()));
-            } else
-                value = value.replaceAll("(^|.)" + Pattern.quote(emo) + "($|.)", String.format("$1<img src=\"%s%s\"/>$2", path, entry.getValue()));
-
-        }
-        return value;
-
-    }
-
     public static Hashtable<String, String> getSmilesDict() {
-        Hashtable<String, String> res = new Hashtable<String, String>();
+        Hashtable<String, String> res = new Hashtable<>();
         res.put(":happy:", "happy.gif");
         res.put(";)", "wink.gif");
         res.put(":P", "tongue.gif");
@@ -337,10 +206,4 @@ public class Smiles extends ArrayList<Smile> {
                     , entry.getValue()));
         }
     }
-
-    public static Bitmap getBitmap(Context context, String filePath) throws IOException {
-        return ExtBitmap.getBitmapFromAsset(context, filePath);
-    }
-
-
 }

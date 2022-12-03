@@ -13,6 +13,13 @@
         android:orientation="vertical"
         style="?post_panel">
 
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragment_message"
+            android:name="org.softeg.slartus.forpdaplus.common.impl.screens.fragments.MessageFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
         <FrameLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -113,13 +120,6 @@
                 android:src="?arrow_down" />
         </LinearLayout>
     </FrameLayout>
-    <!--<android.support.v4.widget.SwipeRefreshLayout-->
-    <!--android:id="@+id/ptr_layout"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:fitsSystemWindows="true"-->
-    <!--android:layout_above="@+id/message_panel">-->
-    <!--</android.support.v4.widget.SwipeRefreshLayout>-->
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="6dp"

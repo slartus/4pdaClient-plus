@@ -11,7 +11,6 @@ import org.softeg.slartus.forpdaapi.FavTopic
 import org.softeg.slartus.forpdaapi.ListInfo
 import org.softeg.slartus.forpdaapi.TopicsApi
 import org.softeg.slartus.forpdacommon.ExtPreferences
-import org.softeg.slartus.forpdanotifyservice.BuildConfig
 import org.softeg.slartus.forpdanotifyservice.NotifierBase
 import org.softeg.slartus.hosthelper.HostHelper
 import java.util.*

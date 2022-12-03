@@ -21,7 +21,6 @@ import com.nostra13.universalimageloader.core.ImageLoader
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChanged
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
