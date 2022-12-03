@@ -21,6 +21,7 @@ import android.widget.*
 import com.afollestad.materialdialogs.DialogAction
 import com.afollestad.materialdialogs.MaterialDialog
 import kotlinx.android.synthetic.main.device_edit.*
+import org.softeg.slartus.forpdacommon.FilePath
 import org.softeg.slartus.forpdacommon.FileUtils
 import org.softeg.slartus.forpdacommon.NotReportException
 import org.softeg.slartus.forpdacommon.loadAssetsText
@@ -29,9 +30,9 @@ import org.softeg.slartus.forpdaplus.AppTheme.currentTheme
 import org.softeg.slartus.forpdaplus.AppTheme.getThemeCssFileName
 import org.softeg.slartus.forpdaplus.IntentActivity
 import org.softeg.slartus.forpdaplus.R
-import org.softeg.slartus.forpdacommon.FilePath
 import org.softeg.slartus.forpdaplus.classes.InputFilterMinMax
 import org.softeg.slartus.forpdaplus.common.AppLog
+import org.softeg.slartus.forpdaplus.common.IntentChooser.choose
 import org.softeg.slartus.forpdaplus.fragments.base.ProgressDialog
 import org.softeg.slartus.forpdaplus.fragments.topic.ThemeFragment
 import org.softeg.slartus.forpdaplus.listtemplates.ListCore
@@ -899,7 +900,8 @@ class PreferencesActivity : BasePreferencesActivity() {
             sendMailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.Recomend))
             sendMailIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.RecommendText))
             sendMailIntent.type = "text/plain"
-            startActivity(Intent.createChooser(sendMailIntent, getString(R.string.SendBy_)))
+
+            choose(activity, sendMailIntent, getString(R.string.SendBy_))
         }
 
         private fun showAboutHistory() {
