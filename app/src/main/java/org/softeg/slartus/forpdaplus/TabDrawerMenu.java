@@ -5,10 +5,12 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.os.Handler;
 import android.os.Process;
+
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -280,5 +282,11 @@ public class TabDrawerMenu {
                 .onNegative((materialDialog, dialogAction) -> close())
                 .show();
     }
+
+
+    public void onDestroy() {
+        adapter = null;
+    }
+
 }
 

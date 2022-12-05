@@ -12,7 +12,7 @@ interface Settings {
 
     suspend fun putString(key: String, value: String)
 
-    suspend fun getString(key: String, defaultValue: String?): String?
+    suspend fun getString(key: String, defaultValue: String? = null): String?
 }
 
 suspend fun Settings.putStringList(key: String, value: List<String>) {
@@ -31,4 +31,9 @@ suspend inline fun <reified T> Settings.putList(key: String, value: List<T>) {
 suspend inline fun <reified T> Settings.getList(key: String, defaultValue: List<T>?): List<T>? =
     getString(key, defaultValue?.let { Json.encodeToString(it) })?.let {
         Json.decodeFromString(it)
+    }
+
+suspend inline fun <reified E : Enum<E>> Settings.getEnum(key: String): E? =
+    getString(key)?.let { value ->
+        enumValues<E>().find { it.name.equals(value, ignoreCase = true) }
     }

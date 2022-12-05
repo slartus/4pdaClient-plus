@@ -9,13 +9,11 @@ public class ReviewsModel {
     private final String mReviewImgLink;
     private final String mReviewTitle;
     private final String mReviewDate;
-    private final String mReviewsDescription;
 
-    public ReviewsModel(String reviewDate, String reviewImgLink, String reviewLink, String reviewsDescription, String reviewTitle) {
+    public ReviewsModel(String reviewDate, String reviewImgLink, String reviewLink, String reviewTitle) {
         mReviewDate = reviewDate;
         mReviewImgLink = reviewImgLink;
         mReviewLink = reviewLink;
-        mReviewsDescription = reviewsDescription;
         mReviewTitle = reviewTitle;
     }
 
@@ -29,10 +27,6 @@ public class ReviewsModel {
 
     public String getReviewLink() {
         return mReviewLink;
-    }
-
-    public String getReviewsDescription() {
-        return mReviewsDescription;
     }
 
     public String getReviewTitle() {

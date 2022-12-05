@@ -108,7 +108,6 @@ public class SettingsQuickView extends BaseQuickView {
     CheckBox enableEmotics;
     CheckBox enableSign;
     Button extendedFormButton;
-    Button attachesButton;
 
 
     private CharSequence getPostBody() {

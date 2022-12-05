@@ -1,6 +1,5 @@
 package org.softeg.slartus.forpdaplus.devdb.model;
 
-import java.util.ArrayList;
 
 /**
  * Created by isanechek on 17.11.15.
@@ -11,18 +10,14 @@ public class CommentsModel {
     private final String mCommentUserName;
     private final String mCommentDate;
     private final String mCommentText;
-    private final String mCommentRatingText;
     private final String mCommentRatingNum;
-    private final ArrayList<String> mRatingList;
 
-    public CommentsModel(String commentDate, String commentRatingNum, String commentRatingText, String commentText, String commentUserLink, String commentUserName, ArrayList<String> listRating) {
+    public CommentsModel(String commentDate, String commentRatingNum, String commentText, String commentUserLink, String commentUserName) {
         mCommentDate = commentDate;
         mCommentRatingNum = commentRatingNum;
-        mCommentRatingText = commentRatingText;
         mCommentText = commentText;
         mCommentUserLink = commentUserLink;
         mCommentUserName = commentUserName;
-        mRatingList = listRating;
     }
 
     public String getCommentDate() {
@@ -33,9 +28,6 @@ public class CommentsModel {
         return mCommentRatingNum;
     }
 
-    public String getCommentRatingText() {
-        return mCommentRatingText;
-    }
 
     public String getCommentText() {
         return mCommentText;
@@ -47,9 +39,5 @@ public class CommentsModel {
 
     public String getCommentUserName() {
         return mCommentUserName;
-    }
-
-    public ArrayList<String> getRatingList() {
-        return mRatingList;
     }
 }

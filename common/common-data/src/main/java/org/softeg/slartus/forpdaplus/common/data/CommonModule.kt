@@ -10,6 +10,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import org.softeg.slartus.forpdaplus.common.data.repositories.emotics.EmoticsRepositoryImpl
+import ru.softeg.slartus.common.api.AppTheme
 import ru.softeg.slartus.common.api.Settings
 import ru.softeg.slartus.common.api.repositories.EmoticsRepository
 import javax.inject.Singleton
@@ -36,4 +37,7 @@ interface CommonModuleBinds {
     @Singleton
     fun provideEmoticsRepository(emoticsRepositoryImpl: EmoticsRepositoryImpl): EmoticsRepository
 
+    @Binds
+    @Singleton
+    fun provideAppTheme(appThemeImpl: AppThemeImpl): AppTheme
 }

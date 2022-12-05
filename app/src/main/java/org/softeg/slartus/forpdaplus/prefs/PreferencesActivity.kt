@@ -26,8 +26,9 @@ import org.softeg.slartus.forpdacommon.FileUtils
 import org.softeg.slartus.forpdacommon.NotReportException
 import org.softeg.slartus.forpdacommon.loadAssetsText
 import org.softeg.slartus.forpdaplus.App
+import org.softeg.slartus.forpdaplus.AppTheme
+import org.softeg.slartus.forpdaplus.AppTheme.appStyle
 import org.softeg.slartus.forpdaplus.AppTheme.currentTheme
-import org.softeg.slartus.forpdaplus.AppTheme.getThemeCssFileName
 import org.softeg.slartus.forpdaplus.IntentActivity
 import org.softeg.slartus.forpdaplus.R
 import org.softeg.slartus.forpdaplus.classes.InputFilterMinMax
@@ -43,6 +44,7 @@ import org.softeg.slartus.forpdaplus.styles.CssStyle
 import org.softeg.slartus.forpdaplus.styles.StyleInfoActivity
 import org.softeg.slartus.hosthelper.HostHelper
 import ru.slartus.http.PersistentCookieStore.Companion.getInstance
+import ru.softeg.slartus.common.api.AppStyle.Companion.toOldValue
 import timber.log.Timber
 import java.io.*
 import java.text.SimpleDateFormat
@@ -576,9 +578,9 @@ class PreferencesActivity : BasePreferencesActivity() {
                 val red = view.findViewById<SeekBar>(R.id.red)
                 val green = view.findViewById<SeekBar>(R.id.green)
                 val blue = view.findViewById<SeekBar>(R.id.blue)
-                redTxt.filters = arrayOf<InputFilter>(InputFilterMinMax("0", "255"))
-                greenTxt.filters = arrayOf<InputFilter>(InputFilterMinMax("0", "255"))
-                blueTxt.filters = arrayOf<InputFilter>(InputFilterMinMax("0", "255"))
+                redTxt.filters = arrayOf<InputFilter>(InputFilterMinMax(0, 255))
+                greenTxt.filters = arrayOf<InputFilter>(InputFilterMinMax(0, 255))
+                blueTxt.filters = arrayOf<InputFilter>(InputFilterMinMax(0, 255))
                 redTxt.setText(colors[0].toString())
                 greenTxt.setText(colors[1].toString())
                 blueTxt.setText(colors[2].toString())
@@ -784,7 +786,7 @@ class PreferencesActivity : BasePreferencesActivity() {
         }*/
         private fun showStylesDialog() {
             try {
-                val currentValue = currentTheme
+                val currentValue = appStyle.toOldValue().toString()
                 val newStyleNames = ArrayList<CharSequence>()
                 val newstyleValues = ArrayList<CharSequence>()
                 getStylesList(activity, newStyleNames, newstyleValues)
@@ -823,8 +825,7 @@ class PreferencesActivity : BasePreferencesActivity() {
                             ).show()
                             return@onNeutral
                         }
-                        var stylePath = newstyleValues[selected[0]].toString()
-                        stylePath = getThemeCssFileName(stylePath)
+                        val stylePath = AppTheme.themeCssFileName
                         val xmlPath = stylePath.replace(".css", ".xml")
                         val cssStyle = CssStyle.parseStyle(activity, xmlPath)
                         if (!cssStyle.ExistsInfo) {
@@ -1043,7 +1044,7 @@ class PreferencesActivity : BasePreferencesActivity() {
             for (i in styleNames.indices) {
                 var styleName: CharSequence = styleNames[i]
                 val styleValue: CharSequence = styleValues[i]
-                xmlPath = getThemeCssFileName(styleValue.toString()).replace(".css", ".xml")
+                xmlPath = AppTheme.themeCssFileName.replace(".css", ".xml")
                     .replace("/android_asset/", "")
                 cssStyle = CssStyle.parseStyleFromAssets(context, xmlPath)
                 if (cssStyle.ExistsInfo) styleName = cssStyle.Title

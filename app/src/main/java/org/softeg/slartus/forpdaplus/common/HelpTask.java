@@ -43,10 +43,6 @@ public class HelpTask extends AsyncTask<HelpTask.OnMethodListener, String, Boole
         this.dialog.setContent(progress[0]);
     }
 
-    public void progressUpdate(String... progress) {
-        publishProgress(progress);
-    }
-
     private OnMethodListener m_OnPostMethod;
 
     public void setOnPostMethod(OnMethodListener onPostMethod) {

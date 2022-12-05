@@ -82,7 +82,7 @@ class ParseHelper {
                 val elements1 = element1.getElementsByClass("reviews-list")
                 for (element2 in elements1)
                     dr.add(element2.select("div.line").text())
-                cache.add(CommentsModel(date, ratingNum, ratingText, comment, link, userName, dr))
+                cache.add(CommentsModel(date, ratingNum, comment, link, userName))
             }
         }
         parsed.commentsModels = Gson().toJson(cache)
@@ -134,7 +134,7 @@ class ParseHelper {
             title = element.select(".title").first()?.text().orEmpty()
             date = element.select(".upd").first()?.text().orEmpty()
             description = element.select(".description").first()?.text().orEmpty()
-            cache.add(ReviewsModel(date, imgLink, url, description, title))
+            cache.add(ReviewsModel(date, imgLink, url, title))
         }
         parsed.reviewsModels = Gson().toJson(cache)
     }

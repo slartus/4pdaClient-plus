@@ -44,25 +44,9 @@ public class WebViewExternals {
 
     private Boolean m_KeepScreenOn = false;
 
-
-    protected Boolean getCurrentFullScreen() {
-        Boolean m_CurrentFullScreen = false;
-        return m_CurrentFullScreen;
-    }
-
-    private Window getWindow() {
-        return m_WebViewContainer.getWindow();
-    }
-
-    private ActionBar getSupportActionBar() {
-        return m_WebViewContainer.getSupportActionBar();
-    }
-
     public void onPrepareOptionsMenu() {
 
-
     }
-
 
     public void setWebViewSettings() {
         setWebViewSettings(false);

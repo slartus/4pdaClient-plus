@@ -55,6 +55,8 @@ public class App extends MultiDexApplication {
     ForumRepository forumRepository;
     @Inject
     AppPreferences appPreferences;
+    @Inject
+    ru.softeg.slartus.common.api.AppTheme appTheme;
 
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
     public static String Host = HostHelper.getHost();
@@ -94,6 +96,7 @@ public class App extends MultiDexApplication {
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
 
+        AppTheme.setAppTheme(appTheme);
         initLocale();
 
         initImageLoader(this);

@@ -13,10 +13,10 @@ import org.softeg.slartus.forpdaplus.MainActivity;
  */
 public class DevDbUtils {
 
-    public static void saveTitle(Context context, String title){
+    public static void saveTitle(String title){
         App.getInstance().getPreferences().edit().putString("devdbDeviceTitle", title).apply();
     }
-    public static String getTitle(Context context){
+    public static String getTitle(){
         return App.getInstance().getPreferences().getString("devdbDeviceTitle", "ForPDA");
     }
     // OTHER

@@ -229,16 +229,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
             statusBar = findViewById(R.id.status_bar);
             fakeStatusBar = findViewById(R.id.fakeSB);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                switch (AppTheme.getThemeType()) {
-                    case AppTheme.THEME_TYPE_LIGHT:
-                        statusBar.setBackgroundColor(getResources().getColor(R.color.statusBar_light));
-                        break;
-                    case AppTheme.THEME_TYPE_DARK:
-                        statusBar.setBackgroundColor(getResources().getColor(R.color.statusBar_dark));
-                        break;
-                    default:
-                        statusBar.setBackgroundColor(getResources().getColor(R.color.statusBar_black));
-                }
+                statusBar.setBackgroundColor(getResources().getColor(AppTheme.getStatusBarBackgroundColorResId()));
                 getWindow().getDecorView().post(setStatusBarHeight);
             }
 
@@ -282,6 +273,9 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
     @Override
     protected void onDestroy() {
         Timber.uproot(timberTree);
+        if(mTabDraweMenu!=null) {
+            mTabDraweMenu.onDestroy();
+        }
         super.onDestroy();
     }
 

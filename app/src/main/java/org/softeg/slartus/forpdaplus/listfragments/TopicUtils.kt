@@ -13,7 +13,6 @@ import org.softeg.slartus.forpdaapi.TopicApi
 import org.softeg.slartus.forpdaplus.App
 import org.softeg.slartus.forpdaplus.Client
 import org.softeg.slartus.forpdaplus.R
-import org.softeg.slartus.forpdaplus.classes.ThemeOpenParams
 import org.softeg.slartus.forpdaplus.classes.common.ArrayUtils
 import org.softeg.slartus.forpdaplus.common.AppLog
 import org.softeg.slartus.forpdaplus.db.TopicsHistoryTable
@@ -43,7 +42,7 @@ object TopicUtils {
     @JvmStatic
     fun getUrlArgs(topicId: CharSequence?, openParam: String?, defaultUrlParam: String?): String? {
         if (openParam == null) return defaultUrlParam
-        if (openParam == ThemeOpenParams.BROWSER) return ""
+        if (openParam == "browser") return ""
         if (openParam == Topic.NAVIGATE_VIEW_FIRST_POST) return ""
         if (openParam == Topic.NAVIGATE_VIEW_LAST_POST) return "view=getlastpost"
         if (openParam == Topic.NAVIGATE_VIEW_NEW_POST) return "view=getnewpost"

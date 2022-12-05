@@ -82,7 +82,7 @@ public class StyleInfoActivity extends BrowserViewsFragmentActivity {
     }
 
     private void showStyle(String stylePath) {
-        stylePath = AppTheme.getThemeCssFileName(stylePath);
+        stylePath = AppTheme.getThemeCssFileName();
         String xmlPath = stylePath.replace(".css", ".xml");
         CssStyle cssStyle = CssStyle.parseStyle(this, xmlPath);
         if (!cssStyle.ExistsInfo) {
