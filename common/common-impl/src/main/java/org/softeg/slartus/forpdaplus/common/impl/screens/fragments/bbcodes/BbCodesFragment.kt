@@ -22,6 +22,7 @@ import org.softeg.slartus.forpdaplus.common.impl.R
 import org.softeg.slartus.forpdaplus.common.impl.databinding.FragmentBbcodesBinding
 import org.softeg.slartus.forpdaplus.common.impl.screens.fragments.emotics.*
 import org.softeg.slartus.forpdaplus.core_lib.ui.fragments.BaseFragment
+import ru.softeg.slartus.common.api.models.BbCode
 
 @AndroidEntryPoint
 class BbCodesFragment : BaseFragment<FragmentBbcodesBinding>(FragmentBbcodesBinding::inflate) {
@@ -76,12 +77,12 @@ class BbCodesFragment : BaseFragment<FragmentBbcodesBinding>(FragmentBbcodesBind
             }
 
             is BbCodesAction.ShowListInputTextDialog ->
-                showListInputTextDialog(action.lineNumber)
+                showListInputTextDialog(action.bbCode, action.lineNumber)
 
         }
     }
 
-    private fun showListInputTextDialog(lineNumber: Int) {
+    private fun showListInputTextDialog(bbCode: BbCode, lineNumber: Int) {
         val context = requireContext()
 
         val input = EditText(context).apply {
@@ -99,15 +100,20 @@ class BbCodesFragment : BaseFragment<FragmentBbcodesBinding>(FragmentBbcodesBind
             .customView(layout, true)
             .positiveText(R.string.list_more)
             .onPositive { _, _ ->
-                viewModel.obtainEvent(BbCodesEvent.OnListInput(input.text.toString()))
+                viewModel.obtainEvent(BbCodesEvent.OnListInput(bbCode, input.text.toString()))
             }
             .negativeText(android.R.string.cancel)
             .onNegative { _, _ ->
-                viewModel.obtainEvent(BbCodesEvent.OnListInputCanceled)
+                viewModel.obtainEvent(BbCodesEvent.OnListInputCanceled(bbCode))
             }
             .neutralText(R.string.list_finish)
             .onNeutral { _, _ ->
-                viewModel.obtainEvent(BbCodesEvent.OnListInputFinished(input.text.toString()))
+                viewModel.obtainEvent(
+                    BbCodesEvent.OnListInputFinished(
+                        bbCode,
+                        input.text.toString()
+                    )
+                )
             }
             .showListener {
                 lifecycleScope.launch {

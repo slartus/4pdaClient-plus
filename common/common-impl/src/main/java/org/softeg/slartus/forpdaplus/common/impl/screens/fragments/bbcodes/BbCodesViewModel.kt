@@ -28,9 +28,12 @@ class BbCodesViewModel @Inject constructor(
     override fun obtainEvent(viewEvent: BbCodesEvent) = when (viewEvent) {
         BbCodesEvent.ActionInvoked -> viewAction = null
         is BbCodesEvent.OnUrlClicked -> handleOnUrlClicked(viewEvent.url, viewEvent.textInfo)
-        is BbCodesEvent.OnListInput -> handleOnListInput(viewEvent.text)
-        is BbCodesEvent.OnListInputFinished -> handleOnListInputFinished(viewEvent.text)
-        BbCodesEvent.OnListInputCanceled -> handleOnListInputCanceled()
+        is BbCodesEvent.OnListInput -> handleOnListInput(viewEvent.bbCode, viewEvent.text)
+        is BbCodesEvent.OnListInputFinished -> handleOnListInputFinished(
+            viewEvent.bbCode,
+            viewEvent.text
+        )
+        is BbCodesEvent.OnListInputCanceled -> handleOnListInputCanceled()
     }
 
     private fun fetchData() {
@@ -63,7 +66,8 @@ class BbCodesViewModel @Inject constructor(
         when {
             bbCode == null -> viewAction = BbCodesAction.SendText(code)
             bbCode.simple -> handleSimpleBbCode(textInfo, bbCode)
-            bbCode == BbCode.List -> handleListBbCode(textInfo)
+            bbCode == BbCode.List -> handleListBbCode(bbCode, textInfo)
+            bbCode == BbCode.NumList -> handleListBbCode(bbCode, textInfo)
             else -> TODO()
         }
     }
@@ -84,30 +88,32 @@ class BbCodesViewModel @Inject constructor(
                 if (unClosed > 0) {
                     bbCode.closeTag
                 } else {
-                    bbCode.openTag
+                    bbCode.openTag()
                 }
             }
             else -> {
-                "${bbCode.openTag}$selectedText${bbCode.closeTag}"
+                "${bbCode.openTag()}$selectedText${bbCode.closeTag}"
             }
         }
         viewAction = BbCodesAction.SendText(sendText)
     }
 
-    private fun handleListBbCode(textInfo: TextInfo) {
+    private fun handleListBbCode(bbCode: BbCode, textInfo: TextInfo) {
         val selectedText = textInfo.selectedText
         when (selectedText.length) {
-            0 -> startCollectListItems()
+            0 -> startCollectListItems(bbCode)
             else -> {
-                sendList(selectedText.split("\n"))
+                sendList(bbCode, selectedText.split("\n"))
             }
         }
     }
 
-    private fun sendList(lines: List<String>) {
+    private fun sendList(bbCode: BbCode, lines: List<String>) {
+        val isNumList = bbCode == BbCode.NumList
+        val tagPostfix = if (isNumList) "=1" else ""
         val sendText = buildString {
             appendLine()
-            appendLine(BbCode.List.openTag)
+            appendLine(BbCode.List.openTag(tagPostfix))
             lines
                 .filter { it.isNotEmpty() }
                 .forEach { line ->
@@ -118,23 +124,23 @@ class BbCodesViewModel @Inject constructor(
         viewAction = BbCodesAction.SendText(sendText)
     }
 
-    private fun startCollectListItems() {
+    private fun startCollectListItems(bbCode: BbCode) {
         lines.clear()
-        requestNextLine()
+        requestNextLine(bbCode)
     }
 
-    private fun requestNextLine() {
-        viewAction = BbCodesAction.ShowListInputTextDialog(lines.size + 1)
+    private fun requestNextLine(bbCode: BbCode) {
+        viewAction = BbCodesAction.ShowListInputTextDialog(bbCode, lines.size + 1)
     }
 
-    private fun handleOnListInput(text: String) {
+    private fun handleOnListInput(bbCode: BbCode, text: String) {
         lines += text
-        requestNextLine()
+        requestNextLine(bbCode)
     }
 
-    private fun handleOnListInputFinished(text: String) {
+    private fun handleOnListInputFinished(bbCode: BbCode, text: String) {
         lines += text
-        sendList(lines)
+        sendList(bbCode, lines)
         lines.clear()
     }
 
@@ -165,7 +171,7 @@ class BbCodesViewModel @Inject constructor(
         )
         private val BbCode.simple: Boolean get() = simpleBbCodes.contains(this)
         private val BbCode.closeTag: String get() = "[/${code}]"
-        private val BbCode.openTag: String get() = "[${code}]"
+        private fun BbCode.openTag(tagPostfix: String = "") = "[$code$tagPostfix]"
     }
 }
 
@@ -175,13 +181,13 @@ data class BbCodesState(
 
 sealed class BbCodesAction {
     class SendText(val text: String) : BbCodesAction()
-    class ShowListInputTextDialog(val lineNumber: Int) : BbCodesAction()
+    class ShowListInputTextDialog(val bbCode: BbCode, val lineNumber: Int) : BbCodesAction()
 }
 
 sealed class BbCodesEvent {
     class OnUrlClicked(val url: String, val textInfo: TextInfo) : BbCodesEvent()
-    class OnListInput(val text: String) : BbCodesEvent()
-    class OnListInputFinished(val text: String) : BbCodesEvent()
-    object OnListInputCanceled : BbCodesEvent()
+    class OnListInput(val bbCode: BbCode, val text: String) : BbCodesEvent()
+    class OnListInputFinished(val bbCode: BbCode, val text: String) : BbCodesEvent()
+    class OnListInputCanceled(val bbCode: BbCode) : BbCodesEvent()
     object ActionInvoked : BbCodesEvent()
 }
