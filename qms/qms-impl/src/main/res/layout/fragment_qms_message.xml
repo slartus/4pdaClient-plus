@@ -82,7 +82,5 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/keyboard_height"
         android:visibility="gone"
-
-        android:background="#fff"
         app:layout_constraintBottom_toBottomOf="parent" />
 </LinearLayout>

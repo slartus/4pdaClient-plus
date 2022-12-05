@@ -56,6 +56,12 @@ enum class AppStyleType(val light: Boolean) {
     Black(light = false)
 }
 
+val AppStyle.htmlBackgroundColor:String get() = when (type) {
+    AppStyleType.Light -> "#eeeeee"
+    AppStyleType.Dark -> "#1a1a1a"
+    AppStyleType.Black -> "#000000"
+}
+
 enum class AppAccentColor(val key: String) {
     Pink("pink"),
     Blue("blue"),

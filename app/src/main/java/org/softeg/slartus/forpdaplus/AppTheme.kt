@@ -6,6 +6,7 @@ import kotlinx.coroutines.runBlocking
 import ru.softeg.slartus.common.api.AppAccentColor
 import ru.softeg.slartus.common.api.AppStyle
 import ru.softeg.slartus.common.api.AppStyleType
+import ru.softeg.slartus.common.api.htmlBackgroundColor
 import java.io.File
 
 object AppTheme {
@@ -154,11 +155,7 @@ object AppTheme {
 
     @JvmStatic
     val currentBackgroundColorHtml: String
-        get() = when (appStyle.type) {
-            AppStyleType.Light -> "#eeeeee"
-            AppStyleType.Dark -> "#1a1a1a"
-            AppStyleType.Black -> "#000000"
-        }
+        get() = appStyle.htmlBackgroundColor
 
     @JvmStatic
     val themeStyleWebViewBackground: Int

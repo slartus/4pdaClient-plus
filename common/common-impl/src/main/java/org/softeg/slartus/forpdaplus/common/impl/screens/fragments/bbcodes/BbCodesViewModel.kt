@@ -7,12 +7,17 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 import org.softeg.slartus.forpdaplus.core_lib.viewmodel.BaseViewModel
+import ru.softeg.slartus.common.api.AppStyleType
+import ru.softeg.slartus.common.api.AppTheme
+import ru.softeg.slartus.common.api.htmlBackgroundColor
 import ru.softeg.slartus.common.api.models.BbCode
 import java.util.regex.Pattern
 import javax.inject.Inject
 
 @HiltViewModel
-class BbCodesViewModel @Inject constructor() :
+class BbCodesViewModel @Inject constructor(
+    private val appTheme: AppTheme
+) :
     BaseViewModel<BbCodesState, BbCodesAction, BbCodesEvent>(BbCodesState()) {
     private val lines = mutableListOf<String>()
 
@@ -33,12 +38,13 @@ class BbCodesViewModel @Inject constructor() :
 
     private suspend fun createHtmlPage(): String =
         withContext(Dispatchers.Default) {
+            val style = appTheme.getStyle()
             buildString {
-                append("<html>")
-                append("<body>")
-                //        sb.append("<html><body bgcolor=\"").append(AppTheme.currentBackgroundColorHtml)
-                val path =
-                    "file:///android_asset/forum/style_images/1/folder_editor_buttons_white/"
+                append("<html><body bgcolor=\"${style.htmlBackgroundColor}\"")
+                val path = when (style.type) {
+                    AppStyleType.Light -> "file:///android_asset/forum/style_images/1/folder_editor_buttons_white/"
+                    AppStyleType.Dark, AppStyleType.Black -> "file:///android_asset/forum/style_images/1/folder_editor_buttons_black/"
+                }
                 BbCode.values().forEach { bbCode ->
                     append("<a style=\"text-decoration: none;\" href=\"${bbCode.code}\">")
                     append("<img style=\"display: inline-block;padding: 0.75rem;width: 1.5rem;height: 1.5rem;\" src=\"${path}${bbCode.fileName}\" />")

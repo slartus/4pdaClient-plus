@@ -25,9 +25,14 @@ class EmoticsFragment : BaseFragment<FragmentEmoticsBinding>(FragmentEmoticsBind
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         subscribeToViewModel()
-        binding.webView.webViewClient = EmoticsWebViewClient { url ->
-            viewModel.obtainEvent(EmoticsEvent.OnUrlClicked(url))
-        }
+        binding.webView.webViewClient = EmoticsWebViewClient(
+            onImageClick = { url ->
+                viewModel.obtainEvent(EmoticsEvent.OnUrlClicked(url))
+            },
+            onPageFinished = {
+                binding.webView.visibility = View.VISIBLE
+            }
+        )
     }
 
     private fun subscribeToViewModel() {
@@ -94,7 +99,10 @@ interface EmoticsListener {
     fun onEmoticSelected(text: String)
 }
 
-private class EmoticsWebViewClient(private val onImageClick: (url: String) -> Unit) :
+private class EmoticsWebViewClient(
+    private val onImageClick: (url: String) -> Unit,
+    private val onPageFinished: () -> Unit
+) :
     WebViewClient() {
 
     @Suppress("OVERRIDE_DEPRECATION")
@@ -106,5 +114,10 @@ private class EmoticsWebViewClient(private val onImageClick: (url: String) -> Un
     override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest): Boolean {
         onImageClick(request.url.toString())
         return true
+    }
+
+    override fun onPageFinished(view: WebView?, url: String?) {
+        super.onPageFinished(view, url)
+        onPageFinished()
     }
 }

@@ -1,19 +1,13 @@
 package org.softeg.slartus.forpdaplus.common.impl.screens.fragments.bbcodes
 
-import android.R
-import android.app.Service
 import android.content.Context
-import android.content.DialogInterface.OnShowListener
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.EditText
 import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -36,14 +30,17 @@ class BbCodesFragment : BaseFragment<FragmentBbcodesBinding>(FragmentBbcodesBind
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         subscribeToViewModel()
-        binding.webView.webViewClient = BbCodesWebViewClient { url ->
-            viewModel.obtainEvent(
-                BbCodesEvent.OnUrlClicked(
+        binding.webView.webViewClient = BbCodesWebViewClient(
+            onImageClick = { url ->
+                viewModel.obtainEvent(BbCodesEvent.OnUrlClicked(
                     url,
                     requireNotNull(bbCodesListener).getTextInfo()
-                )
-            )
-        }
+                ))
+            },
+            onPageFinished = {
+                binding.webView.visibility = View.VISIBLE
+            }
+        )
     }
 
     private fun subscribeToViewModel() {
@@ -98,8 +95,8 @@ class BbCodesFragment : BaseFragment<FragmentBbcodesBinding>(FragmentBbcodesBind
             .cancelable(false)
             .title(title)
             .customView(layout, true)
-            .positiveText(R.string.ok)
-            .negativeText(R.string.cancel)
+            .positiveText(android.R.string.ok)
+            .negativeText(android.R.string.cancel)
             .onPositive { dialog, which ->
 
             }
@@ -158,7 +155,10 @@ class TextInfo(val text: String, val selectionStart: Int, val selectionEnd: Int)
         }
 }
 
-private class BbCodesWebViewClient(private val onImageClick: (url: String) -> Unit) :
+private class BbCodesWebViewClient(
+    private val onImageClick: (url: String) -> Unit,
+    private val onPageFinished: () -> Unit
+) :
     WebViewClient() {
 
     @Suppress("OVERRIDE_DEPRECATION")
@@ -170,5 +170,10 @@ private class BbCodesWebViewClient(private val onImageClick: (url: String) -> Un
     override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest): Boolean {
         onImageClick(request.url.toString())
         return true
+    }
+
+    override fun onPageFinished(view: WebView?, url: String?) {
+        super.onPageFinished(view, url)
+        onPageFinished()
     }
 }

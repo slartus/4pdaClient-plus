@@ -6,14 +6,19 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.softeg.slartus.forpdaplus.core_lib.viewmodel.BaseViewModel
+import ru.softeg.slartus.common.api.AppTheme
+import ru.softeg.slartus.common.api.htmlBackgroundColor
 import ru.softeg.slartus.common.api.models.Emotic
 import ru.softeg.slartus.common.api.repositories.EmoticsRepository
 import javax.inject.Inject
 
 @HiltViewModel
 class EmoticsViewModel @Inject constructor(
+    private val appTheme: AppTheme,
     private val emoticsRepository: EmoticsRepository
-) : BaseViewModel<EmoticsState, EmoticsAction, EmoticsEvent>(EmoticsState()) {
+) : BaseViewModel<EmoticsState, EmoticsAction, EmoticsEvent>(EmoticsState(
+
+)) {
     init {
         fetchData()
     }
@@ -37,8 +42,7 @@ class EmoticsViewModel @Inject constructor(
     ): String =
         withContext(Dispatchers.Default) {
             buildString {
-                append("<html><body>")
-                //        sb.append("<html><body bgcolor=\"").append(AppTheme.currentBackgroundColorHtml)
+                append("<html><body bgcolor=\"${appTheme.getStyle().htmlBackgroundColor}\"")
                 if (favorite.isNotEmpty()) {
                     appendEmotics(favorite)
                     append("<hr/>")

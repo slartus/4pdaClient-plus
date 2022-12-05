@@ -70,7 +70,7 @@ import javax.inject.Inject
  */
 
 @AndroidEntryPoint
-class QmsChatFragment : WebViewFragment() {
+class QmsChatFragment : WebViewFragment()  {
     @Inject
     lateinit var qmsThreadRepository: QmsThreadRepository
 
