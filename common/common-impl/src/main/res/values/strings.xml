@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="list_more">Ещё</string>
+    <string name="list_finish">Завершить</string>
+    <string name="list_next_format">Введите строку %1$d</string>
+</resources>

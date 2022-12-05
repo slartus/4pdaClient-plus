@@ -18,6 +18,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.softeg.slartus.forpdacommon.getListener
 import org.softeg.slartus.forpdacommon.showKeyboard
+import org.softeg.slartus.forpdaplus.common.impl.R
 import org.softeg.slartus.forpdaplus.common.impl.databinding.FragmentBbcodesBinding
 import org.softeg.slartus.forpdaplus.common.impl.screens.fragments.emotics.*
 import org.softeg.slartus.forpdaplus.core_lib.ui.fragments.BaseFragment
@@ -32,10 +33,12 @@ class BbCodesFragment : BaseFragment<FragmentBbcodesBinding>(FragmentBbcodesBind
         subscribeToViewModel()
         binding.webView.webViewClient = BbCodesWebViewClient(
             onImageClick = { url ->
-                viewModel.obtainEvent(BbCodesEvent.OnUrlClicked(
-                    url,
-                    requireNotNull(bbCodesListener).getTextInfo()
-                ))
+                viewModel.obtainEvent(
+                    BbCodesEvent.OnUrlClicked(
+                        url,
+                        requireNotNull(bbCodesListener).getTextInfo()
+                    )
+                )
             },
             onPageFinished = {
                 binding.webView.visibility = View.VISIBLE
@@ -72,17 +75,17 @@ class BbCodesFragment : BaseFragment<FragmentBbcodesBinding>(FragmentBbcodesBind
                 // ignore
             }
 
-            is BbCodesAction.ShowInputTextDialog ->
-                showInputTextDialog(action.title, action.hint)
+            is BbCodesAction.ShowListInputTextDialog ->
+                showListInputTextDialog(action.lineNumber)
 
         }
     }
 
-    private fun showInputTextDialog(title: String, hint: String) {
+    private fun showListInputTextDialog(lineNumber: Int) {
         val context = requireContext()
 
         val input = EditText(context).apply {
-            this.hint = hint
+            this.hint = getString(R.string.list_next_format, lineNumber)
         }
 
         val layout = LinearLayout(context).apply {
@@ -93,15 +96,18 @@ class BbCodesFragment : BaseFragment<FragmentBbcodesBinding>(FragmentBbcodesBind
 
         MaterialDialog.Builder(context)
             .cancelable(false)
-            .title(title)
             .customView(layout, true)
-            .positiveText(android.R.string.ok)
-            .negativeText(android.R.string.cancel)
-            .onPositive { dialog, which ->
-
+            .positiveText(R.string.list_more)
+            .onPositive { _, _ ->
+                viewModel.obtainEvent(BbCodesEvent.OnListInput(input.text.toString()))
             }
-            .onNegative { dialog, which ->
-
+            .negativeText(android.R.string.cancel)
+            .onNegative { _, _ ->
+                viewModel.obtainEvent(BbCodesEvent.OnListInputCanceled)
+            }
+            .neutralText(R.string.list_finish)
+            .onNeutral { _, _ ->
+                viewModel.obtainEvent(BbCodesEvent.OnListInputFinished(input.text.toString()))
             }
             .showListener {
                 lifecycleScope.launch {

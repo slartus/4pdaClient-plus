@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="list_more">More</string>
+    <string name="list_finish">Finish</string>
+    <string name="list_next_format">Enter line %1$d</string>
+</resources>

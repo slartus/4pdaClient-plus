@@ -28,6 +28,9 @@ class BbCodesViewModel @Inject constructor(
     override fun obtainEvent(viewEvent: BbCodesEvent) = when (viewEvent) {
         BbCodesEvent.ActionInvoked -> viewAction = null
         is BbCodesEvent.OnUrlClicked -> handleOnUrlClicked(viewEvent.url, viewEvent.textInfo)
+        is BbCodesEvent.OnListInput -> handleOnListInput(viewEvent.text)
+        is BbCodesEvent.OnListInputFinished -> handleOnListInputFinished(viewEvent.text)
+        BbCodesEvent.OnListInputCanceled -> handleOnListInputCanceled()
     }
 
     private fun fetchData() {
@@ -59,13 +62,13 @@ class BbCodesViewModel @Inject constructor(
         val bbCode = code.toBbCode()
         when {
             bbCode == null -> viewAction = BbCodesAction.SendText(code)
-            bbCode.simple -> sendSimpleBbCode(textInfo, bbCode)
-            bbCode == BbCode.List -> sendListBbCode(textInfo)
+            bbCode.simple -> handleSimpleBbCode(textInfo, bbCode)
+            bbCode == BbCode.List -> handleListBbCode(textInfo)
             else -> TODO()
         }
     }
 
-    private fun sendSimpleBbCode(textInfo: TextInfo, bbCode: BbCode) {
+    private fun handleSimpleBbCode(textInfo: TextInfo, bbCode: BbCode) {
         val selectedText = textInfo.selectedText
         val sendText = when (selectedText.length) {
             0 -> {
@@ -91,34 +94,52 @@ class BbCodesViewModel @Inject constructor(
         viewAction = BbCodesAction.SendText(sendText)
     }
 
-    private fun sendListBbCode(textInfo: TextInfo) {
+    private fun handleListBbCode(textInfo: TextInfo) {
         val selectedText = textInfo.selectedText
         when (selectedText.length) {
             0 -> startCollectListItems()
             else -> {
-                val sendText = buildString {
-                    appendLine()
-                    appendLine(BbCode.List.openTag)
-                    selectedText
-                        .split("\n")
-                        .filter { it.isNotEmpty() }
-                        .forEach { line ->
-                            appendLine("[*] $line")
-                        }
-                    appendLine(BbCode.List.closeTag)
-                }
-                viewAction = BbCodesAction.SendText(sendText)
+                sendList(selectedText.split("\n"))
             }
         }
     }
 
-    private fun startCollectListItems() {
-        lines.clear()
-        requestLine(title = "LIST", hint = "Введите строку ${lines.size + 1}")
+    private fun sendList(lines: List<String>) {
+        val sendText = buildString {
+            appendLine()
+            appendLine(BbCode.List.openTag)
+            lines
+                .filter { it.isNotEmpty() }
+                .forEach { line ->
+                    appendLine("[*] $line")
+                }
+            appendLine(BbCode.List.closeTag)
+        }
+        viewAction = BbCodesAction.SendText(sendText)
     }
 
-    private fun requestLine(title: String, hint: String) {
-        viewAction = BbCodesAction.ShowInputTextDialog(title, hint)
+    private fun startCollectListItems() {
+        lines.clear()
+        requestNextLine()
+    }
+
+    private fun requestNextLine() {
+        viewAction = BbCodesAction.ShowListInputTextDialog(lines.size + 1)
+    }
+
+    private fun handleOnListInput(text: String) {
+        lines += text
+        requestNextLine()
+    }
+
+    private fun handleOnListInputFinished(text: String) {
+        lines += text
+        sendList(lines)
+        lines.clear()
+    }
+
+    private fun handleOnListInputCanceled() {
+        lines.clear()
     }
 
     private companion object {
@@ -131,8 +152,8 @@ class BbCodesViewModel @Inject constructor(
             BbCode.Italic,
             BbCode.Underline,
             BbCode.Strike,
-            BbCode.Sub,
-            BbCode.Sup,
+            BbCode.Subscript,
+            BbCode.Superscript,
             BbCode.Left,
             BbCode.Center,
             BbCode.Right,
@@ -154,11 +175,13 @@ data class BbCodesState(
 
 sealed class BbCodesAction {
     class SendText(val text: String) : BbCodesAction()
-    class ShowInputTextDialog(val title: String, val hint: String) : BbCodesAction()
+    class ShowListInputTextDialog(val lineNumber: Int) : BbCodesAction()
 }
 
 sealed class BbCodesEvent {
     class OnUrlClicked(val url: String, val textInfo: TextInfo) : BbCodesEvent()
-
+    class OnListInput(val text: String) : BbCodesEvent()
+    class OnListInputFinished(val text: String) : BbCodesEvent()
+    object OnListInputCanceled : BbCodesEvent()
     object ActionInvoked : BbCodesEvent()
 }
