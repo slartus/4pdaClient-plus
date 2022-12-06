@@ -2,6 +2,7 @@ package org.softeg.slartus.forpdaplus.common.impl.screens.fragments.bbcodes
 
 import android.content.Context
 import android.os.Bundle
+import android.text.InputType
 import android.view.View
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
@@ -20,6 +21,9 @@ import org.softeg.slartus.forpdacommon.getListener
 import org.softeg.slartus.forpdacommon.showKeyboard
 import org.softeg.slartus.forpdaplus.common.impl.R
 import org.softeg.slartus.forpdaplus.common.impl.databinding.FragmentBbcodesBinding
+import org.softeg.slartus.forpdaplus.common.impl.screens.fragments.bbcodes.models.BbCodesAction
+import org.softeg.slartus.forpdaplus.common.impl.screens.fragments.bbcodes.models.BbCodesEvent
+import org.softeg.slartus.forpdaplus.common.impl.screens.fragments.bbcodes.models.BbCodesState
 import org.softeg.slartus.forpdaplus.common.impl.screens.fragments.emotics.*
 import org.softeg.slartus.forpdaplus.core_lib.ui.fragments.BaseFragment
 import ru.softeg.slartus.common.api.models.BbCode
@@ -78,7 +82,11 @@ class BbCodesFragment : BaseFragment<FragmentBbcodesBinding>(FragmentBbcodesBind
 
             is BbCodesAction.ShowListInputTextDialog ->
                 showListInputTextDialog(action.bbCode, action.lineNumber)
-
+            is BbCodesAction.ShowUrlInputDialog -> showUrlInputDialog(action.bbCode, action.urlText)
+            is BbCodesAction.ShowUrlTextInputDialog -> showUrlTextInputDialog(
+                action.bbCode,
+                action.url
+            )
         }
     }
 
@@ -86,7 +94,7 @@ class BbCodesFragment : BaseFragment<FragmentBbcodesBinding>(FragmentBbcodesBind
         val context = requireContext()
 
         val input = EditText(context).apply {
-            this.hint = getString(R.string.list_next_format, lineNumber)
+            hint = getString(R.string.list_next_format, lineNumber)
         }
 
         val layout = LinearLayout(context).apply {
@@ -115,6 +123,81 @@ class BbCodesFragment : BaseFragment<FragmentBbcodesBinding>(FragmentBbcodesBind
                     )
                 )
             }
+            .showListener {
+                lifecycleScope.launch {
+                    delay(300)
+                    input.showKeyboard()
+                }
+            }.show()
+    }
+
+    private fun showUrlInputDialog(bbCode: BbCode, urlText: String) {
+        val context = requireContext()
+
+        val input = EditText(context).apply {
+            hint = getString(R.string.enter_full_address)
+            inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_WEB_EMAIL_ADDRESS
+            maxLines = 1
+            setText("http://")
+        }
+
+        val layout = LinearLayout(context).apply {
+            setPadding(5, 5, 5, 5)
+            orientation = LinearLayout.VERTICAL
+            addView(input)
+        }
+
+        MaterialDialog.Builder(context)
+            .cancelable(true)
+            .customView(layout, true)
+            .positiveText(android.R.string.ok)
+            .onPositive { _, _ ->
+                viewModel.obtainEvent(
+                    BbCodesEvent.OnUrlInput(
+                        bbCode = bbCode,
+                        urlText = urlText,
+                        url = input.text.toString()
+                    )
+                )
+            }
+            .negativeText(android.R.string.cancel)
+            .showListener {
+                lifecycleScope.launch {
+                    delay(300)
+                    input.showKeyboard()
+                    input.setSelection(input.text.length)
+                }
+            }.show()
+    }
+
+    private fun showUrlTextInputDialog(bbCode: BbCode, url: String) {
+        val context = requireContext()
+
+        val input = EditText(context).apply {
+            hint = getString(R.string.url_enter_text)
+            maxLines = 1
+        }
+
+        val layout = LinearLayout(context).apply {
+            setPadding(5, 5, 5, 5)
+            orientation = LinearLayout.VERTICAL
+            addView(input)
+        }
+
+        MaterialDialog.Builder(context)
+            .cancelable(true)
+            .customView(layout, true)
+            .positiveText(android.R.string.ok)
+            .onPositive { _, _ ->
+                viewModel.obtainEvent(
+                    BbCodesEvent.OnUrlTextInput(
+                        bbCode = bbCode,
+                        urlText = input.text.toString(),
+                        url = url
+                    )
+                )
+            }
+            .negativeText(android.R.string.cancel)
             .showListener {
                 lifecycleScope.launch {
                     delay(300)

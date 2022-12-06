@@ -3,4 +3,6 @@
     <string name="list_more">Ещё</string>
     <string name="list_finish">Завершить</string>
     <string name="list_next_format">Введите строку %1$d</string>
+    <string name="url_enter_full_address">Пожалуйста, введите полный URL адрес</string>
+    <string name="url_enter_text">Пожалуйста, введите заголовок</string>
 </resources>

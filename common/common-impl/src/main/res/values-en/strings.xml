@@ -3,4 +3,6 @@
     <string name="list_more">More</string>
     <string name="list_finish">Finish</string>
     <string name="list_next_format">Enter line %1$d</string>
+    <string name="url_enter_full_address">Please enter full URL</string>
+    <string name="url_enter_text">Please enter title</string>
 </resources>

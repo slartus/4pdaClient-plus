@@ -5,6 +5,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.softeg.slartus.forpdaplus.common.impl.screens.fragments.bbcodes.models.BbCodesAction
+import org.softeg.slartus.forpdaplus.common.impl.screens.fragments.bbcodes.models.BbCodesEvent
+import org.softeg.slartus.forpdaplus.common.impl.screens.fragments.bbcodes.models.BbCodesState
 
 import org.softeg.slartus.forpdaplus.core_lib.viewmodel.BaseViewModel
 import ru.softeg.slartus.common.api.AppStyleType
@@ -34,6 +37,16 @@ class BbCodesViewModel @Inject constructor(
             viewEvent.text
         )
         is BbCodesEvent.OnListInputCanceled -> handleOnListInputCanceled()
+        is BbCodesEvent.OnUrlInput -> handleOnUrlInput(
+            bbCode = viewEvent.bbCode,
+            text = viewEvent.urlText,
+            url = viewEvent.url
+        )
+        is BbCodesEvent.OnUrlTextInput -> handleOnUrlTextInput(
+            bbCode = viewEvent.bbCode,
+            text = viewEvent.urlText,
+            url = viewEvent.url
+        )
     }
 
     private fun fetchData() {
@@ -73,7 +86,24 @@ class BbCodesViewModel @Inject constructor(
     }
 
     private fun handleUrlBbCode(bbCode: BbCode, textInfo: TextInfo) {
+        viewAction = BbCodesAction.ShowUrlInputDialog(bbCode, textInfo.selectedText)
+    }
 
+    private fun handleOnUrlInput(bbCode: BbCode, text: String, url: String) {
+        if (text.isEmpty()) {
+            viewAction = BbCodesAction.ShowUrlTextInputDialog(bbCode = bbCode, url = url)
+        } else {
+            sendUrl(bbCode, text, url)
+        }
+    }
+
+    private fun handleOnUrlTextInput(bbCode: BbCode, text: String, url: String) {
+        sendUrl(bbCode = bbCode, urlText = text, url = url)
+    }
+
+    private fun sendUrl(bbCode: BbCode, urlText: String, url: String) {
+        val sendText = "${bbCode.openTag("=$url")}$urlText${bbCode.closeTag}"
+        viewAction = BbCodesAction.SendText(sendText)
     }
 
     private fun handleSimpleBbCode(bbCode: BbCode, textInfo: TextInfo) {
@@ -179,19 +209,3 @@ class BbCodesViewModel @Inject constructor(
     }
 }
 
-data class BbCodesState(
-    val bbcodesHtml: String? = null
-)
-
-sealed class BbCodesAction {
-    class SendText(val text: String) : BbCodesAction()
-    class ShowListInputTextDialog(val bbCode: BbCode, val lineNumber: Int) : BbCodesAction()
-}
-
-sealed class BbCodesEvent {
-    class OnUrlClicked(val url: String, val textInfo: TextInfo) : BbCodesEvent()
-    class OnListInput(val bbCode: BbCode, val text: String) : BbCodesEvent()
-    class OnListInputFinished(val bbCode: BbCode, val text: String) : BbCodesEvent()
-    class OnListInputCanceled(val bbCode: BbCode) : BbCodesEvent()
-    object ActionInvoked : BbCodesEvent()
-}
