@@ -43,6 +43,7 @@ dependencies {
     implementation project(":qms:qms-api")
     implementation project(':common:common-api')
     implementation project(':common:common-impl')
+    implementation project(':common:common-utils')
 
     implementation "androidx.core:core-ktx:$rootProject.coreCtx"
     implementation "androidx.appcompat:appcompat:$rootProject.appcompat"

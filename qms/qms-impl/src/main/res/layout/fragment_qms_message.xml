@@ -5,8 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:minHeight="48dp">
+    android:minHeight="48dp"
+    android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -71,10 +71,12 @@
             android:layout_gravity="bottom"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/send"
+            android:tint="@color/selectedItemText"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@id/message_editText"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/send" />
+            app:srcCompat="@drawable/send"
+            tools:visibility="visible" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <View

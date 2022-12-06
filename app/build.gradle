@@ -131,6 +131,7 @@ dependencies {
     implementation project(':core')
     implementation project(':core-res')
     api project(':common:common-utils')
+    implementation project(':common:common-impl')
     api project(':forpdanotifyservice')
     api project(':4pdasources')
     api project(':hosthelper')

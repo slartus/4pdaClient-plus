@@ -23,5 +23,7 @@ class MessageViewModel @Inject constructor(
             MessageAction.InsertText(viewEvent.emoticCode)
         is MessageEvent.BbCodeSelected -> viewAction =
             MessageAction.InsertText(viewEvent.bbCodeText)
+        MessageEvent.SendClicked -> viewAction = MessageAction.SendMessage(viewState.message)
+        MessageEvent.ClearRequest -> viewState = viewState.copy(message = "")
     }
 }

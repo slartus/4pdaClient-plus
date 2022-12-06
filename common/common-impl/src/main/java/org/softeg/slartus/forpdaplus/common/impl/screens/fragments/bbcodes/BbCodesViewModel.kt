@@ -65,15 +65,19 @@ class BbCodesViewModel @Inject constructor(
         val bbCode = code.toBbCode()
         when {
             bbCode == null -> viewAction = BbCodesAction.SendText(code)
-            bbCode.simple -> handleSimpleBbCode(textInfo, bbCode)
-            bbCode == BbCode.List -> handleListBbCode(bbCode, textInfo)
-            bbCode == BbCode.NumList -> handleListBbCode(bbCode, textInfo)
+            bbCode.simple -> handleSimpleBbCode(bbCode, textInfo)
+            bbCode in setOf(BbCode.List, BbCode.NumList) -> handleListBbCode(bbCode, textInfo)
+            bbCode == BbCode.Url -> handleUrlBbCode(bbCode, textInfo)
             else -> TODO()
         }
     }
 
-    private fun handleSimpleBbCode(textInfo: TextInfo, bbCode: BbCode) {
-        val selectedText = textInfo.selectedText
+    private fun handleUrlBbCode(bbCode: BbCode, textInfo: TextInfo) {
+
+    }
+
+    private fun handleSimpleBbCode(bbCode: BbCode, textInfo: TextInfo) {
+        val selectedText = textInfo.selectedText.trim()
         val sendText = when (selectedText.length) {
             0 -> {
                 val pattern = Pattern.compile("""\[(\/?)${bbCode.code}""", Pattern.CASE_INSENSITIVE)
@@ -99,7 +103,7 @@ class BbCodesViewModel @Inject constructor(
     }
 
     private fun handleListBbCode(bbCode: BbCode, textInfo: TextInfo) {
-        val selectedText = textInfo.selectedText
+        val selectedText = textInfo.selectedText.trim()
         when (selectedText.length) {
             0 -> startCollectListItems(bbCode)
             else -> {

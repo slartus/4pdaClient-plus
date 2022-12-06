@@ -4,29 +4,20 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ActivityNotFoundException
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.PorterDuff
 import android.net.Uri
 import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.preference.PreferenceManager
-import android.text.Editable
 import android.text.TextUtils
-import android.text.TextWatcher
-import android.util.TypedValue
 import android.view.*
-import android.view.inputmethod.InputMethodManager
 import android.webkit.JavascriptInterface
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageButton
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
@@ -46,7 +37,6 @@ import org.softeg.slartus.forpdaplus.classes.*
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl
 import org.softeg.slartus.forpdaplus.common.AppLog
 import org.softeg.slartus.forpdaplus.common.showProgress
-import org.softeg.slartus.forpdaplus.controls.quickpost.PopupPanelView
 import org.softeg.slartus.forpdaplus.core_lib.coroutines.AppIOScope
 import org.softeg.slartus.forpdaplus.core_lib.coroutines.AppMainScope
 import org.softeg.slartus.forpdaplus.core_lib.extensions.dismissSafe
@@ -56,6 +46,8 @@ import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment
 import org.softeg.slartus.forpdaplus.prefs.HtmlPreferences
 import org.softeg.slartus.forpdaplus.prefs.Preferences
 import org.softeg.slartus.forpdaplus.qms.data.screens.thread.buildHtml
+import org.softeg.slartus.forpdaplus.qms.impl.screens.thread.MessageFragment
+import org.softeg.slartus.forpdaplus.qms.impl.screens.thread.MessageListener
 import ru.softeg.slartus.attachments.api.AttachmentsRepository
 import ru.softeg.slartus.attachments.api.models.UploadState
 import ru.softeg.slartus.qms.api.repositories.QmsThreadRepository
@@ -70,7 +62,7 @@ import javax.inject.Inject
  */
 
 @AndroidEntryPoint
-class QmsChatFragment : WebViewFragment()  {
+class QmsChatFragment : WebViewFragment(), MessageListener {
     @Inject
     lateinit var qmsThreadRepository: QmsThreadRepository
 
@@ -81,7 +73,7 @@ class QmsChatFragment : WebViewFragment()  {
     lateinit var attachmentsRepository: AttachmentsRepository
 
     private var reloadChatJob: Job? = null
-    private var emptyText = true
+
     private val mHandler = Handler()
     private var wvChat: AdvWebView? = null
     private var contactId: String? = null
@@ -89,14 +81,10 @@ class QmsChatFragment : WebViewFragment()  {
     private var contactNick: String? = ""
     private var themeTitle: String? = ""
     private var lastBodyLength: Long = 0
-    private var edMessage: EditText? = null
     private var updateTimeout: Long = 15000
     private var updateTimer = Timer()
     private var htmlPreferences: HtmlPreferences? = null
-    private var mPopupPanelView: PopupPanelView? = null
-    private var messageText: String? = null
-    private var btnAttachments: Button? = null
-
+    private var messageFragment: MessageFragment? = null
     private var mMode: ActionMode? = null
     private var deleteMode: Boolean? = false
     private var messagesCount: Int? = MESSAGES_PAGE_SIZE
@@ -106,7 +94,8 @@ class QmsChatFragment : WebViewFragment()  {
 
     override fun hidePopupWindows() {
         super.hidePopupWindows()
-        mPopupPanelView!!.hidePopupWindow()
+
+        messageFragment?.closePopup()
     }
 
     override fun getWebViewClient(): WebViewClient {
@@ -163,44 +152,8 @@ class QmsChatFragment : WebViewFragment()  {
         htmlPreferences = HtmlPreferences()
         htmlPreferences!!.load(context)
 
-        edMessage = findViewById(R.id.edMessage) as EditText
-        if (mPopupPanelView == null)
-            mPopupPanelView =
-                PopupPanelView(PopupPanelView.VIEW_FLAG_EMOTICS or PopupPanelView.VIEW_FLAG_BBCODES)
-        mPopupPanelView!!.createView(
-            LayoutInflater.from(context),
-            findViewById(R.id.advanced_button) as ImageButton,
-            edMessage
-        )
-        mPopupPanelView!!.activityCreated(mainActivity, view)
-
-        btnSend?.setOnClickListener { startSendMessage() }
-        edMessage!!.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
-
-            override fun afterTextChanged(s: Editable) {
-                if (s.toString().isEmpty()) {
-                    if (!emptyText) {
-                        btnSend?.clearColorFilter()
-                        emptyText = true
-                    }
-                } else {
-                    if (emptyText) {
-                        btnSend?.setColorFilter(
-                            ContextCompat.getColor(
-                                App.getContext(),
-                                R.color.selectedItemText
-                            ), PorterDuff.Mode.SRC_ATOP
-                        )
-                        emptyText = false
-                    }
-                }
-            }
-        })
-
         wvChat = findViewById(R.id.wvChat) as AdvWebView
+        messageFragment = childFragmentManager.findFragmentByTag("fragment_message") as MessageFragment
         registerForContextMenu(wvChat!!)
         wvChat?.apply {
             settings.domStorageEnabled = true
@@ -242,10 +195,10 @@ class QmsChatFragment : WebViewFragment()  {
                 }
             }.start()
         }
-        hideKeyboard()
+        // hideKeyboard()
 
-        btnAttachments = findViewById(R.id.btnAttachments) as Button
-        btnAttachments?.setOnClickListener { showAttachesListDialog() }
+//        btnAttachments = findViewById(R.id.btnAttachments) as Button
+//        btnAttachments?.setOnClickListener { showAttachesListDialog() }
         return view
     }
 
@@ -401,11 +354,6 @@ class QmsChatFragment : WebViewFragment()  {
             }
         }
         return@withContext true
-    }
-
-    private fun hideKeyboard() {
-        val imm = mainActivity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(edMessage!!.windowToken, 0)
     }
 
     @Suppress("unused")
@@ -595,7 +543,6 @@ class QmsChatFragment : WebViewFragment()  {
         outState.putString(NICK_KEY, contactNick)
         outState.putString(TID_KEY, themeId)
         outState.putString(THEME_TITLE_KEY, themeTitle)
-        outState.putString(POST_TEXT_KEY, edMessage!!.text.toString())
         messagesCount?.let {
             outState.putInt(KEY_DAYSCOUNT, it)
         }
@@ -605,8 +552,6 @@ class QmsChatFragment : WebViewFragment()  {
         super.onResume()
         loadPrefs()
         startUpdateTimer()
-        if (mPopupPanelView != null)
-            mPopupPanelView!!.resume()
     }
 
     private fun startAdaptiveTimeOutService() {
@@ -623,8 +568,6 @@ class QmsChatFragment : WebViewFragment()  {
         clearNotifTimer()
         updateTimer.cancel()
         updateTimer.purge()
-        if (mPopupPanelView != null)
-            mPopupPanelView!!.pause()
     }
 
     override fun onStop() {
@@ -636,10 +579,7 @@ class QmsChatFragment : WebViewFragment()  {
     override fun onDestroy() {
         updateTimer.cancel()
         updateTimer.purge()
-        if (mPopupPanelView != null) {
-            mPopupPanelView!!.destroy()
-            mPopupPanelView = null
-        }
+
         super.onDestroy()
 
     }
@@ -754,7 +694,6 @@ class QmsChatFragment : WebViewFragment()  {
                 qmsThreadRepository.sendMessage(
                     userId, threadId, message, attachIds
                 )
-                delay(5000)
             }.onFailure {
                 Timber.e(it)
             }.getOrNull()
@@ -763,7 +702,7 @@ class QmsChatFragment : WebViewFragment()  {
             qmsPageJob.join()
             dialog.dismissSafe()
 
-            edMessage?.text?.clear()
+            messageFragment?.clear()
             clearAttaches()
             reLoadChatSafe()
         }
@@ -789,7 +728,7 @@ class QmsChatFragment : WebViewFragment()  {
             qmsPageJob.join()
             dialog.dismissSafe()
 
-            edMessage?.text?.clear()
+            messageFragment?.clear()
             clearAttaches()
             reLoadChatSafe()
         }
@@ -810,29 +749,6 @@ class QmsChatFragment : WebViewFragment()  {
             }
         }, 0L, updateTimeout)
 
-    }
-
-    private fun startSendMessage() {
-        if (emptyText) {
-            val toast = Toast.makeText(context, R.string.enter_message, Toast.LENGTH_SHORT)
-            toast.setGravity(
-                Gravity.TOP,
-                0,
-                TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP,
-                    64f,
-                    App.getInstance().resources.displayMetrics
-                ).toInt()
-            )
-            toast.show()
-            return
-        }
-        messageText = edMessage?.text.toString()
-        val messageText = messageText ?: return
-        val userId = contactId ?: return
-        val threadId = themeId ?: return
-
-        sendMessage(userId, threadId, messageText, attachList.map { it.id })
     }
 
     override fun Prefix(): String? {
@@ -1014,7 +930,7 @@ class QmsChatFragment : WebViewFragment()  {
     }
 
     private fun refreshAttachmentsInfo() {
-        btnAttachments?.text = attachList.size.toString()
+        //btnAttachments?.text = attachList.size.toString()
     }
 
     companion object {
@@ -1088,6 +1004,13 @@ class QmsChatFragment : WebViewFragment()  {
         }
 
         private const val MY_INTENT_CLICK = 302
+    }
+
+    override fun onSendClick(text: String) {
+        val userId = contactId ?: return
+        val threadId = themeId ?: return
+
+        sendMessage(userId, threadId, text, attachList.map { it.id })
     }
 
 }

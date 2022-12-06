@@ -1,94 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="fill_parent">
 
     <LinearLayout
         android:id="@+id/message_panel"
+        style="?post_panel"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:gravity="center_vertical"
-        android:orientation="vertical"
-        style="?post_panel">
+        android:orientation="vertical">
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragment_message"
-            android:name="org.softeg.slartus.forpdaplus.common.impl.screens.fragments.MessageFragment"
+            android:name="org.softeg.slartus.forpdaplus.qms.impl.screens.thread.MessageFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:tag="fragment_message"
             app:layout_constraintBottom_toBottomOf="parent" />
 
-        <FrameLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="48dp">
-
-            <EditText
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/edMessage"
-                android:minHeight="48dp"
-                android:background="@android:color/transparent"
-                android:hint="@string/message_hint"
-                android:inputType="textCapSentences|textMultiLine"
-                android:minLines="1"
-                android:singleLine="false"
-                android:paddingLeft="8dp"
-                android:paddingTop="8dp"
-                android:paddingRight="16dp"
-                android:paddingBottom="8dp"
-                android:layout_marginLeft="104dp"
-                android:layout_marginRight="56dp"
-                android:maxLines="5" />
-
-            <ImageButton
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                app:srcCompat="@drawable/send"
-                android:id="@+id/btnSend"
-                android:layout_gravity="right|bottom"
-                android:contentDescription="@string/send"/>
-
-            <ImageButton
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                app:srcCompat="@drawable/plus"
-                android:id="@+id/advanced_button"
-                android:layout_gravity="left|bottom"
-                android:contentDescription="@string/additional_input_options" />
-            <Button
-                android:id="@+id/btnAttachments"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:layout_width="wrap_content"
-                android:minWidth="56dp"
-                android:layout_height="48dp"
-                android:drawableLeft="@drawable/ic_paperclip_grey600_24dp"
-                android:text="0"
-                android:layout_marginLeft="48dp"
-                android:paddingLeft="4dp"
-                android:textSize="14sp"
-                android:layout_gravity="left|bottom"
-                android:textColor="#757575"
-                android:contentDescription="@string/show_attachments"/>
-        </FrameLayout>
-
-        <LinearLayout
-            android:id="@+id/footer_for_emoticons"
-            android:layout_width="fill_parent"
-            android:layout_height="@dimen/keyboard_height"
-            android:orientation="vertical"
-            android:visibility="gone" />
     </LinearLayout>
 
     <FrameLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/message_panel">
+        android:layout_above="@id/message_panel"
+        android:orientation="vertical">
 
         <org.softeg.slartus.forpdaplus.classes.AdvWebView
             android:id="@+id/wvChat"
@@ -96,19 +35,19 @@
             android:layout_height="fill_parent" />
 
         <LinearLayout
+            android:id="@+id/arrows"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_gravity="bottom|start"
-            android:id="@+id/arrows">
+            android:orientation="horizontal">
 
             <ImageButton
                 android:id="@+id/btnUp"
                 android:layout_width="48dp"
                 android:layout_height="56dp"
-                android:background="@null"
-                android:layout_marginRight="4dp"
                 android:layout_gravity="center"
+                android:layout_marginRight="4dp"
+                android:background="@null"
                 android:src="?arrow_up" />
 
             <ImageButton
@@ -120,10 +59,10 @@
                 android:src="?arrow_down" />
         </LinearLayout>
     </FrameLayout>
-    <LinearLayout
-        android:layout_width="fill_parent"
+
+    <View
+        android:layout_width="match_parent"
         android:layout_height="6dp"
-        android:orientation="vertical"
-        android:background="@drawable/shadow_to_top"
-        android:layout_above="@id/message_panel" />
+        android:layout_above="@id/message_panel"
+        android:background="@drawable/shadow_to_top"/>
 </RelativeLayout>

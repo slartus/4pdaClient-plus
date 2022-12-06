@@ -1,5 +1,6 @@
 package org.softeg.slartus.forpdaplus.qms.impl.screens.thread
 
+import android.content.Context
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.View
@@ -14,6 +15,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import org.softeg.slartus.forpdacommon.getListener
 import org.softeg.slartus.forpdaplus.common.impl.screens.fragments.BaseMessageFragment
 import org.softeg.slartus.forpdaplus.common.impl.screens.fragments.bbcodes.BbCodesFragment
 import org.softeg.slartus.forpdaplus.common.impl.screens.fragments.bbcodes.BbCodesListener
@@ -36,10 +38,15 @@ class MessageFragment :
     ), IOnBackPressed, EmoticsListener, BbCodesListener {
 
     private var tabLayoutMediator: TabLayoutMediator? = null
-    private val viewModel: MessageViewModel by lazy {
-        val viewModel: MessageViewModel by viewModels()
+    private var onMessageListener: MessageListener? = null
+    private val viewModel: MessageViewModel by viewModels()
 
-        viewModel
+    fun clear() {
+        viewModel.obtainEvent(MessageEvent.ClearRequest)
+    }
+
+    fun closePopup() {
+        super.hidePopupWindow()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -57,6 +64,9 @@ class MessageFragment :
             }
             advancedButton.setOnClickListener {
                 togglePopupWindowVisibility()
+            }
+            sendButton.setOnClickListener {
+                viewModel.obtainEvent(MessageEvent.SendClicked)
             }
         }
         configurePager()
@@ -108,11 +118,11 @@ class MessageFragment :
     }
 
     private fun onAction(action: MessageAction?) {
+        if (action != null)
+            viewModel.obtainEvent(MessageEvent.ActionInvoked)
         when (action) {
-            is MessageAction.InsertText -> {
-                viewModel.obtainEvent(MessageEvent.ActionInvoked)
-                insertText(action.text)
-            }
+            is MessageAction.InsertText -> insertText(action.text)
+            is MessageAction.SendMessage -> onMessageListener?.onSendClick(action.text)
             null -> {
                 // ignore
             }
@@ -156,6 +166,20 @@ class MessageFragment :
             selectionEnd = binding.messageEditText.selectionEnd,
         )
     }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        onMessageListener = getListener<MessageListener>(context)
+    }
+
+    override fun onDetach() {
+        onMessageListener = null
+        super.onDetach()
+    }
+}
+
+interface MessageListener {
+    fun onSendClick(text: String)
 }
 
 private class PagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
