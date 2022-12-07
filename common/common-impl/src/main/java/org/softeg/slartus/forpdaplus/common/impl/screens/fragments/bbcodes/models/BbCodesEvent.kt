@@ -11,4 +11,5 @@ sealed class BbCodesEvent {
     object ActionInvoked : BbCodesEvent()
     class OnUrlInput(val bbCode: BbCode, val urlText: String, val url: String) : BbCodesEvent()
     class OnUrlTextInput(val bbCode: BbCode, val urlText: String, val url: String) : BbCodesEvent()
+    class OnSpoilerTitle(val bbCode: BbCode, val title: String, val text: String) : BbCodesEvent()
 }

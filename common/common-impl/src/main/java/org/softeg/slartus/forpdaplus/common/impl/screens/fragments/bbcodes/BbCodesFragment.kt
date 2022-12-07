@@ -87,7 +87,45 @@ class BbCodesFragment : BaseFragment<FragmentBbcodesBinding>(FragmentBbcodesBind
                 action.bbCode,
                 action.url
             )
+            is BbCodesAction.ShowSpoilerInputDialog -> showSpoilerInputDialog(
+                bbCode = action.bbCode,
+                text = action.selectedText
+            )
         }
+    }
+
+    private fun showSpoilerInputDialog(bbCode: BbCode, text: String) {
+        val context = requireContext()
+
+        val input = EditText(context).apply {
+            hint = getString(R.string.spoiler_title)
+        }
+
+        val layout = LinearLayout(context).apply {
+            setPadding(5, 5, 5, 5)
+            orientation = LinearLayout.VERTICAL
+            addView(input)
+        }
+
+        MaterialDialog.Builder(context)
+            .cancelable(true)
+            .customView(layout, true)
+            .positiveText(android.R.string.ok)
+            .onPositive { _, _ ->
+                viewModel.obtainEvent(
+                    BbCodesEvent.OnSpoilerTitle(
+                        bbCode = bbCode,
+                        title = input.text.toString(),
+                        text = text
+                    )
+                )
+            }
+            .showListener {
+                lifecycleScope.launch {
+                    delay(300)
+                    input.showKeyboard()
+                }
+            }.show()
     }
 
     private fun showListInputTextDialog(bbCode: BbCode, lineNumber: Int) {

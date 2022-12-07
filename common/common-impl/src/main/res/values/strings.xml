@@ -5,4 +5,5 @@
     <string name="list_next_format">Введите строку %1$d</string>
     <string name="url_enter_full_address">Пожалуйста, введите полный URL адрес</string>
     <string name="url_enter_text">Пожалуйста, введите заголовок</string>
+    <string name="spoiler_title">Название спойлера</string>
 </resources>

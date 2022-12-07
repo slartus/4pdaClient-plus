@@ -47,6 +47,23 @@ class BbCodesViewModel @Inject constructor(
             text = viewEvent.urlText,
             url = viewEvent.url
         )
+        is BbCodesEvent.OnSpoilerTitle -> handleOnSpoilerTitle(
+            viewEvent.bbCode,
+            viewEvent.title,
+            viewEvent.text
+        )
+    }
+
+    private fun handleOnSpoilerTitle(bbCode: BbCode, title: String, text: String) {
+        val tagPostfix = if (title.isEmpty()) "" else "=$title"
+        val sendText = buildString {
+            append(bbCode.openTag(tagPostfix))
+            if (text.isNotEmpty()) {
+                append(text)
+                append(bbCode.closeTag)
+            }
+        }
+        viewAction = BbCodesAction.SendText(sendText)
     }
 
     private fun fetchData() {
@@ -81,7 +98,16 @@ class BbCodesViewModel @Inject constructor(
             bbCode.simple -> handleSimpleBbCode(bbCode, textInfo)
             bbCode in setOf(BbCode.List, BbCode.NumList) -> handleListBbCode(bbCode, textInfo)
             bbCode == BbCode.Url -> handleUrlBbCode(bbCode, textInfo)
+            bbCode == BbCode.Spoiler -> handleSpoilerBbCode(bbCode, textInfo)
             else -> TODO()
+        }
+    }
+
+    private fun handleSpoilerBbCode(bbCode: BbCode, textInfo: TextInfo) {
+        viewAction = if (canCloseBbCode(bbCode, textInfo)) {
+            BbCodesAction.SendText(bbCode.closeTag)
+        } else {
+            BbCodesAction.ShowSpoilerInputDialog(bbCode, textInfo.selectedText)
         }
     }
 
@@ -110,16 +136,7 @@ class BbCodesViewModel @Inject constructor(
         val selectedText = textInfo.selectedText.trim()
         val sendText = when (selectedText.length) {
             0 -> {
-                val pattern = Pattern.compile("""\[(\/?)${bbCode.code}""", Pattern.CASE_INSENSITIVE)
-                val matcher = pattern.matcher(textInfo.text.substring(0, textInfo.selectionStart))
-                var unClosed = 0
-                while (matcher.find()) {
-                    if (matcher.group(1).isNullOrEmpty())
-                        unClosed += 1
-                    else
-                        unClosed = (unClosed - 1).coerceAtLeast(0)
-                }
-                if (unClosed > 0) {
+                if (canCloseBbCode(bbCode, textInfo)) {
                     bbCode.closeTag
                 } else {
                     bbCode.openTag()
@@ -206,6 +223,27 @@ class BbCodesViewModel @Inject constructor(
         private val BbCode.simple: Boolean get() = simpleBbCodes.contains(this)
         private val BbCode.closeTag: String get() = "[/${code}]"
         private fun BbCode.openTag(tagPostfix: String = "") = "[$code$tagPostfix]"
+
+
+        private fun canCloseBbCode(bbCode: BbCode, textInfo: TextInfo): Boolean {
+            val selectedText = textInfo.selectedText.trim()
+            if (selectedText.isNotEmpty()) return false
+            val pattern = Pattern.compile("""\[(\/?)${bbCode.code}""", Pattern.CASE_INSENSITIVE)
+            val matcher = pattern.matcher(textInfo.text.substring(0, textInfo.selectionStart))
+            var unClosed = 0
+            while (matcher.find()) {
+                if (matcher.group(1).isNullOrEmpty())
+                    unClosed += 1
+                else
+                    unClosed = (unClosed - 1).coerceAtLeast(0)
+            }
+            if (unClosed > 0) {
+                return true
+            }
+            return false
+        }
+
+
     }
 }
 

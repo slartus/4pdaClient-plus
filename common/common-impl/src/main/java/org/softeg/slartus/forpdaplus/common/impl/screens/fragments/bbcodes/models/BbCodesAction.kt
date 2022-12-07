@@ -7,4 +7,5 @@ sealed class BbCodesAction {
     class ShowListInputTextDialog(val bbCode: BbCode, val lineNumber: Int) : BbCodesAction()
     class ShowUrlInputDialog(val bbCode: BbCode, val urlText: String) : BbCodesAction()
     class ShowUrlTextInputDialog(val bbCode: BbCode, val url: String) : BbCodesAction()
+    class ShowSpoilerInputDialog(val bbCode: BbCode, val selectedText: String) : BbCodesAction()
 }
