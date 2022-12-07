@@ -13,4 +13,5 @@ sealed class BbCodesEvent {
     class OnUrlTextInput(val bbCode: BbCode, val urlText: String, val url: String) : BbCodesEvent()
     class OnSpoilerTitle(val bbCode: BbCode, val title: String, val text: String) : BbCodesEvent()
     class OnSizeSelected(val bbCode: BbCode, val item: String, val text: String) : BbCodesEvent()
+    class OnColorSelected(val bbCode: BbCode, val color: BbColor, val text: String) : BbCodesEvent()
 }

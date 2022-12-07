@@ -1,14 +1,17 @@
 package org.softeg.slartus.forpdaplus.common.impl.screens.fragments.bbcodes
 
 import android.content.Context
+import android.content.res.Configuration
+import android.graphics.Color
 import android.os.Bundle
 import android.text.InputType
+import android.util.TypedValue
 import android.view.View
+import android.view.ViewGroup
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import android.widget.EditText
-import android.widget.LinearLayout
+import android.widget.*
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -17,6 +20,7 @@ import com.afollestad.materialdialogs.MaterialDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.softeg.slartus.forpdacommon.dp
 import org.softeg.slartus.forpdacommon.getListener
 import org.softeg.slartus.forpdacommon.showKeyboard
 import org.softeg.slartus.forpdaplus.common.impl.R
@@ -24,6 +28,7 @@ import org.softeg.slartus.forpdaplus.common.impl.databinding.FragmentBbcodesBind
 import org.softeg.slartus.forpdaplus.common.impl.screens.fragments.bbcodes.models.BbCodesAction
 import org.softeg.slartus.forpdaplus.common.impl.screens.fragments.bbcodes.models.BbCodesEvent
 import org.softeg.slartus.forpdaplus.common.impl.screens.fragments.bbcodes.models.BbCodesState
+import org.softeg.slartus.forpdaplus.common.impl.screens.fragments.bbcodes.models.BbColor
 import org.softeg.slartus.forpdaplus.common.impl.screens.fragments.emotics.*
 import org.softeg.slartus.forpdaplus.core_lib.ui.fragments.BaseFragment
 import ru.softeg.slartus.common.api.models.BbCode
@@ -96,7 +101,67 @@ class BbCodesFragment : BaseFragment<FragmentBbcodesBinding>(FragmentBbcodesBind
                 action.selectedText,
                 action.items
             )
+            is BbCodesAction.ShowColorChooseDialog -> showColorChooseDialog(
+                action.bbCode,
+                action.selectedText,
+                action.colors
+            )
         }
+    }
+
+    private fun showColorChooseDialog(bbCode: BbCode, selectedText: String, colors: List<BbColor>) {
+        val context = requireContext()
+
+        val columnCount =
+            if (context.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 5 else 3
+        val gridLayout = GridLayout(context).apply {
+            this.columnCount = columnCount
+        }
+
+        var dialog: MaterialDialog? = null
+        colors.forEachIndexed { index, bbColor ->
+            val imageButton = Button(context).apply {
+                setBackgroundColor(Color.parseColor(bbColor.htmlValue))
+                setTextColor(if (bbColor.name == "white") Color.BLACK else Color.WHITE)
+                contentDescription = bbColor.name
+                text = bbColor.name
+                setOnClickListener {
+                    dialog?.dismiss()
+                    viewModel.obtainEvent(
+                        BbCodesEvent.OnColorSelected(
+                            bbCode = bbCode,
+                            color = bbColor,
+                            text = selectedText
+                        )
+                    )
+                }
+            }
+            val imgLayoutParams = GridLayout.LayoutParams(
+
+            ).apply {
+                width = GridLayout.LayoutParams.WRAP_CONTENT
+                height = 45.dp(context).toInt()
+                setMargins(2, 2, 2, 2)
+                columnSpec = GridLayout.spec(index % columnCount, 1f)
+                rowSpec = GridLayout.spec(index / columnCount)
+            }
+
+            gridLayout.addView(imageButton, imgLayoutParams)
+        }
+
+        val scrollView = ScrollView(context).apply {
+            addView(
+                gridLayout, ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT
+                )
+            )
+        }
+
+        dialog = MaterialDialog.Builder(context)
+            .cancelable(true)
+            .customView(scrollView, true)
+            .show()
     }
 
     private fun showSizeChooseDialog(bbCode: BbCode, selectedText: String, items: List<String>) {

@@ -5,9 +5,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.softeg.slartus.forpdaplus.common.impl.screens.fragments.bbcodes.models.BbCodesAction
-import org.softeg.slartus.forpdaplus.common.impl.screens.fragments.bbcodes.models.BbCodesEvent
-import org.softeg.slartus.forpdaplus.common.impl.screens.fragments.bbcodes.models.BbCodesState
+import org.softeg.slartus.forpdaplus.common.impl.screens.fragments.bbcodes.models.*
 
 import org.softeg.slartus.forpdaplus.core_lib.viewmodel.BaseViewModel
 import ru.softeg.slartus.common.api.AppStyleType
@@ -52,7 +50,23 @@ class BbCodesViewModel @Inject constructor(
             viewEvent.title,
             viewEvent.text
         )
-        is BbCodesEvent.OnSizeSelected -> handleOnSizeSelected(viewEvent.bbCode, viewEvent.text, viewEvent.item)
+        is BbCodesEvent.OnSizeSelected -> handleOnSizeSelected(
+            viewEvent.bbCode,
+            viewEvent.text,
+            viewEvent.item
+        )
+        is BbCodesEvent.OnColorSelected -> handleOnColorSelected(viewEvent.bbCode, viewEvent.color, viewEvent.text)
+    }
+
+    private fun handleOnColorSelected(bbCode: BbCode, color: BbColor, text: String) {
+        val sendText = buildString {
+            append(bbCode.openTag(color.name))
+            if (text.isNotEmpty()) {
+                append(text)
+                append(bbCode.closeTag)
+            }
+        }
+        viewAction = BbCodesAction.SendText(sendText)
     }
 
     private fun handleOnSizeSelected(bbCode: BbCode, text: String, item: String) {
@@ -109,7 +123,20 @@ class BbCodesViewModel @Inject constructor(
             BbCode.Url -> handleUrlBbCode(bbCode, textInfo)
             BbCode.Spoiler -> handleSpoilerBbCode(bbCode, textInfo)
             BbCode.Size -> handleSizeBbCode(bbCode, textInfo)
+            BbCode.Color, BbCode.Background -> handleColoredBbCode(bbCode, textInfo)
             else -> handleSimpleBbCode(bbCode, textInfo)
+        }
+    }
+
+    private fun handleColoredBbCode(bbCode: BbCode, textInfo: TextInfo) {
+        viewAction = if (canCloseBbCode(bbCode, textInfo)) {
+            BbCodesAction.SendText(bbCode.closeTag)
+        } else {
+            BbCodesAction.ShowColorChooseDialog(
+                bbCode = bbCode,
+                selectedText = textInfo.selectedText,
+                colors = createBbColors()
+            )
         }
     }
 
@@ -118,9 +145,10 @@ class BbCodesViewModel @Inject constructor(
             BbCodesAction.SendText(bbCode.closeTag)
         } else {
             BbCodesAction.ShowSizeChooseDialog(
-                bbCode,
-                textInfo.selectedText,
-                (1..7).map { it.toString() })
+                bbCode = bbCode,
+                selectedText = textInfo.selectedText,
+                items = sizesList
+            )
         }
     }
 
@@ -221,6 +249,7 @@ class BbCodesViewModel @Inject constructor(
     }
 
     private companion object {
+        private val sizesList get() = (1..7).map { it.toString() }
         private val BbCode.fileName: String get() = "${code.lowercase()}.svg"
         private fun String.toBbCode(): BbCode? =
             BbCode.values().find { it.code.equals(this, ignoreCase = true) }
@@ -228,7 +257,6 @@ class BbCodesViewModel @Inject constructor(
         private val BbCode.closeTag: String get() = "[/${code}]"
         private fun BbCode.openTag(tagPostfix: String = "") =
             if (tagPostfix.isEmpty()) "[$code]" else "[$code=$tagPostfix]"
-
 
         private fun canCloseBbCode(bbCode: BbCode, textInfo: TextInfo): Boolean {
             val selectedText = textInfo.selectedText.trim()
@@ -247,8 +275,6 @@ class BbCodesViewModel @Inject constructor(
             }
             return false
         }
-
-
     }
 }
 
