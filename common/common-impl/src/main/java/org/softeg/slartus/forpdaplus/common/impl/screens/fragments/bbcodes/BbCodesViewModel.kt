@@ -52,12 +52,23 @@ class BbCodesViewModel @Inject constructor(
             viewEvent.title,
             viewEvent.text
         )
+        is BbCodesEvent.OnSizeSelected -> handleOnSizeSelected(viewEvent.bbCode, viewEvent.text, viewEvent.item)
+    }
+
+    private fun handleOnSizeSelected(bbCode: BbCode, text: String, item: String) {
+        val sendText = buildString {
+            append(bbCode.openTag(item))
+            if (text.isNotEmpty()) {
+                append(text)
+                append(bbCode.closeTag)
+            }
+        }
+        viewAction = BbCodesAction.SendText(sendText)
     }
 
     private fun handleOnSpoilerTitle(bbCode: BbCode, title: String, text: String) {
-        val tagPostfix = if (title.isEmpty()) "" else "=$title"
         val sendText = buildString {
-            append(bbCode.openTag(tagPostfix))
+            append(bbCode.openTag(title))
             if (text.isNotEmpty()) {
                 append(text)
                 append(bbCode.closeTag)
@@ -92,14 +103,24 @@ class BbCodesViewModel @Inject constructor(
 
     private fun handleOnUrlClicked(url: String, textInfo: TextInfo) {
         val code = url.substringAfterLast('/')
-        val bbCode = code.toBbCode()
-        when {
-            bbCode == null -> viewAction = BbCodesAction.SendText(code)
-            bbCode.simple -> handleSimpleBbCode(bbCode, textInfo)
-            bbCode in setOf(BbCode.List, BbCode.NumList) -> handleListBbCode(bbCode, textInfo)
-            bbCode == BbCode.Url -> handleUrlBbCode(bbCode, textInfo)
-            bbCode == BbCode.Spoiler -> handleSpoilerBbCode(bbCode, textInfo)
-            else -> TODO()
+        when (val bbCode = code.toBbCode()) {
+            null -> viewAction = BbCodesAction.SendText(code)
+            in setOf(BbCode.List, BbCode.NumList) -> handleListBbCode(bbCode, textInfo)
+            BbCode.Url -> handleUrlBbCode(bbCode, textInfo)
+            BbCode.Spoiler -> handleSpoilerBbCode(bbCode, textInfo)
+            BbCode.Size -> handleSizeBbCode(bbCode, textInfo)
+            else -> handleSimpleBbCode(bbCode, textInfo)
+        }
+    }
+
+    private fun handleSizeBbCode(bbCode: BbCode, textInfo: TextInfo) {
+        viewAction = if (canCloseBbCode(bbCode, textInfo)) {
+            BbCodesAction.SendText(bbCode.closeTag)
+        } else {
+            BbCodesAction.ShowSizeChooseDialog(
+                bbCode,
+                textInfo.selectedText,
+                (1..7).map { it.toString() })
         }
     }
 
@@ -128,7 +149,7 @@ class BbCodesViewModel @Inject constructor(
     }
 
     private fun sendUrl(bbCode: BbCode, urlText: String, url: String) {
-        val sendText = "${bbCode.openTag("=$url")}$urlText${bbCode.closeTag}"
+        val sendText = "${bbCode.openTag(url)}$urlText${bbCode.closeTag}"
         viewAction = BbCodesAction.SendText(sendText)
     }
 
@@ -161,7 +182,7 @@ class BbCodesViewModel @Inject constructor(
 
     private fun sendList(bbCode: BbCode, lines: List<String>) {
         val isNumList = bbCode == BbCode.NumList
-        val tagPostfix = if (isNumList) "=1" else ""
+        val tagPostfix = if (isNumList) "1" else ""
         val sendText = buildString {
             appendLine()
             appendLine(BbCode.List.openTag(tagPostfix))
@@ -204,25 +225,9 @@ class BbCodesViewModel @Inject constructor(
         private fun String.toBbCode(): BbCode? =
             BbCode.values().find { it.code.equals(this, ignoreCase = true) }
 
-        private val simpleBbCodes: Set<BbCode> = setOf(
-            BbCode.Bold,
-            BbCode.Italic,
-            BbCode.Underline,
-            BbCode.Strike,
-            BbCode.Subscript,
-            BbCode.Superscript,
-            BbCode.Left,
-            BbCode.Center,
-            BbCode.Right,
-            BbCode.Quote,
-            BbCode.Offtop,
-            BbCode.Code,
-            BbCode.Hide,
-            BbCode.Curator,
-        )
-        private val BbCode.simple: Boolean get() = simpleBbCodes.contains(this)
         private val BbCode.closeTag: String get() = "[/${code}]"
-        private fun BbCode.openTag(tagPostfix: String = "") = "[$code$tagPostfix]"
+        private fun BbCode.openTag(tagPostfix: String = "") =
+            if (tagPostfix.isEmpty()) "[$code]" else "[$code=$tagPostfix]"
 
 
         private fun canCloseBbCode(bbCode: BbCode, textInfo: TextInfo): Boolean {

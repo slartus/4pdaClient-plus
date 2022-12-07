@@ -91,7 +91,32 @@ class BbCodesFragment : BaseFragment<FragmentBbcodesBinding>(FragmentBbcodesBind
                 bbCode = action.bbCode,
                 text = action.selectedText
             )
+            is BbCodesAction.ShowSizeChooseDialog -> showSizeChooseDialog(
+                action.bbCode,
+                action.selectedText,
+                action.items
+            )
         }
+    }
+
+    private fun showSizeChooseDialog(bbCode: BbCode, selectedText: String, items: List<String>) {
+        val context = requireContext()
+
+        MaterialDialog.Builder(context)
+            .title(R.string.sizes_title)
+            .items(items)
+            .itemsCallback { _, _, position, _ ->
+                viewModel.obtainEvent(
+                    BbCodesEvent.OnSizeSelected(
+                        bbCode = bbCode,
+                        item = items[position],
+                        text = selectedText
+                    )
+                )
+            }
+            .cancelable(true)
+            .negativeText(R.string.cancel)
+            .show()
     }
 
     private fun showSpoilerInputDialog(bbCode: BbCode, text: String) {
