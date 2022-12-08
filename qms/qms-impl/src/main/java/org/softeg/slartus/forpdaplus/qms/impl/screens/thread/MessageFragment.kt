@@ -14,8 +14,10 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.softeg.slartus.forpdacommon.getListener
+import org.softeg.slartus.forpdacommon.showKeyboard
 import org.softeg.slartus.forpdaplus.common.impl.screens.fragments.BaseMessageFragment
 import org.softeg.slartus.forpdaplus.common.impl.screens.fragments.bbcodes.BbCodesFragment
 import org.softeg.slartus.forpdaplus.common.impl.screens.fragments.bbcodes.BbCodesListener
@@ -53,15 +55,22 @@ class MessageFragment :
         super.onViewCreated(view, savedInstanceState)
         subscribeToViewModel()
         with(binding) {
-            messageEditText.doOnTextChanged { text, _, _, _ ->
-                viewModel.obtainEvent(MessageEvent.MessageTextChanged(text?.toString().orEmpty()))
+            messageEditText.apply {
+                doOnTextChanged { text, start: Int,
+                                  before: Int,
+                                  count: Int ->
+                    viewModel.obtainEvent(
+                        MessageEvent.MessageTextChanged(text?.toString().orEmpty())
+                    )
+                }
+                setOnFocusChangeListener { _, hasFocus ->
+                    if (hasFocus) hidePopupWindow()
+                }
+                setOnClickListener {
+                    hidePopupWindow()
+                }
             }
-            messageEditText.setOnFocusChangeListener { _, hasFocus ->
-                if (hasFocus) hidePopupWindow()
-            }
-            messageEditText.setOnClickListener {
-                hidePopupWindow()
-            }
+
             advancedButton.setOnClickListener {
                 togglePopupWindowVisibility()
             }
@@ -112,7 +121,9 @@ class MessageFragment :
 
     private fun onState(state: MessageState) {
         with(binding) {
-            messageEditText.setTextKeepState(state.message)
+            messageEditText.apply {
+                setTextKeepState(state.message)
+            }
             sendButton.visibility = if (state.sendButtonVisible) View.VISIBLE else View.GONE
         }
     }
@@ -131,7 +142,14 @@ class MessageFragment :
 
     private fun insertText(text: String) {
         binding.messageEditText.apply {
+            val selectionStart = selectionStart
+            val selectionEnd = selectionEnd
             getText().replace(selectionStart, selectionEnd, text)
+            setSelection(selectionStart + text.length)
+            lifecycleScope.launch {
+                delay(300)
+                showKeyboard()
+            }
         }
     }
 
@@ -162,8 +180,8 @@ class MessageFragment :
     override fun getTextInfo(): TextInfo {
         return TextInfo(
             text = binding.messageEditText.text.toString(),
-            selectionStart = binding.messageEditText.selectionStart,
-            selectionEnd = binding.messageEditText.selectionEnd,
+            binding.messageEditText.selectionStart,
+            binding.messageEditText.selectionEnd
         )
     }
 
