@@ -89,7 +89,10 @@ public class ProfileApi {
             listParams.add(new Pair<>(key, additionalHeaders.get(key)));
         }
         AppResponse response = Http.Companion.getInstance()
-                .performPost("https://" + HostHelper.getHost() + "/forum/index.php?act=auth&return=" + "https://" + HostHelper.getHost() + "/forum/index.php", listParams);
+                .performPost("https://" + HostHelper.getHost() + "/forum/index.php?act=auth&return=" + "https://" + HostHelper.getHost() + "/forum/index.php",
+                        listParams,
+                        "windows-1251"
+                        );
         String res = response.getResponseBody();
 
         if (TextUtils.isEmpty(res)) {
