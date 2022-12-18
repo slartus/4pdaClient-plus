@@ -3,7 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'dagger.hilt.android.plugin'
-
+apply plugin: 'de.mobilej.unmock'
 repositories {
     maven { url "https://jitpack.io" }
     mavenCentral()

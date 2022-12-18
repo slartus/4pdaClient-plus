@@ -1,9 +1,12 @@
 package org.softeg.slartus.forpdaapi.parsers
 
-import android.text.TextUtils
+import org.jsoup.Jsoup
+import org.jsoup.nodes.Element
 import org.softeg.slartus.forpdaapi.vo.MentionsResult
+import org.softeg.slartus.forpdacommon.getQueryParameterOrNull
+import org.softeg.slartus.forpdacommon.toUriOrNull
+import org.softeg.slartus.hosthelper.HostHelper.Companion.host
 import java.io.Serializable
-import java.net.URI
 import java.util.regex.Pattern
 
 /**
@@ -14,9 +17,15 @@ class MentionsParser private constructor() {
         val INSTANCE = MentionsParser()
     }
 
-    private val countPattern = Pattern.compile("\\Wact=mentions[^\"]*\"[^\"]*\\sdata-count=\"(\\d+)\"", Pattern.CASE_INSENSITIVE)
+    private val countPattern = Pattern.compile(
+        "\\Wact=mentions[^\"]*\"[^\"]*\\sdata-count=\"(\\d+)\"",
+        Pattern.CASE_INSENSITIVE
+    )
     private val mentionsPattern = Pattern
-            .compile("<div[^>]*\\sclass=\"[^\"]*topic_title_post[^\"]*\"[^>]*>.*?<a[^>]*href=\"([^\"]*)\"[^>]*>([\\s\\S]*?)<\\/a><\\/div>[\\s\\S]*?<span[^>]*\\sclass=\"[^\"]*post_date[^\"]*\"[^>]*><a[^>]*>([^\\|&]*)<\\/a>[\\s\\S]*?<font color=\"([^\"]*?)\"[\\s\\S]*?showuser=(\\d+)\"[^>]*?>([\\s\\S]*?)(?:<i[\\s\\S]*?\\/i>)?<\\/a>[\\s\\S]*?<div class=\"post_body[^>]*?>([\\s\\S]*?)<\\/div><\\/div>(?=<div[^>]*\\sclass=\"[^\"]*topic_title_post[^\"]*\"[^>]*>|<div><div[^>]*\\sclass=\"[^\"]*pagination[^\"]*\"[^>]*>)", Pattern.CASE_INSENSITIVE)
+        .compile(
+            "<div[^>]*\\sclass=\"[^\"]*topic_title_post[^\"]*\"[^>]*>.*?<a[^>]*href=\"([^\"]*)\"[^>]*>([\\s\\S]*?)<\\/a><\\/div>[\\s\\S]*?<span[^>]*\\sclass=\"[^\"]*post_date[^\"]*\"[^>]*><a[^>]*>([^\\|&]*)<\\/a>[\\s\\S]*?<font color=\"([^\"]*?)\"[\\s\\S]*?showuser=(\\d+)\"[^>]*?>([\\s\\S]*?)(?:<i[\\s\\S]*?\\/i>)?<\\/a>[\\s\\S]*?<div class=\"post_body[^>]*?>([\\s\\S]*?)<\\/div><\\/div>(?=<div[^>]*\\sclass=\"[^\"]*topic_title_post[^\"]*\"[^>]*>|<div><div[^>]*\\sclass=\"[^\"]*pagination[^\"]*\"[^>]*>)",
+            Pattern.CASE_INSENSITIVE
+        )
 
     companion object {
 
@@ -39,21 +48,39 @@ class MentionsParser private constructor() {
     }
 
     private fun parseBody(body: String): List<MentionItem> {
-        val matcher = mentionsPattern.matcher(body)
-        val items = ArrayList<MentionItem>()
-        while (matcher.find()) {
-            val topicUrl = matcher.group(1)
-            val topicTitle = matcher.group(2)
-            val dateTime = matcher.group(3)
-            val userState = if (matcher.group(4) == "red") "" else "online"
-            val userId = matcher.group(5)
-            val userName = matcher.group(6)
-            val postBody = matcher.group(7)
-            items.add(MentionItem(topicUrl, topicTitle, dateTime, userState, userId, userName, postBody))
+        val doc = Jsoup.parse(body, "https://$host")
+        return doc.select(".topic_title_post").mapNotNull { headerElement ->
+            val postUrlElement = headerElement.selectFirst("a[href*=p=]") ?: return@mapNotNull null
+
+            val topicUrl = postUrlElement.attr("href")
+            val topicTitle = postUrlElement.text()
+
+            val dataElement = headerElement.nextSibling() as? Element ?: return@mapNotNull null
+
+            val dateUrlElement =
+                dataElement.selectFirst("span.post_date>a") ?: return@mapNotNull null
+            val dateTime = dateUrlElement.text()
+            val userStateColor = dataElement.selectFirst("span.post_nick>font")?.attr("color")
+            val userState =
+                if (userStateColor?.equals("red", ignoreCase = true) == true) "" else "online"
+
+            val userElement = dataElement.selectFirst("a[arial-label=Меню пользователя]")
+                ?: return@mapNotNull null
+            val userId = userElement.attr("href").toUriOrNull()?.getQueryParameterOrNull("showuser")
+                ?: return@mapNotNull null
+            val userName = userElement.ownText()
+            val postBodyElement = dataElement.selectFirst("div.post_body") ?: return@mapNotNull null
+            val postBody = postBodyElement.html()
+            MentionItem(
+                topicUrl,
+                topicTitle,
+                dateTime,
+                userState,
+                userId,
+                userName,
+                postBody
+            )
         }
-
-
-        return items
     }
 
     private fun parsePages(page: String): MentionsResult {
@@ -62,7 +89,8 @@ class MentionsParser private constructor() {
         //final Pattern paginationPattern = Pattern.compile("<div class=\"pagination\">([\\s\\S]*?)<\\/div><\\/div><br");
 
         val lastPageStartPattern = Pattern.compile("act=mentions[^\"]*st=(\\d+)")
-        val currentPagePattern = Pattern.compile("<span[^>]*\\sclass=\"[^\"]*pagecurrent[^\"]*\"[^>]*>(\\d+)</span>")
+        val currentPagePattern =
+            Pattern.compile("<span[^>]*\\sclass=\"[^\"]*pagecurrent[^\"]*\"[^>]*>(\\d+)</span>")
 
         val searchResult = MentionsResult()
 
@@ -86,10 +114,11 @@ class MentionsParser private constructor() {
 }
 
 class MentionItem(
-        val postUrl: String,
-        val topicTitle: String,
-        val dateTime: String,
-        val userState: String,
-        val userId: String,
-        val userName: String,
-        val body: String) : Serializable
+    val postUrl: String,
+    val topicTitle: String,
+    val dateTime: String,
+    val userState: String,
+    val userId: String,
+    val userName: String,
+    val body: String
+) : Serializable
