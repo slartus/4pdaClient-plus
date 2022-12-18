@@ -24,7 +24,7 @@ class TopicParserTests {
 
         var doc = Jsoup.parse(topicBody)
         var user = TopicParser.parsePostNick(doc)
-        Assert.assertEquals(user.id, null)
+        Assert.assertEquals(user.id, "236113")
         Assert.assertEquals(user.nick, "slartus")
         Assert.assertEquals(user.state, "green")
         Assert.assertEquals(user.avatar, "13/236113-29386826.jpg")
@@ -46,7 +46,7 @@ class TopicParserTests {
                 "</div>"
         doc = Jsoup.parse(topicBody)
         user = TopicParser.parsePostNick(doc)
-        Assert.assertEquals(user.id, null)
+        Assert.assertEquals(user.id, "2566513")
         Assert.assertEquals(user.nick, "Network@Wolk")
         Assert.assertEquals(user.state, "red")
         Assert.assertEquals(user.avatar, "13/2566513-2462157.jpg")
@@ -69,7 +69,7 @@ class TopicParserTests {
                 "</div>"
         doc = Jsoup.parse(topicBody)
         user = TopicParser.parsePostNick(doc)
-        Assert.assertEquals(user.id, null)
+        Assert.assertEquals(user.id, "2346204")
         Assert.assertEquals(user.nick, "vm7")
         Assert.assertEquals(user.state, "red")
         Assert.assertEquals(user.avatar, "04/2346204-13898591.jpg")
