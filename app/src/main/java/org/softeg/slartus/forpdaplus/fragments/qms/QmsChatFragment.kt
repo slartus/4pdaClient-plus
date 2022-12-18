@@ -153,7 +153,8 @@ class QmsChatFragment : WebViewFragment(), MessageListener {
         htmlPreferences!!.load(context)
 
         wvChat = findViewById(R.id.wvChat) as AdvWebView
-        messageFragment = childFragmentManager.findFragmentByTag("fragment_message") as MessageFragment
+        messageFragment =
+            childFragmentManager.findFragmentByTag("fragment_message") as MessageFragment
         registerForContextMenu(wvChat!!)
         wvChat?.apply {
             settings.domStorageEnabled = true
@@ -287,7 +288,7 @@ class QmsChatFragment : WebViewFragment(), MessageListener {
 
         job = lifecycleScope.launch {
             if (!prepareUploadFiles(uris)) return@launch
-            attachmentsRepository.uploadAttaches(uris).cancellable()
+            attachmentsRepository.uploadQmsAttachesFlow(uris).cancellable()
                 .collect { state ->
                     when (state) {
                         UploadState.Init -> dialog.setContent(R.string.sending_file)
@@ -303,12 +304,7 @@ class QmsChatFragment : WebViewFragment(), MessageListener {
                         }
                         is UploadState.AttachUploaded -> {
                             addAttachesToList(
-                                listOf(
-                                    EditAttach(
-                                        state.postAttach.id,
-                                        state.postAttach.name
-                                    )
-                                )
+                                listOf(EditAttach(state.postAttach.id, state.postAttach.name))
                             )
                         }
                         is UploadState.AttachError -> {

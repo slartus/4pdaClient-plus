@@ -12,6 +12,7 @@ import org.softeg.slartus.forpdacommon.UrlExtensions
 import ru.softeg.slartus.attachments.api.models.UploadFileState
 import ru.softeg.slartus.attachments.api.models.UploadState
 import ru.softeg.slartus.attachments.api.AttachmentsRepository
+import ru.softeg.slartus.attachments.api.models.Attachment
 import java.io.File
 import java.io.FileOutputStream
 import javax.inject.Inject
@@ -20,61 +21,93 @@ class AttachmentsRepositoryImpl @Inject constructor(
     @ApplicationContext private val context: Context,
     private val remoteAttachmentsDataSource: RemoteAttachmentsDataSource
 ) : AttachmentsRepository {
-    override suspend fun uploadAttaches(uris: List<Uri>): Flow<UploadState> = channelFlow {
-        send(UploadState.Init)
-        runCatching {
-            uris.forEachIndexed { index, uri ->
-                delay(1000)
-                runCatching {
+    override suspend fun uploadQmsAttachesFlow(uris: List<Uri>): Flow<UploadState> =
+        uploadFlow(uris, remoteAttachmentsDataSource::attachQmsFile)
+
+    override suspend fun uploadTopicAttachesFlow(
+        topicId: String,
+        attachedFileIds: List<String>,
+        uris: List<Uri>
+    ): Flow<UploadState> =
+        uploadFlow(uris, uploadMethod = { fileName, filePath, onProgressChange ->
+            remoteAttachmentsDataSource.attachTopicFile(
+                topicId,
+                attachedFileIds,
+                fileName,
+                filePath,
+                onProgressChange
+            )
+        })
+
+    override suspend fun uploadPostAttachesFlow(
+        postId: String,
+        uris: List<Uri>
+    ): Flow<UploadState> =
+        uploadFlow(uris, uploadMethod = { fileName, filePath, onProgressChange ->
+            remoteAttachmentsDataSource.attachPostFile(
+                postId,
+                fileName,
+                filePath,
+                onProgressChange
+            )
+        })
+
+    private suspend fun uploadFlow(
+        uris: List<Uri>,
+        uploadMethod: suspend (fileName: String, filePath: String, onProgressChange: (percents: Int) -> Unit) -> Attachment
+    ): Flow<UploadState> =
+        channelFlow {
+            send(UploadState.Init)
+            runCatching {
+                uris.forEachIndexed { index, uri ->
                     uploadPostAttach(
                         uri = uri,
-                        uriIndex = index
+                        uriIndex = index,
+                        uploadMethod = uploadMethod
                     )
-                }.onFailure {
-                    if (it !is CancellationException)
-                        send(UploadState.AttachError(uri, it))
+                    delay(1000)
                 }
+            }.onFailure {
+                if (it !is CancellationException)
+                    send(UploadState.Error(it))
+            }.onSuccess {
+                send(UploadState.Completed)
             }
-        }.onFailure {
-            if (it !is CancellationException)
-                send(UploadState.Error(it))
-        }.onSuccess {
-            send(UploadState.Completed)
         }
-    }
 
     private suspend fun ProducerScope<UploadState>.uploadPostAttach(
         uri: Uri,
-        uriIndex: Int
+        uriIndex: Int,
+        uploadMethod: suspend (fileName: String, filePath: String, onProgressChange: (percents: Int) -> Unit) -> Attachment
     ) {
-        send(
-            UploadState.Uploading(
-                index = uriIndex,
-                currentUploadFile = UploadFileState(uri, 0)
+        runCatching {
+            send(
+                UploadState.Uploading(
+                    index = uriIndex,
+                    currentUploadFile = UploadFileState(uri, 0)
+                )
             )
-        )
-        val filePath = getTempFilePath(uri = uri, context = context)
-        val fileName = runCatching { UrlExtensions.getFileNameFromUrl(filePath) }
-            .getOrNull() ?: filePath.substringAfterLast("/")
+            val filePath = getTempFilePath(uri = uri, context = context)
+            val fileName = runCatching { UrlExtensions.getFileNameFromUrl(filePath) }
+                .getOrNull() ?: filePath.substringAfterLast("/")
 
-        val editAttach = withContext(Dispatchers.IO) {
-            val scope = this
-            remoteAttachmentsDataSource.attachFile(
-                fileName = fileName,
-                filePath = filePath,
-                onProgressChange = { percents ->
-                    scope.launch {
-                        send(
-                            UploadState.Uploading(
-                                index = uriIndex,
-                                currentUploadFile = UploadFileState(uri, percents = percents)
-                            )
+
+            val editAttach = uploadMethod(fileName, filePath) { percents ->
+                launch {
+                    send(
+                        UploadState.Uploading(
+                            index = uriIndex,
+                            currentUploadFile = UploadFileState(uri, percents = percents)
                         )
-                    }
+                    )
                 }
-            )
+            }
+
+            send(UploadState.AttachUploaded(uri = uri, postAttach = editAttach))
+        }.onFailure {
+            if (it !is CancellationException)
+                send(UploadState.AttachError(uri, it))
         }
-        send(UploadState.AttachUploaded(uri = uri, postAttach = editAttach))
     }
 
     private suspend fun getTempFilePath(context: Context, uri: Uri): String {

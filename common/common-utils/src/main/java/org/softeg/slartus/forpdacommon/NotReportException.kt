@@ -1,19 +1,12 @@
-package org.softeg.slartus.forpdacommon;
+package org.softeg.slartus.forpdacommon
 
-import java.io.IOException;
+import java.io.IOException
 
-/**
- * User: slinkin
- * Date: 21.10.11
- * Time: 8:03
- */
-public class NotReportException extends IOException {
-    public NotReportException(String message) {
-        super(message);
-    }
+@JvmOverloads
+fun notReportError(message: String?, cause: Throwable? = null): Nothing =
+    throw NotReportException(message, cause)
 
-    public NotReportException(String message, Throwable cause) {
-        super(message);
-        this.initCause(cause);
-    }
-}
+open class NotReportException @JvmOverloads constructor(
+    message: String?,
+    cause: Throwable? = null
+) : IOException(message, cause)

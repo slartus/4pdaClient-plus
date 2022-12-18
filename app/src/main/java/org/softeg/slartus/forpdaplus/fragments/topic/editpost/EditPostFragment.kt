@@ -51,8 +51,9 @@ import org.softeg.slartus.forpdaplus.fragments.topic.editpost.tasks.*
 import org.softeg.slartus.forpdaplus.prefs.Preferences
 import org.softeg.slartus.forpdaplus.tabs.TabsManager
 import org.softeg.slartus.hosthelper.HostHelper
+import ru.softeg.slartus.attachments.api.AttachmentsRepository
+import ru.softeg.slartus.attachments.api.models.UploadState
 import ru.softeg.slartus.forum.api.TopicPostRepository
-import ru.softeg.slartus.forum.api.UploadState
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
@@ -62,6 +63,8 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
 
     @Inject
     lateinit var topicPostRepository: TopicPostRepository
+    @Inject
+    lateinit var attachmentsRepository: AttachmentsRepository
     private var txtPost: EditText? = null
     private var txtPostEditReason: EditText? = null
     private var btnAttachments: Button? = null
@@ -581,7 +584,7 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
 
                 return@launch
             }
-            topicPostRepository.uploadPostAttachesFlow(postId, uris).cancellable()
+            attachmentsRepository.uploadPostAttachesFlow(postId, uris).cancellable()
                 .collect { state ->
                     when (state) {
                         UploadState.Init -> dialog.setContent(R.string.sending_file)
@@ -596,7 +599,7 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
                             setProgress(state.percents)
                         }
                         is UploadState.AttachUploaded -> {
-                            onUpdateTaskSuccess(state.postAttach?.let { postAttach ->
+                            onUpdateTaskSuccess(state.postAttach.let { postAttach ->
                                 EditAttach(postAttach.id, postAttach.name)
                             })
                         }
