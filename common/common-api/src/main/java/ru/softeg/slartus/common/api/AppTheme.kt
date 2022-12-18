@@ -3,6 +3,7 @@ package ru.softeg.slartus.common.api
 interface AppTheme {
     suspend fun getStyle(): AppStyle
     suspend fun getAccentColor(): AppAccentColor
+    suspend fun updateAccentColor(color: AppAccentColor)
 }
 
 enum class AppStyle(val type: AppStyleType) {
@@ -62,10 +63,10 @@ val AppStyle.htmlBackgroundColor:String get() = when (type) {
     AppStyleType.Black -> "#000000"
 }
 
-enum class AppAccentColor(val key: String) {
-    Pink("pink"),
-    Blue("blue"),
-    Gray("gray")
+enum class AppAccentColor {
+    Pink,
+    Blue,
+    Gray
 }
 
 val AppStyle.isBlack: Boolean get() = this in setOf(AppStyle.Black, AppStyle.MaterialBlack)

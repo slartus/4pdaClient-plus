@@ -73,7 +73,7 @@
         android:layout_height="22dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:background="@drawable/qmsnew"
+        android:background="@drawable/qmsnewpink"
         android:gravity="center"
         android:minWidth="22dp"
         android:singleLine="true"

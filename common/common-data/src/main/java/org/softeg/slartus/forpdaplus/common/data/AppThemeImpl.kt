@@ -17,6 +17,10 @@ class AppThemeImpl @Inject constructor(private val settings: Settings) : AppThem
         return settings.getEnum<AppAccentColor>(APP_STYLE_ACCENT_COLOR) ?: AppAccentColor.Blue
     }
 
+    override suspend fun updateAccentColor(color: AppAccentColor) {
+        settings.putString(APP_STYLE_ACCENT_COLOR, color.name.lowercase())
+    }
+
     private companion object {
         const val APP_STYLE_SETTINGS_KEY = "apptheme.style"
         const val APP_STYLE_OLD_SETTINGS_KEY = "appstyle"

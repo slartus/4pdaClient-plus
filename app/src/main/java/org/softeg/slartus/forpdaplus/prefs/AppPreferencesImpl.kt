@@ -11,7 +11,6 @@ import javax.inject.Inject
 
 class AppPreferencesImpl @Inject constructor(preferences: SharedPreferences) : AppPreferences {
     override var language: String by appPreference(preferences, "lang", LANGUAGE_DEFAULT)
-    override val accentColor: String by appPreference(preferences, "mainAccentColor", "pink")
 }
 
 class ForumPreferencesImpl @Inject constructor(preferences: SharedPreferences) :

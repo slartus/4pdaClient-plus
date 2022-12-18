@@ -78,8 +78,8 @@
     <color name="post_panel_black">@color/actionbar_background_black</color>
 
     <color name="accent">#0277BD</color>
-    <color name="accentPink">@color/accent</color>
-    <color name="accentBlue">#E91E63</color>
+    <color name="accentPink">#E91E63</color>
+    <color name="accentBlue">@color/accent</color>
     <color name="accentGray">#757575</color>
 
     <color name="plusrep">#4caf50</color>

@@ -16,6 +16,8 @@ import ru.softeg.slartus.qms.api.repositories.QmsThreadsRepository
 import org.softeg.slartus.forpdaplus.qms.impl.screens.threads.fingerprints.QmsThreadItem
 import org.softeg.slartus.forpdaplus.qms.impl.screens.threads.fingerprints.QmsThreadSelectableItem
 import org.softeg.slartus.forpdaplus.qms.impl.screens.threads.fingerprints.ThreadItem
+import ru.softeg.slartus.common.api.AppAccentColor
+import ru.softeg.slartus.common.api.AppTheme
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -24,7 +26,7 @@ class QmsContactThreadsViewModel @Inject constructor(
     private val state: SavedStateHandle,
     private val qmsThreadsRepository: QmsThreadsRepository,
     private val qmsContactsRepository: QmsContactsRepository,
-    appPreferences: AppPreferences,
+    appTheme: AppTheme,
 
     ) : ViewModel() {
     private val errorHandler = CoroutineExceptionHandler { _, ex ->
@@ -52,11 +54,7 @@ class QmsContactThreadsViewModel @Inject constructor(
             state[QmsContactThreadsFragment.ARG_CONTACT_ID] = value
         }
 
-    val accentColor: AccentColor = when (appPreferences.accentColor) {
-        "blue" -> AccentColor.Blue
-        "gray" -> AccentColor.Gray
-        else -> AccentColor.Standard
-    }
+    val accentColor: AppAccentColor = runBlocking { appTheme.getAccentColor()} // TODO: убрать runBlocking
 
     init {
         reload()
@@ -277,9 +275,5 @@ class QmsContactThreadsViewModel @Inject constructor(
             val userNick: String,
             val selectedIds: List<String>
         ) : Event()
-    }
-
-    enum class AccentColor {
-        Standard, Blue, Gray
     }
 }

@@ -3,8 +3,6 @@ package org.softeg.slartus.forpdaplus.core
 interface AppPreferences {
     var language: String
 
-    val accentColor: String
-
     companion object {
         const val LANGUAGE_DEFAULT = "default"
     }

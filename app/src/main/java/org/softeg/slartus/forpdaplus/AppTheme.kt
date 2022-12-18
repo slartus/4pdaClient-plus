@@ -22,11 +22,15 @@ object AppTheme {
             }
         }
 
-    private val mainAccent: AppAccentColor
+    var mainAccent: AppAccentColor
         get() {
-            // TODO: Change
-            return runBlocking {
+            return runBlocking {   // TODO: Remove blocking
                 requireNotNull(appTheme).getAccentColor()
+            }
+        }
+        set(value) {
+            runBlocking { // TODO: Remove blocking
+                requireNotNull(appTheme).updateAccentColor(value)
             }
         }
 

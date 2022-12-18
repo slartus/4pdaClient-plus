@@ -22,8 +22,3 @@ sealed class QmsContactsEvent {
     data class HiddenChanged(val hidden: Boolean) : QmsContactsEvent()
     data class OnSearchTextChanged(val text: String) : QmsContactsEvent()
 }
-
-
-enum class AccentColor {
-    Standard, Blue, Gray
-}

@@ -17,7 +17,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 import org.softeg.slartus.forpdaplus.core.AppActions
@@ -27,6 +26,7 @@ import org.softeg.slartus.forpdaplus.qms.impl.R
 import org.softeg.slartus.forpdaplus.qms.impl.databinding.FragmentQmsContactThreadsBinding
 import org.softeg.slartus.forpdaplus.qms.impl.screens.threads.fingerprints.QmsThreadFingerprint
 import org.softeg.slartus.forpdaplus.qms.impl.screens.threads.fingerprints.QmsThreadSelectableFingerprint
+import ru.softeg.slartus.common.api.AppAccentColor
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Provider
@@ -222,9 +222,9 @@ class QmsContactThreadsFragment :
     @DrawableRes
     private fun getAccentBackgroundRes(): Int {
         return when (viewModel.accentColor) {
-            QmsContactThreadsViewModel.AccentColor.Blue -> R.drawable.qmsnewblue
-            QmsContactThreadsViewModel.AccentColor.Gray -> R.drawable.qmsnewgray
-            else -> R.drawable.qmsnew
+            AppAccentColor.Blue -> R.drawable.qmsnewblue
+            AppAccentColor.Gray -> R.drawable.qmsnewgray
+            AppAccentColor.Pink -> R.drawable.qmsnewpink
         }
     }
 

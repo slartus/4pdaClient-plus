@@ -6,28 +6,28 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.softeg.slartus.forpdaplus.core.AppPreferences
 import org.softeg.slartus.forpdaplus.core.QmsPreferences
 import ru.softeg.slartus.qms.api.repositories.QmsContactsRepository
 import org.softeg.slartus.forpdaplus.qms.impl.R
 
 import org.softeg.slartus.forpdaplus.qms.impl.screens.contacts.fingerprints.QmsContactItem
+import org.softeg.slartus.forpdaplus.qms.impl.screens.threads.QmsContactThreadsViewModel
+import ru.softeg.slartus.common.api.AppAccentColor
+import ru.softeg.slartus.common.api.AppTheme
 import javax.inject.Inject
 
 @HiltViewModel
 class QmsContactsViewModel @Inject constructor(
     private val qmsContactsRepository: QmsContactsRepository,
-    appPreferences: AppPreferences,
+    appTheme: AppTheme,
     qmsPreferences: QmsPreferences
 ) : ViewModel() {
 
     val showAvatars: Boolean = qmsPreferences.showAvatars
     val squareAvatars: Boolean = qmsPreferences.squareAvatars
-    val accentColor: AccentColor = when (appPreferences.accentColor) {
-        "blue" -> AccentColor.Blue
-        "gray" -> AccentColor.Gray
-        else -> AccentColor.Standard
-    }
+    val accentColor: AppAccentColor = runBlocking { appTheme.getAccentColor()} // TODO: убрать runBlocking
 
     private val errorHandler = CoroutineExceptionHandler { _, ex ->
         _events.value = QmsContactsAction.Error(ex)
