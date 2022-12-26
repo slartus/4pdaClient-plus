@@ -51,6 +51,17 @@ public class HttpHelper {
         return response;
     }
 
+    public static AppResponse performPost(final String url, final Map<String, String> params, String encoding) throws IOException {
+        ArrayList<Pair<String, String>> listParams = new ArrayList<>();
+        for (String key : params.keySet()) {
+            listParams.add(new Pair<>(key, params.get(key)));
+        }
+        AppResponse response = Http.Companion.getInstance().performPost(url, listParams, encoding);
+        m_RedirectUri = response.getRedirectUrl() != null ? URI.create(response.getRedirectUrl()) : null;
+
+        return response;
+    }
+
     private static URI m_RedirectUri;
 
     public static URI getRedirectUri() {

@@ -154,7 +154,7 @@ public class Client implements IHttpClient {
     }
 
     public AppResponse performPost(String s, Map<String, String> additionalHeaders, String encoding) throws IOException {
-        return HttpHelper.performPost(s, additionalHeaders);
+        return HttpHelper.performPost(s, additionalHeaders, encoding);
     }
 
     @Override

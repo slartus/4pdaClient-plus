@@ -328,7 +328,11 @@ object PostApi {
         additionalHeaders["p"] = postId
         additionalHeaders["message"] = message
 
-        val res = httpClient.performPost("https://${HostHelper.host}/forum/index.php?act=report&amp;send=1&amp;t=$topicId&amp;p=$postId", additionalHeaders)
+        val res = httpClient.performPost(
+            "https://${HostHelper.host}/forum/index.php?act=report&amp;send=1&amp;t=$topicId&amp;p=$postId",
+            additionalHeaders,
+            "windows-1251"
+        )
 
         val p = Pattern.compile("<div class=\"errorwrap\">\n" +
                 "\\s*<h4>Причина:</h4>\n" +
