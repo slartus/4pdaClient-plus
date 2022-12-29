@@ -53,16 +53,16 @@ class TopicAttachmentsViewModel @Inject constructor(
                 return@launch
             }
             delay(FILTER_DELAY)
-            viewState = viewState.copy(loading = true)
+            viewState = viewState.copy(loading = true, filteredItems = emptyList())
             runCatching {
                 withContext(Dispatchers.Default) {
                     viewState = viewState.copy(
                         filteredItems = viewState.attachments.filter {
                             viewState.filter.isEmpty() || it.name.containsWildCards(viewState.filter)
-                        }
+                        },
+                        loading = false
                     )
                 }
-                viewState = viewState.copy(loading = false)
             }.onFailure {
                 it.printStackTrace()
                 viewState = viewState.copy(loading = false)
