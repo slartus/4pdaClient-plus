@@ -6,6 +6,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import android.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -63,12 +64,33 @@ class TopicAttachmentsFragment :
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_topic_attachments, menu)
+
+        menu.findItem(R.id.menu_item_forum_search).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER)
+
+        val searchViewItem = menu.findItem(R.id.topic_attachments_search_item)
+        val searchView: SearchView = searchViewItem.actionView as SearchView
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                searchView.clearFocus()
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                viewModel.obtainEvent(TopicAttachmentsEvent.OnFilterTextChanged(newText.orEmpty()))
+                return true
+            }
+        })
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.change_order_item -> {
                 viewModel.obtainEvent(TopicAttachmentsEvent.OnReverseOrderClicked)
+                true
+            }
+            R.id.topic_attachments_search_item -> {
+                item.actionView.requestFocus()
                 true
             }
             else ->
@@ -96,7 +118,7 @@ class TopicAttachmentsFragment :
 
     private fun onUiState(state: TopicAttachmentsViewState) {
         setLoading(state.loading)
-        adapter?.submitList(state.attachments)
+        adapter?.submitList(state.filteredItems)
         binding.emptyTextView.isVisible = state.attachments.isEmpty() && !state.loading
     }
 

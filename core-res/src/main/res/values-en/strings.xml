@@ -455,6 +455,7 @@
     <string name="menu_topic_find_in_topic">Find In Topic</string>
     <string name="menu_topic_load_imgs_for_session">Load images (for session)</string>
     <string name="menu_topic_attachments_invert_sorting">Invert sorting</string>
+    <string name="menu_topic_attachments_filter">Filter</string>
     <string name="registration">Registration</string>
     <string name="qms_contacts_search">Find contact</string>
     <string name="upload">Upload</string>

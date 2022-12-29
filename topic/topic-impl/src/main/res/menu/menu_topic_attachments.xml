@@ -2,6 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/topic_attachments_search_item"
+        android:icon="@drawable/ic_search"
+        android:title="@string/menu_topic_attachments_filter"
+        app:actionViewClass="android.widget.SearchView"
+        app:showAsAction="withText|always"
+        android:orderInCategory="0"
+        />
+    <item
         android:id="@+id/change_order_item"
         android:title="@string/menu_topic_attachments_invert_sorting"
         app:showAsAction="never" />
