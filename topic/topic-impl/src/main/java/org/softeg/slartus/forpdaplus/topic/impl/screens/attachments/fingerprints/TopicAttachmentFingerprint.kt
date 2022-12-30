@@ -63,7 +63,7 @@ class TopicAttachmentViewHolder(
         with(binding) {
             iconImageView.load(item.iconUrl)
             nameTextView.text = item.name
-            dateTextView.text = item.date
+            dateTextView.text = listOfNotNull(item.date, item.count).joinToString(separator = " скачиваний: ")
             sizeTextView.text = item.size
         }
     }

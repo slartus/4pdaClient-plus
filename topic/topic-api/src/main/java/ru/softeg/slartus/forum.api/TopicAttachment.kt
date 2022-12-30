@@ -7,5 +7,6 @@ data class TopicAttachment(
     val name: String,
     val date: String,
     val size: String,
-    val postUrl: String
+    val postUrl: String,
+    val count: String?
 )
