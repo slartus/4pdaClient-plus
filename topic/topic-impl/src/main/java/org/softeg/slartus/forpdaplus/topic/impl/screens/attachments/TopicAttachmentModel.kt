@@ -10,7 +10,8 @@ data class TopicAttachmentModel(
     val name: String,
     val date: String,
     val size: String,
-    val postUrl: String
+    val postUrl: String,
+    val count: String?
 ) : Item
 
 fun TopicAttachment.mapToTopicAttachmentModel(): TopicAttachmentModel = TopicAttachmentModel(
@@ -20,5 +21,6 @@ fun TopicAttachment.mapToTopicAttachmentModel(): TopicAttachmentModel = TopicAtt
     name = name,
     date = date,
     size = size,
-    postUrl = postUrl
+    postUrl = postUrl,
+    count = count
 )

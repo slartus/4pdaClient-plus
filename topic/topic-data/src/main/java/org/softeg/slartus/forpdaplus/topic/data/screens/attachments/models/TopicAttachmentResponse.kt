@@ -9,7 +9,8 @@ data class TopicAttachmentResponse(
     val name: String? = null,
     val date: String? = null,
     val size: String? = null,
-    val postUrl: String? = null
+    val postUrl: String? = null,
+    val count: String? = null
 )
 
 
@@ -23,6 +24,7 @@ fun TopicAttachmentResponse.mapToTopicAttachmentOrNull(): TopicAttachment? {
         name = name ?: "not parsed",
         date = date.orEmpty(),
         size = size.orEmpty(),
-        postUrl = postUrl.orEmpty()
+        postUrl = postUrl.orEmpty(),
+        count = count
     )
 }
