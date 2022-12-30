@@ -48,17 +48,19 @@ class TopicAttachmentsViewModel @Inject constructor(
     private fun filterAttachments() {
         filterJob?.cancel()
         filterJob = viewModelScope.launch(Dispatchers.Default) {
-            if (viewState.filter.isEmpty()) {
-                viewState = viewState.copy(filteredItems = viewState.attachments)
-                return@launch
-            }
-            delay(FILTER_DELAY)
-            viewState = viewState.copy(loading = true, filteredItems = emptyList())
             runCatching {
+                delay(FILTER_DELAY)
+                val filter = viewState.filter
+                if (filter.isEmpty()) {
+                    viewState = viewState.copy(filteredItems = viewState.attachments)
+                    return@launch
+                }
+                viewState = viewState.copy(loading = true, filteredItems = emptyList())
+
                 withContext(Dispatchers.Default) {
                     viewState = viewState.copy(
                         filteredItems = viewState.attachments.filter {
-                            viewState.filter.isEmpty() || it.name.containsWildCards(viewState.filter)
+                            filter.isEmpty() || it.name.containsWildCards(filter)
                         },
                         loading = false
                     )
@@ -97,7 +99,7 @@ class TopicAttachmentsViewModel @Inject constructor(
     }
 
     companion object {
-        private const val FILTER_DELAY = 700L
+        private const val FILTER_DELAY = 1000L
         private const val REVERS_DELAY = 300L
         private const val ARG_TOPIC_ID = "TopicAttachmentsFragment.ARG_TOPIC_ID"
 
