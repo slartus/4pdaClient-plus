@@ -42,19 +42,21 @@ class TopicAttachmentsViewModel @Inject constructor(
 
     private fun handleOnFilterTextChanged(text: String) {
         viewState = viewState.copy(filter = text)
-        filterAttachments()
+        filterAttachments(FILTER_DELAY)
     }
 
-    private fun filterAttachments() {
+    private fun filterAttachments(delay: Long) {
         filterJob?.cancel()
         filterJob = viewModelScope.launch(Dispatchers.Default) {
             runCatching {
-                delay(FILTER_DELAY)
                 val filter = viewState.filter
                 if (filter.isEmpty()) {
+                    viewState = viewState.copy(filteredItems = emptyList())
+                    delay(100) // чтобы пустой лист успел во вьюхе примениться
                     viewState = viewState.copy(filteredItems = viewState.attachments)
                     return@launch
                 }
+                delay(delay)
                 viewState = viewState.copy(loading = true, filteredItems = emptyList())
 
                 withContext(Dispatchers.Default) {
@@ -91,7 +93,7 @@ class TopicAttachmentsViewModel @Inject constructor(
                     it.mapToTopicAttachmentModel()
                 }
                 viewState = viewState.copy(loading = false, attachments = items)
-                filterAttachments()
+                filterAttachments(0)
             }.onFailure {
                 viewState = viewState.copy(loading = false)
             }

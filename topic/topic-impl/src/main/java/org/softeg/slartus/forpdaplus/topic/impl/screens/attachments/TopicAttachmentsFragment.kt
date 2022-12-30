@@ -70,6 +70,7 @@ class TopicAttachmentsFragment :
         val searchViewItem = menu.findItem(R.id.topic_attachments_search_item)
         val searchView: SearchView = searchViewItem.actionView as SearchView
 
+        viewModel.obtainEvent(TopicAttachmentsEvent.OnFilterTextChanged(""))
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 searchView.clearFocus()
