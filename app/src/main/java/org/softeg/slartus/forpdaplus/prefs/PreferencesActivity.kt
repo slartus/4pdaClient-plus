@@ -18,6 +18,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import android.preference.PreferenceScreen
 import com.afollestad.materialdialogs.DialogAction
 import com.afollestad.materialdialogs.MaterialDialog
 import kotlinx.android.synthetic.main.device_edit.*
@@ -28,6 +29,7 @@ import org.softeg.slartus.forpdacommon.loadAssetsText
 import org.softeg.slartus.forpdaplus.App
 import org.softeg.slartus.forpdaplus.AppTheme.currentTheme
 import org.softeg.slartus.forpdaplus.AppTheme.getThemeCssFileName
+import org.softeg.slartus.forpdaplus.BuildConfig
 import org.softeg.slartus.forpdaplus.IntentActivity
 import org.softeg.slartus.forpdaplus.R
 import org.softeg.slartus.forpdaplus.classes.InputFilterMinMax
@@ -102,7 +104,14 @@ class PreferencesActivity : BasePreferencesActivity() {
             findPreference("About.History").onPreferenceClickListener = this
             findPreference("About.ShareIt").onPreferenceClickListener = this
             findPreference("About.ShowTheme").onPreferenceClickListener = this
-            findPreference("About.CheckNewVersion").onPreferenceClickListener = this
+            findPreference("About.CheckNewVersion").run {
+                if ("rustore" != BuildConfig.target) {
+                    onPreferenceClickListener = this@PrefsFragment
+                } else {
+                    (findPreference("about") as PreferenceScreen).removePreference(this)
+                }
+            }
+
             findPreference("notifiers.silent_mode.start_time")?.let { preference ->
                 preference.onPreferenceClickListener = this
                 val clndr = Preferences.Notifications.SilentMode.startTime

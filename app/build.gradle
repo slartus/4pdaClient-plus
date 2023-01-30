@@ -72,6 +72,15 @@ android {
     productFlavors {
         def defaultSigningVariable = signingConfigs.release
         rel {
+            buildConfigField "String", "target", "\"4pda\""
+            applicationId 'org.softeg.slartus.forpdaplus'
+            versionCode appVersionCode
+            versionName appVersionName
+            signingConfig defaultSigningVariable
+            dimension "wtf"
+        }
+        ruStore {
+            buildConfigField "String", "target", "\"rustore\""
             applicationId 'org.softeg.slartus.forpdaplus'
             versionCode appVersionCode
             versionName appVersionName
@@ -79,6 +88,7 @@ android {
             dimension "wtf"
         }
         beta {
+            buildConfigField "String", "target", "\"beta\""
             applicationId 'org.softeg.slartus.forpdaplus.beta'
             versionCode 679// у беты свой номер, чтобы не инкрементить релизный
             versionName "${appVersionName}beta" //beta - С МАЛЕНЬКОЙ БУКВЫ ПЛЗ.))
@@ -96,6 +106,8 @@ android {
                 outputFileName = "app-debug.apk"
             else if (flavor.name == "beta")
                 outputFileName = "${fileNaming}_${appVersionName}-beta_c${vCode}.apk"
+            else if (flavor.name == "ruStore")
+                outputFileName = "${fileNaming}_${appVersionName}-ruStore_-${variant.buildType.name}-${vCode}.apk"
             else
                 outputFileName = "${fileNaming}_${appVersionName}-${variant.buildType.name}.apk"
         }

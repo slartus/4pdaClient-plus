@@ -484,7 +484,7 @@
                 android:title="Восстановить" />
         </PreferenceCategory>
     </PreferenceScreen>
-    <PreferenceScreen android:title="О программе">
+    <PreferenceScreen android:title="О программе" android:key="about">
         <Preference
             android:key="About.AppVersion"
             android:title="О программе" />
