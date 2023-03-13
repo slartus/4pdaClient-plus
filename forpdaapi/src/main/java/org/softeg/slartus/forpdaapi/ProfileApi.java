@@ -65,20 +65,15 @@ public class ProfileApi {
     }
 
     public static LoginResult login(String login, String password,
-                                    Boolean privacy, String capVal, String capTime, String capSig) throws Exception {
+                                    Boolean privacy, String capVal, String capTime, String capSig) {
         LoginResult loginResult = new LoginResult();
 
         Map<String, String> additionalHeaders = new HashMap<>();
 
         additionalHeaders.put("login", login);
         additionalHeaders.put("password", password);
-        //additionalHeaders.put("CookieDate", "1");
         if (privacy)
             additionalHeaders.put("hidden", "1");
-        additionalHeaders.put("act", "auth");
-        //additionalHeaders.put("CODE", "01");
-        additionalHeaders.put("referer", "https://" + HostHelper.getHost() + "/forum/index.php");
-        //additionalHeaders.put("s", session);
         additionalHeaders.put("captcha", capVal);
         additionalHeaders.put("captcha-time", capTime);
         additionalHeaders.put("captcha-sig", capSig);
@@ -89,7 +84,7 @@ public class ProfileApi {
             listParams.add(new Pair<>(key, additionalHeaders.get(key)));
         }
         AppResponse response = Http.Companion.getInstance()
-                .performPost("https://" + HostHelper.getHost() + "/forum/index.php?act=auth&return=" + "https://" + HostHelper.getHost() + "/forum/index.php",
+                .performPostDesktop("https://" + HostHelper.getHost() + "/forum/index.php?act=auth&return=" + "https://" + HostHelper.getHost() + "/forum/index.php",
                         listParams,
                         "windows-1251"
                         );
@@ -186,6 +181,7 @@ public class ProfileApi {
 
     private static String RequestUrl(OkHttpClient client, String url) throws IOException {
         Request request = new Request.Builder()
+                .headers(Http.buildRequestHeaders(Http.FULL_USER_AGENT, false))
                 .url(url)
                 .build();
 

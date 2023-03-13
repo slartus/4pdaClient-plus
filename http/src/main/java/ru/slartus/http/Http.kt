@@ -33,11 +33,12 @@ import javax.net.ssl.X509TrustManager
  */
 class Http private constructor(context: Context, appName: String, appVersion: String) {
 
+
     companion object {
         const val TAG = "Http"
         private var INSTANCE: Http? = null
-        private const val FULL_USER_AGENT =
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36"
+        const val FULL_USER_AGENT =
+            "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Mobile Safari/537.36"
 
         fun init(context: Context, appName: String, appVersion: String) {
             INSTANCE = Http(context, appName, appVersion)
@@ -153,10 +154,46 @@ class Http private constructor(context: Context, appName: String, appVersion: St
             }
             return certificates.toList()
         }
+
+        @JvmStatic
+        fun buildRequestHeaders(userAgent: String, b: Boolean = false): Headers {
+            val headersBuilder = Headers.Builder()
+            headersBuilder.add(
+                "Accept",
+                "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3"
+            )
+            // headersBuilder.add("Accept-Encoding", "gzip, deflate")
+            headersBuilder.add(
+                "Accept-Language",
+                "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7,vi;q=0.6,bg;q=0.5"
+            )
+            headersBuilder.add("User-Agent", userAgent)
+            headersBuilder.add("Accept-Encoding", "gzip, deflate, br")
+
+            headersBuilder.add(
+                "Connection",
+                "close"
+            )// https://stackoverflow.com/questions/52726909/java-io-ioexception-unexpected-end-of-stream-on-connection
+            return headersBuilder.build()
+        }
     }
 
     private var client: OkHttpClient
     var cookieStore: PersistentCookieStore = PersistentCookieStore.getInstance(context)
+
+    private val userAgent by lazy {
+        String.format(
+            Locale.getDefault(),
+            "%s/%s (Android %s; %s; %s %s; %s)",
+            appName,
+            appVersion,
+            Build.VERSION.RELEASE,
+            Build.MODEL,
+            Build.BRAND,
+            Build.DEVICE,
+            Locale.getDefault().language
+        )
+    }
 
     init {
         val cookieHandler = CookieManager(cookieStore, ACCEPT_ALL)
@@ -173,20 +210,10 @@ class Http private constructor(context: Context, appName: String, appVersion: St
             .build()    // socket timeout
     }
 
-    private val userAgent by lazy {
-        String.format(
-            Locale.getDefault(),
-            "%s/%s (Android %s; %s; %s %s; %s)",
-            appName,
-            appVersion,
-            Build.VERSION.RELEASE,
-            Build.MODEL,
-            Build.BRAND,
-            Build.DEVICE,
-            Locale.getDefault().language
-        )
-    }
 
+    private fun buildRequestHeaders(userAgent: String = this.userAgent): Headers {
+        return Http.buildRequestHeaders(userAgent, false)
+    }
 
     private fun prepareUrl(url: String): String {
         var res = url.replace(
@@ -198,27 +225,6 @@ class Http private constructor(context: Context, appName: String, appVersion: St
         if (!res.startsWith("http"))
             res = "https://$res"
         return res
-    }
-
-    private fun buildRequestHeaders(userAgent: String = this.userAgent): Headers {
-        val headersBuilder = Headers.Builder()
-        headersBuilder.add(
-            "Accept",
-            "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3"
-        )
-        // headersBuilder.add("Accept-Encoding", "gzip, deflate")
-        headersBuilder.add(
-            "Accept-Language",
-            "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7,vi;q=0.6,bg;q=0.5"
-        )
-        headersBuilder.add("User-Agent", userAgent)
-        headersBuilder.add("Accept-Encoding", "gzip, deflate, br")
-
-        headersBuilder.add(
-            "Connection",
-            "close"
-        )// https://stackoverflow.com/questions/52726909/java-io-ioexception-unexpected-end-of-stream-on-connection
-        return headersBuilder.build()
     }
 
     fun response(url: String) = response(url, false)
@@ -293,6 +299,41 @@ class Http private constructor(context: Context, appName: String, appVersion: St
         }
     }
 
+    @JvmOverloads
+    fun performPostDesktop(
+        url: String,
+        values: List<Pair<String, String>> = ArrayList(),
+        charsetName: String = "UTF-8"
+    ): AppResponse {
+        // отправка с windows-1251 не отправляет É или Ç в qms и топики
+        // windows-1251 для логина кирилицей
+        val formBuilder = FormBody.Builder(Charset.forName(charsetName))
+        values
+            .filter { it.second != null }
+            .forEach { formBuilder.add(it.first!!, it.second!!) }
+
+        val formBody = formBuilder.build()
+
+        Log.i(TAG, "post: $url")
+        val request = Request.Builder()
+            .headers(buildRequestHeaders(FULL_USER_AGENT))
+            .url(prepareUrl(url))
+            .cacheControl(CacheControl.FORCE_NETWORK)
+            .post(formBody)
+            .build()
+
+
+        try {
+            val response = client.newCall(request).execute()
+            if (!response.isSuccessful) throw HttpException("Unexpected code $response")
+
+            val body = response.body?.string()
+            return AppResponse(url, response.request.url.toString(), body ?: "")
+        } catch (ex: IOException) {
+            throw HttpException(ex)
+        }
+
+    }
 
     @JvmOverloads
     fun performPost(
