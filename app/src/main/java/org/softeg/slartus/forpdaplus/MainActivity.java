@@ -264,7 +264,9 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
             NotifiersManager notifiersManager = new NotifiersManager();
             new DonateNotifier(notifiersManager).start(this);
             //new TopicAttentionNotifier(notifiersManager).start(this);
-            new ForPdaVersionNotifier(notifiersManager, 1, false).start(this);
+            if (!"rustore".equals(BuildConfig.target)) {
+                new ForPdaVersionNotifier(notifiersManager, 1, false).start(this);
+            }
             activityPaused = false;
             if (TabsManager.getInstance().getCurrentFragmentTag() != null)
                 if (TabsManager.getInstance().getTabByTag(TabsManager.getInstance().getCurrentFragmentTag()) != null) {

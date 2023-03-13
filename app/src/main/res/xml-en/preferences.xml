@@ -488,7 +488,7 @@
     </PreferenceScreen>
 
 
-    <PreferenceScreen android:title="About">
+    <PreferenceScreen android:title="About" android:key="about">
         <Preference
             android:key="About.AppVersion"
             android:title="About app" />
