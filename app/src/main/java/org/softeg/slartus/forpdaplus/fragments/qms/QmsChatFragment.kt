@@ -8,10 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.PorterDuff
-import android.os.AsyncTask
-import android.os.Build
-import android.os.Bundle
-import android.os.Handler
+import android.os.*
 import android.preference.PreferenceManager
 import android.text.Editable
 import android.text.TextUtils
@@ -30,6 +27,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.afollestad.materialdialogs.MaterialDialog
 import kotlinx.android.synthetic.main.qms_chat.*
+import kotlinx.android.synthetic.main.theme.*
 import org.softeg.slartus.forpdaapi.post.EditAttach
 import org.softeg.slartus.forpdaapi.qms.QmsApi
 import org.softeg.slartus.forpdacommon.ExtPreferences
@@ -40,6 +38,7 @@ import org.softeg.slartus.forpdaplus.classes.*
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl
 import org.softeg.slartus.forpdaplus.common.AppLog
 import org.softeg.slartus.forpdaplus.controls.quickpost.PopupPanelView
+import org.softeg.slartus.forpdaplus.controls.quickpost.QuickPostFragment.Companion.insertText
 import org.softeg.slartus.forpdaplus.forum.data.getNullIfEmpty
 import org.softeg.slartus.forpdaplus.fragments.WebViewFragment
 import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment
@@ -50,13 +49,10 @@ import java.io.IOException
 import java.util.*
 import java.util.regex.Pattern
 
-/*
- * Created by radiationx on 12.11.15.
- */
 class QmsChatFragment : WebViewFragment() {
     private var emptyText = true
-    private val uiHandler = Handler()
-    private val mHandler = Handler()
+    private val uiHandler = Handler(Looper.getMainLooper())
+    private val mHandler = Handler(Looper.getMainLooper())
     private var wvChat: AdvWebView? = null
     private var contactId: String? = null
     private var themeId: String? = null
@@ -97,11 +93,11 @@ class QmsChatFragment : WebViewFragment() {
     }
 
     override fun reload() {
-        Thread(Runnable { this.reLoadChatSafe() }).start()
+        Thread { this.reLoadChatSafe() }.start()
     }
 
     fun reload(loadMore: Boolean = false) {
-        Thread(Runnable { this.reLoadChatSafe(loadMore) }).start()
+        Thread { this.reLoadChatSafe(loadMore) }.start()
     }
 
     override fun getAsyncTask(): AsyncTask<*, *, *>? {
@@ -176,6 +172,7 @@ class QmsChatFragment : WebViewFragment() {
         })
 
         wvChat = findViewById(R.id.wvChat) as AdvWebView
+        wvChat?.addContextMenuQuote()
         registerForContextMenu(wvChat!!)
         wvChat?.apply {
             settings.domStorageEnabled = true
@@ -219,6 +216,21 @@ class QmsChatFragment : WebViewFragment() {
         return view
     }
 
+    private fun AdvWebView.addContextMenuQuote(){
+       setActionModeListener { actionMode: ActionMode, menu: Menu ->
+            menu.add(R.string.quote)
+                .setOnMenuItemClickListener { item: MenuItem? ->
+                    evalJs("htmlOutSelectionInfo();")
+                    mHandler.postDelayed(
+                        { actionMode.finish() },
+                        300
+                    ) // delay for wait while js catch selected text
+                    true
+                }
+                .setShowAsActionFlags(MenuItem.SHOW_AS_ACTION_ALWAYS)
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         App.stopQmsService()
@@ -227,6 +239,14 @@ class QmsChatFragment : WebViewFragment() {
         loadPrefs()
         startUpdateTimer()
 
+    }
+
+    @Suppress("unused")
+    @JavascriptInterface
+    fun selectionInfo(text: String){
+        mainActivity.runOnUiThread {
+            edMessage?.insertText("[QUOTE]$text[/QUOTE]")
+        }
     }
 
     @Suppress("unused")
@@ -912,6 +932,7 @@ class QmsChatFragment : WebViewFragment() {
                 return prefs?.getString("qms.chat.encoding", "UTF-8") ?: "UTF-8"
 
             }
+
         private const val MY_INTENT_CLICK = 302
     }
 
