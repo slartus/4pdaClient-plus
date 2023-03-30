@@ -67,9 +67,7 @@ class QuickPostFragment : Fragment() {
         get() = if (mPostEditText!!.text != null) mPostEditText!!.text.toString() else ""
 
     fun insertTextToPost(text: String?, cursorPosition: Int = -1) {
-        val selection = mPostEditText?.selectionStart ?: -1
-        mPostEditText?.text?.insert(if (selection == -1) 0 else selection, text)
-        if (cursorPosition != -1) mPostEditText?.setSelection((if (selection == -1) 0 else selection) + cursorPosition)
+        mPostEditText?.insertText(text, cursorPosition)
     }
 
     fun hideKeyboard() {
@@ -199,6 +197,13 @@ class QuickPostFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         mPopupPanelView?.resume()
+    }
+
+    companion object{
+        fun EditText.insertText(text: String?, cursorPosition: Int = -1) {
+            this.text?.insert(if (selectionStart == -1) 0 else selectionStart, text)
+            if (cursorPosition != -1) this.setSelection((if (selectionStart == -1) 0 else selectionStart) + cursorPosition)
+        }
     }
 
     private class InnerPostTask(
