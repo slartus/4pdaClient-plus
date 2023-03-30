@@ -79,3 +79,32 @@ function deleteMessages(formId) {
 		window.HTMLOUT.showMessage(err.toString());
 	}
 }
+
+function getSelectionInfo() {
+    var text = undefined;
+    if (typeof window.getSelection != "undefined") {
+        var sel = window.getSelection();
+        if (sel.rangeCount) {
+            var node = sel.getRangeAt(0).commonAncestorContainer;
+            text = sel.toString();
+        }
+    } else if (typeof document.selection != "undefined" && document.selection.type != "Control") {
+        var textRange = document.selection.createRange();
+        text = textRange.text;
+    }
+
+    return text || getSelectedText() || "";
+}
+
+function htmlOutSelectionInfo() {
+    try {
+        var selectionInfo = getSelectionInfo();
+        if (selectionInfo) {
+            window.HTMLOUT.selectionInfo(selectionInfo);
+        } else {
+            window.HTMLOUT.selectionInfo(getSelectedText() || "");
+        }
+    } catch (err) {
+        console.error(err);
+    }
+}
