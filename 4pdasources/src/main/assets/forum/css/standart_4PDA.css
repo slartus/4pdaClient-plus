@@ -1350,6 +1350,7 @@ img[src*="style_emoticons"] {
   text-align: left;
   border: 1px solid #bfdaef;
   background: #d9eaff;
+  max-width: 90vw;
 }
 #thread_form .list-group-item + .list-group-item {
   margin-top: 0.3rem;

@@ -1280,6 +1280,7 @@ div[data-post] > a {
   margin-right: 0.5rem;
   color: #191919;
   background: #dddddd;
+  max-width: 90vw;
 }
 #thread_form .list-group-item.our-message .msg-content:before {
   left: auto;
