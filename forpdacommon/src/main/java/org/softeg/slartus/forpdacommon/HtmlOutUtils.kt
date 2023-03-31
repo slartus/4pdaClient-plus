@@ -24,15 +24,14 @@ object HtmlOutUtils {
     }
 
     @JvmStatic
-    fun getHtmlout(methodName: String?, paramValues: Array<String?>, modifyParams: Boolean): String? {
+    fun getHtmlout(methodName: String?, paramValues: Array<String?>, modifyParams: Boolean,  webViewAllowJs: Boolean? = null): String {
         var sb = StringBuilder()
-        if (!Functions.isWebviewAllowJavascriptInterface()) {
+        val useJs = webViewAllowJs?: Functions.isWebviewAllowJavascriptInterface()
+        if (!useJs) {
             sb.append("href=\"https://www.HTMLOUT.ru/")
             sb.append(methodName).append("?")
-            var i = 0
-            for (paramName in paramValues) {
+            for ((i, paramName) in paramValues.withIndex()) {
                 sb.append("val").append(i).append("=").append(if (modifyParams) Uri.encode(paramName) else paramName).append("&")
-                i++
             }
             sb = sb.delete(sb.length - 1, sb.length)
             sb.append("\"")
@@ -41,7 +40,7 @@ object HtmlOutUtils {
             for (paramName in paramValues) {
                 sb.append("'").append(paramName).append("',")
             }
-            if (paramValues.size > 0) sb.delete(sb.length - 1, sb.length)
+            if (paramValues.isNotEmpty()) sb.delete(sb.length - 1, sb.length)
             sb.append(")\"")
         }
         return sb.toString()

@@ -32,7 +32,7 @@ public class HtmlPreferences {
         return Devices.isAsus_EePad_TF300TG();
     }
 
-    public void load(Context context) {
+    public void load() {
         m_SpoilerByButton = App.getInstance().getPreferences().getBoolean("theme.SpoilerByButton", getDefaultSpoilByButton());
     }
 

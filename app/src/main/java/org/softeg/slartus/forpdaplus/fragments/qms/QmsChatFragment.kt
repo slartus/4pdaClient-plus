@@ -132,7 +132,7 @@ class QmsChatFragment : WebViewFragment() {
         assert(view != null)
 
         htmlPreferences = HtmlPreferences()
-        htmlPreferences!!.load(context)
+        htmlPreferences!!.load()
 
         edMessage = findViewById(R.id.edMessage) as EditText
         if (mPopupPanelView == null)

@@ -118,7 +118,7 @@ public class StyleInfoActivity extends BrowserViewsFragmentActivity {
 
         String res = sb.toString();
         HtmlPreferences htmlPreferences = new HtmlPreferences();
-        htmlPreferences.load(this);
+        htmlPreferences.load();
         if (htmlPreferences.isSpoilerByButton()) {
             res = HtmlPreferences.modifySpoiler(res);
         }

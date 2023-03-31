@@ -9,7 +9,6 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 import org.jsoup.nodes.TextNode
 import org.softeg.slartus.forpdaapi.common.ParseFunctions
-import org.softeg.slartus.forpdacommon.CollectionUtils
 import org.softeg.slartus.forpdacommon.NotReportException
 import org.softeg.slartus.forpdacommon.PatternExtensions
 import org.softeg.slartus.forpdacommon.fromHtml
@@ -77,8 +76,7 @@ object TopicParser {
         topicBody = topicBody.replace("^[\\s\\S]*?<div data-post", "<div data-post")
             .replace("<div class=\"topic_foot_nav\">[\\s\\S]*", "<div class=\"topic_foot_nav\">")
         val topicBodyBuilder = TopicBodyBuilder(
-            context, logined, topic, urlParams,
-            Functions.isWebviewAllowJavascriptInterface()
+            logined, topic, urlParams, Functions.isWebviewAllowJavascriptInterface()
         )
 
         topicBodyBuilder.beginTopic()
@@ -186,28 +184,24 @@ object TopicParser {
             var postNumber = ""
             val postHeaderEl = postEl.selectFirst("div.post_header") ?: continue
             // дата и номер поста не обязательны
-            var el = postHeaderEl.selectFirst("span.post_date")
-            if (el != null) {
+            postHeaderEl.selectFirst("span.post_date")?.let { e ->
                 try {
-                    val dateChildIndex =
-                        el.childNodes()
-                            .indexOfFirst { c -> c is TextNode && c.text().contains("|") }
-                    postDate = (el.childNode(dateChildIndex) as TextNode).text().replace("|", "")
+                    val dateChildIndex = e.childNodes()
+                        .indexOfFirst { c -> c is TextNode && c.text().contains("|") }
+                    postDate = (e.childNode(dateChildIndex) as TextNode).text().replace("|", "")
                         .trim { it <= ' ' }
                     postNumber =
-                        (el.childNode(dateChildIndex + 1) as Element).text().replace("#", "")
+                        (e.childNode(dateChildIndex + 1) as Element).text().replace("#", "")
                             .trim { it <= ' ' }
                 } catch (ex: Throwable) {
                     ex.printStackTrace()
                 }
             }
             // тело поста-обязательно
-            el = postEl.selectFirst("div.post_body")
-            if (el == null) continue
-            val postBody = "<div class=\"" + CollectionUtils.join(
-                " ",
-                el.classNames()
-            ) + "\">" + el.html() + "</div>"
+            val postBodyEl = postEl.selectFirst("div.post_body") ?: continue
+            val postBody =
+                "<div class=\"" + postBodyEl.classNames().joinToString(" ") + "\">" +
+                        postBodyEl.html() + "</div>"
             post = Post(postId, postDate, postNumber)
             post.body = postBody
 
@@ -221,8 +215,7 @@ object TopicParser {
             post.avatarFileName = user.avatar
 
             // информация о пользователе
-            el = postHeaderEl.selectFirst("span.post_user_info")
-            if (el != null) {
+            postHeaderEl.selectFirst("span.post_user_info")?.let { el ->
                 val el1 = el.selectFirst("span>span") // группа пользователя
                 if (el1 != null) post.userGroup = el1.outerHtml()
                 if (el.selectFirst("strong[class=t-cur-title]") != null) // куратор
@@ -230,14 +223,14 @@ object TopicParser {
             }
 
             // репутация
-            el = postHeaderEl.selectFirst("a[href*=act=rep&view=history]")
-            if (el != null) post.userReputation = el.text()
+            postHeaderEl.selectFirst("a[href*=act=rep&view=history]")?.let { el ->
+                post.userReputation = el.text()
+            }
             post.canPlusRep = postHeaderEl.selectFirst("a[href*=act=rep&view=win_add]") != null
             post.canMinusRep = postHeaderEl.selectFirst("a[href*=act=rep&view=win_minus]") != null
 
             // операции над постом
-            el = postHeaderEl.selectFirst("span.post_action")
-            if (el != null) {
+            postHeaderEl.selectFirst("span.post_action")?.let { el ->
                 post.canEdit = el.selectFirst("a[href*=do=edit_post]") != null
                 post.canDelete = el.selectFirst("a[href*=tact=delete]") != null
                 if (post.canDelete) {
@@ -252,43 +245,43 @@ object TopicParser {
         }
     }
 
-    fun parsePostNick(postHeaderEl: Element): User {
+    private fun parsePostNick(postHeaderEl: Element): User {
         val result = User()
-        val el = postHeaderEl.selectFirst("span.post_nick")
-        if (el != null) {
-            // статус автора
-            var el1 = el.selectFirst("font")
-            if (el1 != null) result.state = el1.attr("color")
-            // ник и аватар автора
-            el1 = el.selectFirst("a[data-av]")
-            if (el1 != null) {
-                result.avatar = el1.attr("data-av") // аватар
-                val textNodes = el1.textNodes()
-                val nick = if (textNodes.size > 0) el1.textNodes()[0].toString() // ник
-                else if (
-                    el1.childrenSize() > 0
-                    && el1.child(0) is Element
-                    && el1.child(0).classNames().contains("__cf_email__")
-                ) {
-                    try {
-                        ParseFunctions.cfDecodeEmail(el1.child(0).attr("data-cfemail"))
-                    } catch (ex: Throwable) {
-                        el1.child(0).textNodes()[0].toString()
-                    }
-                } else el1.html() // ник
-                result.nick = nick
-            }
-            el1 = el.selectFirst("a[href*=showuser]")
-            if (el1 != null) {
-                result.id = Uri.parse(el1.attr("href"))?.getQueryParameter("showuser")
-                if (TextUtils.isEmpty(result.nick)) result.nick = el1.html()
-                if (TextUtils.isEmpty(result.avatar)) result.avatar =
-                    el1.attr("data-av")
-            }
+        val el = postHeaderEl.selectFirst("span.post_nick") ?: return result
+
+        // статус автора
+        el.selectFirst("font")?.let { e ->
+            result.state = e.attr("color")
         }
+        // ник и аватар автора
+        el.selectFirst("a[data-av]")?.let { e ->
+            result.avatar = e.attr("data-av") // аватар
+            result.nick = e.getNick()
+        }
+        el.selectFirst("a[href*=showuser]")?.let { e ->
+            result.id = Uri.parse(e.attr("href"))?.getQueryParameter("showuser")
+            if (TextUtils.isEmpty(result.nick)) result.nick = e.html()
+            if (TextUtils.isEmpty(result.avatar)) result.avatar = e.attr("data-av")
+        }
+
         return result
     }
 
+    private fun Element.getNick(): String {
+        val nick = textNodes().firstOrNull()?.toString()
+        if (!nick.isNullOrEmpty()) return nick
+        if (childrenSize() > 0) {
+            val child = child(0)
+            if (child is Element && child.classNames().contains("__cf_email__"))
+                return try {
+                    ParseFunctions.cfDecodeEmail(child.attr("data-cfemail"))
+                } catch (ex: Throwable) {
+                    child.textNodes()[0].toString()
+                }
+        }
+
+        return html()
+    }
 
     class User {
         var id: String? = null
