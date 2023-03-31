@@ -17,7 +17,9 @@
             android:inputType="textAutoComplete"
             android:hint="@string/search_input_hint"
             android:layout_toLeftOf="@+id/forHideButton"
-            android:layout_toStartOf="@+id/forHideButton" />
+            android:layout_toStartOf="@+id/forHideButton" >
+            <requestFocus/>
+        </EditText>
 
         <ImageButton
             app:srcCompat="@drawable/settings_grey"
