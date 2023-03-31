@@ -245,7 +245,8 @@ object TopicParser {
         }
     }
 
-    private fun parsePostNick(postHeaderEl: Element): User {
+    // public for test
+    fun parsePostNick(postHeaderEl: Element): User {
         val result = User()
         val el = postHeaderEl.selectFirst("span.post_nick") ?: return result
 
