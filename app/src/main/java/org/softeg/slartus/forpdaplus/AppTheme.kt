@@ -1,6 +1,8 @@
 package org.softeg.slartus.forpdaplus
 
+import android.content.Context
 import android.content.SharedPreferences
+import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Environment
 import org.softeg.slartus.forpdaplus.classes.common.ArrayUtils
@@ -20,6 +22,9 @@ object AppTheme {
     private const val THEME_TYPE_BLACK = 3
     private val LIGHT_THEMES = arrayOf(THEME_LIGHT, THEME_LIGHT_OLD_HD, THEME_MATERIAL_LIGHT)
     private val DARK_THEMES = arrayOf(THEME_MATERIAL_DARK, THEME_DARK)
+
+    private var defaultTheme = THEME_LIGHT
+
     @JvmStatic
     val webViewFont: String?
         get() = preferences.getString("webViewFontName", "")
@@ -32,6 +37,11 @@ object AppTheme {
             "Pressed" -> color = preferences.getInt("accentColorPressed", Color.rgb(0, 89, 159))
         }
         return color
+    }
+
+    @JvmStatic
+    fun setDefaultTheme(context: Context){
+        defaultTheme = if(context.isSystemInDarkTheme()) THEME_DARK else THEME_LIGHT
     }
 
     @JvmStatic
@@ -172,7 +182,7 @@ object AppTheme {
 
     @JvmStatic
     val currentTheme: String
-        get() = preferences.getString("appstyle", THEME_LIGHT.toString())?:THEME_LIGHT.toString()
+        get() = preferences.getString("appstyle", defaultTheme.toString())?:defaultTheme.toString()
 
     @JvmStatic
     val currentThemeName: String
@@ -236,4 +246,9 @@ object AppTheme {
 
     private val preferences: SharedPreferences
         get() = App.getInstance().preferences
+}
+
+fun Context.isSystemInDarkTheme(): Boolean {
+    val uiMode = resources.configuration.uiMode
+    return (uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
 }
