@@ -2062,8 +2062,6 @@ a[href*=findpost][title="Перейти к сообщению"]:after {
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
-  -webkit-border-radius: 4em;
-  border-radius: 4em;
 }
 .user-profile-list > li:first-child .user-box .photo .img.circle {
   -webkit-border-radius: 4em;
@@ -2916,8 +2914,6 @@ li .post-block {
     height: 5em;
     width: 5em;
     margin: auto;
-    -webkit-border-radius: 6em;
-    border-radius: 6em;
   }
   .user-profile-list > li:first-child .user-box .photo .img.circle {
     -webkit-border-radius: 5em;
