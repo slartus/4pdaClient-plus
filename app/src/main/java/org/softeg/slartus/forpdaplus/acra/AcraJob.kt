@@ -1,36 +1,46 @@
 package org.softeg.slartus.forpdaplus.acra
 
+import android.content.Context
 import android.util.Log
-import com.evernote.android.job.Job
-import com.evernote.android.job.JobManager
-import com.evernote.android.job.JobRequest
+import androidx.work.*
 import java.util.concurrent.CountDownLatch
-import java.util.concurrent.TimeUnit
 
 /*
  * Created by slinkin on 07.02.2018.
  */
-class AcraJob : Job() {
+class AcraJob(appContext: Context, workerParams: WorkerParameters) :
+    Worker(appContext, workerParams) {
+    override fun doWork(): Result {
+        try {
+            synchronized(AcraReportContainer.instance().lock) {
+                while (AcraReportContainer.instance().reports.size > 0) {
+                    val report = AcraReportContainer.instance().reports[0]
+                    ru.slartus.http.Http.instance.performPost(report.url, report.params)
+                    AcraReportContainer.instance().reports.removeAt(0)
+                }
+            }
+        } catch (e: Throwable) {
+            Log.e(TAG, e.message, e)
+        }
+        return Result.success()
+    }
+
     companion object {
         const val TAG = "acra_job_tag"
 
 
-        fun scheduleJob(): Int {
+        fun scheduleJob() {
+            sendLogsAsync()
 
-            sendLogs()
-            val jobRequests = JobManager.instance().getAllJobRequestsForTag(TAG)
-            if (jobRequests.isNotEmpty()) {
-                return jobRequests.iterator().next().jobId
-            }
-
-            return JobRequest.Builder(TAG)
-                    .setExecutionWindow(1000, TimeUnit.DAYS.toMillis(1))
-                    .setRequiredNetworkType(JobRequest.NetworkType.CONNECTED)
+            val jobRequest: WorkRequest =
+                OneTimeWorkRequestBuilder<AcraJob>()
                     .build()
-                    .schedule()
+            WorkManager
+                .getInstance()
+                .enqueue(jobRequest)
         }
 
-        private fun sendLogs(){
+        private fun sendLogsAsync() {
             val countDownLatch = CountDownLatch(1)
 
             object : Thread() {
@@ -58,36 +68,4 @@ class AcraJob : Job() {
             }
         }
     }
-
-    override fun onRunJob(params: Params): Result {
-
-        val countDownLatch = CountDownLatch(1)
-
-        object : Thread() {
-            override fun run() {
-                // do async operation here
-                try {
-                    synchronized(AcraReportContainer.instance().lock) {
-                        while (AcraReportContainer.instance().reports.size > 0) {
-                            val report = AcraReportContainer.instance().reports[0]
-                            ru.slartus.http.Http.instance.performPost(report.url, report.params)
-                            AcraReportContainer.instance().reports.removeAt(0)
-                        }
-                    }
-                } catch (e: Throwable) {
-                    Log.e(TAG, e.message, e)
-                } finally {
-                    countDownLatch.countDown()
-                }
-            }
-        }.start()
-
-        try {
-            countDownLatch.await()
-        } catch (ignored: InterruptedException) {
-        }
-        return Result.SUCCESS
-    }
-
-
 }

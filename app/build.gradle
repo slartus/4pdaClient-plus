@@ -173,6 +173,7 @@ dependencies {
 
     implementation "com.google.android.material:material:$rootProject.material"
 
+    implementation("androidx.work:work-runtime-ktx:2.0.0")
 //    api "com.android.support:preference-v7:$rootProject.supportLibraryVersion"
 
     api 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
@@ -213,7 +214,6 @@ dependencies {
 
     // implementation 'com.gu.android:toolargetool:0.3.0' логирование saveinstancestate
     testImplementation 'junit:junit:4.13.2'
-    implementation 'com.evernote:android-job:1.4.2'
     androidTestImplementation 'androidx.test:runner:1.4.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     // leak-canary https://square.github.io/leakcanary/fundamentals-how-leakcanary-works/
