@@ -10,7 +10,7 @@ class ForumsApi : ArrayList<Forum>() {
         @Throws(Throwable::class)
         fun markAllAsRead(httpClient: IHttpClient) {
             httpClient.performGet(
-                "https://${HostHelper.host}/forum/index.php?act=Login&CODE=05",
+                "https://${HostHelper.host}/forum/index.php?act=auth&action=markboard",
                 true,
                 false
             )

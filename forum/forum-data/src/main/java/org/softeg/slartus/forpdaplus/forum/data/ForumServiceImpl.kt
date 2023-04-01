@@ -37,7 +37,12 @@ class ForumServiceImpl @Inject constructor(private val httpClient: AppHttpClient
 
     override suspend fun markAsRead(forumId: String) = withContext(Dispatchers.IO) {
         val queryParams =
-            mapOf("act" to "login", "CODE" to "04", "f" to forumId, "fromforum" to forumId)
+            mapOf(
+                "act" to "auth",
+                "action" to "markforum",
+                "f" to forumId,
+                "fromforum" to forumId
+            )
                 .map {
                     NameValuePair(it.key, it.value)
                 }
