@@ -284,15 +284,7 @@ class QmsChatFragment : WebViewFragment() {
             if (requestCode == MY_INTENT_CLICK) {
                 val fileName = FilePath.getFileName(App.getInstance(), uri)
                 if (fileName != null) {
-                    if (fileName.matches("(?i)(.*)(7z|zip|rar|tar.gz|exe|cab|xap|txt|log|jpeg|jpg|png|gif|mp3|mp4|apk|ipa|img|.mtz)$".toRegex())) {
-                        AttachesTask(this, uri).execute()
-                    } else {
-                        Toast.makeText(
-                            activity,
-                            R.string.file_not_support_forum,
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
+                    AttachesTask(this, uri).execute()
                 } else
                     Toast.makeText(activity, "Не могу прикрепить файл", Toast.LENGTH_SHORT).show()
 

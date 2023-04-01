@@ -7,28 +7,29 @@ import javax.inject.Inject
 
 class TopicAttachParser @Inject constructor() {
     fun parse(page: String): PostAttach {
-        val errorPattern = Pattern
-            .compile(
-                "pipsatt.status_msg = '([^']*)';\\s*pipsatt.status_is_error = parseInt\\('(\\d+)'\\);",
-                Pattern.CASE_INSENSITIVE
-            )
-            .matcher(page)
+        val errorPattern = errorPattern.matcher(page)
         if (errorPattern.find()) {
-            if ("1" == errorPattern.group(2))
-                throw NotReportException(getStatusMessage(errorPattern.group(1)))
+            throw NotReportException(getStatusMessage(errorPattern.group(1)?.toString().orEmpty()))
         }
-        val m = Pattern
-            .compile(
-                "add_current_item\\(\\s*'(\\d+)',\\s*'([^']*)',\\s*'([^']*)',\\s*'([^']*)'\\s*\\);",
-                Pattern.CASE_INSENSITIVE
-            )
-            .matcher(page)
+        val m = successPattern.matcher(page)
         if (m.find()) {
             val id = m.group(1) ?: throw PostAttachException()
             val name = m.group(2) ?: throw PostAttachException()
             return PostAttach(id, name)
         }
         throw PostAttachException()
+    }
+    companion object{
+        private val errorPattern = Pattern
+            .compile(
+                "pipsatt.status_msg = [\"']([^']*)['\"];\\s*pipsatt.status_is_error = 1;",
+                Pattern.CASE_INSENSITIVE
+            )
+        private val successPattern = Pattern
+            .compile(
+                "add_current_item\\(\\s*'(\\d+)',\\s*'([^']*)',\\s*'([^']*)',\\s*'([^']*)'\\s*\\);",
+                Pattern.CASE_INSENSITIVE
+            )
     }
 }
 

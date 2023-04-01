@@ -619,22 +619,7 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
     private suspend fun prepareUploadFiles(uris: List<Uri>): Boolean = withContext(Dispatchers.IO) {
         uris.forEachIndexed { index, uri ->
             val fileName = FilePath.getFileName(requireContext(), uri)
-            if (fileName != null) {
-                val imageExt = "jpeg|jpg|png|gif".split("|")
-                val fileExt =
-                    "7z|zip|rar|tar.gz|exe|cab|xap|txt|log|mp3|mp4|apk|apks|apkm|ipa|img|mtz".split("|")
-                val exts = fileExt + imageExt
-                if (!exts.any { ext -> fileName.endsWith(ext, ignoreCase = true) }) {
-                    withContext(Dispatchers.Main) {
-                        Toast.makeText(
-                            mainActivity,
-                            getString(R.string.file_not_support_forum) + " $index $fileName",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                    return@withContext false
-                }
-            } else {
+            if (fileName == null) {
                 withContext(Dispatchers.Main) {
                     Toast.makeText(
                         context,
