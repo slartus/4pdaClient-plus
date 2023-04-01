@@ -215,8 +215,10 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         menu.findItem(R.id.comment_item).setVisible(Client.getInstance().getLogined() & pencil);
         menu.findItem(R.id.hide_pencil_item).setChecked(Preferences.isHideFab());
         menu.findItem(R.id.LoadImages_item).setChecked(getWebView().getSettings().getLoadsImagesAutomatically());
+        menu.findItem(R.id.save_page_item).setVisible(Preferences.System.isDevSavePage());
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -244,6 +246,9 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
                 return true;
             case R.id.link_item:
                 ExtUrl.showSelectActionDialog(getMainActivity(), getString(R.string.link), getUrl());
+                return true;
+            case R.id.save_page_item:
+                saveHtml();
                 return true;
         }
         return super.onOptionsItemSelected(item);

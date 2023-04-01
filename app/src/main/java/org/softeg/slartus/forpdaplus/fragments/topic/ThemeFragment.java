@@ -419,20 +419,6 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         super.onDestroy();
     }
 
-
-//    @Override
-//    public void onPrepareOptionsMenu(Menu menu) {
-//        super.onPrepareOptionsMenu(menu);
-//        if (!m_FirstTime)
-//            onPrepareOptionsMenu();
-//        m_FirstTime = false;
-//        if (mTopicOptionsMenu != null)
-//            configureOptionsMenu(getMainActivity(), getHandler(), mTopicOptionsMenu, true, getLastUrl());
-//        else if (getTopic() != null)
-//            mTopicOptionsMenu = addOptionsMenu(getMainActivity(), getHandler(), menu, true, getLastUrl());
-//
-//    }
-
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu();
@@ -448,6 +434,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         menu.findItem(R.id.loading_img_for_session_item).setChecked(getLoadsImagesAutomatically());
         menu.findItem(R.id.multi_moderation_item).setVisible(Preferences.System.isCurator());
         menu.findItem(R.id.menu_item_forum_search).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+        menu.findItem(R.id.save_page_item).setVisible(Preferences.System.isDevSavePage());
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -567,6 +554,9 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                     if (topic != null) {
                         ThemeCurator.showMmodDialog(getActivity(), ThemeFragment.this, getTopic().getId());
                     }
+                    return true;
+                case R.id.save_page_item:
+                    saveHtml();
                     return true;
 
             }

@@ -45,6 +45,8 @@ import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment
 import org.softeg.slartus.forpdaplus.fragments.qms.tasks.*
 import org.softeg.slartus.forpdaplus.prefs.HtmlPreferences
 import org.softeg.slartus.forpdaplus.prefs.Preferences
+import org.softeg.slartus.forpdaplus.prefs.Preferences.System.isDevSavePage
+import org.softeg.slartus.forpdaplus.prefs.Preferences.isHideFab
 import java.io.IOException
 import java.util.*
 import java.util.regex.Pattern
@@ -216,8 +218,8 @@ class QmsChatFragment : WebViewFragment() {
         return view
     }
 
-    private fun AdvWebView.addContextMenuQuote(){
-       setActionModeListener { actionMode: ActionMode, menu: Menu ->
+    private fun AdvWebView.addContextMenuQuote() {
+        setActionModeListener { actionMode: ActionMode, menu: Menu ->
             menu.add(R.string.quote)
                 .setOnMenuItemClickListener { item: MenuItem? ->
                     evalJs("htmlOutSelectionInfo();")
@@ -243,7 +245,7 @@ class QmsChatFragment : WebViewFragment() {
 
     @Suppress("unused")
     @JavascriptInterface
-    fun selectionInfo(text: String){
+    fun selectionInfo(text: String) {
         mainActivity.runOnUiThread {
             edMessage?.insertText("[QUOTE]$text[/QUOTE]")
         }
@@ -731,6 +733,15 @@ class QmsChatFragment : WebViewFragment() {
         )
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.qms_chat, menu)
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        super.onPrepareOptionsMenu(menu)
+        menu.findItem(R.id.save_page_item).isVisible = isDevSavePage
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
@@ -758,14 +769,13 @@ class QmsChatFragment : WebViewFragment() {
                 showCompanionProfile()
                 return true
             }
+            R.id.save_page_item -> {
+                saveHtml()
+                return true
+            }
         }
 
         return super.onOptionsItemSelected(item)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        //super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.qms_chat, menu)
     }
 
     private inner class MyWebViewClient : WebViewClient() {

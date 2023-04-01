@@ -1,123 +1,108 @@
-package org.softeg.slartus.forpdaplus.fragments.search;
+package org.softeg.slartus.forpdaplus.fragments.search
 
-import android.os.Bundle;
-import android.os.Handler;
-import android.view.ContextMenu;
-import android.view.View;
-import android.widget.AbsListView;
-
-import org.softeg.slartus.forpdaapi.IListItem;
-import org.softeg.slartus.forpdaapi.ListInfo;
-import org.softeg.slartus.forpdaapi.search.SearchApi;
-import org.softeg.slartus.forpdaapi.search.SearchSettings;
-import org.softeg.slartus.forpdaplus.Client;
-import org.softeg.slartus.forpdaplus.MainActivity;
-import org.softeg.slartus.forpdaplus.R;
-import org.softeg.slartus.forpdaplus.listfragments.TopicsListFragment;
-
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.text.ParseException;
-import java.util.ArrayList;
+import android.os.Bundle
+import android.view.*
+import android.widget.AbsListView
+import org.softeg.slartus.forpdaapi.IListItem
+import org.softeg.slartus.forpdaapi.ListInfo
+import org.softeg.slartus.forpdaapi.search.SearchApi.getSearchTopicsResult
+import org.softeg.slartus.forpdaapi.search.SearchSettings
+import org.softeg.slartus.forpdaplus.Client
+import org.softeg.slartus.forpdaplus.MainActivity
+import org.softeg.slartus.forpdaplus.R
+import org.softeg.slartus.forpdaplus.classes.common.ExtUrl
+import org.softeg.slartus.forpdaplus.listfragments.TopicsListFragment
+import java.io.IOException
+import java.net.URISyntaxException
+import java.text.ParseException
 
 /**
  * Created by radiationx on 15.11.15.
  */
-public class SearchTopicsFragment extends TopicsListFragment
-        implements ISearchResultView, AbsListView.OnScrollListener {
-    private static final String SEARCH_URL_KEY = "SEARCH_URL_KEY";
+class SearchTopicsFragment : TopicsListFragment(), ISearchResultView, AbsListView.OnScrollListener {
+    override val viewId: Int = R.layout.list_translucent_fragment
 
-
-    public static SearchTopicsFragment newFragment(CharSequence searchUrl) {
-        SearchTopicsFragment fragment = new SearchTopicsFragment();
-        Bundle args = new Bundle();
-        args.putString(SEARCH_URL_KEY, searchUrl.toString());
-        fragment.setArguments(args);
-        return fragment;
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        view = super.onCreateView(inflater, container, savedInstanceState)
+        listView?.setOnScrollListener(this)
+        return view
     }
 
-    protected int getViewId(){
-        return R.layout.list_translucent_fragment;
+    @Throws(IOException::class, ParseException::class, URISyntaxException::class)
+    override fun loadTopics(client: Client, listInfo: ListInfo?): ArrayList<out IListItem?> {
+        return getSearchTopicsResult(client, args.getString(SEARCH_URL_KEY).orEmpty(), mListInfo)
     }
 
-    @Override
-    public android.view.View onCreateView(android.view.LayoutInflater inflater, android.view.ViewGroup container, android.os.Bundle savedInstanceState) {
-        view = super.onCreateView(inflater, container, savedInstanceState);
-
-        getListView().setOnScrollListener(this);
-        return view;
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.search_topics, menu)
     }
 
-//    @Override
-//    protected View getListViewHeader(){
-//        LayoutInflater inflater=getLayoutInflater(null);
-//        inflater.inflate()
-//        return ;
-//    }
-
-    @Override
-    protected ArrayList<? extends IListItem> loadTopics(Client client, ListInfo listInfo) throws IOException, ParseException, URISyntaxException {
-        return SearchApi.INSTANCE.getSearchTopicsResult(client, args.getString(SEARCH_URL_KEY), mListInfo);
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.link_item) {
+            ExtUrl.showSelectActionDialog(
+                mainActivity,
+                getString(R.string.link),
+                args.getString(SEARCH_URL_KEY).orEmpty()
+            )
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 
-    @Override
-    public void saveCache() {
+    override fun saveCache() {}
+    override fun loadCache() {}
 
+    override fun getResultView(): String {
+        return SearchSettings.RESULT_VIEW_TOPICS
     }
 
-    @Override
-    public void loadCache() {
-
+    override fun search(searchQuery: String) {
+        if (args == null) args = Bundle()
+        args.putString(SEARCH_URL_KEY, searchQuery)
+        loadData(true)
     }
 
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo, Handler mHandler) {
-        super.onCreateContextMenu(menu, v, menuInfo);
+    override fun onScrollStateChanged(absListView: AbsListView, scrollState: Int) {}
+    override fun onScroll(
+        absListView: AbsListView,
+        firstVisibleItem: Int,
+        visibleItemCount: Int,
+        totalItemCount: Int
+    ) {
     }
 
-    @Override
-    public String getResultView() {
-        return SearchSettings.RESULT_VIEW_TOPICS;
+    override fun onPause() {
+        super.onPause()
+        MainActivity.searchSettings = SearchSettingsDialogFragment.createDefaultSearchSettings()
     }
 
-    @Override
-    public void search(String searchQuery) {
-        if (args == null)
-            args = new Bundle();
-        args.putString(SEARCH_URL_KEY, searchQuery);
-
-
-        loadData(true);
+    override fun onResume() {
+        super.onResume()
+        MainActivity.searchSettings = SearchSettings.parse(args.getString(SEARCH_URL_KEY))
+        setTitle(getString(R.string.search))
+        setSubtitle(MainActivity.searchSettings.query)
+        setArrow()
     }
 
-    @Override
-    public void onScrollStateChanged(AbsListView absListView, int scrollState) {
-
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setArrow()
     }
 
-    @Override
-    public void onScroll(AbsListView absListView, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-//        if (firstVisibleItem < m_PrevVisible || firstVisibleItem == 0)
-//            getMainActivity().getActionBar().show();
-//        else if (firstVisibleItem > m_PrevVisible) {
-//            getMainActivity().getActionBar().hide();
-//        }
-    }
-    @Override
-    public void onPause() {
-        super.onPause();
-        MainActivity.searchSettings = SearchSettingsDialogFragment.createDefaultSearchSettings();
-    }
+    companion object {
+        private const val SEARCH_URL_KEY = "SEARCH_SETTINGS_KEY"
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        MainActivity.searchSettings = SearchSettings.parse(args.getString(SEARCH_URL_KEY));
-        setArrow();
-    }
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setArrow();
+        @JvmStatic
+        fun newFragment(searchUrl: CharSequence): SearchTopicsFragment {
+            val fragment = SearchTopicsFragment()
+            val args = Bundle()
+            args.putString(SEARCH_URL_KEY, searchUrl.toString())
+            fragment.arguments = args
+            return fragment
+        }
     }
 }

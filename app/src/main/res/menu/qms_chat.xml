@@ -29,4 +29,7 @@
         android:title="@string/profile_interlocutor"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/save_page_item"
+        android:title="@string/save_page" />
 </menu>

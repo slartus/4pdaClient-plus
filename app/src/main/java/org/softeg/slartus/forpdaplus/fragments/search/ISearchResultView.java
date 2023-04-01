@@ -13,8 +13,6 @@ import android.view.View;
  * To change this template use File | Settings | File Templates.
  */
 public interface ISearchResultView {
-    void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo, Handler mHandler);
-
     boolean dispatchKeyEvent(KeyEvent event);
 
     String getResultView();

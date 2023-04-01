@@ -52,7 +52,7 @@ abstract class TopicsListFragment : BaseTaskListFragment() {
     protected var mListInfo = ListInfo()
 
     @Throws(IOException::class, ParseException::class, URISyntaxException::class)
-    protected abstract fun loadTopics(client: Client?, listInfo: ListInfo?): ArrayList<out IListItem?>
+    protected abstract fun loadTopics(client: Client, listInfo: ListInfo?): ArrayList<out IListItem?>
     override fun loadCache() {
         clearNotification(2)
         super.loadCache()

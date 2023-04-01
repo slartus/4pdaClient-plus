@@ -1,5 +1,6 @@
 package org.softeg.slartus.forpdaplus.fragments.search;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -9,14 +10,16 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.appcompat.app.ActionBar;
 import android.text.TextUtils;
-import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -206,12 +209,6 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
         mWvBody.addJavascriptInterface(this, "HTMLOUT");
     }
 
-
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo, Handler mHandler) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-    }
-
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         return m_WebViewExternals.dispatchKeyEvent(event);
@@ -397,12 +394,32 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        menu.add(R.string.link)
-                .setOnMenuItemClickListener(menuItem -> {
-                    ExtUrl.showSelectActionDialog(getMainActivity(), getString(R.string.link), getSearchQuery());
-                    return true;
-                });
+        inflater.inflate(R.menu.search_posts, menu);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(@NonNull Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+
+        menu.findItem(R.id.save_page_item).setVisible(Preferences.System.isDevSavePage());
+    }
+
+    @SuppressLint("NonConstantResourceId")
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item){
+        switch (item.getItemId()) {
+            case R.id.link_item:
+                ExtUrl.showSelectActionDialog(
+                        getMainActivity(),
+                        getString(R.string.link),
+                        args.getString(SEARCH_URL_KEY)
+                );
+                return true;
+            case R.id.save_page_item:
+                saveHtml();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

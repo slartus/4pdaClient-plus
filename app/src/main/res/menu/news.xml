@@ -45,4 +45,7 @@
     <item
         android:id="@+id/link_item"
         android:title="@string/link" />
+    <item
+        android:id="@+id/save_page_item"
+        android:title="@string/save_page" />
 </menu>

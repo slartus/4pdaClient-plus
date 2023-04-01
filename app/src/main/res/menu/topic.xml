@@ -96,4 +96,7 @@
         android:id="@+id/multi_moderation_item"
         android:title="@string/multimoderation" />
 
+    <item
+        android:id="@+id/save_page_item"
+        android:title="@string/save_page" />
 </menu>

@@ -58,7 +58,7 @@ class TopicsHistoryListFragment : TopicsListFragment() {
     }
 
     @Throws(IOException::class)
-    override fun loadTopics(client: Client?, listInfo: ListInfo?): ArrayList<out IListItem?> {
+    override fun loadTopics(client: Client, listInfo: ListInfo?): ArrayList<out IListItem?> {
         return TopicsHistoryTable.getTopicsHistory(listInfo)
     }
 
