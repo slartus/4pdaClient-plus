@@ -3001,7 +3001,7 @@ li .post-block {
     display: block;
   }
 }
-@media screen and (max-width: 16rem) {
+@media screen and (max-width: 18rem) {
   .post_container .post_header .header_wrapper {
     padding-bottom: 4em;
   }
