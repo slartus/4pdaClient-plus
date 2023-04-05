@@ -22,7 +22,7 @@
         "isHasTopics": true,
         "isHasForums": false,
         "parentId": "5",
-        "iconUrl": "https:\/\/4pda.to\/s\/PXtim32i67NPcz1O75PRHlUF3FGWLuviZbTz17ryfxDBFwHBwhs0HuuQv5Vz2z0niCK98xcwvADKiHeVDZ.gif",
+        "iconUrl": "https:\/\/4pda.to\/s\/PXtim32i67duRus0mVO83CH3kBz2wjVVuYEQEJPfV5JOtKE1O4ofCGttlL3AmEGN6x5rSSURB.gif",
         "description": "\u0414\u043b\u044f \u0436\u0435\u043b\u0430\u044e\u0449\u0438\u0445 \u0432\u0441\u0442\u0443\u043f\u0438\u0442\u044c \u0432 \u043a\u043e\u043c\u0430\u043d\u0434\u0443 4PDA"
     },
     {
@@ -40,7 +40,7 @@
         "isHasTopics": true,
         "isHasForums": false,
         "parentId": "828",
-        "iconUrl": "https:\/\/4pda.to\/s\/PXtioRGJuYfIKV6K5ICpBrjp8o5HuXlbJ67z0mJG3fmEmcGrbEP5.gif",
+        "iconUrl": "https:\/\/4pda.to\/s\/PXtiwlGpeZTz0tvdxXpJbjwuVaCz1fH4NGz2Yz2Bj29ITGqx4ro6Ip.gif",
         "description": null
     },
     {
@@ -102,7 +102,7 @@
         "isHasTopics": true,
         "isHasForums": false,
         "parentId": "282",
-        "iconUrl": "https:\/\/4pda.to\/s\/PXtioRGJusqih8eQlkp6SxswZz1hphfPKjQl3uZBc8sj.gif",
+        "iconUrl": "https:\/\/4pda.to\/s\/PXtiwlGpz0LWlt3td825ZWVjPecrwM8OPFT9z1D2c4tA.gif",
         "description": "\u0417\u0434\u0435\u0441\u044c \u0441\u043a\u043b\u0430\u0434\u0438\u0440\u0443\u044e\u0442\u0441\u044f \u043e\u0442\u043e\u0431\u0440\u0430\u043d\u043d\u044b\u0435 \u0437\u043d\u0430\u043d\u0438\u044f \u0438\u0437 \u0440\u0430\u0437\u0434\u0435\u043b\u0430 \u041f\u0435\u0440\u0432\u043e\u0439 \u043f\u043e\u043c\u043e\u0449\u0438"
     },
     {
@@ -394,15 +394,6 @@
         "description": null
     },
     {
-        "id": "604",
-        "title": "\u041d\u0430\u0431\u043e\u0440 \u0438\u0433\u0440 \u0438 \u043f\u0440\u0438\u043b\u043e\u0436\u0435\u043d\u0438\u0439 (\u0440\u0435\u0434\u0438\u0440\u0435\u043a\u0442)",
-        "isHasTopics": true,
-        "isHasForums": false,
-        "parentId": "212",
-        "iconUrl": "https:\/\/4pda.to\/s\/PXtiwlGpryEB5V17ah6KrgLQGCW3yd0z1L7qgom4dMFGPggz2Bz0IxXDoW4z0d6.gif",
-        "description": null
-    },
-    {
         "id": "212",
         "title": "Android - \u041f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u044b",
         "isHasTopics": true,
@@ -543,7 +534,7 @@
         "isHasTopics": true,
         "isHasForums": false,
         "parentId": "213",
-        "iconUrl": "https:\/\/4pda.to\/s\/PXtidygAh3kyVBcaJgVZCz2yuQV8CDGqz2APtbibdNBbl3OJJQEPb.gif",
+        "iconUrl": "https:\/\/4pda.to\/s\/PXtioRGJAVH2IovM2Nghsbg0KSostusCcdel6GBfwhEwVR5hM88Prv7z0.gif",
         "description": "\u0410\u0440\u0445\u0438\u0432 \u0443\u0441\u0442\u0430\u0440\u0435\u0432\u0448\u0438\u0445 \u0438 \u043d\u0435\u0430\u043a\u0442\u0443\u0430\u043b\u044c\u043d\u044b\u0445 \u0438\u0433\u0440. \u0414\u043e\u0441\u0442\u0443\u043f\u0435\u043d \u0442\u043e\u043b\u044c\u043a\u043e \u0434\u043b\u044f \u0447\u0442\u0435\u043d\u0438\u044f"
     },
     {
@@ -553,15 +544,6 @@
         "isHasForums": false,
         "parentId": "213",
         "iconUrl": "https:\/\/4pda.to\/s\/PXtiu3BvnuGsXLP7z2D1kXx2q77IcGz2syOpZ2oz2w.gif",
-        "description": null
-    },
-    {
-        "id": "605",
-        "title": "\u041d\u0430\u0431\u043e\u0440 \u0438\u0433\u0440 \u0438 \u043f\u0440\u0438\u043b\u043e\u0436\u0435\u043d\u0438\u0439 (\u0440\u0435\u0434\u0438\u0440\u0435\u043a\u0442)",
-        "isHasTopics": true,
-        "isHasForums": false,
-        "parentId": "213",
-        "iconUrl": "https:\/\/4pda.to\/s\/PXtiwlGpryEB5V17ah6KrgLQGCW3yd0z1L7qgom4dMFGPggz2Bz0IxXDoW4z0d6.gif",
         "description": null
     },
     {
@@ -1002,7 +984,7 @@
         "isHasTopics": true,
         "isHasForums": false,
         "parentId": "336",
-        "iconUrl": "https:\/\/4pda.to\/s\/PXtiZqE80YFF43wGxZOtqUfSE3oMfOVBlATqaHKW45ryict5.gif",
+        "iconUrl": "https:\/\/4pda.to\/s\/PXtiZqE8mz1dNOcRxV7z0MJOSSWVjP8MDs8RM2rqk2BjEWD3.gif",
         "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 Digma \u043d\u0430 \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0435 Android "
     },
     {
@@ -1218,7 +1200,7 @@
         "isHasTopics": true,
         "isHasForums": false,
         "parentId": "268",
-        "iconUrl": "https:\/\/4pda.to\/s\/PXtioRGJANGB6Tsi18CLLs6yohYV6WD9WI77pHdvVLTSupz0UkL.gif",
+        "iconUrl": "https:\/\/4pda.to\/s\/PXtiryOdLflDgF4XJ2z2xo5z0k5Ma1z1Xz2Xbo27OJoGYz0DC.gif",
         "description": "\u041f\u0440\u043e\u0448\u0438\u0432\u043a\u0438 \u0434\u043b\u044f \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432"
     },
     {
@@ -1577,7 +1559,7 @@
         "isHasTopics": true,
         "isHasForums": false,
         "parentId": "140",
-        "iconUrl": "https:\/\/4pda.to\/s\/PXtioRGJuweFY0ZFDFh6wz21OkkNQlEZku1z2DNCscAwNldBanbsgLMb3.gif",
+        "iconUrl": "https:\/\/4pda.to\/s\/PXtidSgflWutTXKvlW8UdhJz0Hz053mNPhrJaHqz09ITGqRqjE0Th.gif",
         "description": "\u041a\u0430\u0440\u0442\u044b \u043c\u0435\u0442\u0440\u043e, \u043f\u0443\u0442\u0435\u0432\u043e\u0434\u0438\u0442\u0435\u043b\u0438, \u043f\u043e\u043c\u043e\u0449\u043d\u0438\u043a\u0438 \u043f\u043e \u043d\u0430\u0432\u0438\u0433\u0430\u0446\u0438\u0438."
     },
     {
@@ -2089,7 +2071,7 @@
         "isHasTopics": true,
         "isHasForums": false,
         "parentId": "8",
-        "iconUrl": "https:\/\/4pda.to\/s\/PXtiZqE80YFF3mQoVuGsgYTz0IIP8iXj3hvEGM89ZXn1.gif",
+        "iconUrl": "https:\/\/4pda.to\/s\/PXtiZqE8mYlO9ebGe46sCNucxyQQRxbbkacIdKA0.gif",
         "description": "FAQ \u0438 \u0438\u043d\u0441\u0442\u0440\u0443\u043a\u0446\u0438\u0438 \u043f\u043e \u043e\u0441\u043d\u043e\u0432\u043d\u044b\u043c \u043f\u0440\u043e\u0431\u043b\u0435\u043c\u0430\u043c \u0441 Windows Mobile \u0438 \u0438\u0445 \u043e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435"
     },
     {
@@ -2269,7 +2251,7 @@
         "isHasTopics": true,
         "isHasForums": false,
         "parentId": "3",
-        "iconUrl": "https:\/\/4pda.to\/s\/PXtiZqE80YFFM70geC6prntCd4EGe8E0O4UOIoU8fbrGz1ex80FaNEJ6z1.gif",
+        "iconUrl": "https:\/\/4pda.to\/s\/PXtiZqE8mssz1GvC5XBptjz0bnkSdFC8Keoo0KrJ41y9xlOP3lcWJrC0.gif",
         "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0430\u043a\u0441\u0435\u0441\u0441\u0443\u0430\u0440\u043e\u0432 \u0438 \u043a\u043e\u043c\u043f\u043b\u0435\u043a\u0442\u0443\u044e\u0449\u0438\u0445 \u043a \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432\u0430\u043c"
     },
     {
@@ -2629,7 +2611,7 @@
         "isHasTopics": true,
         "isHasForums": false,
         "parentId": "56",
-        "iconUrl": "https:\/\/4pda.to\/s\/PXtioRGJuo97V91V762l8O6KQ1tVUiDcYNebFJH9ZPZRmmm9.gif",
+        "iconUrl": "https:\/\/4pda.to\/s\/PXtiwlGpixeEeHAAU8eQFz1xIUUl53EplTUjcmlz18gEcB5hu.gif",
         "description": "\u041f\u0440\u043e\u0448\u0438\u0432\u043a\u0438 \u0434\u043b\u044f \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 \u043e\u0442 Toshiba"
     },
     {
@@ -3606,7 +3588,7 @@
         "isHasTopics": true,
         "isHasForums": false,
         "parentId": "610",
-        "iconUrl": "https:\/\/4pda.to\/s\/PXtioRGJu2fp75Hr61hXiz04Yjbnz2mP54T2KnFERGz1iJwz1Xv4Lk79dPZz2EavKVk.gif",
+        "iconUrl": "https:\/\/4pda.to\/s\/PXtiwlGpWZLfGUoc9z0hBRA5P8Ei4Vz1kWmKOdaYXOoYMShWSt2E48WVCpqw1o.gif",
         "description": null
     },
     {
@@ -5683,7 +5665,7 @@
         "isHasTopics": true,
         "isHasForums": false,
         "parentId": "20",
-        "iconUrl": "https:\/\/4pda.to\/s\/PXtioRGJA7mR0HgAH7siMz2qPHKXevj1YZTg3I2vYz2eiV.gif",
+        "iconUrl": "https:\/\/4pda.to\/s\/PXtinqi6ct8A7Afz2ppYu6dq3pLVRr6va45qc8sD.gif",
         "description": null
     },
     {
