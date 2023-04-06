@@ -9,7 +9,9 @@ class TopicAttachParser @Inject constructor() {
     fun parse(page: String): PostAttach {
         val errorPattern = errorPattern.matcher(page)
         if (errorPattern.find()) {
-            throw NotReportException(getStatusMessage(errorPattern.group(1)?.toString().orEmpty()))
+            throw org.softeg.slartus.forpdacommon.NotReportException(
+                getStatusMessage(errorPattern.group(1)?.toString().orEmpty())
+            )
         }
         val m = successPattern.matcher(page)
         if (m.find()) {

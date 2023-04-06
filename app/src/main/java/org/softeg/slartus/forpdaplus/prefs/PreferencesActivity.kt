@@ -26,12 +26,7 @@ import org.softeg.slartus.forpdacommon.FilePath
 import org.softeg.slartus.forpdacommon.FileUtils
 import org.softeg.slartus.forpdacommon.NotReportException
 import org.softeg.slartus.forpdacommon.loadAssetsText
-import org.softeg.slartus.forpdaplus.App
-import org.softeg.slartus.forpdaplus.AppTheme.currentTheme
-import org.softeg.slartus.forpdaplus.AppTheme.getThemeCssFileName
-import org.softeg.slartus.forpdaplus.BuildConfig
-import org.softeg.slartus.forpdaplus.IntentActivity
-import org.softeg.slartus.forpdaplus.R
+import org.softeg.slartus.forpdaplus.*
 import org.softeg.slartus.forpdaplus.classes.InputFilterMinMax
 import org.softeg.slartus.forpdaplus.common.AppLog
 import org.softeg.slartus.forpdaplus.common.IntentChooser.choose
@@ -45,6 +40,8 @@ import org.softeg.slartus.forpdaplus.styles.CssStyle
 import org.softeg.slartus.forpdaplus.styles.StyleInfoActivity
 import org.softeg.slartus.hosthelper.HostHelper
 import ru.slartus.http.PersistentCookieStore.Companion.getInstance
+import ru.softeg.slartus.common.api.AppAccentColor
+import ru.softeg.slartus.common.api.AppStyle.Companion.toOldValue
 import timber.log.Timber
 import java.io.*
 import java.text.SimpleDateFormat
@@ -241,7 +238,8 @@ class PreferencesActivity : BasePreferencesActivity() {
                             refreshNotesEnabled()
 
                             AppLog.e(
-                                activity, NotReportException(
+                                activity,
+                                org.softeg.slartus.forpdacommon.NotReportException(
                                     it.localizedMessage
                                         ?: it.message, it
                                 )
@@ -503,41 +501,29 @@ class PreferencesActivity : BasePreferencesActivity() {
         private fun showMainAccentColorDialog() {
             try {
                 val prefs = App.getInstance().preferences
-                val string = prefs.getString("mainAccentColor", "pink")
-                var position = -1
-                when (string) {
-                    "pink" -> position = 0
-                    "blue" -> position = 1
-                    "gray" -> position = 2
+                val colors = AppAccentColor.values()
+                val titles = colors.map {
+                    when (it) {
+                        AppAccentColor.Pink -> App.getContext().getString(R.string.pink)
+                        AppAccentColor.Blue -> App.getContext().getString(R.string.blue)
+                        AppAccentColor.Gray -> App.getContext().getString(R.string.gray)
+                    }
                 }
-                val selected = intArrayOf(0)
+                var selected = colors.indexOf(AppTheme.mainAccent)
                 MaterialDialog.Builder(activity)
                     .title(R.string.pick_accent_color)
-                    .items(
-                        App.getContext().getString(R.string.blue),
-                        App.getContext().getString(R.string.pink),
-                        App.getContext().getString(R.string.gray)
-                    )
-                    .itemsCallbackSingleChoice(position) { _: MaterialDialog?, _: View?, which: Int, _: CharSequence? ->
-                        selected[0] = which
+                    .items(titles)
+                    .itemsCallbackSingleChoice(selected) { _: MaterialDialog?, _: View?, which: Int, _: CharSequence? ->
+                        selected = which
                         true
                     }
                     .alwaysCallSingleChoiceCallback()
                     .positiveText(R.string.accept)
                     .negativeText(R.string.cancel)
                     .onPositive { _: MaterialDialog?, _: DialogAction? ->
-                        when (selected[0]) {
-                            0 -> {
-                                prefs.edit().putString("mainAccentColor", "pink").apply()
-                                if (!prefs.getBoolean("accentColorEdited", false)) {
-                                    prefs.edit()
-                                        .putInt("accentColor", Color.rgb(2, 119, 189))
-                                        .putInt("accentColorPressed", Color.rgb(0, 89, 159))
-                                        .apply()
-                                }
-                            }
-                            1 -> {
-                                prefs.edit().putString("mainAccentColor", "blue").apply()
+                        when (colors[selected]) {
+                            AppAccentColor.Pink -> {
+                                AppTheme.mainAccent = AppAccentColor.Pink
                                 if (!prefs.getBoolean("accentColorEdited", false)) {
                                     prefs.edit()
                                         .putInt("accentColor", Color.rgb(233, 30, 99))
@@ -545,8 +531,17 @@ class PreferencesActivity : BasePreferencesActivity() {
                                         .apply()
                                 }
                             }
-                            2 -> {
-                                prefs.edit().putString("mainAccentColor", "gray").apply()
+                            AppAccentColor.Blue -> {
+                                AppTheme.mainAccent = AppAccentColor.Blue
+                                if (!prefs.getBoolean("accentColorEdited", false)) {
+                                    prefs.edit()
+                                        .putInt("accentColor", Color.rgb(2, 119, 189))
+                                        .putInt("accentColorPressed", Color.rgb(0, 89, 159))
+                                        .apply()
+                                }
+                            }
+                            AppAccentColor.Gray -> {
+                                AppTheme.mainAccent = AppAccentColor.Gray
                                 if (!prefs.getBoolean("accentColorEdited", false)) {
                                     prefs.edit()
                                         .putInt("accentColor", Color.rgb(117, 117, 117))
@@ -584,9 +579,9 @@ class PreferencesActivity : BasePreferencesActivity() {
                 val red = view.findViewById<SeekBar>(R.id.red)
                 val green = view.findViewById<SeekBar>(R.id.green)
                 val blue = view.findViewById<SeekBar>(R.id.blue)
-                redTxt.filters = arrayOf<InputFilter>(InputFilterMinMax("0", "255"))
-                greenTxt.filters = arrayOf<InputFilter>(InputFilterMinMax("0", "255"))
-                blueTxt.filters = arrayOf<InputFilter>(InputFilterMinMax("0", "255"))
+                redTxt.filters = arrayOf<InputFilter>(InputFilterMinMax(0, 255))
+                greenTxt.filters = arrayOf<InputFilter>(InputFilterMinMax(0, 255))
+                blueTxt.filters = arrayOf<InputFilter>(InputFilterMinMax(0, 255))
                 redTxt.setText(colors[0].toString())
                 greenTxt.setText(colors[1].toString())
                 blueTxt.setText(colors[2].toString())
@@ -762,37 +757,9 @@ class PreferencesActivity : BasePreferencesActivity() {
             }
         }
 
-        /*private int PICK_IMAGE_REQUEST = 1;
-        private void pickUserBackground() {
-
-            try {
-                Intent intent = new Intent();
-// Show only images, no videos or anything else
-                intent.setType("image/ *");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-// Always show the chooser (if there are multiple options available)
-                startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
-
-
-            } catch (Exception ex) {
-                AppLog.e(getActivity(), ex);
-            }
-
-        }
-        @Override
-        public void onActivityResult(int requestCode, int resultCode, Intent data) {
-            super.onActivityResult(requestCode, resultCode, data);
-            if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-                Uri uri = data.getData();
-                App.getInstance().getPreferences()
-                        .edit()
-                        .putString("userBackground", uri.toString())
-                        .commit();
-            }
-        }*/
         private fun showStylesDialog() {
             try {
-                val currentValue = currentTheme
+                val currentValue = AppTheme.appStyle.toOldValue().toString()
                 val newStyleNames = ArrayList<CharSequence>()
                 val newstyleValues = ArrayList<CharSequence>()
                 getStylesList(activity, newStyleNames, newstyleValues)
@@ -831,8 +798,7 @@ class PreferencesActivity : BasePreferencesActivity() {
                             ).show()
                             return@onNeutral
                         }
-                        var stylePath = newstyleValues[selected[0]].toString()
-                        stylePath = getThemeCssFileName(stylePath)
+                        val stylePath = AppTheme.themeCssFileName
                         val xmlPath = stylePath.replace(".css", ".xml")
                         val cssStyle = CssStyle.parseStyle(activity, xmlPath)
                         if (!cssStyle.ExistsInfo) {
@@ -1051,7 +1017,7 @@ class PreferencesActivity : BasePreferencesActivity() {
             for (i in styleNames.indices) {
                 var styleName: CharSequence = styleNames[i]
                 val styleValue: CharSequence = styleValues[i]
-                xmlPath = getThemeCssFileName(styleValue.toString()).replace(".css", ".xml")
+                xmlPath = AppTheme.themeCssFileName.replace(".css", ".xml")
                     .replace("/android_asset/", "")
                 cssStyle = CssStyle.parseStyleFromAssets(context, xmlPath)
                 if (cssStyle.ExistsInfo) styleName = cssStyle.Title

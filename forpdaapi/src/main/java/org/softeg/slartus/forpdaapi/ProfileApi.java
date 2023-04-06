@@ -1,7 +1,5 @@
 package org.softeg.slartus.forpdaapi;
 
-import androidx.core.util.Pair;
-
 import android.content.Context;
 import android.text.Html;
 import android.text.TextUtils;
@@ -23,6 +21,7 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import kotlin.Pair;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;

@@ -7,7 +7,6 @@ import java.math.BigInteger
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 import java.util.*
-import androidx.core.util.Pair
 
 object ACRAPostSender {
     private fun addNotNullParameter(

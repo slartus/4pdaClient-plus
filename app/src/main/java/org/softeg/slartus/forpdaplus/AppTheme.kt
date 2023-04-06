@@ -1,33 +1,56 @@
 package org.softeg.slartus.forpdaplus
 
-import android.content.Context
 import android.content.SharedPreferences
-import android.content.res.Configuration
 import android.graphics.Color
-import android.os.Environment
-import org.softeg.slartus.forpdaplus.classes.common.ArrayUtils
-import java.io.File
+import kotlinx.coroutines.runBlocking
+import ru.softeg.slartus.common.api.AppAccentColor
+import ru.softeg.slartus.common.api.AppStyle
+import ru.softeg.slartus.common.api.AppStyleType
+import ru.softeg.slartus.common.api.htmlBackgroundColor
 
 object AppTheme {
-    private const val THEME_LIGHT = 0
-    private const val THEME_DARK = 1
-    private const val THEME_BLACK = 6
-    private const val THEME_MATERIAL_LIGHT = 2
-    private const val THEME_MATERIAL_DARK = 3
-    private const val THEME_MATERIAL_BLACK = 5
-    private const val THEME_LIGHT_OLD_HD = 4
-    private const val THEME_CUSTOM_CSS = 99
-    const val THEME_TYPE_LIGHT = 0
-    const val THEME_TYPE_DARK = 2
-    private const val THEME_TYPE_BLACK = 3
-    private val LIGHT_THEMES = arrayOf(THEME_LIGHT, THEME_LIGHT_OLD_HD, THEME_MATERIAL_LIGHT)
-    private val DARK_THEMES = arrayOf(THEME_MATERIAL_DARK, THEME_DARK)
+    @JvmStatic
+    var appTheme: ru.softeg.slartus.common.api.AppTheme? = null
 
-    private var defaultTheme = THEME_LIGHT
+    @JvmStatic
+    val appStyle: AppStyle
+        get() {
+            // TODO: Change
+            return runBlocking {
+                requireNotNull(appTheme).getStyle()
+            }
+        }
+
+    var mainAccent: AppAccentColor
+        get() {
+            return runBlocking {   // TODO: Remove blocking
+                requireNotNull(appTheme).getAccentColor()
+            }
+        }
+        set(value) {
+            runBlocking { // TODO: Remove blocking
+                requireNotNull(appTheme).updateAccentColor(value)
+            }
+        }
+
+    @JvmStatic
+    val mainAccentColor: Int
+        get() {
+            return mainAccent.colorResId
+        }
 
     @JvmStatic
     val webViewFont: String?
         get() = preferences.getString("webViewFontName", "")
+
+    @JvmStatic
+    fun getStatusBarBackgroundColorResId(): Int {
+        return when (appStyle.type) {
+            AppStyleType.Light -> R.color.statusBar_light
+            AppStyleType.Dark -> R.color.statusBar_dark
+            AppStyleType.Black -> R.color.statusBar_black
+        }
+    }
 
     @JvmStatic
     fun getColorAccent(type: String?): Int {
@@ -40,215 +63,160 @@ object AppTheme {
     }
 
     @JvmStatic
-    fun setDefaultTheme(context: Context){
-        defaultTheme = if(context.isSystemInDarkTheme()) THEME_DARK else THEME_LIGHT
-    }
-
-    @JvmStatic
-    val mainAccentColor: Int
-        get() {
-            var color = R.color.accentPink
-            when (preferences.getString("mainAccentColor", "pink")) {
-                "pink" -> color = R.color.accentPink
-                "blue" -> color = R.color.accentBlue
-                "gray" -> color = R.color.accentGray
-            }
-            return color
-        }
-
-    @JvmStatic
     val themeStyleResID: Int
         get() {
-            var theme = R.style.ThemeLight
-            val color = preferences.getString("mainAccentColor", "pink")
-            when (themeType) {
-                THEME_TYPE_LIGHT -> {
-                    when (color) {
-                        "pink" -> theme = R.style.MainPinkLight
-                        "blue" -> theme = R.style.MainBlueLight
-                        "gray" -> theme = R.style.MainGrayLight
+            return when (appStyle.type) {
+                AppStyleType.Light -> {
+                    when (mainAccent) {
+                        AppAccentColor.Blue -> R.style.MainBlueLight
+                        AppAccentColor.Gray -> R.style.MainGrayLight
+                        AppAccentColor.Pink -> R.style.MainPinkLight
                     }
                 }
-                THEME_TYPE_DARK -> {
-                    when (color) {
-                        "pink" -> theme = R.style.MainPinkDark
-                        "blue" -> theme = R.style.MainBlueDark
-                        "gray" -> theme = R.style.MainGrayDark
+                AppStyleType.Black -> {
+                    when (mainAccent) {
+                        AppAccentColor.Blue -> R.style.MainBlueBlack
+                        AppAccentColor.Gray -> R.style.MainGrayBlack
+                        AppAccentColor.Pink -> R.style.MainPinkBlack
                     }
                 }
-                else -> {
-                    when (color) {
-                        "pink" -> theme = R.style.MainPinkBlack
-                        "blue" -> theme = R.style.MainBlueBlack
-                        "gray" -> theme = R.style.MainGrayBlack
+                AppStyleType.Dark -> {
+                    when (mainAccent) {
+                        AppAccentColor.Blue -> R.style.MainBlueDark
+                        AppAccentColor.Gray -> R.style.MainGrayDark
+                        AppAccentColor.Pink -> R.style.MainPinkDark
                     }
                 }
             }
-            return theme
         }
 
     @JvmStatic
     val prefsThemeStyleResID: Int
-        get() {
-            var theme = R.style.ThemePrefsLightPink
-            val color = preferences.getString("mainAccentColor", "pink")
-            when (themeType) {
-                THEME_TYPE_LIGHT -> {
-                    when (color) {
-                        "pink" -> theme = R.style.ThemePrefsLightPink
-                        "blue" -> theme = R.style.ThemePrefsLightBlue
-                        "gray" -> theme = R.style.ThemePrefsLightGray
-                    }
-                }
-                THEME_TYPE_DARK -> {
-                    when (color) {
-                        "pink" -> theme = R.style.ThemePrefsDarkPink
-                        "blue" -> theme = R.style.ThemePrefsDarkBlue
-                        "gray" -> theme = R.style.ThemePrefsDarkGray
-                    }
-                }
-                else -> {
-                    when (color) {
-                        "pink" -> theme = R.style.ThemePrefsBlackPink
-                        "blue" -> theme = R.style.ThemePrefsBlackBlue
-                        "gray" -> theme = R.style.ThemePrefsBlackGray
-                    }
+        get() = when (appStyle.type) {
+            AppStyleType.Light -> {
+                when (mainAccent) {
+                    AppAccentColor.Blue -> R.style.ThemePrefsLightBlue
+                    AppAccentColor.Gray -> R.style.ThemePrefsLightGray
+                    AppAccentColor.Pink -> R.style.ThemePrefsLightPink
                 }
             }
-            return theme
-        }
-
-    @JvmStatic
-    val themeType: Int
-        get() {
-            var themeType = THEME_TYPE_LIGHT
-            val themeStr = currentTheme
-            if (themeStr.length < 3) {
-                val theme = themeStr.toInt()
-                themeType = if (ArrayUtils.indexOf(theme, LIGHT_THEMES) != -1) THEME_TYPE_LIGHT else if (ArrayUtils.indexOf(theme, DARK_THEMES) != -1) THEME_TYPE_DARK else THEME_TYPE_BLACK
-            } else {
-                if (themeStr.contains("/dark/")) themeType = THEME_TYPE_DARK else if (themeStr.contains("/black/")) themeType = THEME_TYPE_BLACK
+            AppStyleType.Black -> {
+                when (mainAccent) {
+                    AppAccentColor.Blue -> R.style.ThemePrefsDarkBlue
+                    AppAccentColor.Gray -> R.style.ThemePrefsDarkGray
+                    AppAccentColor.Pink -> R.style.ThemePrefsDarkPink
+                }
             }
-            return themeType
+            AppStyleType.Dark -> {
+                when (mainAccent) {
+                    AppAccentColor.Blue -> R.style.ThemePrefsBlackBlue
+                    AppAccentColor.Gray -> R.style.ThemePrefsBlackGray
+                    AppAccentColor.Pink -> R.style.ThemePrefsBlackPink
+                }
+            }
         }
 
     @JvmStatic
     val themeBackgroundColorRes: Int
-        get() {
-            val themeType = themeType
-            return if (themeType == THEME_TYPE_LIGHT) R.color.app_background_light else if (themeType == THEME_TYPE_DARK) R.color.app_background_dark else R.color.app_background_black
+        get() = when (appStyle.type) {
+            AppStyleType.Light -> R.color.app_background_light
+            AppStyleType.Dark -> R.color.app_background_dark
+            AppStyleType.Black -> R.color.app_background_black
         }
 
     @JvmStatic
     val themeTextColorRes: Int
-        get() {
-            val themeType = themeType
-            return if (themeType == THEME_TYPE_LIGHT) android.R.color.black else if (themeType == THEME_TYPE_DARK) android.R.color.white else android.R.color.white
+        get() = when (appStyle.type) {
+            AppStyleType.Light -> android.R.color.black
+            AppStyleType.Dark -> android.R.color.white
+            AppStyleType.Black -> android.R.color.white
         }
 
     @JvmStatic
     val swipeRefreshBackground: Int
-        get() {
-            val themeType = themeType
-            return if (themeType == THEME_TYPE_LIGHT) R.color.swipe_background_light else if (themeType == THEME_TYPE_DARK) R.color.swipe_background_dark else R.color.swipe_background_black
+        get() = when (appStyle.type) {
+            AppStyleType.Light -> R.color.swipe_background_light
+            AppStyleType.Dark -> R.color.swipe_background_dark
+            AppStyleType.Black -> R.color.swipe_background_black
         }
 
     @JvmStatic
     val navBarColor: Int
-        get() {
-            val themeType = themeType
-            return if (themeType == THEME_TYPE_LIGHT) R.color.navBar_light else if (themeType == THEME_TYPE_DARK) R.color.navBar_dark else R.color.navBar_black
+        get() = when (appStyle.type) {
+            AppStyleType.Light -> R.color.navBar_light
+            AppStyleType.Dark -> R.color.navBar_dark
+            AppStyleType.Black -> R.color.navBar_black
         }
 
     @JvmStatic
     val drawerMenuText: Int
-        get() {
-            val themeType = themeType
-            return if (themeType == THEME_TYPE_LIGHT) R.color.drawer_menu_text_light else if (themeType == THEME_TYPE_DARK) R.color.drawer_menu_text_dark else R.color.drawer_menu_text_dark
-        }
-@JvmStatic
-    val themeStyleWebViewBackground: Int
-        get() {
-            val themeType = themeType
-            return if (themeType == THEME_TYPE_LIGHT) Color.parseColor("#eeeeee") else if (themeType == THEME_TYPE_DARK) Color.parseColor("#1a1a1a") else Color.parseColor("#000000")
+        get() = when (appStyle.type) {
+            AppStyleType.Light -> R.color.drawer_menu_text_light
+            AppStyleType.Dark -> R.color.drawer_menu_text_dark
+            AppStyleType.Black -> R.color.drawer_menu_text_dark
         }
 
     @JvmStatic
     val currentBackgroundColorHtml: String
-        get() {
-            val themeType = themeType
-            return if (themeType == THEME_TYPE_LIGHT) "#eeeeee" else if (themeType == THEME_TYPE_DARK) "#1a1a1a" else "#000000"
-        }
+        get() = appStyle.htmlBackgroundColor
+
+    @JvmStatic
+    val themeStyleWebViewBackground: Int
+        get() = Color.parseColor(currentBackgroundColorHtml)
 
     @JvmStatic
     val currentTheme: String
-        get() = preferences.getString("appstyle", defaultTheme.toString())?:defaultTheme.toString()
+        get() = appStyle.name
 
     @JvmStatic
     val currentThemeName: String
-        get() {
-            val themeType = themeType
-            return if (themeType == THEME_TYPE_LIGHT) "white" else if (themeType == THEME_TYPE_DARK) "dark" else "black"
-        }
-
-    private fun checkThemeFile(themePath: String): String {
-        return try {
-            if (!File(themePath).exists()) { // Toast.makeText(INSTANCE,"не найден файл темы: "+themePath,Toast.LENGTH_LONG).show();
-                defaultCssTheme()
-            } else themePath
-        } catch (ex: Throwable) {
-            defaultCssTheme()
-        }
-    }
-
-    private fun defaultCssTheme(): String {
-        return "/android_asset/forum/css/4pda_light_blue.css"
-    }
-@JvmStatic
-    val themeCssFileName: String
-        get() {
-            val themeStr = currentTheme
-            return getThemeCssFileName(themeStr)
+        get() = when (appStyle.type) {
+            AppStyleType.Light -> "white"
+            AppStyleType.Dark -> "dark"
+            AppStyleType.Black -> "black"
         }
 
     @JvmStatic
-    fun getThemeCssFileName(themeStr: String): String {
-        if (themeStr.length > 3) return checkThemeFile(themeStr)
-        val path = "/android_asset/forum/css/"
-        var cssFile = "4pda_light_blue.css"
-        val theme = themeStr.toInt()
-        if (theme == -1) return themeStr
-        val color = preferences.getString("mainAccentColor", "pink")
-        when (theme) {
-            THEME_LIGHT -> when (color) {
-                "pink" -> cssFile = "4pda_light_blue.css"
-                "blue" -> cssFile = "4pda_light_pink.css"
-                "gray" -> cssFile = "4pda_light_gray.css"
+    val themeCssFileName: String
+        get() {
+            val path = "/android_asset/forum/css/"
+            val fileName = when (appStyle) {
+                AppStyle.Light -> {
+                    when (mainAccent) {
+                        AppAccentColor.Blue -> "4pda_light_blue.css"
+                        AppAccentColor.Pink -> "4pda_light_pink.css"
+                        AppAccentColor.Gray -> "4pda_light_gray.css"
+                    }
+                }
+                AppStyle.Dark -> {
+                    when (mainAccent) {
+                        AppAccentColor.Blue -> "4pda_dark_blue.css"
+                        AppAccentColor.Pink -> "4pda_dark_pink.css"
+                        AppAccentColor.Gray -> "4pda_dark_gray.css"
+                    }
+                }
+                AppStyle.Black -> {
+                    when (mainAccent) {
+                        AppAccentColor.Blue -> "4pda_black_blue.css"
+                        AppAccentColor.Pink -> "4pda_black_pink.css"
+                        AppAccentColor.Gray -> "4pda_black_gray.css"
+                    }
+                }
+                AppStyle.MaterialLight -> "material_light.css"
+                AppStyle.MaterialDark -> "material_dark.css"
+                AppStyle.MaterialBlack -> "material_black.css"
+                AppStyle.Standard4PDA -> "standart_4PDA.css"
             }
-            THEME_DARK -> when (color) {
-                "pink" -> cssFile = "4pda_dark_blue.css"
-                "blue" -> cssFile = "4pda_dark_pink.css"
-                "gray" -> cssFile = "4pda_dark_gray.css"
-            }
-            THEME_BLACK -> when (color) {
-                "pink" -> cssFile = "4pda_black_blue.css"
-                "blue" -> cssFile = "4pda_black_pink.css"
-                "gray" -> cssFile = "4pda_black_gray.css"
-            }
-            THEME_MATERIAL_LIGHT -> cssFile = "material_light.css"
-            THEME_MATERIAL_DARK -> cssFile = "material_dark.css"
-            THEME_MATERIAL_BLACK -> cssFile = "material_black.css"
-            THEME_LIGHT_OLD_HD -> cssFile = "standart_4PDA.css"
-            THEME_CUSTOM_CSS -> return Environment.getExternalStorageDirectory().path + "/style.css"
+            return "$path$fileName"
         }
-        return path + cssFile
-    }
 
     private val preferences: SharedPreferences
         get() = App.getInstance().preferences
 }
 
-fun Context.isSystemInDarkTheme(): Boolean {
-    val uiMode = resources.configuration.uiMode
-    return (uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
-}
+private val AppAccentColor.colorResId: Int
+    get() = when (this) {
+        AppAccentColor.Pink -> R.color.accentPink
+        AppAccentColor.Blue -> R.color.accentBlue
+        AppAccentColor.Gray -> R.color.accentGray
+    }

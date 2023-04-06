@@ -40,11 +40,6 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideSharedPreferences(@ApplicationContext context: Context): SharedPreferences =
-        PreferenceManager.getDefaultSharedPreferences(context)
-
-    @Provides
-    @Singleton
     fun provideParseFactoryImpl(
         qmsCountParser: Parser<QmsCount>,
         qmsMentionsCountParser: Parser<MentionsCount>,

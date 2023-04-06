@@ -44,11 +44,11 @@ class ForumServiceImpl @Inject constructor(private val httpClient: AppHttpClient
                 "fromforum" to forumId
             )
                 .map {
-                    NameValuePair(it.key, it.value)
+                    org.softeg.slartus.forpdacommon.NameValuePair(it.key, it.value)
                 }
 
         val uri =
-            URIUtils.createURI("http", HostHelper.host, "/forum/index.php", queryParams, "UTF-8")
+            org.softeg.slartus.forpdacommon.URIUtils.createURI("http", HostHelper.host, "/forum/index.php", queryParams, "UTF-8")
 
         httpClient.performGet(uri)
         Unit

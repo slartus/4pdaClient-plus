@@ -23,13 +23,18 @@ import java.util.regex.Pattern
     @Throws(IOException::class)
     fun loadReputation(httpClient: IHttpClient, userId: String?, self: Boolean,
                        listInfo: ListInfo, plusImage: String?): ReputationsListData {
-        val qparams: MutableList<NameValuePair> = ArrayList()
-        qparams.add(BasicNameValuePair("act", "rep"))
-        qparams.add(BasicNameValuePair("type", "history"))
-        qparams.add(BasicNameValuePair("mid", userId))
-        qparams.add(BasicNameValuePair("st", listInfo.from.toString()))
+        val qparams: MutableList<org.softeg.slartus.forpdacommon.NameValuePair> = ArrayList()
+        qparams.add(org.softeg.slartus.forpdacommon.BasicNameValuePair("act", "rep"))
+        qparams.add(org.softeg.slartus.forpdacommon.BasicNameValuePair("type", "history"))
+        qparams.add(org.softeg.slartus.forpdacommon.BasicNameValuePair("mid", userId))
+        qparams.add(
+            org.softeg.slartus.forpdacommon.BasicNameValuePair(
+                "st",
+                listInfo.from.toString()
+            )
+        )
         if (self) // свои действия
-            qparams.add(BasicNameValuePair("mode", "from"))
+            qparams.add(org.softeg.slartus.forpdacommon.BasicNameValuePair("mode", "from"))
         val uri = createURI("http", HostHelper.host, "/forum/index.php",
                 qparams, "UTF-8")
         val body = httpClient.performGet(uri).responseBody

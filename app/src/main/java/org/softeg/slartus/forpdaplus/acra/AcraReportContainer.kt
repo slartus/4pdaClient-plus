@@ -1,7 +1,6 @@
 package org.softeg.slartus.forpdaplus.acra
 
 import java.util.*
-import androidx.core.util.Pair
 
 class AcraReportContainer {
 

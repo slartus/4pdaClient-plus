@@ -45,7 +45,7 @@ object IntentChooser {
         }.onFailure {
             when (it) {
                 is ActivityNotFoundException -> {
-                    Timber.e(NotReportException("Приложения для запуска не найдены"))
+                    Timber.e(org.softeg.slartus.forpdacommon.NotReportException("Приложения для запуска не найдены"))
                 }
                 else -> {
                     Timber.e(it)

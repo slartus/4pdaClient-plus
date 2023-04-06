@@ -2,7 +2,6 @@ package org.softeg.slartus.forpdaplus.di
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import org.softeg.slartus.forpdacommon.UrlExtensions
 import org.softeg.slartus.forpdaplus.core.services.AppHttpClient
 import ru.slartus.http.Http
 import javax.inject.Inject
@@ -21,7 +20,7 @@ class AppHttpClientImpl @Inject constructor() : AppHttpClient {
         withContext(Dispatchers.IO) {
             return@withContext Http.instance.performPost(
                 url,
-                headers.map { androidx.core.util.Pair(it.key, it.value) }
+                headers.map { Pair(it.key, it.value) }
             ).responseBody
         }
 

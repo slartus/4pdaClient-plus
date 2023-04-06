@@ -53,7 +53,9 @@ object TopicParser {
             )
                 .matcher(topicBody)
             if (errorMatcher.find()) {
-                throw NotReportException(errorMatcher.group(1))
+                throw org.softeg.slartus.forpdacommon.NotReportException(
+                    errorMatcher.group(1)
+                )
             }
             val errorPattern =
                 PatternExtensions.compile("<div class=\"errorwrap\">([\\s\\S]*?)</div>")
@@ -62,11 +64,15 @@ object TopicParser {
                 val errorReasonPattern = PatternExtensions.compile("<p>(.*?)</p>")
                 val errorReasonMatcher = errorReasonPattern.matcher(errorMatcher.group(1) ?: "")
                 if (errorReasonMatcher.find()) {
-                    throw NotReportException(errorReasonMatcher.group(1))
+                    throw org.softeg.slartus.forpdacommon.NotReportException(
+                        errorReasonMatcher.group(1)
+                    )
                 }
             }
-            if (TextUtils.isEmpty(topicBody)) throw NotReportException(context.getString(R.string.server_return_empty_page))
-            if (topicBody.startsWith("<h1>")) throw NotReportException(
+            if (TextUtils.isEmpty(topicBody)) throw org.softeg.slartus.forpdacommon.NotReportException(
+                context.getString(R.string.server_return_empty_page)
+            )
+            if (topicBody.startsWith("<h1>")) throw org.softeg.slartus.forpdacommon.NotReportException(
                 context.getString(R.string.site_response) + topicBody.fromHtml()
             )
             throw IOException(context.getString(R.string.error_parsing_page) + " id=" + id)

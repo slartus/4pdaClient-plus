@@ -142,7 +142,7 @@ android {
 dependencies {
     implementation project(':core')
     implementation project(':core-res')
-    api project(':forpdacommon')
+    api project(':common:common-utils')
     api project(':forpdanotifyservice')
     api project(':4pdasources')
     api project(':hosthelper')
@@ -156,6 +156,8 @@ dependencies {
     implementation project(":topic:topic-api")
     implementation project(":topic:topic-data")
     implementation project(":topic:topic-impl")
+    implementation project(":common:common-api")
+    implementation project(":common:common-data")
 
     implementation "androidx.appcompat:appcompat:$rootProject.appcompat"
     implementation 'androidx.cardview:cardview:1.0.0'

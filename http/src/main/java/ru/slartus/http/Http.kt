@@ -8,7 +8,6 @@ import android.os.Build
 import android.util.Log
 import android.webkit.MimeTypeMap
 import android.webkit.MimeTypeMap.getFileExtensionFromUrl
-import androidx.core.util.Pair
 import okhttp3.*
 import okio.Buffer
 import org.softeg.slartus.hosthelper.HostHelper

@@ -156,31 +156,24 @@ object PostApi {
      * Быстрый ответ
      */
     @Throws(IOException::class)
-    fun quickReply(additionalHeaders: MutableMap<String, String>, forumId: String,
+    fun quickReply(additionalHeaders: Map<String, String>, forumId: String,
                    topicId: String, authKey: String, attachPostKey: String?, post: String,
                    enablesig: Boolean?, enableemo: Boolean?): AppResponse {
 
-        additionalHeaders["act"] = "Post"
-        additionalHeaders["CODE"] = "03"
-        additionalHeaders["f"] = forumId
-        additionalHeaders["t"] = topicId
-
-
-        additionalHeaders["auth_key"] = authKey
-        if (!TextUtils.isEmpty(attachPostKey))
-            additionalHeaders["attach_post_key"] = attachPostKey ?: ""
-        additionalHeaders["Post"] = post
-        if (enablesig!!)
-            additionalHeaders["enablesig"] = "yes"
-        if (enableemo!!)
-            additionalHeaders["enableemo"] = "yes"
-
-
-        // additionalHeaders.put("referer", "https://${HostHelper.host}/forum/index.php?act=Post&CODE=03&f=" + forumId + "&t=" + topicId + "&st=20&auth_key=" + authKey + "&fast_reply_used=1");
-
-        val listParams = ArrayList<Pair<String, String>>()
-        for (key in additionalHeaders.keys) {
-            listParams.add(Pair(key, additionalHeaders[key]))
+        val listParams = buildList {
+            addAll(additionalHeaders.map { it.key to it.value })
+            add("act" to "Post")
+            add("CODE" to "03")
+            add("f" to forumId)
+            add("t" to topicId)
+            add("auth_key" to authKey)
+            if (!attachPostKey.isNullOrEmpty())
+                add("attach_post_key" to attachPostKey)
+            add("Post" to post)
+            if (enablesig == true)
+                add("enablesig" to "yes")
+            if (enableemo == true)
+                add("enableemo" to "yes")
         }
         return Http.instance.performPost("https://${HostHelper.host}/forum/index.php", listParams)
     }
@@ -368,14 +361,16 @@ object PostApi {
         }
     }
 
-    @Throws(NotReportException::class)
+    @Throws(org.softeg.slartus.forpdacommon.NotReportException::class)
     private fun checkAttachError(page: String) {
         val m = Pattern
                 .compile("pipsatt.status_msg = '([^']*)';\\s*pipsatt.status_is_error = parseInt\\('(\\d+)'\\);", Pattern.CASE_INSENSITIVE)
                 .matcher(page)
         if (m.find()) {
             if ("1" == m.group(2))
-                throw NotReportException(getStatusMessage(m.group(1)))
+                throw org.softeg.slartus.forpdacommon.NotReportException(
+                    getStatusMessage(m.group(1))
+                )
         }
     }
 
@@ -428,15 +423,30 @@ object PostApi {
         params.delete("1_attach_box_index")
 
         val nameValuePairs = params.listParams
-        nameValuePairs.add(BasicNameValuePair("post", postBody))
+        nameValuePairs.add(org.softeg.slartus.forpdacommon.BasicNameValuePair("post", postBody))
         if (postEditReason != null)
-            nameValuePairs.add(BasicNameValuePair("post_edit_reason", postEditReason))
+            nameValuePairs.add(
+                org.softeg.slartus.forpdacommon.BasicNameValuePair(
+                    "post_edit_reason",
+                    postEditReason
+                )
+            )
 
         if (enableemo == true)
-            nameValuePairs.add(BasicNameValuePair("enableemo", "yes"))
+            nameValuePairs.add(
+                org.softeg.slartus.forpdacommon.BasicNameValuePair(
+                    "enableemo",
+                    "yes"
+                )
+            )
 
         if (enablesig == true)
-            nameValuePairs.add(BasicNameValuePair("enablesig", "yes"))
+            nameValuePairs.add(
+                org.softeg.slartus.forpdacommon.BasicNameValuePair(
+                    "enablesig",
+                    "yes"
+                )
+            )
 
 
         return httpClient.performPost("https://${HostHelper.host}/forum/index.php", nameValuePairs).responseBody

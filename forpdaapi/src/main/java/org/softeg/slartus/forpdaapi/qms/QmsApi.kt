@@ -1,13 +1,12 @@
 package org.softeg.slartus.forpdaapi.qms
 
-import androidx.core.util.Pair
 import org.softeg.slartus.forpdaapi.IHttpClient
 import org.softeg.slartus.forpdaapi.ProgressState
 import org.softeg.slartus.forpdaapi.post.EditAttach
 import org.softeg.slartus.forpdacommon.*
 import org.softeg.slartus.forpdacommon.UrlExtensions.getFileNameFromUrl
+import org.softeg.slartus.forpdacommon.fromHtml
 import org.softeg.slartus.hosthelper.HostHelper
-import ru.slartus.http.CountingFileRequestBody
 import ru.slartus.http.FileForm
 import ru.slartus.http.Http
 import java.io.IOException
@@ -89,7 +88,7 @@ object QmsApi {
             if (days.isNotEmpty() || daysCount == 0) {
                 if (days.size > daysCount) {
                     chatInfo += "<div class=\"panel\"><div class=\"navi\"><a id=\"chat_more_button\" class=\"button page\" ${
-                        HtmlOutUtils.getHtmlout(
+                        org.softeg.slartus.forpdacommon.HtmlOutUtils.getHtmlout(
                             "loadMore"
                         )
                     } >Загрузить ещё (${daysCount}/${days.size}дн.)</a></div></div>"
@@ -190,7 +189,11 @@ object QmsApi {
             val m = Pattern.compile(r)
                 .matcher(pageBody)
             if (m.find())
-                throw NotReportException(m.group(1)?.fromHtml()?.toString()?.trim())
+                throw org.softeg.slartus.forpdacommon.NotReportException(
+                    m.group(
+                        1
+                    )?.fromHtml()?.toString()?.trim()
+                )
         }
     }
 
@@ -394,7 +397,7 @@ object QmsApi {
             else -> null
         }
         if (error != null)
-            throw NotReportException(error)
+            throw org.softeg.slartus.forpdacommon.NotReportException(error)
 
         val id = parts[0]
         val name = parts[1]

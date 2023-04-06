@@ -13,6 +13,7 @@ import android.view.View;
 
 import androidx.multidex.MultiDexApplication;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.work.WorkManager;
 
 import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.UsingFreqLimitedMemoryCache;
@@ -56,6 +57,9 @@ public class App extends MultiDexApplication {
     @Inject
     AppPreferences appPreferences;
 
+    @Inject
+    ru.softeg.slartus.common.api.AppTheme appTheme;
+
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
     public static String Host = HostHelper.getHost();
     private Locale locale;
@@ -89,12 +93,12 @@ public class App extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         initTimber();
-        AppTheme.setDefaultTheme(this);
         //TooLargeTool.startLogging(this);//логирование saveinstancestate
         org.softeg.slartus.forpdacommon.FACTORY.init(this);
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
 
+        AppTheme.setAppTheme(appTheme);
         initLocale();
 
         initImageLoader(this);

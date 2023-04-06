@@ -21,6 +21,7 @@ import org.softeg.slartus.forpdaplus.qms.impl.databinding.FragmentQmsContactsBin
 import org.softeg.slartus.forpdaplus.qms.impl.screens.contacts.fingerprints.QmsContactFingerprint
 import org.softeg.slartus.forpdaplus.qms.impl.screens.contacts.fingerprints.QmsContactHasNewFingerprint
 import org.softeg.slartus.forpdaplus.qms.impl.screens.contacts.fingerprints.QmsContactItem
+import ru.softeg.slartus.common.api.AppAccentColor
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Provider
@@ -190,9 +191,9 @@ class QmsContactsFragment :
     @DrawableRes
     private fun getAccentBackgroundRes(): Int {
         return when (viewModel.accentColor) {
-            AccentColor.Blue -> R.drawable.qmsnewblue
-            AccentColor.Gray -> R.drawable.qmsnewgray
-            else -> R.drawable.qmsnew
+            AppAccentColor.Blue -> R.drawable.qmsnewblue
+            AppAccentColor.Gray -> R.drawable.qmsnewgray
+            AppAccentColor.Pink -> R.drawable.qmsnewpink
         }
     }
 
