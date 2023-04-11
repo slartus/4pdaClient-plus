@@ -1,4 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name" translatable="false">ForPDA</string>
+    <string name="prefs_appearance">Внешний вид</string>
+    <string name="prefs_common">Общее</string>
+    <string name="prefs_choose_style_summary">Выберите тему программы</string>
+    <string name="prefs_choose_style_title">Тема</string>
+    <string name="prefs_accent_color_title">Цвет кнопки с карандашом</string>
+    <string name="prefs_accent_color_summary">Цвет кнопки в теме и новостях</string>
+    <string name="prefs_web_view_font_title">Шрифт WebView</string>
+    <string name="prefs_web_view_font_summary">Шрифт в новостях, поиске, теме, профиле, QMS</string>
+    <string name="prefs_title_marquee_title">Прокрутка длинного текста в тулбаре</string>
+    <string name="prefs_title_marquee_summary">Требуется перезапуск приложения</string>
+    <string name="prefs_square_avatars_title">Квадратные аватарки</string>
+    <string name="prefs_square_avatars_summary">Требуется перезапуск приложения</string>
+    <string name="prefs_status_bar_fake_title">Status Bar как в Android 5+</string>
+    <string name="prefs_status_bar_fake_summary">Подходит для прошивок MIUI, Flyme и т.п на Android 4.4</string>
+    <string name="prefs_old_indicator_title">Полоса у новых сообщений</string>
+    <string name="prefs_old_indicator_summary">Требуется перезапуск приложения</string>
+    <string name="prefs_colored_nav_bar_title">Красить Navigation Bar</string>
+    <string name="prefs_colored_nav_bar_summary">Для Android 5 и выше. Требуется перезапуск приложения</string>
+    <string name="prefs_pencil_in_action_bar_title">Карандаш в экшнбаре</string>
 </resources>

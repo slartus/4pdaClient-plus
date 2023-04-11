@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="prefs_appearance">Appearance</string>
+    <string name="prefs_common">Common</string>
+    <string name="prefs_choose_style_summary">Choose the theme</string>
+    <string name="prefs_choose_style_title">Theme</string>
+    <string name="prefs_accent_color_title">Pick color with pencil</string>
+    <string name="prefs_accent_color_summary">Pick side color</string>
+    <string name="prefs_web_view_font_title">WebView font</string>
+    <string name="prefs_web_view_font_summary">The font in the news, search, topic, profile, the QMS</string>
+    <string name="prefs_title_marquee_title">Scrolling a long text in the toolbar</string>
+    <string name="prefs_title_marquee_summary">Requires application restart</string>
+    <string name="prefs_square_avatars_title">Square avatars</string>
+    <string name="prefs_square_avatars_summary">Requires application restart</string>
+    <string name="prefs_status_bar_fake_title">Status Bar like Android 5+</string>
+    <string name="prefs_status_bar_fake_summary">Suitable for MIUI firmware, Flyme etc on Android 4.4</string>
+    <string name="prefs_old_indicator_title">New posts indicator</string>
+    <string name="prefs_old_indicator_summary">Requires application restart</string>
+    <string name="prefs_colored_nav_bar_title">Paint navigation bar</string>
+    <string name="prefs_colored_nav_bar_summary">For android 5+. Requires application restart</string>
+    <string name="prefs_pencil_in_action_bar_title">Pencil in the action bar</string>
+</resources>

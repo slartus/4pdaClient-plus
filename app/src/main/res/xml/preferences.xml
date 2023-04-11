@@ -5,52 +5,52 @@
 
     <PreferenceScreen
         android:key="common"
-        android:title="Внешний вид">
-        <PreferenceCategory android:title="Общее">
+        android:title="@string/prefs_appearance">
+        <PreferenceCategory android:title="@string/prefs_common">
             <Preference
                 android:key="appstyle"
-                android:summary="Выберите стиль программы"
-                android:title="Стиль" />
+                android:summary="@string/prefs_choose_style_summary"
+                android:title="@string/prefs_choose_style_title" />
             <Preference
                 android:key="accentColor"
-                android:summary="Цвет кнопки в теме и новостях"
-                android:title="Цвет кнопки с карандашом" />
+                android:summary="@string/prefs_accent_color_summary"
+                android:title="@string/prefs_accent_color_title" />
             <Preference
                 android:key="mainAccentColor"
                 android:title="@string/pick_accent_color" />
             <Preference
                 android:key="webViewFont"
-                android:summary="Шрифт в новостях, поиске, теме, профиле, QMS"
-                android:title="Шрифт WebView" />
+                android:summary="@string/prefs_web_view_font_summary"
+                android:title="@string/prefs_web_view_font_title" />
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="titleMarquee"
-                android:summary="Требуется перезапуск приложения"
-                android:title="Прокрутка длинного текста в тулбаре" />
+                android:summary="@string/prefs_title_marquee_summary"
+                android:title="@string/prefs_title_marquee_title" />
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="isSquareAvarars"
-                android:summary="Требуется перезапуск приложения"
-                android:title="Квадратные аватарки" />
+                android:summary="@string/prefs_square_avatars_summary"
+                android:title="@string/prefs_square_avatars_title" />
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="statusbarFake"
-                android:summary="Подходит для прошивок MIUI, Flyme и т.п на Android 4.4"
-                android:title="Status Bar как в Android 5+" />
+                android:summary="@string/prefs_status_bar_fake_summary"
+                android:title="@string/prefs_status_bar_fake_title" />
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="oldIndicator"
-                android:summary="Требуется перезапуск приложения"
-                android:title="Полоса у новых сообщений" />
+                android:summary="@string/prefs_old_indicator_summary"
+                android:title="@string/prefs_old_indicator_title" />
             <CheckBoxPreference
                 android:defaultValue="true"
                 android:key="coloredNavBar"
-                android:summary="Для Android 5 и выше. Требуется перезапуск приложения"
-                android:title="Красить Navigation Bar" />
+                android:summary="@string/prefs_colored_nav_bar_summary"
+                android:title="@string/prefs_colored_nav_bar_title" />
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="pancilInActionBar"
-                android:title="Карандаш в экшнбаре" />
+                android:title="@string/prefs_pencil_in_action_bar_title" />
         </PreferenceCategory>
 
         <PreferenceCategory android:title="Боковая панель">

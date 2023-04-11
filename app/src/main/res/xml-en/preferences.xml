@@ -6,51 +6,51 @@
     <PreferenceScreen
         android:key="common"
         android:title="Appearance">
-        <PreferenceCategory android:title="Overall">
+        <PreferenceCategory android:title="@string/prefs_common">
             <Preference
                 android:key="appstyle"
-                android:summary="Choose the theme"
-                android:title="Theme" />
+                android:summary="@string/prefs_choose_style_summary"
+                android:title="@string/prefs_choose_style_title" />
             <Preference
                 android:key="accentColor"
-                android:summary="Pick side color"
-                android:title="Pick color with pencil" />
+                android:summary="@string/prefs_accent_color_summary"
+                android:title="@string/prefs_accent_color_title" />
             <Preference
                 android:key="mainAccentColor"
                 android:title="@string/pick_accent_color" />
             <Preference
                 android:key="webViewFont"
-                android:summary="The font in the news, search, topic, profile, the QMS"
-                android:title="WebView font" />
+                android:summary="@string/prefs_web_view_font_summary"
+                android:title="@string/prefs_web_view_font_title" />
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="titleMarquee"
-                android:summary="Requires application restart"
-                android:title="Scrolling a long text in the toolbar" />
+                android:summary="@string/prefs_title_marquee_summary"
+                android:title="@string/prefs_title_marquee_title" />
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="isSquareAvarars"
-                android:summary="Requires application restart"
-                android:title="Square avatars" />
+                android:summary="@string/prefs_square_avatars_summary"
+                android:title="@string/prefs_square_avatars_title" />
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="statusbarFake"
-                android:summary="Suitable for MIUI firmware, Flyme etc on Android 4.4"
-                android:title="Status Bar in Android 5+" />
+                android:summary="@string/prefs_status_bar_fake_summary"
+                android:title="@string/prefs_status_bar_fake_title" />
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="oldIndicator"
-                android:summary="Requires application restart"
-                android:title="New posts" />
+                android:summary="@string/prefs_old_indicator_summary"
+                android:title="@string/prefs_old_indicator_title" />
             <CheckBoxPreference
                 android:defaultValue="true"
                 android:key="coloredNavBar"
-                android:summary="For android 5+. Requires application restart"
-                android:title="Color navigation bar" />
+                android:summary="@string/prefs_colored_nav_bar_summary"
+                android:title="@string/prefs_colored_nav_bar_title" />
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="pancilInActionBar"
-                android:title="Pencil in the action bar" />
+                android:title="@string/prefs_pencil_in_action_bar_title" />
         </PreferenceCategory>
 
         <PreferenceCategory android:title="Side panel">
