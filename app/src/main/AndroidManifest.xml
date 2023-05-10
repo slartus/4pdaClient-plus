@@ -186,10 +186,6 @@
                 <data android:mimeType="video/*" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".FeatureActivity"
-            android:exported="false"
-            android:label="kekos" />
 
         <receiver
             android:name=".BootReceiver"
