@@ -90,7 +90,7 @@ android {
         beta {
             buildConfigField "String", "target", "\"beta\""
             applicationId 'org.softeg.slartus.forpdaplus.beta'
-            versionCode 680// у беты свой номер, чтобы не инкрементить релизный
+            versionCode 681// у беты свой номер, чтобы не инкрементить релизный
             versionName "${appVersionName}beta" //beta - С МАЛЕНЬКОЙ БУКВЫ ПЛЗ.))
             signingConfig defaultSigningVariable
             dimension "wtf"

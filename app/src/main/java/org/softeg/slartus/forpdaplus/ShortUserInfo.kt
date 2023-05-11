@@ -194,7 +194,7 @@ class ShortUserInfo internal constructor(activity: MainActivity, private val vie
                     }
                 }
 
-            } catch (e: IOException) {
+            } catch (e: Exception) {
                 ex = e
 
             }

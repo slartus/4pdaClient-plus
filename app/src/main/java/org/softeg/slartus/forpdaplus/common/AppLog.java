@@ -69,7 +69,7 @@ public final class AppLog {
                         CheckHumanityActivity.setActive(true);
                         Intent checkVpnIntent = new Intent(context, CheckHumanityActivity.class);
                         checkVpnIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        context.startActivity(checkVpnIntent);
+                        App.getInstance().startActivity(checkVpnIntent);
                     }
                 }
             }

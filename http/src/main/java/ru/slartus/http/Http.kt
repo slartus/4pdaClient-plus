@@ -140,7 +140,7 @@ class Http private constructor(context: Context, appName: String, appVersion: St
 
             val body = response.body?.string()
             return AppResponse(url, response.request.url.toString(), body ?: "")
-        } catch (ex: IOException) {
+        } catch (ex: Exception) {
             throw HttpException(ex)
         }
     }
@@ -174,7 +174,7 @@ class Http private constructor(context: Context, appName: String, appVersion: St
 
             val body = response.body?.string()
             return AppResponse(url, response.request.url.toString(), body ?: "")
-        } catch (ex: IOException) {
+        } catch (ex: Exception) {
             throw HttpException(ex)
         }
 
@@ -209,7 +209,7 @@ class Http private constructor(context: Context, appName: String, appVersion: St
 
             val body = response.body?.string()
             return AppResponse(url, response.request.url.toString(), body ?: "")
-        } catch (ex: IOException) {
+        } catch (ex: Exception) {
             throw HttpException(ex)
         }
 
@@ -234,7 +234,7 @@ class Http private constructor(context: Context, appName: String, appVersion: St
 
             val body2 = response.body?.string()
             return AppResponse(url, response.request.url.toString(), body2 ?: "")
-        } catch (ex: IOException) {
+        } catch (ex: Exception) {
             throw HttpException(ex)
         }
 
@@ -295,7 +295,7 @@ class Http private constructor(context: Context, appName: String, appVersion: St
 
             val body = response.body?.string()
             return AppResponse(url, response.request.url.toString(), body ?: "")
-        } catch (ex: IOException) {
+        } catch (ex: Exception) {
             throw HttpException(ex)
         }
     }

@@ -168,7 +168,7 @@ public class ForumUser {
                         try {
                             res = Client.getInstance().changeReputation(postId, userId, type, message_edit.getText().toString()
                                     , outParams);
-                        } catch (IOException e) {
+                        } catch (Exception e) {
                             ex = e;
                         }
 

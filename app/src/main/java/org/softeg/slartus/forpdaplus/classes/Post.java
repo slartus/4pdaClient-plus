@@ -241,7 +241,7 @@ public class Post {
                                 String res = null;
                                 try {
                                     res = Client.getInstance().claim(themeId, postId, message_edit.getText().toString());
-                                } catch (IOException e) {
+                                } catch (Exception e) {
                                     ex = e;
                                 }
 
