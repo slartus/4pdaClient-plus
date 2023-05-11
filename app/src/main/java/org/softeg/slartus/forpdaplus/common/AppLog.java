@@ -2,6 +2,7 @@ package org.softeg.slartus.forpdaplus.common;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
@@ -16,6 +17,7 @@ import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.Exceptions.MessageInfoException;
 import org.softeg.slartus.forpdaplus.classes.ShowInBrowserDialog;
+import org.softeg.slartus.forpdaplus.classes.CheckHumanityActivity;
 
 import java.net.ConnectException;
 import java.net.ProtocolException;
@@ -23,6 +25,7 @@ import java.net.SocketException;
 import java.net.SocketTimeoutException;
 
 import ru.slartus.http.HttpException;
+import ru.softeg.slartus.common.api.exceptions.CheckHumanityException;
 
 public final class AppLog {
 
@@ -60,7 +63,17 @@ public final class AppLog {
             String message = ex.getMessage();
             if (TextUtils.isEmpty(message))
                 message = ex.toString();
-            if (ex.getClass() == ShowInBrowserException.class) {
+            if (ex instanceof CheckHumanityException) {
+                synchronized (CheckHumanityActivity.getLock()) {
+                    if (!CheckHumanityActivity.getActive()) {
+                        CheckHumanityActivity.setActive(true);
+                        Intent checkVpnIntent = new Intent(context, CheckHumanityActivity.class);
+                        checkVpnIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(checkVpnIntent);
+                    }
+                }
+            }
+            else if (ex.getClass() == ShowInBrowserException.class) {
                 ShowInBrowserDialog.showDialog(context, (ShowInBrowserException) ex);
             } else if (ex instanceof NotReportException) {
                 assert context != null;

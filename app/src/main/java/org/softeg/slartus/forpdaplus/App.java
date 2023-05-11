@@ -13,7 +13,6 @@ import android.view.View;
 
 import androidx.multidex.MultiDexApplication;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.work.WorkManager;
 
 import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.UsingFreqLimitedMemoryCache;
@@ -230,7 +229,7 @@ public class App extends MultiDexApplication {
 
                     @Override
                     protected InputStream getStreamFromNetwork(String imageUri, Object extra) {
-                        ResponseBody responseBody = Http.Companion.getInstance().response(imageUri).body();
+                        ResponseBody responseBody = Http.Companion.getInstance().callRequest(imageUri).body();
                         return responseBody != null ? responseBody.byteStream() : null;
                     }
                 })

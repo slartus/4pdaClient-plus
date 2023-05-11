@@ -14,7 +14,6 @@ import com.google.gson.Gson
 import okhttp3.CacheControl
 import okhttp3.Request
 import org.json.JSONException
-import org.softeg.slartus.forpdacommon.NotReportException
 import org.softeg.slartus.forpdacommon.fromHtml
 import org.softeg.slartus.forpdaplus.App
 import org.softeg.slartus.forpdaplus.BuildConfig
@@ -50,7 +49,7 @@ class ForPdaVersionNotifier(
             val link =
                 "https://raw.githubusercontent.com/slartus/4pdaClient-plus/master/updateinfo.json"
             try {
-                val client = Http.newClientBuiler(context).build()
+                val client = Http.newClientBuilder(context).build()
                 val request = Request.Builder()
                     .url(link)
                     .cacheControl(CacheControl.FORCE_NETWORK)// не исопльуем кеширование

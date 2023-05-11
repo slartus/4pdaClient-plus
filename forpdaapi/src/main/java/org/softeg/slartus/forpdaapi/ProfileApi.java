@@ -27,6 +27,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 import ru.slartus.http.AppResponse;
 import ru.slartus.http.Http;
+import ru.slartus.http.PersistentCookieStore;
 
 /*
  * Created by slinkin on 07.02.14.
@@ -86,7 +87,7 @@ public class ProfileApi {
                 .performPostDesktop("https://" + HostHelper.getHost() + "/forum/index.php?act=auth&return=" + "https://" + HostHelper.getHost() + "/forum/index.php",
                         listParams,
                         "windows-1251"
-                        );
+                );
         String res = response.getResponseBody();
 
         if (TextUtils.isEmpty(res)) {
@@ -184,12 +185,13 @@ public class ProfileApi {
                 .url(url)
                 .build();
 
-        Response response = client.newCall(request).execute();
+        Response response = Http.Companion.newCall(client, request, true).execute();
         return response.body().string();
     }
 
     public static LoginFormData getLoginForm(Context context) throws IOException {
-        OkHttpClient client = Http.newClientBuiler(context).build();
+        PersistentCookieStore.Companion.getInstance(context).removeAll();
+        OkHttpClient client = Http.newClientBuilder(context).build();
 
         String prevPage = RequestUrl(client, "https://" + HostHelper.getHost() + "/forum/index.php?act=auth");
         Matcher m = Pattern.compile("act=auth[^\"]*[;&]k=([^&\"]*)", Pattern.CASE_INSENSITIVE).matcher(prevPage);

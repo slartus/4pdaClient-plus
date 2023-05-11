@@ -20,101 +20,24 @@ import android.content.Context
 import android.preference.PreferenceManager
 import android.text.TextUtils
 import android.util.Log
-
+import io.reactivex.subjects.BehaviorSubject
+import ru.slartus.http.prefs.AppJsonSharedPrefs
 import java.io.File
 import java.net.CookieStore
 import java.net.HttpCookie
 import java.net.URI
 import java.net.URISyntaxException
-import java.util.ArrayList
-import java.util.HashMap
-import java.util.HashSet
-
-import io.reactivex.subjects.BehaviorSubject
-import ru.slartus.http.prefs.AppJsonSharedPrefs
 
 class PersistentCookieStore private constructor(cookieFilePath: String) : CookieStore {
-
-
     private val sharedPreferences: AppJsonSharedPrefs = AppJsonSharedPrefs(cookieFilePath)
-
-    // In memory
-    private var allCookies: MutableMap<URI, MutableSet<HttpCookie>> = HashMap()
-
-    var memberId = BehaviorSubject.createDefault("")
+    val memberId = BehaviorSubject.createDefault("")
+    private val allCookies: MutableMap<URI, MutableSet<HttpCookie>> = HashMap()
+    private val cloudFlareCookies = mutableSetOf<HttpCookie>()
+    private val cloudFlareDesktopCookies = mutableSetOf<HttpCookie>()
 
     init {
         loadAllFromPersistence()
     }
-
-    companion object {
-        private var INSTANCE: PersistentCookieStore? = null
-        fun getInstance(context: Context): PersistentCookieStore {
-            if (INSTANCE == null)
-                INSTANCE = PersistentCookieStore(getCookieFilePath(context))
-            return INSTANCE!!
-        }
-
-        private val TAG = PersistentCookieStore::class.java
-                .simpleName
-
-        @Suppress("DEPRECATION")
-        private fun getSharedPreferences(context: Context) = PreferenceManager.getDefaultSharedPreferences(context)
-
-        private fun getSystemDir(context: Context): String {
-            var dir: File? = context.filesDir
-            if (dir == null)
-                dir = context.getExternalFilesDir(null)
-
-            assert(dir != null)
-            var res = getSharedPreferences(context).getString("path.system_path", dir!!.path)
-            if (!res!!.endsWith(File.separator))
-                res += File.separator
-            return res
-        }
-
-        private fun getCookieFilePath(context: Context): String {
-
-            var res = getSharedPreferences(context).getString("cookies.path", "")
-
-            if (TextUtils.isEmpty(res))
-                res = getSystemDir(context) + "cookieStore.json"
-
-            return res!!.replace("/", File.separator)
-        }
-
-        private val SP_KEY_DELIMITER = "|" // Unusual char in URL
-        private val SP_KEY_DELIMITER_REGEX = "\\" + SP_KEY_DELIMITER
-
-        private val m_URI = URI.create("http://slartus.ru")
-
-        /**
-         * Get the real URI from the cookie "domain" and "path" attributes, if they
-         * are not set then uses the URI provided (coming from the response)
-         */
-        private fun cookieUri(uri: URI, cookie: HttpCookie): URI {
-            var cookieUri = uri
-            if (cookie.domain != null) {
-                // Remove the starting dot character of the domain, if exists (e.g: .domain.com -> domain.com)
-                var domain = cookie.domain
-                if (domain[0] == '.') {
-                    domain = domain.substring(1)
-                }
-                try {
-                    cookieUri = URI(if (uri.scheme == null)
-                        "http"
-                    else
-                        uri.scheme, domain,
-                            if (cookie.path == null) "/" else cookie.path, null)
-                } catch (e: URISyntaxException) {
-                    Log.w(TAG, e)
-                }
-
-            }
-            return cookieUri
-        }
-    }
-
 
     fun reload() {
         sharedPreferences.reload()
@@ -122,26 +45,30 @@ class PersistentCookieStore private constructor(cookieFilePath: String) : Cookie
     }
 
     private fun loadAllFromPersistence() {
-        allCookies = HashMap()
+        allCookies.clear()
+        cloudFlareCookies.clear()
+        cloudFlareDesktopCookies.clear()
 
         val allPairs = sharedPreferences.all
         for ((key, value) in allPairs!!) {
-            val uriAndName = key.split(SP_KEY_DELIMITER_REGEX.toRegex(), 2).toTypedArray()
+            val uriAndName = key.split(SP_KEY_DELIMITER_REGEX.toRegex(), 3).toTypedArray()
             try {
                 val uri = URI(uriAndName[0])
                 val encodedCookie = value as String
                 val cookie = SerializableHttpCookie()
-                        .decode(encodedCookie)
+                    .decode(encodedCookie)
 
-                var targetCookies: MutableSet<HttpCookie>? = allCookies[uri]
-                if (targetCookies == null) {
-                    targetCookies = HashSet()
-                    allCookies[uri] = targetCookies
+                if (uriAndName.size == 3) {
+                    val isDesktop = java.lang.Boolean.parseBoolean(uriAndName[2])
+                    if (isDesktop)
+                        cloudFlareDesktopCookies.add(cookie)
+                    else
+                        cloudFlareCookies.add(cookie)
                 }
-                // Repeated cookies cannot exist in persistence
-                // targetCookies.remove(cookie)
-                addedCookie(cookie!!)
-                targetCookies.add(cookie)
+                allCookies[uri] = (allCookies[uri] ?: mutableSetOf()).apply {
+                    addedCookie(cookie!!)
+                    add(cookie)
+                }
             } catch (e: URISyntaxException) {
                 Log.w(TAG, e)
             }
@@ -163,27 +90,52 @@ class PersistentCookieStore private constructor(cookieFilePath: String) : Cookie
         add(m_URI, HttpCookie(key, value))
     }
 
+    fun addCloudFlare(key: String, value: String) {
+        val cookie = HttpCookie(key, value)
+        cloudFlareCookies.add(cookie)
+        val cookieUri = cookieUri(URI("http://4pda.to/"), cookie)
+        saveToPersistenceCloudFlare(cookieUri, cookie, false)
+    }
+
+    fun addCloudFlareDesktop(key: String, value: String) {
+        val cookie = HttpCookie(key, value)
+        cloudFlareDesktopCookies.add(cookie)
+        val cookieUri = cookieUri(URI("http://4pda.to/"), cookie)
+        saveToPersistenceCloudFlare(cookieUri, cookie, true)
+    }
+
+    fun clearCloudFlareCookies() {
+        cloudFlareCookies.clear()
+        cloudFlareDesktopCookies.clear()
+    }
+
     @Synchronized
-    override fun add(uri1: URI, cookie: HttpCookie) {
-        var uri = uri1
-        uri = cookieUri(uri, cookie)
+    override fun add(uri: URI, cookie: HttpCookie) {
+        val cookieUri = cookieUri(uri, cookie)
 
-        var targetCookies: MutableSet<HttpCookie>? = allCookies[uri]
-        if (targetCookies == null) {
-            targetCookies = HashSet()
-            allCookies[uri] = targetCookies
+        allCookies[cookieUri] = (allCookies[cookieUri] ?: mutableSetOf()).apply {
+            remove(cookie)
+            add(cookie)
         }
-        targetCookies.remove(cookie)
-        targetCookies.add(cookie)
 
-        saveToPersistence(uri, cookie)
+        saveToPersistence(cookieUri, cookie)
     }
 
     private fun saveToPersistence(uri: URI, cookie: HttpCookie) {
+        sharedPreferences.putString(
+            uri.toString() + SP_KEY_DELIMITER + cookie.name,
+            SerializableHttpCookie().encode(cookie)!!
+        )
+        sharedPreferences.apply()
 
+        addedCookie(cookie)
+    }
 
-        sharedPreferences.putString(uri.toString() + SP_KEY_DELIMITER + cookie.name,
-                SerializableHttpCookie().encode(cookie)!!)
+    private fun saveToPersistenceCloudFlare(uri: URI, cookie: HttpCookie, desktop: Boolean) {
+        sharedPreferences.putString(
+            uri.toString() + SP_KEY_DELIMITER + cookie.name + SP_KEY_DELIMITER + desktop,
+            SerializableHttpCookie().encode(cookie)!!
+        )
         sharedPreferences.apply()
 
         addedCookie(cookie)
@@ -191,7 +143,7 @@ class PersistentCookieStore private constructor(cookieFilePath: String) : Cookie
 
     @Synchronized
     override fun get(uri: URI): List<HttpCookie> {
-        return getValidCookies(uri)
+        return getValidCookies(uri) + getCloudFlareCookies()
     }
 
     @Synchronized
@@ -201,7 +153,7 @@ class PersistentCookieStore private constructor(cookieFilePath: String) : Cookie
             allValidCookies.addAll(getValidCookies(storedUri))
         }
 
-        return allValidCookies
+        return allValidCookies + getCloudFlareCookies()
     }
 
     private fun getValidCookies(uri: URI): List<HttpCookie> {
@@ -223,7 +175,8 @@ class PersistentCookieStore private constructor(cookieFilePath: String) : Cookie
             val cookiesToRemoveFromPersistence = ArrayList<HttpCookie>()
             val it = targetCookies.iterator()
             while (it
-                            .hasNext()) {
+                    .hasNext()
+            ) {
                 val currentCookie = it.next()
                 if (currentCookie.hasExpired()) {
                     cookiesToRemoveFromPersistence.add(currentCookie)
@@ -265,7 +218,7 @@ class PersistentCookieStore private constructor(cookieFilePath: String) : Cookie
         path is a %x2F ("/") character. */
 
     private fun checkPathsMatch(cookiePath: String, requestPath: String): Boolean {
-        if (cookiePath.isEmpty()&&requestPath.isEmpty())
+        if (cookiePath.isEmpty() && requestPath.isEmpty())
             return true
         if (cookiePath.isEmpty())
             return false
@@ -277,8 +230,10 @@ class PersistentCookieStore private constructor(cookieFilePath: String) : Cookie
     private fun removeFromPersistence(uri: URI, cookiesToRemove: List<HttpCookie>) {
 
         for (cookieToRemove in cookiesToRemove) {
-            sharedPreferences.remove(uri.toString() + SP_KEY_DELIMITER
-                    + cookieToRemove.name)
+            sharedPreferences.remove(
+                uri.toString() + SP_KEY_DELIMITER
+                        + cookieToRemove.name
+            )
             deletedCookit(cookieToRemove)
         }
         sharedPreferences.apply()
@@ -293,7 +248,7 @@ class PersistentCookieStore private constructor(cookieFilePath: String) : Cookie
     override fun remove(uri: URI, cookie: HttpCookie): Boolean {
         val targetCookies = allCookies[uri]
         val cookieRemoved = targetCookies != null && targetCookies
-                .remove(cookie)
+            .remove(cookie)
         if (cookieRemoved) {
             removeFromPersistence(uri, cookie)
         }
@@ -302,9 +257,10 @@ class PersistentCookieStore private constructor(cookieFilePath: String) : Cookie
     }
 
     private fun removeFromPersistence(uri: URI, cookieToRemove: HttpCookie) {
-
-        sharedPreferences.remove(uri.toString() + SP_KEY_DELIMITER
-                + cookieToRemove.name)
+        sharedPreferences.remove(
+            uri.toString() + SP_KEY_DELIMITER
+                    + cookieToRemove.name
+        )
         sharedPreferences.apply()
         deletedCookit(cookieToRemove)
     }
@@ -321,5 +277,78 @@ class PersistentCookieStore private constructor(cookieFilePath: String) : Cookie
         memberId.onNext("")
     }
 
+    private fun getCloudFlareCookies(): Set<HttpCookie> =
+        if (desktopVersion) cloudFlareDesktopCookies else cloudFlareCookies
 
+    companion object {
+        private val TAG = PersistentCookieStore::class.java.simpleName
+
+        // In memory
+
+        private var INSTANCE: PersistentCookieStore? = null
+        private val SP_KEY_DELIMITER = "|" // Unusual char in URL
+        private val SP_KEY_DELIMITER_REGEX = "\\" + SP_KEY_DELIMITER
+        private val m_URI = URI.create("http://slartus.ru")
+
+        var desktopVersion = false
+
+        fun getInstance(context: Context): PersistentCookieStore {
+            if (INSTANCE == null)
+                INSTANCE = PersistentCookieStore(getCookieFilePath(context))
+            return INSTANCE!!
+        }
+
+        @Suppress("DEPRECATION")
+        private fun getSharedPreferences(context: Context) =
+            PreferenceManager.getDefaultSharedPreferences(context)
+
+        private fun getSystemDir(context: Context): String {
+            var dir: File? = context.filesDir
+            if (dir == null)
+                dir = context.getExternalFilesDir(null)
+
+            assert(dir != null)
+            var res = getSharedPreferences(context).getString("path.system_path", dir!!.path)
+            if (!res!!.endsWith(File.separator))
+                res += File.separator
+            return res
+        }
+
+        private fun getCookieFilePath(context: Context): String {
+            var res = getSharedPreferences(context).getString("cookies.path", "")
+
+            if (TextUtils.isEmpty(res))
+                res = getSystemDir(context) + "cookieStore.json"
+
+            return res!!.replace("/", File.separator)
+        }
+
+        /**
+         * Get the real URI from the cookie "domain" and "path" attributes, if they
+         * are not set then uses the URI provided (coming from the response)
+         */
+        private fun cookieUri(uri: URI, cookie: HttpCookie): URI {
+            var cookieUri = uri
+            if (cookie.domain != null) {
+                // Remove the starting dot character of the domain, if exists (e.g: .domain.com -> domain.com)
+                var domain = cookie.domain
+                if (domain[0] == '.') {
+                    domain = domain.substring(1)
+                }
+                try {
+                    cookieUri = URI(
+                        if (uri.scheme == null)
+                            "http"
+                        else
+                            uri.scheme, domain,
+                        if (cookie.path == null) "/" else cookie.path, null
+                    )
+                } catch (e: URISyntaxException) {
+                    Log.w(TAG, e)
+                }
+
+            }
+            return cookieUri
+        }
+    }
 }
