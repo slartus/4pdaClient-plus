@@ -48,7 +48,7 @@ class CheckHumanityActivity : AppCompatActivity() {
         CookieManager.getInstance().removeAllCookie()
         binding.webView.settings.userAgentString =
             if (desktop) Http.FULL_USER_AGENT else instance.userAgent
-        binding.webView.webViewClient = TestWebViewClient(desktop, onSuccess)
+        binding.webView.webViewClient = CheckHumanityWebViewClient(desktop, onSuccess)
         binding.webView.loadUrl(url)
     }
 
@@ -108,7 +108,7 @@ private fun WebView.setup() {
     CookieManager.getInstance().setAcceptCookie(true)
 }
 
-private class TestWebViewClient(private val desktop: Boolean, private val checked: () -> Unit) :
+private class CheckHumanityWebViewClient(private val desktop: Boolean, private val checked: () -> Unit) :
     WebViewClient() {
 
     private val keys = listOf("cf_clearance")
