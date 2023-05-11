@@ -973,7 +973,7 @@ class PreferencesActivity : BasePreferencesActivity() {
                         FileUtils.checkDirPath(dir)
                         Preferences.System.systemDir = dir
                     } catch (ex: Throwable) {
-                        AppLog.e(activity, ex)
+                        AppLog.e(activity, NotReportException(ex.message))
                     }
                 }
                 .show()
