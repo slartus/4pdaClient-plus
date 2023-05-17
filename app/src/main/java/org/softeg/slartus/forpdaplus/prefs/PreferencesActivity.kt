@@ -42,7 +42,7 @@ import org.softeg.slartus.forpdaplus.styles.StyleInfoActivity
 import org.softeg.slartus.hosthelper.HostHelper
 import ru.slartus.http.PersistentCookieStore.Companion.getInstance
 import ru.softeg.slartus.common.api.AppAccentColor
-import ru.softeg.slartus.common.api.AppStyle.Companion.toOldValue
+import ru.softeg.slartus.common.api.prefsValue
 import timber.log.Timber
 import java.io.*
 import java.text.SimpleDateFormat
@@ -760,7 +760,7 @@ class PreferencesActivity : BasePreferencesActivity() {
 
         private fun showStylesDialog() {
             try {
-                val currentValue = AppTheme.appStyle.toOldValue().toString()
+                val currentValue = AppTheme.appStyle.prefsValue
                 val newStyleNames = ArrayList<CharSequence>()
                 val newstyleValues = ArrayList<CharSequence>()
                 getStylesList(activity, newStyleNames, newstyleValues)

@@ -9,7 +9,7 @@ class AppThemeImpl @Inject constructor(private val settings: Settings) : AppThem
     }
 
     private suspend fun getOldAppStyle(): AppStyle {
-        return settings.getString(APP_STYLE_OLD_SETTINGS_KEY)?.toIntOrNull()
+        return settings.getString(APP_STYLE_OLD_SETTINGS_KEY)
             ?.let { AppStyle.of(it) } ?: AppStyle.Light
     }
 

@@ -16,35 +16,15 @@ enum class AppStyle(val type: AppStyleType) {
     Standard4PDA(AppStyleType.Light);
 
     companion object {
-        private const val THEME_LIGHT = 0
-        private const val THEME_DARK = 1
-        private const val THEME_BLACK = 6
-        private const val THEME_MATERIAL_LIGHT = 2
-        private const val THEME_MATERIAL_DARK = 3
-        private const val THEME_MATERIAL_BLACK = 5
-        private const val THEME_LIGHT_OLD_HD = 4
-
-        fun AppStyle.toOldValue(): Int {
-            return when (this) {
-                Light -> THEME_LIGHT
-                Dark -> THEME_DARK
-                Black -> THEME_BLACK
-                MaterialLight -> THEME_MATERIAL_LIGHT
-                MaterialDark -> THEME_MATERIAL_DARK
-                MaterialBlack -> THEME_MATERIAL_BLACK
-                Standard4PDA -> THEME_LIGHT_OLD_HD
-            }
-        }
-
-        fun of(oldValue: Int): AppStyle {
-            return when (oldValue) {
-                THEME_LIGHT -> Light
-                THEME_DARK -> Dark
-                THEME_BLACK -> Black
-                THEME_MATERIAL_LIGHT -> MaterialLight
-                THEME_MATERIAL_DARK -> MaterialDark
-                THEME_MATERIAL_BLACK -> MaterialBlack
-                THEME_LIGHT_OLD_HD -> Standard4PDA
+        fun of(prefsValue: String): AppStyle {
+            return when (prefsValue) {
+                Light.prefsValue -> Light
+                Dark.prefsValue -> Dark
+                Black.prefsValue -> Black
+                MaterialLight.prefsValue -> MaterialLight
+                MaterialDark.prefsValue -> MaterialDark
+                MaterialBlack.prefsValue -> MaterialBlack
+                Standard4PDA.prefsValue -> Standard4PDA
                 else -> Light
             }
         }
@@ -57,16 +37,26 @@ enum class AppStyleType(val light: Boolean) {
     Black(light = false)
 }
 
-val AppStyle.htmlBackgroundColor:String get() = when (type) {
-    AppStyleType.Light -> "#eeeeee"
-    AppStyleType.Dark -> "#1a1a1a"
-    AppStyleType.Black -> "#000000"
-}
+val AppStyle.htmlBackgroundColor: String
+    get() = when (type) {
+        AppStyleType.Light -> "#eeeeee"
+        AppStyleType.Dark -> "#1a1a1a"
+        AppStyleType.Black -> "#000000"
+    }
 
 enum class AppAccentColor {
     Pink,
     Blue,
     Gray
 }
+
+val AppStyle.prefsValue: String get() = when(this){
+    AppStyle.Light -> "0"
+    AppStyle.Dark -> "1"
+    AppStyle.Black -> "6"
+    AppStyle.MaterialLight -> "2"
+    AppStyle.MaterialDark -> "3"
+    AppStyle.MaterialBlack -> "5"
+    AppStyle.Standard4PDA -> "4"}
 
 val AppStyle.isBlack: Boolean get() = this in setOf(AppStyle.Black, AppStyle.MaterialBlack)
