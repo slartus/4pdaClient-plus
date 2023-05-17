@@ -21,7 +21,7 @@ class AppThemeImpl @Inject constructor(private val settings: Settings) : AppThem
         settings.putString(APP_STYLE_ACCENT_COLOR, color.name.lowercase())
     }
 
-    private companion object {
+    companion object {
         const val APP_STYLE_SETTINGS_KEY = "apptheme.style"
         const val APP_STYLE_OLD_SETTINGS_KEY = "appstyle"
         const val APP_STYLE_ACCENT_COLOR = "mainAccentColor"

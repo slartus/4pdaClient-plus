@@ -30,6 +30,7 @@ import org.softeg.slartus.forpdaplus.*
 import org.softeg.slartus.forpdaplus.classes.InputFilterMinMax
 import org.softeg.slartus.forpdaplus.common.AppLog
 import org.softeg.slartus.forpdaplus.common.IntentChooser.choose
+import org.softeg.slartus.forpdaplus.common.data.AppThemeImpl.Companion.APP_STYLE_OLD_SETTINGS_KEY
 import org.softeg.slartus.forpdaplus.fragments.base.ProgressDialog
 import org.softeg.slartus.forpdaplus.fragments.topic.ThemeFragment
 import org.softeg.slartus.forpdaplus.listtemplates.ListCore
@@ -786,7 +787,7 @@ class PreferencesActivity : BasePreferencesActivity() {
                         }
                         App.getInstance().preferences
                             .edit()
-                            .putString("appstyle", newstyleValues[selected[0]].toString())
+                            .putString(APP_STYLE_OLD_SETTINGS_KEY, newstyleValues[selected[0]].toString())
                             .apply()
                     }
                     .onNeutral { _: MaterialDialog?, _: DialogAction? ->
