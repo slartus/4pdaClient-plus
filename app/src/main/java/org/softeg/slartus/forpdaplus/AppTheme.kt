@@ -10,11 +10,16 @@ object AppTheme {
     var appTheme: ru.softeg.slartus.common.api.AppTheme? = null
 
     @JvmStatic
-    val appStyle: AppStyle
+    var appStyle: AppStyle
         get() {
             // TODO: Change
             return runBlocking {
                 requireNotNull(appTheme).getStyle()
+            }
+        }
+        set(value) {
+            runBlocking { // TODO: Remove blocking
+                requireNotNull(appTheme).putStyle(value)
             }
         }
 
@@ -26,7 +31,7 @@ object AppTheme {
         }
         set(value) {
             runBlocking { // TODO: Remove blocking
-                requireNotNull(appTheme).updateAccentColor(value)
+                requireNotNull(appTheme).putAccentColor(value)
             }
         }
 
@@ -50,13 +55,17 @@ object AppTheme {
     }
 
     @JvmStatic
-    fun getColorAccent(type: String?): Int {
-        var color = 0
-        when (type) {
-            "Accent" -> color = preferences.getInt("accentColor", Color.rgb(2, 119, 189))
-            "Pressed" -> color = preferences.getInt("accentColorPressed", Color.rgb(0, 89, 159))
+    fun getColorAccent(type: AppAccentColorType): Int {
+        return when (type) {
+            AppAccentColorType.Accent -> preferences.getInt(
+                "accentColor",
+                AppAccentColor.Blue.colorRgb
+            )
+            AppAccentColorType.Pressed -> preferences.getInt(
+                "accentColorPressed",
+                AppAccentColor.Blue.pressedColorRgb
+            )
         }
-        return color
     }
 
     @JvmStatic

@@ -4,8 +4,9 @@ import java.io.File
 
 interface AppTheme {
     suspend fun getStyle(): AppStyle
+    suspend fun putStyle(appStyle: AppStyle)
     suspend fun getAccentColor(): AppAccentColor
-    suspend fun updateAccentColor(color: AppAccentColor)
+    suspend fun putAccentColor(color: AppAccentColor)
 }
 
 sealed class AppStyle(val type: AppStyleType) {
@@ -19,6 +20,7 @@ sealed class AppStyle(val type: AppStyleType) {
     class Custom(type: AppStyleType, val cssPath: String) : AppStyle(type)
 
     companion object {
+        @JvmStatic
         fun of(prefsValue: String): AppStyle {
             return when {
                 prefsValue == Light.prefsValue -> Light
@@ -55,12 +57,6 @@ val AppStyle.htmlBackgroundColor: String
         AppStyleType.Dark -> "#1a1a1a"
         AppStyleType.Black -> "#000000"
     }
-
-enum class AppAccentColor {
-    Pink,
-    Blue,
-    Gray
-}
 
 val AppStyle.prefsValue: String
     get() = when (this) {

@@ -7,13 +7,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -28,8 +22,11 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.jetbrains.annotations.NotNull;
 import org.softeg.slartus.forpdaplus.App;
@@ -46,6 +43,7 @@ import org.softeg.slartus.forpdaplus.prefs.PreferencesActivity;
 
 import java.util.ArrayList;
 
+import ru.softeg.slartus.common.api.AppAccentColorType;
 import ru.softeg.slartus.common.api.AppStyle;
 import ru.softeg.slartus.common.api.AppThemeKt;
 
@@ -159,8 +157,8 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
     }
 
     public void setFabColors(final FloatingActionButton fab) {
-        fab.setBackgroundTintList(ColorStateList.valueOf(AppTheme.getColorAccent("Accent")));
-        fab.setRippleColor(AppTheme.getColorAccent("Pressed"));
+        fab.setBackgroundTintList(ColorStateList.valueOf(AppTheme.getColorAccent(AppAccentColorType.Accent)));
+        fab.setRippleColor(AppTheme.getColorAccent(AppAccentColorType.Pressed));
     }
 
     @Override
@@ -224,20 +222,6 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
 
     }
 
-    /*private boolean fabIsVisible = false;
-    private FloatingActionButton.OnVisibilityChangedListener fabListener = new FloatingActionButton.OnVisibilityChangedListener(){
-        @Override
-        public void onShown(FloatingActionButton fab) {
-            super.onShown(fab);
-            fabIsVisible = true;
-        }
-
-        @Override
-        public void onHidden(FloatingActionButton fab) {
-            super.onHidden(fab);
-            fabIsVisible = false;
-        }
-    };*/
     public void setHideFab(final FloatingActionButton fab) {
         if (getWebView() == null) return;
         if (fab == null) return;
@@ -358,10 +342,8 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
                     .alwaysCallSingleChoiceCallback()
                     .onPositive((dialog, which) -> {
                         int lastTheme = AppTheme.getThemeStyleResID();
-                        SharedPreferences.Editor editor = prefs.edit();
-                        editor.putString("appstyle", newStyleValues.get(selected[0]).toString());
-                        //editor.putBoolean("theme.BrowserStyle", checkBox.isChecked());
-                        editor.apply();
+                        AppStyle appStyle = AppStyle.of(newStyleValues.get(selected[0]).toString());
+                        AppTheme.setAppStyle(appStyle);
                         if (AppTheme.getThemeStyleResID() != lastTheme)
                             getMainActivity().recreate();
                         else
@@ -377,7 +359,6 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
     public void setStyleSheet() {
         try {
             getWebView().loadUrl("javascript:changeStyle('file://" + AppTheme.getThemeCssFileName() + "');");
-            Log.e("Test", "setStyleSheet: " + "file://" + AppTheme.getThemeCssFileName());
         } catch (Throwable ex) {
             AppLog.e(getMainActivity(), ex);
         }
