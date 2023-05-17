@@ -46,6 +46,9 @@ import org.softeg.slartus.forpdaplus.prefs.PreferencesActivity;
 
 import java.util.ArrayList;
 
+import ru.softeg.slartus.common.api.AppStyle;
+import ru.softeg.slartus.common.api.AppThemeKt;
+
 /**
  * Created by radiationx on 17.10.15.
  */
@@ -330,13 +333,13 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
 
     public void showStylesDialog(final SharedPreferences prefs) {
         try {
-            final String currentValue = AppTheme.getCurrentTheme();
+            final AppStyle currentStyle = AppTheme.getAppStyle();
 
             ArrayList<CharSequence> newStyleNames = new ArrayList<>();
             final ArrayList<CharSequence> newStyleValues = new ArrayList<>();
 
             PreferencesActivity.getStylesList(getMainActivity(), newStyleNames, newStyleValues);
-            final int[] selected = {newStyleValues.indexOf(currentValue)};
+            final int[] selected = {newStyleValues.indexOf(AppThemeKt.getPrefsValue(currentStyle))};
             CharSequence[] styleNames = newStyleNames.toArray(new CharSequence[newStyleNames.size()]);
 
             new MaterialDialog.Builder(getMainActivity())

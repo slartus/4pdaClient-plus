@@ -3,10 +3,7 @@ package org.softeg.slartus.forpdaplus
 import android.content.SharedPreferences
 import android.graphics.Color
 import kotlinx.coroutines.runBlocking
-import ru.softeg.slartus.common.api.AppAccentColor
-import ru.softeg.slartus.common.api.AppStyle
-import ru.softeg.slartus.common.api.AppStyleType
-import ru.softeg.slartus.common.api.htmlBackgroundColor
+import ru.softeg.slartus.common.api.*
 
 object AppTheme {
     @JvmStatic
@@ -165,10 +162,6 @@ object AppTheme {
         get() = Color.parseColor(currentBackgroundColorHtml)
 
     @JvmStatic
-    val currentTheme: String
-        get() = appStyle.name
-
-    @JvmStatic
     val currentThemeName: String
         get() = when (appStyle.type) {
             AppStyleType.Light -> "white"
@@ -177,38 +170,7 @@ object AppTheme {
         }
 
     @JvmStatic
-    val themeCssFileName: String
-        get() {
-            val path = "/android_asset/forum/css/"
-            val fileName = when (appStyle) {
-                AppStyle.Light -> {
-                    when (mainAccent) {
-                        AppAccentColor.Blue -> "4pda_light_blue.css"
-                        AppAccentColor.Pink -> "4pda_light_pink.css"
-                        AppAccentColor.Gray -> "4pda_light_gray.css"
-                    }
-                }
-                AppStyle.Dark -> {
-                    when (mainAccent) {
-                        AppAccentColor.Blue -> "4pda_dark_blue.css"
-                        AppAccentColor.Pink -> "4pda_dark_pink.css"
-                        AppAccentColor.Gray -> "4pda_dark_gray.css"
-                    }
-                }
-                AppStyle.Black -> {
-                    when (mainAccent) {
-                        AppAccentColor.Blue -> "4pda_black_blue.css"
-                        AppAccentColor.Pink -> "4pda_black_pink.css"
-                        AppAccentColor.Gray -> "4pda_black_gray.css"
-                    }
-                }
-                AppStyle.MaterialLight -> "material_light.css"
-                AppStyle.MaterialDark -> "material_dark.css"
-                AppStyle.MaterialBlack -> "material_black.css"
-                AppStyle.Standard4PDA -> "standart_4PDA.css"
-            }
-            return "$path$fileName"
-        }
+    val themeCssFileName: String get() = appStyle.getCssFilePath(mainAccent)
 
     private val preferences: SharedPreferences
         get() = App.getInstance().preferences

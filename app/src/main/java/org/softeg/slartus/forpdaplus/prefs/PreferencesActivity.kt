@@ -42,6 +42,8 @@ import org.softeg.slartus.forpdaplus.styles.StyleInfoActivity
 import org.softeg.slartus.hosthelper.HostHelper
 import ru.slartus.http.PersistentCookieStore.Companion.getInstance
 import ru.softeg.slartus.common.api.AppAccentColor
+import ru.softeg.slartus.common.api.AppStyle
+import ru.softeg.slartus.common.api.getCssFilePath
 import ru.softeg.slartus.common.api.prefsValue
 import timber.log.Timber
 import java.io.*
@@ -785,9 +787,10 @@ class PreferencesActivity : BasePreferencesActivity() {
                             ).show()
                             return@onPositive
                         }
+                        val newValue = newstyleValues[selected[0]].toString()
                         App.getInstance().preferences
                             .edit()
-                            .putString(APP_STYLE_OLD_SETTINGS_KEY, newstyleValues[selected[0]].toString())
+                            .putString(APP_STYLE_OLD_SETTINGS_KEY,newValue )
                             .apply()
                     }
                     .onNeutral { _: MaterialDialog?, _: DialogAction? ->
@@ -799,7 +802,8 @@ class PreferencesActivity : BasePreferencesActivity() {
                             ).show()
                             return@onNeutral
                         }
-                        val stylePath = AppTheme.themeCssFileName
+                        val newValue = newstyleValues[selected[0]].toString()
+                        val stylePath = AppStyle.of(newValue).getCssFilePath(AppTheme.mainAccent)
                         val xmlPath = stylePath.replace(".css", ".xml")
                         val cssStyle = CssStyle.parseStyle(activity, xmlPath)
                         if (!cssStyle.ExistsInfo) {
@@ -1009,24 +1013,18 @@ class PreferencesActivity : BasePreferencesActivity() {
         fun getStylesList(
             context: Context,
             newStyleNames: ArrayList<CharSequence>,
-            newstyleValues: ArrayList<CharSequence>
+            newStyleValues: ArrayList<CharSequence>
         ) {
-            var xmlPath: String
-            var cssStyle: CssStyle
             val styleNames = context.resources.getStringArray(R.array.appthemesArray)
             val styleValues = context.resources.getStringArray(R.array.appthemesValues)
             for (i in styleNames.indices) {
-                var styleName: CharSequence = styleNames[i]
+                val styleName: CharSequence = styleNames[i]
                 val styleValue: CharSequence = styleValues[i]
-                xmlPath = AppTheme.themeCssFileName.replace(".css", ".xml")
-                    .replace("/android_asset/", "")
-                cssStyle = CssStyle.parseStyleFromAssets(context, xmlPath)
-                if (cssStyle.ExistsInfo) styleName = cssStyle.Title
                 newStyleNames.add(styleName)
-                newstyleValues.add(styleValue)
+                newStyleValues.add(styleValue)
             }
             val file = File(Preferences.System.systemDir + "styles/")
-            getStylesList(newStyleNames, newstyleValues, file)
+            getStylesList(newStyleNames, newStyleValues, file)
         }
 
         private fun getStylesList(

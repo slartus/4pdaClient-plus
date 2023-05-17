@@ -1,33 +1,45 @@
 package ru.softeg.slartus.common.api
 
+import java.io.File
+
 interface AppTheme {
     suspend fun getStyle(): AppStyle
     suspend fun getAccentColor(): AppAccentColor
     suspend fun updateAccentColor(color: AppAccentColor)
 }
 
-enum class AppStyle(val type: AppStyleType) {
-    Light(AppStyleType.Light),
-    Dark(AppStyleType.Dark),
-    Black(AppStyleType.Black),
-    MaterialLight(AppStyleType.Light),
-    MaterialDark(AppStyleType.Dark),
-    MaterialBlack(AppStyleType.Black),
-    Standard4PDA(AppStyleType.Light);
+sealed class AppStyle(val type: AppStyleType) {
+    object Light : AppStyle(AppStyleType.Light)
+    object Dark : AppStyle(AppStyleType.Dark)
+    object Black : AppStyle(AppStyleType.Black)
+    object MaterialLight : AppStyle(AppStyleType.Light)
+    object MaterialDark : AppStyle(AppStyleType.Dark)
+    object MaterialBlack : AppStyle(AppStyleType.Black)
+    object Standard4PDA : AppStyle(AppStyleType.Light)
+    class Custom(type: AppStyleType, val cssPath: String) : AppStyle(type)
 
     companion object {
         fun of(prefsValue: String): AppStyle {
-            return when (prefsValue) {
-                Light.prefsValue -> Light
-                Dark.prefsValue -> Dark
-                Black.prefsValue -> Black
-                MaterialLight.prefsValue -> MaterialLight
-                MaterialDark.prefsValue -> MaterialDark
-                MaterialBlack.prefsValue -> MaterialBlack
-                Standard4PDA.prefsValue -> Standard4PDA
+            return when {
+                prefsValue == Light.prefsValue -> Light
+                prefsValue == Dark.prefsValue -> Dark
+                prefsValue == Black.prefsValue -> Black
+                prefsValue == MaterialLight.prefsValue -> MaterialLight
+                prefsValue == MaterialDark.prefsValue -> MaterialDark
+                prefsValue == MaterialBlack.prefsValue -> MaterialBlack
+                prefsValue == Standard4PDA.prefsValue -> Standard4PDA
+                prefsValue.endsWith(".css") -> Custom(prefsValue.appStyleType, prefsValue)
                 else -> Light
             }
         }
+
+        private val String.appStyleType: AppStyleType
+            get() = when (split(File.separator).dropLast(1).lastOrNull()?.lowercase()) {
+                "black" -> AppStyleType.Black
+                "dark" -> AppStyleType.Dark
+                "light" -> AppStyleType.Light
+                else -> AppStyleType.Light
+            }
     }
 }
 
@@ -50,13 +62,49 @@ enum class AppAccentColor {
     Gray
 }
 
-val AppStyle.prefsValue: String get() = when(this){
-    AppStyle.Light -> "0"
-    AppStyle.Dark -> "1"
-    AppStyle.Black -> "6"
-    AppStyle.MaterialLight -> "2"
-    AppStyle.MaterialDark -> "3"
-    AppStyle.MaterialBlack -> "5"
-    AppStyle.Standard4PDA -> "4"}
+val AppStyle.prefsValue: String
+    get() = when (this) {
+        AppStyle.Light -> "0"
+        AppStyle.Dark -> "1"
+        AppStyle.Black -> "6"
+        AppStyle.MaterialLight -> "2"
+        AppStyle.MaterialDark -> "3"
+        AppStyle.MaterialBlack -> "5"
+        AppStyle.Standard4PDA -> "4"
+        is AppStyle.Custom -> this.cssPath
+    }
+
+fun AppStyle.getCssFilePath(accentColor: AppAccentColor): String {
+    val path = "/android_asset/forum/css/"
+    val fileName = when (this) {
+        AppStyle.Light -> {
+            when (accentColor) {
+                AppAccentColor.Blue -> "4pda_light_blue.css"
+                AppAccentColor.Pink -> "4pda_light_pink.css"
+                AppAccentColor.Gray -> "4pda_light_gray.css"
+            }
+        }
+        AppStyle.Dark -> {
+            when (accentColor) {
+                AppAccentColor.Blue -> "4pda_dark_blue.css"
+                AppAccentColor.Pink -> "4pda_dark_pink.css"
+                AppAccentColor.Gray -> "4pda_dark_gray.css"
+            }
+        }
+        AppStyle.Black -> {
+            when (accentColor) {
+                AppAccentColor.Blue -> "4pda_black_blue.css"
+                AppAccentColor.Pink -> "4pda_black_pink.css"
+                AppAccentColor.Gray -> "4pda_black_gray.css"
+            }
+        }
+        AppStyle.MaterialLight -> "material_light.css"
+        AppStyle.MaterialDark -> "material_dark.css"
+        AppStyle.MaterialBlack -> "material_black.css"
+        AppStyle.Standard4PDA -> "standart_4PDA.css"
+        is AppStyle.Custom -> return cssPath
+    }
+    return "$path$fileName"
+}
 
 val AppStyle.isBlack: Boolean get() = this in setOf(AppStyle.Black, AppStyle.MaterialBlack)

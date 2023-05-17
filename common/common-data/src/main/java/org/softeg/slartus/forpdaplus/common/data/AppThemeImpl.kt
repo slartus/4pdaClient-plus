@@ -5,10 +5,6 @@ import javax.inject.Inject
 
 class AppThemeImpl @Inject constructor(private val settings: Settings) : AppTheme {
     override suspend fun getStyle(): AppStyle {
-        return settings.getEnum<AppStyle>(APP_STYLE_SETTINGS_KEY) ?: getOldAppStyle()
-    }
-
-    private suspend fun getOldAppStyle(): AppStyle {
         return settings.getString(APP_STYLE_OLD_SETTINGS_KEY)
             ?.let { AppStyle.of(it) } ?: AppStyle.Light
     }
