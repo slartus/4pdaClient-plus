@@ -41,10 +41,10 @@ object TopicParser {
     @Throws(IOException::class)
     fun loadTopic(
         context: Context,
-        id: String?, topicBody: String, spoilFirstPost: Boolean,
+        id: String?, topicBody1: String, spoilFirstPost: Boolean,
         logined: Boolean, urlParams: String?
     ): TopicBodyBuilder {
-        var topicBody = ParseFunctions.decodeEmails(topicBody)
+        var topicBody = ParseFunctions.decodeEmails(topicBody1)
         val mainMatcher = beforePostsPattern.matcher(topicBody)
         if (!mainMatcher.find()) {
             var errorMatcher = Pattern.compile(
@@ -53,7 +53,7 @@ object TopicParser {
             )
                 .matcher(topicBody)
             if (errorMatcher.find()) {
-                throw org.softeg.slartus.forpdacommon.NotReportException(
+                throw NotReportException(
                     errorMatcher.group(1)
                 )
             }
@@ -64,15 +64,15 @@ object TopicParser {
                 val errorReasonPattern = PatternExtensions.compile("<p>(.*?)</p>")
                 val errorReasonMatcher = errorReasonPattern.matcher(errorMatcher.group(1) ?: "")
                 if (errorReasonMatcher.find()) {
-                    throw org.softeg.slartus.forpdacommon.NotReportException(
+                    throw NotReportException(
                         errorReasonMatcher.group(1)
                     )
                 }
             }
-            if (TextUtils.isEmpty(topicBody)) throw org.softeg.slartus.forpdacommon.NotReportException(
+            if (TextUtils.isEmpty(topicBody)) throw NotReportException(
                 context.getString(R.string.server_return_empty_page)
             )
-            if (topicBody.startsWith("<h1>")) throw org.softeg.slartus.forpdacommon.NotReportException(
+            if (topicBody.startsWith("<h1>")) throw NotReportException(
                 context.getString(R.string.site_response) + topicBody.fromHtml()
             )
             throw IOException(context.getString(R.string.error_parsing_page) + " id=" + id)
