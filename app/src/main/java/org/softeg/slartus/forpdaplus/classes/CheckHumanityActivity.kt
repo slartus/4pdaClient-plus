@@ -53,6 +53,7 @@ class CheckHumanityActivity : AppCompatActivity() {
     }
 
     private fun showHelloDialog() {
+        if (isFinishing) return
         AlertDialog.Builder(this)
             .setCancelable(true)
             .setTitle("Проверка, что вы не робот")
@@ -67,6 +68,7 @@ class CheckHumanityActivity : AppCompatActivity() {
     }
 
     private fun showSuccessDialog() {
+        if (isFinishing) return
         val dialog = AlertDialog.Builder(this)
             .setCancelable(true)
             .setTitle("Проверка, что вы не робот")
@@ -108,7 +110,10 @@ private fun WebView.setup() {
     CookieManager.getInstance().setAcceptCookie(true)
 }
 
-private class CheckHumanityWebViewClient(private val desktop: Boolean, private val checked: () -> Unit) :
+private class CheckHumanityWebViewClient(
+    private val desktop: Boolean,
+    private val checked: () -> Unit
+) :
     WebViewClient() {
 
     private val keys = listOf("cf_clearance")
