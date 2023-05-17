@@ -76,28 +76,15 @@ val AppStyle.prefsValue: String
 
 fun AppStyle.getCssFilePath(accentColor: AppAccentColor): String {
     val path = "/android_asset/forum/css/"
+    val accent = when (accentColor) {
+        AppAccentColor.Blue -> "blue"
+        AppAccentColor.Pink -> "pink"
+        AppAccentColor.Gray -> "gray"
+    }
     val fileName = when (this) {
-        AppStyle.Light -> {
-            when (accentColor) {
-                AppAccentColor.Blue -> "4pda_light_blue.css"
-                AppAccentColor.Pink -> "4pda_light_pink.css"
-                AppAccentColor.Gray -> "4pda_light_gray.css"
-            }
-        }
-        AppStyle.Dark -> {
-            when (accentColor) {
-                AppAccentColor.Blue -> "4pda_dark_blue.css"
-                AppAccentColor.Pink -> "4pda_dark_pink.css"
-                AppAccentColor.Gray -> "4pda_dark_gray.css"
-            }
-        }
-        AppStyle.Black -> {
-            when (accentColor) {
-                AppAccentColor.Blue -> "4pda_black_blue.css"
-                AppAccentColor.Pink -> "4pda_black_pink.css"
-                AppAccentColor.Gray -> "4pda_black_gray.css"
-            }
-        }
+        AppStyle.Light -> "4pda_light_$accent.css"
+        AppStyle.Dark -> "4pda_dark_$accent.css"
+        AppStyle.Black -> "4pda_black_$accent.css"
         AppStyle.MaterialLight -> "material_light.css"
         AppStyle.MaterialDark -> "material_dark.css"
         AppStyle.MaterialBlack -> "material_black.css"
