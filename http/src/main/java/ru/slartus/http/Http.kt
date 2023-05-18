@@ -148,14 +148,14 @@ class Http private constructor(context: Context, appName: String, appVersion: St
     @JvmOverloads
     fun performPostDesktop(
         url: String,
-        values: List<Pair<String, String>> = ArrayList(),
+        values: List<Pair<String, String?>> = ArrayList(),
         charsetName: String = "UTF-8"
     ): AppResponse {
         // отправка с windows-1251 не отправляет É или Ç в qms и топики
         // windows-1251 для логина кирилицей
         val formBuilder = FormBody.Builder(Charset.forName(charsetName))
         values
-            .forEach { formBuilder.add(it.first, it.second) }
+            .forEach { formBuilder.add(it.first, it.second.orEmpty()) }
 
         val formBody = formBuilder.build()
 
