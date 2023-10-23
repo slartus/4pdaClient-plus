@@ -2934,7 +2934,7 @@
         "isHasTopics": true,
         "isHasForums": false,
         "parentId": "103",
-        "iconUrl": "https:\/\/4pda.to\/s\/PXtioRGJuk094peykxkmOSQX0Xu5tV8TZndY3WeSbKUz1fFGPAQdtxT3jpHMJvjt.gif",
+        "iconUrl": "https:\/\/4pda.to\/s\/PXtiwlGpx8OMqdiwmHJGLoTVz0d01KC2EFFfqcf7cf8fJPTz2BjYvAXsBx4ro6Ip.gif",
         "description": "\u0410\u0440\u0445\u0438\u0432 \u0442\u0435\u043c \u043c\u0443\u043b\u044c\u0442\u0438\u043c\u0435\u0434\u0438\u0439\u043d\u044b\u0445 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432"
     },
     {
@@ -3377,6 +3377,15 @@
         "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0438\u0433\u0440\u043e\u0432\u044b\u0445 \u043a\u043e\u043d\u0441\u043e\u043b\u0435\u0439, \u043f\u0440\u0438\u0441\u0442\u0430\u0432\u043e\u043a, \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c \u0438 \u0438\u0433\u0440 \u043a \u043d\u0438\u043c "
     },
     {
+        "id": "1088",
+        "title": "\u041a\u0432\u0430\u0434\u0440\u043e\u043a\u043e\u043f\u0442\u0435\u0440\u044b",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "202",
+        "iconUrl": "https:\/\/4pda.to\/s\/PXtiwlGprXGz1YT99XLvNN9hl2DrW52RnKLNF60z0nCSi.gif",
+        "description": "\u041a\u0432\u0430\u0434\u0440\u043e\u043a\u043e\u043f\u0442\u0435\u0440\u044b, \u0431\u0435\u0441\u043f\u0438\u043b\u043e\u0442\u043d\u044b\u0435 \u043b\u0435\u0442\u0430\u0442\u0435\u043b\u044c\u043d\u044b\u0435 \u0430\u043f\u043f\u0430\u0440\u0430\u0442\u044b (\u0411\u041f\u041b\u0410) \u0438 FPV-\u0434\u0440\u043e\u043d\u044b"
+    },
+    {
         "id": "102",
         "title": "\u0422\u0435\u043b\u0435\u0444\u043e\u043d\u044b - \u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0438 \u043f\u0440\u043e\u0448\u0438\u0432\u043a\u0438",
         "isHasTopics": true,
@@ -3546,15 +3555,6 @@
         "parentId": "48",
         "iconUrl": "https:\/\/4pda.to\/s\/PXtiwlGYQ2bnEiV3IxgBarCA6jdthDnz1Jhz1gFdz2R7I.gif",
         "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u044d\u043a\u0448\u043d-\u043a\u0430\u043c\u0435\u0440, \u043f\u0430\u043d\u043e\u0440\u0430\u043c\u043d\u044b\u0445 \u043a\u0430\u043c\u0435\u0440 360\u00b0 \u0438 3-\u0445-\u043e\u0441\u0435\u0432\u044b\u0445 \u0441\u0442\u0430\u0431\u0438\u043b\u0438\u0437\u0430\u0442\u043e\u0440\u043e\u0432"
-    },
-    {
-        "id": "1088",
-        "title": "\u041a\u0432\u0430\u0434\u0440\u043e\u043a\u043e\u043f\u0442\u0435\u0440\u044b",
-        "isHasTopics": true,
-        "isHasForums": false,
-        "parentId": "48",
-        "iconUrl": "https:\/\/4pda.to\/s\/PXtiwlGprXGz1YT99XLvNN9hl2DrW52RnKLNF60z0nCSi.gif",
-        "description": "\u041a\u0432\u0430\u0434\u0440\u043e\u043a\u043e\u043f\u0442\u0435\u0440\u044b, \u0434\u0440\u043e\u043d\u044b, \u0431\u0435\u0441\u043f\u0438\u043b\u043e\u0442\u043d\u044b\u0435 \u043b\u0435\u0442\u0430\u0442\u0435\u043b\u044c\u043d\u044b\u0435 \u0430\u043f\u043f\u0430\u0440\u0430\u0442\u044b (\u0411\u041f\u041b\u0410) \u0434\u043b\u044f \u0444\u043e\u0442\u043e- \u0438 \u0432\u0438\u0434\u0435\u043e\u0441\u044a\u0451\u043c\u043a\u0438"
     },
     {
         "id": "874",
