@@ -44,6 +44,7 @@ public class ListCore {
         res.add(new MarkAllReadBrickInfo());
         res.add(new FaqBrickInfo());
         res.add(new ForumRulesBrick());
+        res.add(new CheckHumanityBrickInfo());
         return res;
     }
 

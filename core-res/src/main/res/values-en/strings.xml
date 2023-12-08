@@ -459,4 +459,5 @@
     <string name="registration">Registration</string>
     <string name="qms_contacts_search">Find contact</string>
     <string name="upload">Upload</string>
+    <string name="check_humanity_title">Testing humanity</string>
 </resources>

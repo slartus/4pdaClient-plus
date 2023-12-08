@@ -20,9 +20,11 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import org.softeg.slartus.forpdaplus.classes.CheckHumanityActivity;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.fragments.ForumRulesFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
+import org.softeg.slartus.forpdaplus.listtemplates.CheckHumanityBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.FaqBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.ForumRulesBrick;
 import org.softeg.slartus.forpdaplus.listtemplates.ListCore;
@@ -236,15 +238,24 @@ public class MainDrawerMenu implements NavigationView.OnNavigationItemSelectedLi
                         .show();
                 break;
             case FaqBrickInfo.NAME:
-                IntentActivity.showTopic("https://"+App.Host+"/forum/index.php?s=&showtopic=271502&view=findpost&p=45570566");
+                IntentActivity.showTopic("https://" + App.Host + "/forum/index.php?s=&showtopic=271502&view=findpost&p=45570566");
                 break;
             case ForumRulesBrick.NAME:
                 ForumRulesFragment.showRules();
+                break;
+            case CheckHumanityBrickInfo.NAME:
+                openCheckHumanityScreen();
                 break;
             default:
                 if (item.getGroupId() != 2)
                     selectItem(selectedBrick);
         }
         return true;
+    }
+
+    private void openCheckHumanityScreen() {
+        Intent checkVpnIntent = new Intent(mActivity, CheckHumanityActivity.class);
+        checkVpnIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        App.getInstance().startActivity(checkVpnIntent);
     }
 }

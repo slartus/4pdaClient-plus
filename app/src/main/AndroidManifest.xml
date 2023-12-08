@@ -234,7 +234,7 @@
             android:name=".classes.CheckHumanityActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:exported="false"
-            android:label="Проверка человечности"
+            android:label="@string/check_humanity_title"
             android:launchMode="singleTop" />
 
         <activity

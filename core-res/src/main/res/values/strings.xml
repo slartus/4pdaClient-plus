@@ -467,5 +467,5 @@
     <string name="menu_topic_attachments_filter">Фильтр</string>
     <string name="qms_contacts_search">Найти контакт</string>
     <string name="upload">Загрузить</string>
-
+    <string name="check_humanity_title">Проверка человечности</string>
 </resources>
