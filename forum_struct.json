@@ -4426,5 +4426,1390 @@
         "parentId": "236",
         "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0SqJarEHJQOSws93PlkcbCuX8mdpyVHbsvnTNCEI5ndhmz2klx.gif",
         "description": "\u041d\u0430\u043a\u043e\u043f\u043b\u0435\u043d\u043d\u044b\u0435 \u0437\u043d\u0430\u043d\u0438\u044f \u043e \u043d\u0430\u0432\u0438\u0433\u0430\u0446\u0438\u0438. \u041f\u043e\u0434\u0440\u0430\u0437\u0434\u0435\u043b \u0434\u043e\u0441\u0442\u0443\u043f\u0435\u043d \u0442\u043e\u043b\u044c\u043a\u043e \u0434\u043b\u044f \u0447\u0442\u0435\u043d\u0438\u044f."
+    },
+    {
+        "id": "203",
+        "title": "\u041f\u0440\u043e\u0447\u0435\u0435",
+        "isHasTopics": false,
+        "isHasForums": true,
+        "description": null,
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeTmLTOz2yjB8XLCbTAz11wegELVsrvVPNyQEfWUtd.gif"
+    },
+    {
+        "id": "384",
+        "title": "\u041f\u043e\u043a\u0443\u043f\u043a\u0430 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 \u043d\u0430 Android (\u0440\u0435\u0434\u0438\u0440\u0435\u043a\u0442)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "1",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVRCELH2VsKEZz0AwrSycd4vgj9RyyuwpimVIqJWVk.gif",
+        "description": null
+    },
+    {
+        "id": "441",
+        "title": "\u041f\u043e\u043a\u0443\u043f\u043a\u0430 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 Apple (\u0440\u0435\u0434\u0438\u0440\u0435\u043a\u0442)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "1",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVQRGvUl8gujpGfoDZ1nyeWVOeBqfG5hwHOv3Y.gif",
+        "description": null
+    },
+    {
+        "id": "465",
+        "title": "\u041d\u043e\u0432\u0438\u043d\u043a\u0438 - \u0410\u0440\u0445\u0438\u0432",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "1",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVCRNu1eSTQInMDz0z0z0MYPx69jJus5NZqh38xK.gif",
+        "description": "\u0410\u0440\u0445\u0438\u0432\u043d\u0430\u044f \u0438\u043d\u0444\u043e\u0440\u043c\u0430\u0446\u0438\u044f \u043f\u043e \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432\u0430\u043c (\u0442\u043e\u043b\u044c\u043a\u043e \u0434\u043b\u044f \u0447\u0442\u0435\u043d\u0438\u044f)."
+    },
+    {
+        "id": "1",
+        "title": "\u041d\u043e\u0432\u0438\u043d\u043a\u0438",
+        "isHasTopics": true,
+        "isHasForums": true,
+        "parentId": "203",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeTmLTOz2yjB8XLCbTAz11wegELVsrvVPNyQEfWUtd.gif",
+        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u044f \u043d\u043e\u0432\u0438\u043d\u043e\u043a \u0438 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 \u0435\u0449\u0435 \u043d\u0435 \u043f\u043e\u044f\u0432\u0438\u0432\u0448\u0438\u0445\u0441\u044f \u0432 \u043f\u0440\u043e\u0434\u0430\u0436\u0435. \u041d\u043e\u0432\u043e\u0441\u0442\u0438 \u043f\u0443\u0431\u043b\u0438\u043a\u0443\u0439\u0442\u0435 \u043f\u043e\u0436\u0430\u043b\u0443\u0439\u0441\u0442\u0430 \u043d\u0430 \u0441\u0430\u0439\u0442\u0435. \u0421\u0447\u0435\u0442\u0447\u0438\u043a \u0441\u043e\u043e\u0431\u0449\u0435\u043d\u0438\u0439 \u043e\u0442\u043a\u043b\u044e\u0447\u0435\u043d. "
+    },
+    {
+        "id": "76",
+        "title": "\u0411\u0435\u0441\u0435\u0434\u044b \u043e \u043a\u043d\u0438\u0433\u0430\u0445",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "18",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0ye9yO3Wcz2ytHaw7ZOz1KtWUUCO2SNwdz0m8gs5k5DI5z0AtFlbxo5wi21.gif",
+        "description": "\u0425\u0443\u0434\u043e\u0436\u0435\u0441\u0442\u0432\u0435\u043d\u043d\u0430\u044f \u0438 \u0434\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u0430\u043b\u044c\u043d\u0430\u044f \u043b\u0438\u0442\u0435\u0440\u0430\u0442\u0443\u0440\u0430. \u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0442\u0432\u043e\u0440\u0447\u0435\u0441\u0442\u0432\u0430 \u043e\u0442\u0434\u0435\u043b\u044c\u043d\u044b\u0445 \u0430\u0432\u0442\u043e\u0440\u043e\u0432 \u0438 \u0436\u0430\u043d\u0440\u043e\u0432. \u0421\u043e\u0432\u0435\u0442\u044b \u0447\u0442\u043e \u043f\u043e\u0447\u0438\u0442\u0430\u0442\u044c. \u0410\u0443\u0434\u0438\u043e\u043a\u043d\u0438\u0433\u0438."
+    },
+    {
+        "id": "964",
+        "title": "\u041b\u0438\u0442\u0435\u0440\u0430 \"\u0410\" (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "963",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yelCkAL3DYR0u73D1EHBAfK7WKEz0Vkz0z2o3XHICGdY.gif",
+        "description": null
+    },
+    {
+        "id": "965",
+        "title": "\u041b\u0438\u0442\u0435\u0440\u0430 \"\u0411\" (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "963",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeiBYKcz0E44mWx52PotqAfK704cvLz2sjVESqh38xq.gif",
+        "description": null
+    },
+    {
+        "id": "966",
+        "title": "\u041b\u0438\u0442\u0435\u0440\u0430 \"\u0412\" (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "963",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeuZcz1dUO38kJ564sQJEZku9xk7gR4yyKyXnYqyfv.gif",
+        "description": null
+    },
+    {
+        "id": "967",
+        "title": "\u041b\u0438\u0442\u0435\u0440\u0430 \"\u0413\" (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "963",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yef0mvh0hz0BeyjYz1VTz20O4PQrLDxGs1vTBLZl9v0U.gif",
+        "description": null
+    },
+    {
+        "id": "968",
+        "title": "\u041b\u0438\u0442\u0435\u0440\u0430 \"\u0414\" (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "963",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeg7ydOz1eRKOaHan7XPz2O4PQL5bz2QdAhm6e6M6XS8.gif",
+        "description": null
+    },
+    {
+        "id": "969",
+        "title": "\u041b\u0438\u0442\u0435\u0440\u0430 \"\u0415\" (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "963",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeh4we02EaKO4XyjH6bvNSbyg5bz2wNINMPuE2aqTB.gif",
+        "description": null
+    },
+    {
+        "id": "970",
+        "title": "\u041b\u0438\u0442\u0435\u0440\u0430 \"\u0416\" (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "963",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yefKePkcdCMZkKRRaqpB2Rjz2721Cs39nWdnvNyrKkl.gif",
+        "description": null
+    },
+    {
+        "id": "971",
+        "title": "\u041b\u0438\u0442\u0435\u0440\u0430 \"\u0417\" (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "963",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeqxQOOUuJ0wnG7dWz0FO4oEUz2469jpeUXjAJtLld2.gif",
+        "description": null
+    },
+    {
+        "id": "972",
+        "title": "\u041b\u0438\u0442\u0435\u0440\u0430 \"\u0418\" (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "963",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yedS6Ez22kqSCcqz0E7Xvlm0JhklaSCW6rZ8JiN5dJm.gif",
+        "description": null
+    },
+    {
+        "id": "973",
+        "title": "\u041b\u0438\u0442\u0435\u0440\u0430 \"\u041a\" (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "963",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yebOCVK0Bj3yUuZT9wZMz2OlDnz2COc1LReQz11wegEb.gif",
+        "description": null
+    },
+    {
+        "id": "974",
+        "title": "\u041b\u0438\u0442\u0435\u0440\u0430 \"\u041b\" (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "963",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeYNKZoz2BDJKwYQo1EnRYjUsRz1FU9fnXXDQxJFMeQ.gif",
+        "description": null
+    },
+    {
+        "id": "975",
+        "title": "\u041b\u0438\u0442\u0435\u0440\u0430 \"\u041c\" (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "963",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeZKIig3joJKQI2kNfDTjrYGaz1FUfPfT7IAp7j3fP.gif",
+        "description": null
+    },
+    {
+        "id": "976",
+        "title": "\u041b\u0438\u0442\u0435\u0440\u0430 \"\u041d\" (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "963",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeWJUoPz0kKCa2k4XFLhYjrYG4kdQZ8YFgVtMz1YRrF.gif",
+        "description": null
+    },
+    {
+        "id": "977",
+        "title": "\u041b\u0438\u0442\u0435\u0440\u0430 \"\u041e\" (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "963",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeXGOz0118hCaYUSz0PoNaYjUsxkdQ3uwpC0dUg0EqC.gif",
+        "description": null
+    },
+    {
+        "id": "978",
+        "title": "\u041b\u0438\u0442\u0435\u0440\u0430 \"\u041f\" (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "963",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yez1luDPTz1SO6Nldte9z05n3rKkl4iKS0wxqL3VnLE5.gif",
+        "description": null
+    },
+    {
+        "id": "979",
+        "title": "\u041b\u0438\u0442\u0435\u0440\u0430 \"\u0420\" (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "963",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeyhoSoVR57slZvacIdyz1R9onz2iez1z0JKmcukoSOJG.gif",
+        "description": null
+    },
+    {
+        "id": "980",
+        "title": "\u041b\u0438\u0442\u0435\u0440\u0430 \"\u0421\" (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "963",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yez0eqJgZz0w7sFJXumrRwn3rKEz2ieUDBeMveccz1DIJ.gif",
+        "description": null
+    },
+    {
+        "id": "981",
+        "title": "\u041b\u0438\u0442\u0435\u0440\u0430 \"\u0422\" (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "963",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yewdilCSz0QNUh9ONu19tis4laz1lknblIVkCSFPnqi.gif",
+        "description": null
+    },
+    {
+        "id": "982",
+        "title": "\u041b\u0438\u0442\u0435\u0440\u0430 \"\u0423\" (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "963",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yexagWKWRbNUBv0BkcrnZku9Rz1lkHLtkvnSKRxarl.gif",
+        "description": null
+    },
+    {
+        "id": "983",
+        "title": "\u041b\u0438\u0442\u0435\u0440\u0430 \"\u0424\" (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "963",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yee3sspyD2BeSTwY9w36NSbyALDxm6P5xK5hxhi1T.gif",
+        "description": null
+    },
+    {
+        "id": "984",
+        "title": "\u041b\u0438\u0442\u0435\u0440\u0430 \"\u0425\" (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "963",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yecV01dz18BSC64bIH65fz2OlDHlaSiGU95N3a3doIp.gif",
+        "description": null
+    },
+    {
+        "id": "985",
+        "title": "\u041b\u0438\u0442\u0435\u0440\u0430 \"\u0426\" (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "963",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yej8aRz11ex4m0BTUFLBo5neXz24cvrFkHvHCyz2XTwt.gif",
+        "description": null
+    },
+    {
+        "id": "986",
+        "title": "\u041b\u0438\u0442\u0435\u0440\u0430 \"\u0427\" (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "963",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yecNY96YDDrLPWf6nL0rXjwRz0hcmGy9HmFLZkpjee0.gif",
+        "description": null
+    },
+    {
+        "id": "987",
+        "title": "\u041b\u0438\u0442\u0435\u0440\u0430 \"\u0428\" (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "963",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yecNZA0jLnJgPW9sf9MIThr31DPmGyfXeppyz1xvAz01.gif",
+        "description": null
+    },
+    {
+        "id": "988",
+        "title": "\u041b\u0438\u0442\u0435\u0440\u0430 \"\u0429\" (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "963",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0ye7uy6Bg6JPXJmHnETuN0Vz2YiFMegz2cz0jTSUBECCv17z2.gif",
+        "description": null
+    },
+    {
+        "id": "989",
+        "title": "\u041b\u0438\u0442\u0435\u0440\u0430 \"\u042d\" (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "963",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeha8eryUZz17KTCVErmjz0RjVtwj2jvWsCfAJslxFqs.gif",
+        "description": null
+    },
+    {
+        "id": "990",
+        "title": "\u041b\u0438\u0442\u0435\u0440\u0430 \"\u042e\" (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "963",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yex4OWXUBYz01R5mvnLWb9fmg61dJ6x5FZ1k9lmhdGC.gif",
+        "description": null
+    },
+    {
+        "id": "991",
+        "title": "\u041b\u0438\u0442\u0435\u0440\u0430 \"\u042f\" (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "963",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeliSAWz0TbnVexpz2Uz04VWkSaz0h6080FUepJCc7VrTn.gif",
+        "description": null
+    },
+    {
+        "id": "963",
+        "title": "\u041a\u043d\u0438\u0433\u0438 \u043f\u043e \u043b\u0438\u0442\u0435\u0440\u0435 (\u0444\u0438\u043b\u044c\u0442\u0440\u044b)",
+        "isHasTopics": true,
+        "isHasForums": true,
+        "parentId": "218",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVDKPfi2h01veuR4gt94ckLAXz2Az0xbMyYgkiKjWAaSxnVFNc6kbM99nPt43E3QkPuYn8.gif",
+        "description": " "
+    },
+    {
+        "id": "993",
+        "title": "\u0411\u0438\u043e\u0433\u0440\u0430\u0444\u0438\u044f (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "992",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeNy6mSXZNYQ5stfz2hDshFIDb1GDHl4iKyGIVEy4pz2kaa.gif",
+        "description": null
+    },
+    {
+        "id": "994",
+        "title": "\u0411\u043e\u0435\u0432\u0438\u043a (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "992",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0ye5uikFsRtSixi3Tnarp7DpnLVsLfNjbXlVYopwQ.gif",
+        "description": null
+    },
+    {
+        "id": "995",
+        "title": "\u0412\u0435\u0441\u0442\u0435\u0440\u043d (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "992",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0ye0VNuRiBEEiMi18e9Trfz2pRsJ23SeodE5k9EQtxq.gif",
+        "description": null
+    },
+    {
+        "id": "996",
+        "title": "\u0414\u0435\u0442\u0435\u043a\u0442\u0438\u0432 (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "992",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeO3cFIC6z24eCXg0z1jiRgV7Uqy2APhjB9Wz0da2sIXN.gif",
+        "description": null
+    },
+    {
+        "id": "997",
+        "title": "\u0414\u0435\u0442\u0441\u043a\u0430\u044f \u043b\u0438\u0442\u0435\u0440\u0430\u0442\u0443\u0440\u0430 (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "992",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeF0d4VEhZIl3v1988EZsuz0CrDQ7Kf8z2SRmuKQAqUN8o7oB8c1aO5egkr.gif",
+        "description": null
+    },
+    {
+        "id": "998",
+        "title": "\u0414\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u0430\u043b\u044c\u043d\u0430\u044f \u043b\u0438\u0442\u0435\u0440\u0430\u0442\u0443\u0440\u0430 (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "992",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeF0d4VEhZIl3v11VlIr15dEhIYsVkymCmz1Lz0ARwbj43UOpLz0ekhwHOvZoHDd2JKGMWIKZOJm.gif",
+        "description": null
+    },
+    {
+        "id": "999",
+        "title": "\u0414\u0440\u0430\u043c\u0430\u0442\u0443\u0440\u0433\u0438\u044f (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "992",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeFyUEgeC1weQtLqYhr3XTHaofe2z1qz2YD5QSwj.gif",
+        "description": null
+    },
+    {
+        "id": "1000",
+        "title": "\u0418\u0441\u0442\u043e\u0440\u0438\u044f (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "992",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeFiz2VWLDjz2Td3z2XDJFjTBbBLli1hMe2z1qz22z0T6Az0X.gif",
+        "description": null
+    },
+    {
+        "id": "1001",
+        "title": "\u041a\u043e\u043c\u0435\u0434\u0438\u044f (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "992",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeFiz2Tz24Wi0gz02iKN2eVKTQR3dooJGEvdCNishLpvXt7.gif",
+        "description": null
+    },
+    {
+        "id": "1002",
+        "title": "\u041a\u043e\u043d\u0442\u0440\u043a\u0443\u043b\u044c\u0442\u0443\u0440\u0430 (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "992",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeF0d4VwpcLynBTUFVRXNRrMTwaW5lbYHKDz2Pz1jYxKauageCc3HPOoPC.gif",
+        "description": null
+    },
+    {
+        "id": "1003",
+        "title": "\u041a\u0440\u0438\u0442\u0438\u043a\u0430 (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "992",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeFakqaaQucc77Zz0v2FuqgouWqUrhSWgJGFQWnLkL.gif",
+        "description": null
+    },
+    {
+        "id": "1004",
+        "title": "\u041a\u0443\u043b\u044c\u0442\u0443\u0440\u043e\u043b\u043e\u0433\u0438\u044f (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "992",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeNy6mTQr71yXB76Lv5OWVQPJwWP7dJbbK8KQ1mTvhkjtAdcD3XnYKCHr.gif",
+        "description": null
+    },
+    {
+        "id": "1005",
+        "title": "\u041c\u0435\u043c\u0443\u0430\u0440\u044b (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "992",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0ye7GF5z2kpYxGmpHWCpKYD5Qyg5bz2wt2z2o3XnYKi1z0.gif",
+        "description": null
+    },
+    {
+        "id": "1006",
+        "title": "\u041c\u0438\u0441\u0442\u0438\u043a\u0430 (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "992",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeFakqaCxLE1x1CrDGYLP7z2bLbL7s91vTBrpdTx5t.gif",
+        "description": null
+    },
+    {
+        "id": "1007",
+        "title": "\u041c\u0438\u0444\u044b \u0438 \u043b\u0435\u0433\u0435\u043d\u0434\u044b (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "992",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0ye78ETI3AjYz2VksycxWGo2yd2h3JUjwRTxEqwz0gddBVo5ne1Fy.gif",
+        "description": null
+    },
+    {
+        "id": "1008",
+        "title": "\u041d\u0430\u0443\u043a\u0430 (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "992",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeFakpz1BEaZtgFvQ990owdOJ6RrNz2tPz0z0TcQrr.gif",
+        "description": null
+    },
+    {
+        "id": "1009",
+        "title": "\u041e \u0432\u043e\u0439\u043d\u0435 (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "992",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeBuIM8x5BPaYUyDXz1f7KQAqz1dmz1vnD7z1z02d58Qsf.gif",
+        "description": null
+    },
+    {
+        "id": "1010",
+        "title": "\u041f\u043e\u043b\u0438\u0442\u0438\u043a\u0430 (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "992",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeFakqaawz2jQOJ7vz2Ez0z2Kyz21TxhNqCfrM9pH3ooxni3a2z0sI1d.gif",
+        "description": null
+    },
+    {
+        "id": "1011",
+        "title": "\u041f\u043e\u044d\u0437\u0438\u044f (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "992",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeFiz2Vej57UdanK9hl2b1xPw5Dnz0Vkz0z2IJf5Gf9uI.gif",
+        "description": null
+    },
+    {
+        "id": "1012",
+        "title": "\u041f\u0440\u0438\u043a\u043b\u044e\u0447\u0435\u043d\u0438\u044f (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "992",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeFiz2Vy5nCVLuw0nRxRkJbMiIWwfV879Rz1FU9fHnfv8sEwdp0.gif",
+        "description": null
+    },
+    {
+        "id": "1013",
+        "title": "\u041f\u0440\u0438\u0440\u043e\u0434\u0430 \u0438 \u0436\u0438\u0432\u043e\u0442\u043d\u044b\u0435 (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "992",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeBaQV69xAPhWJnGuEz1ZyeKVmPElG39yw40W8iz00igDRWED7z1ToV9svWE.gif",
+        "description": null
+    },
+    {
+        "id": "1014",
+        "title": "\u041f\u0440\u043e\u0437\u0430 (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "992",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeFW7Yb01yVHLlfIThr3XTnKgLETkSx8CcCRMZ.gif",
+        "description": null
+    },
+    {
+        "id": "1015",
+        "title": "\u041f\u0441\u0438\u0445\u043e\u043b\u043e\u0433\u0438\u044f (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "992",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeFiz2Vrz1FEsWYgm1YA8LVz12GOY2tpmSPtWVMS1EP7qXMhc.gif",
+        "description": null
+    },
+    {
+        "id": "1016",
+        "title": "\u041f\u0443\u0431\u043b\u0438\u0446\u0438\u0441\u0442\u0438\u043a\u0430 (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "992",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeFakqaCxLW5fnxFXghOfXU8Gtx8DSu3eQVoLH2Db5z1Hi0af.gif",
+        "description": null
+    },
+    {
+        "id": "1017",
+        "title": "\u041f\u0443\u0442\u0435\u0448\u0435\u0441\u0442\u0432\u0438\u044f (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "992",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeFiz2Vanmnz2Iz2flCrfsBk4Wmq6cMz2hj6JZycd4vAz0Xz26LV6r3uhWfcnqC.gif",
+        "description": null
+    },
+    {
+        "id": "1018",
+        "title": "\u0420\u0435\u043b\u0438\u0433\u0438\u044f (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "992",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeFiz2Vrcz2smYmNDeqSmY1z0y7oJlz0Lz2tcOI9OqcGEWdH9FWZJYH.gif",
+        "description": null
+    },
+    {
+        "id": "1019",
+        "title": "\u0420\u043e\u043c\u0430\u043d (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "992",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0ye0JE5abSfz1YhiFDD3nfWUtRof8oc8vjLvSpoP.gif",
+        "description": null
+    },
+    {
+        "id": "1020",
+        "title": "\u0421\u043a\u0430\u0437\u043a\u0430 (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "992",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeFaUG9Bcz1hPR5cO6WTlTJ3z01y9Luj3ffv9L9drP7GVYoJgI.gif",
+        "description": null
+    },
+    {
+        "id": "1021",
+        "title": "\u0421\u043f\u043e\u0440\u0442 (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "992",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeQh5dkVNBxVWz1bZ2R3dYRRluogJff3fFCHjsWTtis4FK6.gif",
+        "description": null
+    },
+    {
+        "id": "1022",
+        "title": "\u0421\u043f\u0440\u0430\u0432\u043e\u0447\u043d\u0430\u044f \u043b\u0438\u0442\u0435\u0440\u0430\u0442\u0443\u0440\u0430 (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "992",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeF0d4VEhZIl3v11VlIr15ZEVz1NxQuT1aLenhCus3O5ewdz0GO2olFMZPt0FU8ZRuKQgaMZ.gif",
+        "description": null
+    },
+    {
+        "id": "1023",
+        "title": "\u0422\u0440\u0438\u043b\u043b\u0435\u0440\u044b (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "992",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0ye7GF4bVAkxZVFXo38Lq2xT7BSI2Df8IsWz07qAYG4E.gif",
+        "description": null
+    },
+    {
+        "id": "1024",
+        "title": "\u0423\u0436\u0430\u0441\u044b (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "992",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0ye7K7H0SXZSixCp5DYQxpz2kaqCuk3MEJMxT7hiA2.gif",
+        "description": null
+    },
+    {
+        "id": "1025",
+        "title": "\u0424\u0430\u043d\u0442\u0430\u0441\u0442\u0438\u043a\u0430 (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "992",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeFakqaCxNpyOXMuKf8ViZyc7qXMh63WgVcbBifb01DIp.gif",
+        "description": null
+    },
+    {
+        "id": "1026",
+        "title": "\u0424\u0438\u043b\u043e\u0441\u043e\u0444\u0438\u044f (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "992",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeFiz2Vqz0vcHC4L5MVRrQbqOSE3L46Bz1bZeo7z1TIlnw73u.gif",
+        "description": null
+    },
+    {
+        "id": "1027",
+        "title": "\u042d\u0437\u043e\u0442\u0435\u0440\u0438\u043a\u0430 (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "992",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeFakqYO4w7pfJc5SmLwDYwhRRqTxqqGWWPNyQEfWz1dF.gif",
+        "description": null
+    },
+    {
+        "id": "1028",
+        "title": "\u042e\u043c\u043e\u0440 (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "992",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeSJIp51expz2UTKta4T7hiAUxz1CO7RtsF0pxcR.gif",
+        "description": null
+    },
+    {
+        "id": "1029",
+        "title": "\u0418\u0440\u043e\u043d\u0438\u0447\u0435\u0441\u043a\u0438\u0439 \u0434\u0435\u0442\u0435\u043a\u0442\u0438\u0432 (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "992",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeO3cFIC6z24eEvIrXyN9lVHUJ8PWt3F2Gkcaz1SPz0ydI2hSmwX3Fm0S1nSuet.gif",
+        "description": null
+    },
+    {
+        "id": "1030",
+        "title": "\u0418\u0441\u0442\u043e\u0440\u0438\u0447\u0435\u0441\u043a\u0438\u0439 \u0434\u0435\u0442\u0435\u043a\u0442\u0438\u0432 (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "992",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeO3cFIC6z24eEvIrXyN9lVHUJFMWRJcdanK9Bz2gXhwwi21lEXjxGwtJiN573u.gif",
+        "description": null
+    },
+    {
+        "id": "1031",
+        "title": "\u041a\u043b\u0430\u0441\u0441\u0438\u0447\u0435\u0441\u043a\u0438\u0439 \u0434\u0435\u0442\u0435\u043a\u0442\u0438\u0432 (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "992",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeO3cFIC6z24eEvA5unJN1VxoP0nEz1z1iKKz0StAVHUZ8Z4DJAURkayT28MV8dPpQ.gif",
+        "description": null
+    },
+    {
+        "id": "1032",
+        "title": "\u041f\u043e\u043b\u0438\u0442\u0438\u0447\u0435\u0441\u043a\u0438\u0439 \u0434\u0435\u0442\u0435\u043a\u0442\u0438\u0432 (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "992",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeO3cFIC6z24eEvIrXyN9lVHUpEpQ386xoMelKFoz0z0T6gDv30Q7wpC07E2aKD3.gif",
+        "description": null
+    },
+    {
+        "id": "1033",
+        "title": "\u0428\u043f\u0438\u043e\u043d\u0441\u043a\u0438\u0439 \u0434\u0435\u0442\u0435\u043a\u0442\u0438\u0432 (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "992",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeO3cFIC6z24eCz0OaAz1oyOIcB1KpBAQMC2eER2z0sonVy0QdgR8g6D4BSvn.gif",
+        "description": null
+    },
+    {
+        "id": "1034",
+        "title": "\u0414\u0435\u0442\u0441\u043a\u0430\u044f \u043f\u0440\u043e\u0437\u0430 (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "992",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeFW7Yb03az2KJpMUcFSqQ6Mc1jCBYB5RTRz1ichDRX47EZEe1FS.gif",
+        "description": null
+    },
+    {
+        "id": "1035",
+        "title": "\u041a\u043b\u0430\u0441\u0441\u0438\u0447\u0435\u0441\u043a\u0430\u044f \u043f\u0440\u043e\u0437\u0430 (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "992",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeFW7Yb01Wr5unp7fRnZIoCBNv0QFd58Az21s7IwxDJgEJw69ivYtiMqtOO.gif",
+        "description": null
+    },
+    {
+        "id": "1036",
+        "title": "\u0420\u0443\u0441\u0441\u043a\u0430\u044f \u043a\u043b\u0430\u0441\u0441\u0438\u0447\u0435\u0441\u043a\u0430\u044f \u043f\u0440\u043e\u0437\u0430 (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "992",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeFW7Yb03az2KJpMUsh9lCX2GD0F2nPwTadKRVvxufurmcHgqYhLJ9vhDLrz1bYYOz1xIz1cJA.gif",
+        "description": null
+    },
+    {
+        "id": "1037",
+        "title": "\u0421\u043e\u0432\u0435\u0442\u0441\u043a\u0430\u044f \u043a\u043b\u0430\u0441\u0441\u0438\u0447\u0435\u0441\u043a\u0430\u044f \u043f\u0440\u043e\u0437\u0430 (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "992",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeFW7Yb03az2KJpMUsh9lCX2GD0F2nPwTadKRlOOM8QenZTQo1kXJsFBNeWSm2RC4uIAJNbNBi.gif",
+        "description": null
+    },
+    {
+        "id": "1038",
+        "title": "\u0421\u043e\u0432\u0440\u0435\u043c\u0435\u043d\u043d\u0430\u044f \u043f\u0440\u043e\u0437\u0430 (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "992",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeFW7Yb03az2KJpJXDXz07KZ14ssz0Vbz2jMZf8Mz1YRLlM11hIaIrjwRTxkO.gif",
+        "description": null
+    },
+    {
+        "id": "1039",
+        "title": "\u042e\u043c\u043e\u0440\u0438\u0441\u0442\u0438\u0447\u0435\u0441\u043a\u0430\u044f \u043f\u0440\u043e\u0437\u0430 (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "992",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeFW7Yb01Wr5unp7fRnZIoB4F7y3wNVONxpVk581pWdkCGCnpgkjsWTtC6SpoP.gif",
+        "description": null
+    },
+    {
+        "id": "1040",
+        "title": "\u0410\u043b\u044c\u0442\u0435\u0440\u043d\u0430\u0442\u0438\u0432\u043d\u0430\u044f \u0438\u0441\u0442\u043e\u0440\u0438\u044f (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "992",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeFiz2VWLDjz2T577OjmrUSfn5vfN9Fe95BTS3Mf1PhSl99PUcFc8cOI9OKM8oce9rfVZpoP.gif",
+        "description": null
+    },
+    {
+        "id": "1041",
+        "title": "\u0411\u043e\u0435\u0432\u0430\u044f \u0444\u0430\u043d\u0442\u0430\u0441\u0442\u0438\u043a\u0430 (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "992",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeFakqaCxNpyOXsuJqpMeu0z2a5G9ff6Q99W22hcmmiXLwz1EP7KHk78.gif",
+        "description": null
+    },
+    {
+        "id": "1042",
+        "title": "\u0414\u0435\u0442\u0435\u043a\u0442\u0438\u0432\u043d\u0430\u044f \u0444\u0430\u043d\u0442\u0430\u0441\u0442\u0438\u043a\u0430 (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "992",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeFakqaCxNpyOXsuJodag7uJkxWn3MZKgUgWELWbfPeMWUNBQDoRX47EZkOv32.gif",
+        "description": null
+    },
+    {
+        "id": "1043",
+        "title": "\u041a\u043e\u0441\u043c\u0438\u0447\u0435\u0441\u043a\u0430\u044f \u0444\u0430\u043d\u0442\u0430\u0441\u0442\u0438\u043a\u0430 (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "992",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeFakqz1u9AcTBlj2wLxIDoCp6Oz0mOS4F4DKO9nMSIoIF1YRrz2UrJclXRY9W2YxkO.gif",
+        "description": null
+    },
+    {
+        "id": "1044",
+        "title": "\u041d\u0430\u0443\u0447\u043d\u0430\u044f \u0444\u0430\u043d\u0442\u0430\u0441\u0442\u0438\u043a\u0430 (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "992",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeFakqaCxNpyOXsuJodag7c78ik3Q6M6nrGz0LVdESOuZz1txC5z1EP7KHk7e.gif",
+        "description": null
+    },
+    {
+        "id": "1045",
+        "title": "\u041f\u043e\u0441\u0442\u0430\u043f\u043e\u043a\u0430\u043b\u0438\u043f\u0441\u0438\u0441 (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "992",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeT843teaCTfpmADjz0tHd5Zixi3z0Xi1XAmM8QdQx2LeisBbBLliz0.gif",
+        "description": null
+    },
+    {
+        "id": "1046",
+        "title": "\u0421\u043e\u0446\u0438\u0430\u043b\u044c\u043d\u043e-\u043f\u0441\u0438\u0445\u043e\u043b\u043e\u0433\u0438\u0447\u0435\u0441\u043a\u0430\u044f \u0444\u0430\u043d\u0442\u0430\u0441\u0442\u0438\u043a\u0430 (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "992",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeFiz2Tz0SJI6tm7fe8YuReRhx9L4z1IG5E1UP78QeHprz1euXvlGmBtu8ugxq4mgVNccUz0Al.gif",
+        "description": null
+    },
+    {
+        "id": "1047",
+        "title": "\u042e\u043c\u043e\u0440\u0438\u0441\u0442\u0438\u0447\u0435\u0441\u043a\u0430\u044f \u0444\u0430\u043d\u0442\u0430\u0441\u0442\u0438\u043a\u0430 (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "992",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeFakqaCxNpyOXsuJodawckc7RRFOCipz1Yxfz2xz2sFpnGKlYLvt79RUz26rFEXXjgZFvXS8.gif",
+        "description": null
+    },
+    {
+        "id": "1048",
+        "title": "\u0424\u044d\u043d\u0442\u0435\u0437\u0438 (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "992",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0ye7mFajlshdZEmNlKlYr9FBNeWSmYB4mAFVo4hCn5.gif",
+        "description": null
+    },
+    {
+        "id": "1049",
+        "title": "\u0412\u0441\u0435 \u0442\u0435\u043c\u044b \u0440\u0430\u0437\u0434\u0435\u043b\u0430 (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "992",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0ye7isB57GMN54bGTbtINm6M6nLW5vnCif9pnJw69iv27KwwCov.gif",
+        "description": null
+    },
+    {
+        "id": "992",
+        "title": "\u041a\u043d\u0438\u0433\u0438 \u043f\u043e \u0436\u0430\u043d\u0440\u0430\u043c (\u0444\u0438\u043b\u044c\u0442\u0440\u044b)",
+        "isHasTopics": true,
+        "isHasForums": true,
+        "parentId": "218",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVDKPfi2h09bfcmhIwHgUSaUiGDAnTy7GdsN809UBPG3wamO4Iz1cJATJqiOcjJf5mPHa4.gif",
+        "description": " "
+    },
+    {
+        "id": "1050",
+        "title": "\u0411\u0438\u0437\u043d\u0435\u0441, \u044d\u043a\u043e\u043d\u043e\u043c\u0438\u043a\u0430, \u0444\u0438\u043d\u0430\u043d\u0441\u044b, \u043c\u0435\u043d\u0435\u0434\u0436\u043c\u0435\u043d\u0442 (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "218",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeTWrDGxQmCCOoq7yeYFC0vEbN5yMPesmM3flSPvKLCSE3L46h.gif",
+        "description": null
+    },
+    {
+        "id": "1051",
+        "title": "\u0412\u0441\u0435 \u043e \u0447\u0435\u043b\u043e\u0432\u0435\u043a\u0435 (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "218",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeBiwLqrTZn95aKfRqTBdKAgb6WtEqz2wyWTkltRuLWz1i0z1bRoj4YDXa8pGiT.gif",
+        "description": null
+    },
+    {
+        "id": "1052",
+        "title": "\u0418\u0437\u0443\u0447\u0435\u043d\u0438\u0435 \u044f\u0437\u044b\u043a\u043e\u0432 \u0438 \u0441\u043b\u043e\u0432\u0430\u0440\u0438 (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "218",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVCz2z1DSZcX4uhiAUxz1ieVdnP7q1cpw\/kl-ic-Slovari_ yaziki-on.gif",
+        "description": null
+    },
+    {
+        "id": "1053",
+        "title": "\u041a\u043e\u043c\u0438\u043a\u0441\u044b \u0438 \u0436\u0443\u0440\u043d\u0430\u043b\u044b (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "218",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeDeqCJLdpt1pGkHVkoyu2aF8gMrM9pHZ2g7NpJC6NtnNW.gif",
+        "description": null
+    },
+    {
+        "id": "1054",
+        "title": "\u041a\u043e\u043c\u043f\u044c\u044e\u0442\u0435\u0440\u043d\u0430\u044f \u043b\u0438\u0442\u0435\u0440\u0430\u0442\u0443\u0440\u0430 (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "218",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeF0d4VEhZIl3v11VlIr15vYjz0n5erz0lqLAALUSn1CpalEMSIIYNz0aKjZe27ageiMxz0tJ04P.gif",
+        "description": null
+    },
+    {
+        "id": "1055",
+        "title": "\u041d\u0430\u0443\u043a\u0430 \u0438 \u043e\u0431\u0440\u0430\u0437\u043e\u0432\u0430\u043d\u0438\u0435 (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "218",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeBaQVJ6Wz1xpkAom48nd8CURcGX6VUrBc1weQN5yMvOESuehA569iPoVeSbygb.gif",
+        "description": null
+    },
+    {
+        "id": "1056",
+        "title": "\u0425\u043e\u0431\u0431\u0438 \u0438 \u0434\u043e\u0441\u0443\u0433 (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "218",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0ye9GXQtJauXFEUV7y9z1sdIB80z1Quopz2r1T2N38GdKM8oc8vjLPihEz2.gif",
+        "description": null
+    },
+    {
+        "id": "218",
+        "title": "\u041a\u043d\u0438\u0433\u043e\u0445\u0440\u0430\u043d\u0438\u043b\u0438\u0449\u0435",
+        "isHasTopics": true,
+        "isHasForums": true,
+        "parentId": "18",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeNmVDiz26G65nmNFaNExIrYG4kdQ3OAhGM0Yil60z1.gif",
+        "description": "\u0425\u0443\u0434\u043e\u0436\u0435\u0441\u0442\u0432\u0435\u043d\u043d\u0430\u044f, \u0434\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u0430\u043b\u044c\u043d\u0430\u044f, \u043d\u0430\u0443\u0447\u043d\u043e-\u043f\u043e\u043f\u0443\u043b\u044f\u0440\u043d\u0430\u044f \u043a\u043d\u0438\u0433\u0430. \u0421\u0432\u043e\u0434\u043d\u044b\u0439 \u043a\u0430\u0442\u0430\u043b\u043e\u0433 \u0434\u043b\u044f \u043d\u0430\u0432\u0438\u0433\u0430\u0446\u0438\u0438 \u043f\u043e \u0440\u0430\u0437\u0434\u0435\u043b\u0443. "
+    },
+    {
+        "id": "908",
+        "title": "\u042d\u043b\u0435\u043a\u0442\u0440\u043e\u043d\u043d\u044b\u0435 \u043a\u043d\u0438\u0433\u0438 (\u0440\u0435\u0434\u0438\u0440\u0435\u043a\u0442)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "18",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVKBEL1cNQ0XDpV5vniSH5jYz0Hayz0oGgvNNXVq.gif",
+        "description": null
+    },
+    {
+        "id": "18",
+        "title": "K\u043d\u0438\u0436\u043d\u0430\u044f \u043b\u0430\u0432\u043a\u0430",
+        "isHasTopics": true,
+        "isHasForums": true,
+        "parentId": "203",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVKBEL1E3DoMRtUJMz2pRM3ANz1z0p4O2YNz0aKjp.gif",
+        "description": "\u0425\u0443\u0434\u043e\u0436\u0435\u0441\u0442\u0432\u0435\u043d\u043d\u0430\u044f, \u043d\u0430\u0443\u0447\u043d\u0430\u044f, \u0443\u0447\u0435\u0431\u043d\u0430\u044f \u043b\u0438\u0442\u0435\u0440\u0430\u0442\u0443\u0440\u0430. \u0421\u043e\u0437\u0434\u0430\u043d\u0438\u0435, \u043e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0438 \u043f\u043e\u0438\u0441\u043a \u043a\u043d\u0438\u0433. \u0410\u0443\u0434\u0438\u043e\u043a\u043d\u0438\u0433\u0438. \u041a\u043d\u0438\u0436\u043d\u044b\u0435 \u0438\u0433\u0440\u044b \u0438 \u0432\u0438\u043a\u0442\u043e\u0440\u0438\u043d\u044b. \u041e\u043f\u0440\u043e\u0441\u044b. \u041a\u043d\u0438\u0433\u043e\u0445\u0440\u0430\u043d\u0438\u043b\u0438\u0449\u0435. "
+    },
+    {
+        "id": "483",
+        "title": "\u0410\u043a\u0441\u0435\u0441\u0441\u0443\u0430\u0440\u044b \u0434\u043b\u044f \u0440\u0430\u0437\u043b\u0438\u0447\u043d\u044b\u0445 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "93",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSV8RYJJDumo1aKpBt8qlCZQZ3WTkltx8DyehCWMbnBRo5rcjgFSb.gif",
+        "description": null
+    },
+    {
+        "id": "223",
+        "title": "\u0421\u043c\u0430\u0440\u0442\u0444\u043e\u043d\u044b, \u0422\u0435\u043b\u0435\u0444\u043e\u043d\u044b \u0438 \u041f\u043b\u0430\u043d\u0448\u0435\u0442\u044b",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "93",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVQduJw6NmKOf1E0abMbWH5cHLdz1BYyE3QkPOoPi.gif",
+        "description": null
+    },
+    {
+        "id": "98",
+        "title": "\u041c\u0443\u043b\u044c\u0442\u0438\u043c\u0435\u0434\u0438\u0439\u043d\u044b\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432\u0430",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "93",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVDG0RRw3tOl8BK4YBvBfHy8iGHgz2EQiz1TYdRK6080FUepJC6NNXz2a.gif",
+        "description": "\u0410\u0443\u0434\u0438\u043e \u0438 \u0432\u0438\u0434\u0435\u043e \u043f\u043b\u0435\u0435\u0440\u044b, \u043f\u0440\u043e\u0435\u043a\u0442\u043e\u0440\u044b, \u0422\u0412\/\u0422\u0412-\u041f\u0440\u0438\u0441\u0442\u0430\u0432\u043a\u0438, \u043a\u0430\u043c\u0435\u0440\u044b\/IP-\u043a\u0430\u043c\u0435\u0440\u044b \u0438 \u0432\u0441\u0435 \u0447\u0442\u043e \u0441 \u044d\u0442\u0438\u043c \u0441\u0432\u044f\u0437\u0430\u043d\u043e."
+    },
+    {
+        "id": "894",
+        "title": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u043d\u0430\u0432\u0438\u0433\u0430\u0446\u0438\u043e\u043d\u043d\u044b\u0445 \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c \u0438 \u043e\u0431\u043e\u0440\u0443\u0434\u043e\u0432\u0430\u043d\u0438\u044f (\u0440\u0435\u0434\u0438\u0440\u0435\u043a\u0442)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "94",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0SqONOYw3QKz18qoTz0xKRR44hNqivTI32AvRL7t3Bm0Olj1d.gif",
+        "description": null
+    },
+    {
+        "id": "94",
+        "title": "\u0412\u0441\u0435 \u0434\u043b\u044f \u0442\u0440\u0430\u043d\u0441\u043f\u043e\u0440\u0442\u0430, \u043f\u0443\u0442\u0435\u0448\u0435\u0441\u0442\u0432\u0438\u0439, \u043f\u0440\u043e\u0433\u0443\u043b\u043e\u043a \u0438 \u0441\u043f\u043e\u0440\u0442\u0430",
+        "isHasTopics": true,
+        "isHasForums": true,
+        "parentId": "93",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0SqVy9gibc1NRAN9jOQKPxLkfUopH5tIFGubnZgMrM9JT.gif",
+        "description": " "
+    },
+    {
+        "id": "99",
+        "title": "\u041d\u043e\u0443\u0442\u0431\u0443\u043a\u0438, TabletPC, \u041f\u041a, \u043a\u043e\u043c\u043f\u043b\u0435\u043a\u0442\u0443\u044e\u0449\u0438\u0435 \u0438 \u043e\u0431\u043e\u0440\u0443\u0434\u043e\u0432\u0430\u043d\u0438\u0435 \u043a \u043d\u0438\u043c",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "93",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVKBEL1cdi0F6HIiG6kUZ83KbNWz280lEW7XHJsaz2iA.gif",
+        "description": null
+    },
+    {
+        "id": "470",
+        "title": "\u041d\u043e\u0432\u0438\u043d\u043a\u0438 (\u0440\u0435\u0434\u0438\u0440\u0435\u043a\u0442)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "93",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVCRNu1eSTQInMDz0z0z0MYPx69jJus5NZqh38xK.gif",
+        "description": null
+    },
+    {
+        "id": "1112",
+        "title": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 \u0434\u043b\u044f \u0434\u043e\u043c\u0430 \u0438 \u0440\u0430\u0437\u0432\u043b\u0435\u0447\u0435\u043d\u0438\u0439 (\u0440\u0435\u0434\u0438\u0440\u0435\u043a\u0442)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "1111",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeBCxop95tDyOICho3HveALEpgETkyBmWeN1FS.gif",
+        "description": null
+    },
+    {
+        "id": "1111",
+        "title": "\u0423\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432\u0430 \u0434\u043b\u044f \u0434\u043e\u043c\u0430 \u0438 \u0440\u0430\u0437\u0432\u043b\u0435\u0447\u0435\u043d\u0438\u0439",
+        "isHasTopics": true,
+        "isHasForums": true,
+        "parentId": "93",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeBCxop95tDyOICho3HveALEpgETkyBmWeN1FS.gif",
+        "description": " "
+    },
+    {
+        "id": "100",
+        "title": "\u0424\u043e\u0442\u043e",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "93",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVGl3ekVJm12RKZ3MPeMWUtRo9OwIQKWeSbyAr.gif",
+        "description": null
+    },
+    {
+        "id": "367",
+        "title": "\u042d\u043b\u0435\u043a\u0442\u0440\u043e\u043d\u043d\u044b\u0435 \u043a\u043d\u0438\u0433\u0438",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "93",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVKBEL1cNQ0XDpV5vniSH5jYz0Hayz0oGgvNNXVq.gif",
+        "description": null
+    },
+    {
+        "id": "93",
+        "title": "\u0412\u044b\u0431\u043e\u0440 \u0438 \u0441\u0440\u0430\u0432\u043d\u0435\u043d\u0438\u0435",
+        "isHasTopics": true,
+        "isHasForums": true,
+        "parentId": "203",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVCVz2z1w8gFPAXjwxjZoIbDoR1qVILPiBUN.gif",
+        "description": "\u041f\u043e\u043c\u043e\u0449\u044c \u0432 \u0432\u044b\u0431\u043e\u0440\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 \u0438 \u0438\u0445 \u0441\u0440\u0430\u0432\u043d\u0435\u043d\u0438\u0435. "
+    },
+    {
+        "id": "539",
+        "title": "\u042d\u043c\u0443\u043b\u044f\u0442\u043e\u0440\u044b \u0438\u0433\u0440\u043e\u0432\u044b\u0445 \u043a\u043e\u043d\u0441\u043e\u043b\u0435\u0439",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "529",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeAdCm8TFz104cBbtiI1vQVz0UNRrJN5dpGMXnJUQHp2oFz2klR.gif",
+        "description": null
+    },
+    {
+        "id": "540",
+        "title": "\u042d\u043c\u0443\u043b\u044f\u0442\u043e\u0440\u044b \u043a\u043e\u043c\u043f\u044c\u044e\u0442\u0435\u0440\u043e\u0432 \u0438 \u041e\u0421",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "529",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeAdCm8TFz104cBbtiI1vQVz0UNRrJN5dpGMXnJUQHp2oFz2klR.gif",
+        "description": null
+    },
+    {
+        "id": "529",
+        "title": "Android - \u044d\u043c\u0443\u043b\u044f\u0442\u043e\u0440\u044b",
+        "isHasTopics": true,
+        "isHasForums": true,
+        "parentId": "537",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeAdCm8TFz104cBbtiI1vQVz0UNRrJN5dpGMXnJUQHp2oFz2klR.gif",
+        "description": " "
+    },
+    {
+        "id": "174",
+        "title": "Windows Mobile - \u044d\u043c\u0443\u043b\u044f\u0442\u043e\u0440\u044b \u0434\u0440\u0443\u0433\u0438\u0445 \u043a\u043e\u043c\u043f\u044c\u044e\u0442\u0435\u0440\u043e\u0432 \u0438 OS",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "83",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSV8RYJJPXMhGD1w429L5HqF3z1rATUwdUhwwi2X.gif",
+        "description": null
+    },
+    {
+        "id": "83",
+        "title": "\u0414\u0440\u0443\u0433\u0438\u0435 \u0441\u0438\u0441\u0442\u0435\u043c\u044b - \u042d\u043c\u0443\u043b\u044f\u0442\u043e\u0440\u044b",
+        "isHasTopics": true,
+        "isHasForums": true,
+        "parentId": "537",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0ye3Cpmz1XwtpGmpnGKlYrfV33Arz0ZiGz1PjpvjKZOJG.gif",
+        "description": " "
+    },
+    {
+        "id": "538",
+        "title": "\u041e\u0431\u0440\u0430\u0437\u044b \u0438\u0433\u0440 \u0438 \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "537",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeTuasrLP0lFYj11BC7jJWnEhS1Hi0arPBz0ZDASKQ1mTvh.gif",
+        "description": null
+    },
+    {
+        "id": "606",
+        "title": "\u042d\u043c\u0443\u043b\u044f\u0442\u043e\u0440\u044b \u043c\u043e\u0431\u0438\u043b\u044c\u043d\u044b\u0445 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 \u0434\u043b\u044f \u041f\u041a",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "537",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeDCjDPusl48yuLWELWb9fmg617ZUdput3h0uKnz1Fy.gif",
+        "description": "\u042d\u043c\u0443\u043b\u044f\u0442\u043e\u0440\u044b \u043c\u043e\u0431\u0438\u043b\u044c\u043d\u044b\u0445 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 (\u0441\u043c\u0430\u0440\u0442\u0444\u043e\u043d\u043e\u0432, \u0438\u0433\u0440\u043e\u0432\u044b\u0445 \u043f\u0440\u0438\u0441\u0442\u0430\u0432\u043e\u043a) \u0434\u043b\u044f \u041f\u041a"
+    },
+    {
+        "id": "552",
+        "title": "Java \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u044b \u0438 \u0438\u0433\u0440\u044b (\u0440\u0435\u0434\u0438\u0440\u0435\u043a\u0442)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "537",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0Sq5aYeLasvz2vCG3k4Nj4I60BkcrHp6SJYH7AhS0QhSnP6ErUD.gif",
+        "description": null
+    },
+    {
+        "id": "537",
+        "title": "\u042d\u043c\u0443\u043b\u044f\u0442\u043e\u0440\u044b",
+        "isHasTopics": true,
+        "isHasForums": true,
+        "parentId": "203",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVJidYI3Uu3jnMjD5Hufhcpus91PDZH9kgl7o.gif",
+        "description": " "
+    },
+    {
+        "id": "1081",
+        "title": "\u0420\u0430\u0437\u0433\u043e\u0432\u043e\u0440\u044b-\u0437\u0430\u0433\u043e\u0432\u043e\u0440\u044b",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "10",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeTyjZOg0FXIpmJggyMsGKN7oJFbXuZz0PoN4IrYG4EN2VEDdEbz1XAmM8g.gif",
+        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u043b\u044e\u0431\u044b\u0445 \u0442\u0435\u043c \u0432\u0438\u0440\u0442\u0443\u0430\u043b\u044c\u043d\u043e\u0439 \u0438 \u0440\u0435\u0430\u043b\u044c\u043d\u043e\u0439 \u0436\u0438\u0437\u043d\u0438. \u041e\u0431\u0449\u0435\u043d\u0438\u0435 \u0435\u0434\u0438\u043d\u043e\u043c\u044b\u0448\u043b\u0435\u043d\u043d\u0438\u043a\u043e\u0432."
+    },
+    {
+        "id": "17",
+        "title": "\u041f\u043e\u0437\u0434\u0440\u0430\u0432\u043b\u0435\u043d\u0438\u044f",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "10",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeTKyeFSz0OpSFea229w2PoHnEz0ez2a56D4hiXTBqG0G1hQbkPOoPi.gif",
+        "description": "\u041f\u043e\u0437\u0434\u0440\u0430\u0432\u043b\u044f\u0435\u043c \u0438 \u0434\u0435\u043b\u0438\u043c\u0441\u044f \u0441\u0432\u043e\u0435\u0439 \u0440\u0430\u0434\u043e\u0441\u0442\u044c\u044e"
+    },
+    {
+        "id": "53",
+        "title": "\u041f\u043e\u043a\u0435\u0442\u043e\u0432\u043a\u0438",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "10",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeTmayj9yQz2cdIcz2wu2V5FrALz1iitrz2Fsf1XRg8SktZ4DJgo.gif",
+        "description": "\u0422\u0443\u0442 \u043c\u044b \u043e\u0431\u0441\u0443\u0436\u0434\u0430\u0435\u043c \u043f\u043e\u043a\u0435\u0442\u043e\u0432\u043a\u0438 \u043d\u0430 4PDA.\r"
+    },
+    {
+        "id": "86",
+        "title": "\u0424\u043e\u0440\u0443\u043c\u043d\u044b\u0435 \u0438\u0433\u0440\u044b",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "10",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeTu4qHdGcukIiWVUD4hy8LKIp9bz1DvWuu30RDmwnZ5iYn.gif",
+        "description": "\u0420\u0430\u0437\u043d\u043e\u043e\u0431\u0440\u0430\u0437\u043d\u044b\u0435 \u0442\u0435\u043a\u0441\u0442\u043e\u0432\u044b\u0435 \u0438\u0433\u0440\u044b."
+    },
+    {
+        "id": "660",
+        "title": "\u041a\u043b\u0443\u0431\u044b \u0432\u043b\u0430\u0434\u0435\u043b\u044c\u0446\u0435\u0432 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "10",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeTayUz1PPGHQz1Vz0kcPKXxdsxb5EbXOprj0AHp6y3g5bVgz2MTd22dbOoo3.gif",
+        "description": "\u0412\u043b\u0430\u0434\u0435\u043b\u044c\u0446\u044b \u0434\u0435\u0432\u0430\u0439\u0441\u043e\u0432 \u043c\u043e\u0433\u0443\u0442 \u0432 \u044d\u0442\u0438\u0445 \u043a\u043b\u0443\u0431\u0430\u0445 \u043e\u0431\u0441\u0443\u0436\u0434\u0430\u0442\u044c \u0442\u0435 \u043f\u0440\u043e\u0431\u043b\u0435\u043c\u044b, \u0432\u043e\u0437\u043d\u0438\u043a\u0430\u044e\u0449\u0438\u0435 \u043f\u0440\u0438 \u0440\u0430\u0431\u043e\u0442\u0435 \u0438\u0437 \"\u0437\u0432\u0435\u0440\u044c\u043a\u043e\u0432\", \u043a\u043e\u0442\u043e\u0440\u044b\u0435 \u043d\u0435\u0443\u043c\u0435\u0441\u0442\u043d\u044b \u0432 \u043f\u0440\u043e\u0444\u0438\u043b\u044c\u043d\u044b\u0445 \u0442\u0435\u043c\u0430\u0445. \u0418 \u043f\u0440\u043e\u0441\u0442\u043e \u043f\u043e\u043e\u0431\u0449\u0430\u0442\u044c\u0441\u044f."
+    },
+    {
+        "id": "661",
+        "title": "\u041a\u043b\u0443\u0431\u044b \u0438\u0433\u0440\u043e\u043a\u043e\u0432",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "10",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeTayUz1PPGG51uDTV9TFDxddO3f5GffeAFz1XxwWuqkyKbtGx.gif",
+        "description": "\u0412 \u043a\u043b\u0443\u0431\u0430\u0445 \u0441\u043e\u0431\u0438\u0440\u0430\u044e\u0442\u0441\u044f \u0442\u0435, \u043a\u0442\u043e \u043b\u044e\u0431\u0438\u0442 \u043f\u043e\u0438\u0433\u0440\u0430\u0442\u044c \u043d\u0430 \u0441\u0432\u043e\u0438\u0445 \u0434\u0435\u0432\u0430\u0439\u0441\u0430\u0445 \u0432 \u043c\u043e\u0431\u0438\u043b\u044c\u043d\u044b\u0435 \u0438 \u0441\u0435\u0442\u0435\u0432\u044b\u0435 \u0438\u0433\u0440\u044b, \u043f\u043e\u0434\u0435\u043b\u0438\u0442\u044c\u0441\u044f \u0443\u0441\u043f\u0435\u0445\u0430\u043c\u0438, \u043e\u0431\u0441\u0443\u0434\u0438\u0442\u044c \u0433\u0435\u0439\u043c\u043f\u043b\u0435\u0439."
+    },
+    {
+        "id": "219",
+        "title": "\u041a\u043b\u0443\u0431\u044b \u043f\u043e \u0438\u043d\u0442\u0435\u0440\u0435\u0441\u0430\u043c",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "10",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeTayUz1PxKxhSuD8aajz2721CMJ1bYYukpcihEV.gif",
+        "description": "\u0421\u043f\u0435\u0446\u0438\u0430\u043b\u044c\u043d\u044b\u0439 \u0440\u0430\u0437\u0434\u0435\u043b \u0434\u043b\u044f \u043a\u043b\u0443\u0431\u043e\u0432 \u043f\u043e \u0438\u043d\u0442\u0435\u0440\u0435\u0441\u0430\u043c."
+    },
+    {
+        "id": "423",
+        "title": "\u041a\u043e\u043d\u043a\u0443\u0440\u0441\u044b, \u041f\u0440\u0435\u043c\u0438\u0438, \u0418\u043d\u0442\u0435\u0440\u0432\u044c\u044e \u0438 \u0434\u0440\u0443\u0433\u0438\u0435 \u043f\u0440\u043e\u0435\u043a\u0442\u044b",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "10",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeQljniiGcz1kprz18e9TLvNNXVKkDd2JKGsmwGf9uo.gif",
+        "description": "\u0421\u043f\u0435\u0446\u0438\u0430\u043b\u044c\u043d\u044b\u0439 \u0440\u0430\u0437\u0434\u0435\u043b \u0434\u043b\u044f \u043e\u0442\u043a\u0440\u044b\u0442\u044b\u0445 \u043f\u0440\u043e\u0435\u043a\u0442\u043e\u0432. \u0421\u0447\u0435\u0442\u0447\u0438\u043a \u043f\u043e\u0441\u0442\u043e\u0432 \u0432 \u044d\u0442\u043e\u043c \u0440\u0430\u0437\u0434\u0435\u043b\u0435 \u0432\u044b\u043a\u043b\u044e\u0447\u0435\u043d."
+    },
+    {
+        "id": "956",
+        "title": "\u041e\u043c\u0443\u0442 \u041f\u0430\u043c\u044f\u0442\u0438",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "10",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0ye2lKCi2z0PnHJbMiomIjLPCRspoxmc9jz2UqmXoJXj.gif",
+        "description": "\u0427\u0430\u0448\u0430 \u0432\u043e\u0441\u043f\u043e\u043c\u0438\u043d\u0430\u043d\u0438\u0439 \u0440\u0430\u0437\u0434\u0435\u043b\u0430 \u0422\u0440\u0435\u043f\u0430\u043b\u043a\u0430"
+    },
+    {
+        "id": "211",
+        "title": "\u0422\u0435\u0445\u043d\u043e\u0442\u0440\u0435\u043f\u0430\u043b\u043a\u0430 (\u0440\u0435\u0434\u0438\u0440\u0435\u043a\u0442)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "10",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVG7Y22dNQ0XDpz2rXDgpPnVz2emto6OH9FW3Zwj.gif",
+        "description": null
+    },
+    {
+        "id": "341",
+        "title": "\u041c\u044f\u0441\u043e\u0440\u0443\u0431\u043a\u0430 - \u0440\u0430\u0437\u0434\u0435\u043b \u0434\u043b\u044f \u0445\u043e\u043b\u0438\u0432\u0430\u0440\u043e\u0432 (\u0440\u0435\u0434\u0438\u0440\u0435\u043a\u0442)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "10",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVDGGvUN83dPJSspMPINHj0RUiXnYKiXTBKWuyFGGKLJf9JT.gif",
+        "description": null
+    },
+    {
+        "id": "10",
+        "title": "\u0422\u0440\u0435\u043f\u0430\u043b\u043a\u0430",
+        "isHasTopics": true,
+        "isHasForums": true,
+        "parentId": "203",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVBCkStvNFtz2yh8qAfqtue8INwz2wxK5BhZOJm.gif",
+        "description": "\u0417\u0434\u0435\u0441\u044c \u043c\u043e\u0436\u043d\u043e \u043f\u043e\u0433\u043e\u0432\u043e\u0440\u0438\u0442\u044c \u043d\u0430 \u043b\u044e\u0431\u044b\u0435 \u0432\u043e\u043b\u043d\u0443\u044e\u0449\u0438\u0435 \u0442\u0435\u043c\u044b \u0438\u043b\u0438 \u043f\u0440\u043e\u0441\u0442\u043e \u043f\u043e\u0431\u043e\u043b\u0442\u0430\u0442\u044c (\u0441\u0447\u0435\u0442\u0447\u0438\u043a \u0441\u043e\u043e\u0431\u0449\u0435\u043d\u0438\u0439 \u0432 \u044d\u0442\u043e\u043c \u0444\u043e\u0440\u0443\u043c\u0435 \u043e\u0442\u043a\u043b\u044e\u0447\u0435\u043d). "
+    },
+    {
+        "id": "354",
+        "title": "\u0421\u0432\u043e\u0438\u043c\u0438 \u0440\u0443\u043a\u0430\u043c\u0438",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "89",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSV6tKMBeHDmZIIYtjiWVz1z034YbmGmaDFVUtd.gif",
+        "description": "\u0420\u0435\u043c\u043e\u043d\u0442, \u043f\u0435\u0440\u0435\u0434\u0435\u043b\u043a\u0430 \u0438 \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043d\u044b\u0439 \u0430\u043f\u0433\u0440\u0435\u0439\u0434 \u0433\u0430\u0434\u0436\u0435\u0442\u043e\u0432, \u0430 \u0442\u0430\u043a \u0436\u0435 \u0430\u043a\u0441\u0435\u0441\u0441\u0443\u0430\u0440\u043e\u0432 \u043a \u043d\u0438\u043c."
+    },
+    {
+        "id": "1154",
+        "title": "\u0410\u0443\u0434\u0438\u043e\u0442\u0435\u0445\u043d\u0438\u043a\u0430",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "89",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeQsQILaYUyD1EnxIr20CwbVgz2sjz2UqGHAz2ls.png",
+        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0437\u0432\u0443\u043a\u043e\u0432\u043e\u0433\u043e \u043e\u0431\u043e\u0440\u0443\u0434\u043e\u0432\u0430\u043d\u0438\u044f"
+    },
+    {
+        "id": "263",
+        "title": "\u0421\u0432\u044f\u0437\u044c, \u0418\u0433\u0440\u044b, \u041c\u0435\u0434\u0438\u0430",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "89",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVG7Y22dNQ0XDpz2rXDgpPnVz2emto6OH9FW3Zwj.gif",
+        "description": null
+    },
+    {
+        "id": "927",
+        "title": "\u0422\u0435\u0445\u043d\u043e\u0442\u0440\u0435\u043f\u0430\u043b\u043a\u0430 - \u0430\u0440\u0445\u0438\u0432",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "89",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeBOJnHpAG8Ga8XrfCnGqz2gXBgIee0iez1z0JKGsGAe5dpW.gif",
+        "description": "\u041f\u043e\u043b\u0435\u0437\u043d\u0430\u044f, \u043d\u043e \u0443\u0441\u0442\u0430\u0440\u0435\u0432\u0448\u0430\u044f \u0438\u043d\u0444\u043e\u0440\u043c\u0430\u0446\u0438\u044f"
+    },
+    {
+        "id": "428",
+        "title": "\u0422\u0435\u0445\u043d\u043e\u0442\u0440\u0435\u043f\u0430\u043b\u043a\u0430 - FAQ",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "89",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVPqy8fKETVGm8Q3pOHGCXy4pVUy8AN6didqgz0olFsJT.gif",
+        "description": null
+    },
+    {
+        "id": "343",
+        "title": "\u0422\u0440\u0435\u043f\u0430\u043b\u043a\u0430 (\u0440\u0435\u0434\u0438\u0440\u0435\u043a\u0442)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "89",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVBCkStvNFtz2yh8qAfqtue8INwz2wxK5BhZOJm.gif",
+        "description": null
+    },
+    {
+        "id": "625",
+        "title": "\u041a\u043e\u043c\u043f\u044c\u044e\u0442\u0435\u0440\u044b \u0438 \u043f\u0435\u0440\u0438\u0444\u0435\u0440\u0438\u044f (\u0440\u0435\u0434\u0438\u0440\u0435\u043a\u0442)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "89",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVQZn6RHnwfNsPMsqCdz0RqJxQ7xORqsuaEK4ni3a2z0MYvh.gif",
+        "description": null
+    },
+    {
+        "id": "436",
+        "title": "\u0412\u044b\u0431\u043e\u0440 \u0438 \u0441\u0440\u0430\u0432\u043d\u0435\u043d\u0438\u0435 (\u0440\u0435\u0434\u0438\u0440\u0435\u043a\u0442)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "89",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVCVz2z1w8gFPAXjwxjZoIbDoR1qVILPiBUN.gif",
+        "description": null
+    },
+    {
+        "id": "342",
+        "title": "\u041c\u044f\u0441\u043e\u0440\u0443\u0431\u043a\u0430 - \u0440\u0430\u0437\u0434\u0435\u043b \u0434\u043b\u044f \u0445\u043e\u043b\u0438\u0432\u0430\u0440\u043e\u0432 (\u0440\u0435\u0434\u0438\u0440\u0435\u043a\u0442)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "89",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVDGGvUN83dPJSspMPINHj0RUiXnYKiXTBKWuyFGGKLJf9JT.gif",
+        "description": null
+    },
+    {
+        "id": "89",
+        "title": "\u0422\u0435\u0445\u043d\u043e\u0442\u0440\u0435\u043f\u0430\u043b\u043a\u0430",
+        "isHasTopics": true,
+        "isHasForums": true,
+        "parentId": "203",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVG7Y22dNQ0XDpz2rXDgpPnVz2emto6OH9FW3Zwj.gif",
+        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u043e\u0431\u0449\u0438\u0445 \u0442\u0435\u0445\u043d\u0438\u0447\u0435\u0441\u043a\u0438\u0445 \u0432\u043e\u043f\u0440\u043e\u0441\u043e\u0432. "
+    },
+    {
+        "id": "1142",
+        "title": "\u041c\u043e\u0440\u043e\u0437\u0438\u043b\u043a\u0430",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "340",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVPqy8RjVT4taAHFmcIt1bKvBDIlHgl72xCykRJ6t83KbN0p.gif",
+        "description": "\u0410\u0440\u0445\u0438\u0432 \u0440\u0430\u0437\u0434\u0435\u043b\u0430 \u041c\u044f\u0441\u043e\u0440\u0443\u0431\u043a\u0430"
+    },
+    {
+        "id": "340",
+        "title": "\u041c\u044f\u0441\u043e\u0440\u0443\u0431\u043a\u0430",
+        "isHasTopics": true,
+        "isHasForums": true,
+        "parentId": "203",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVDGGvUN83dPJSspMPINHj0RUiXnYKiXTBKWuyFGGKLJf9JT.gif",
+        "description": "\u0420\u0430\u0437\u0434\u0435\u043b \u043a\u043e\u043d\u0441\u0442\u0440\u0443\u043a\u0442\u0438\u0432\u043d\u044b\u0445 \u0445\u043e\u043b\u0438\u0432\u0430\u0440\u043e\u0432 (\u0441\u0447\u0435\u0442\u0447\u0438\u043a \u0441\u043e\u043e\u0431\u0449\u0435\u043d\u0438\u0439 \u0432 \u044d\u0442\u043e\u043c \u0444\u043e\u0440\u0443\u043c\u0435 \u043e\u0442\u043a\u043b\u044e\u0447\u0435\u043d). "
+    },
+    {
+        "id": "754",
+        "title": "\u0412\u0441\u0435 \u043e\u0431\u044a\u044f\u0432\u043b\u0435\u043d\u0438\u044f \"\u041f\u0440\u043e\u0434\u0430\u043c\" (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "20",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVB4kNriElkHCmz15JIz08uu2tqitrl6EkxKLJf9pnJw6fyHcz0TDEUz2a.gif",
+        "description": null
+    },
+    {
+        "id": "755",
+        "title": "\u0412\u0441\u0435 \u043e\u0431\u044a\u044f\u0432\u043b\u0435\u043d\u0438\u044f \"\u041a\u0443\u043f\u043b\u044e\" (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "20",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVB4kNriElkHCmhAeXz0Yz2M46tVVxsQpz1RY6Az01lEXDB8cXqGHgFtA.gif",
+        "description": null
+    },
+    {
+        "id": "756",
+        "title": "\u0412\u0441\u0435 \u043e\u0431\u044a\u044f\u0432\u043b\u0435\u043d\u0438\u044f \"\u041e\u0431\u043c\u0435\u043d\u044f\u044e\" (\u0444\u0438\u043b\u044c\u0442\u0440)",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "20",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVB4kNriElkHCmpMvJ0YPBS4gV9Mv1Y0GsW2YRUyEldwIQqGmWZpIf.gif",
+        "description": null
+    },
+    {
+        "id": "370",
+        "title": "\u0420\u0430\u0437\u043d\u043e\u0435",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "20",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVQR0T5C64bo1kXpc7VrTH7gxqaW2xDz2vELE5.gif",
+        "description": null
+    },
+    {
+        "id": "20",
+        "title": "\u0411\u0430\u0440\u0430\u0445\u043e\u043b\u043a\u0430",
+        "isHasTopics": true,
+        "isHasForums": true,
+        "parentId": "203",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVQR0T5C64bo1kXpc7VrTH7gxqaW2xDz2vELE5.gif",
+        "description": "\u0422\u0443\u0442 \u043c\u044b \u043f\u0440\u043e\u0434\u0430\u0451\u043c, \u043f\u043e\u043a\u0443\u043f\u0430\u0435\u043c \u0438 \u043c\u0435\u043d\u044f\u0435\u043c \u0434\u0435\u0432\u0430\u0439\u0441\u044b.\r"
+    },
+    {
+        "id": "130",
+        "title": "\u0420\u0430\u0437\u0440\u0430\u0431\u043e\u0442\u0447\u0438\u043a\u0438",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "203",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVPqy8falf3K1jZKwfZqO2SNw7jOimlwErLEpAULwUUn3z1GDHl.gif",
+        "description": "\u0414\u0430\u043d\u043d\u044b\u0439 \u0440\u0430\u0437\u0434\u0435\u043b \u0434\u043e\u0441\u0442\u0443\u043f\u0435\u043d \u0438\u0441\u043a\u043b\u044e\u0447\u0438\u0442\u0435\u043b\u044c\u043d\u043e \u0440\u0430\u0437\u0440\u0430\u0431\u043e\u0442\u0447\u0438\u043a\u0430\u043c \u0438 \u0430\u0434\u043c\u0438\u043d\u0438\u0441\u0442\u0440\u0430\u0446\u0438\u0438 \u0438 \u043f\u0440\u0435\u0434\u043d\u0430\u0437\u043d\u0430\u0447\u0435\u043d \u0434\u043b\u044f \u0432\u0435\u0434\u0435\u043d\u0438\u044f \u0440\u0430\u0437\u0433\u043e\u0432\u043e\u0440\u043e\u0432 \u0431\u0435\u0437 \u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u0442\u0435\u043b\u0435\u0439."
     }
 ]
