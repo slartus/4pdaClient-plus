@@ -1479,7 +1479,13 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                     themeFragment.m_LastUrl = "https://" + HostHelper.getHost() + "/forum/index.php?" + prepareTopicUrl(themeFragment.m_LastUrl);
 
                     if (forums.length == 1) {
-                        themeFragment.lastResponse = Http.Companion.getInstance().performGet("https://" + HostHelper.getHost() + "/forum/index.php?" + prepareTopicUrl(themeFragment.m_LastUrl));
+                        AppResponse response = Http.Companion.getInstance().performGet(themeFragment.m_LastUrl);
+                        if (response.getCode() == 404) {
+                            String topicId = Uri.parse(themeFragment.m_LastUrl).getQueryParameter("showtopic");
+                            themeFragment.m_LastUrl = "https://" + HostHelper.getHost() + "/forum/index.php?showtopic=" + topicId;
+                            response = Http.Companion.getInstance().performGet(themeFragment.m_LastUrl);
+                        }
+                        themeFragment.lastResponse = response;
                         //pageBody = ResourcesUtilKt.loadAssetsText(themeFragment.getContext(), "1.htm", "windows-1251");
                         pageBody = themeFragment.lastResponse.getResponseBody();
                         Client.getInstance().check(pageBody);
