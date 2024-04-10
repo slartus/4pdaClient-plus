@@ -16,7 +16,8 @@ class SearchPostsParserTests {
         val appResponse = AppResponse(
             redirectUrl = "http://4pda.to/forum/index.php?act=search&query=&username=%26%239656%3BScream%26%239666%3B&forums[]=all&topics[]=271502&subforums=1&source=pst&sort=dd&result=posts&noform=1&st=0",
             requestUrl = "https://4pda.to/forum/index.php?act=search&query=&username=%26%239656%3BScream%26%239666%3B&forums[]=all&topics[]=271502&subforums=1&source=pst&sort=dd&result=posts&noform=1&st=0",
-            responseBody = page
+            responseBody = page,
+            code = 200
         )
 
         val posts = SearchPostsParser.parsePosts(appResponse.responseBody)
@@ -43,7 +44,8 @@ class SearchPostsParserTests {
         val appResponse = AppResponse(
             "http://4pda.to/forum/index.php?act=search&query=&username=slartus&forums[]=all&topics[]=271502&subforums=1&source=pst&sort=dd&result=posts&noform=1&st=0",
             "https://4pda.to/forum/index.php?act=search&query=&username=slartus&forums[]=all&topics[]=271502&subforums=1&source=pst&sort=dd&result=posts&noform=1&st=0",
-            page
+            page,
+            code = 200
         )
 
         val posts = SearchPostsParser.parsePosts(appResponse.responseBody)
