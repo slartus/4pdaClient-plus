@@ -934,6 +934,15 @@
         "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 Sony \u043d\u0430 \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0435 Android"
     },
     {
+        "id": "1183",
+        "title": "Tecno",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "269",
+        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeVLjBO4EdBa2kan7XPV8iz0WyYPvrlz1PjpvjqJWz2U.gif",
+        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 Tecno \u043d\u0430 \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0435 Android"
+    },
+    {
         "id": "822",
         "title": "Vivo",
         "isHasTopics": true,
@@ -1013,15 +1022,6 @@
         "parentId": "336",
         "iconUrl": "https:\/\/4pda.to\/s\/3fSV8RYJJHWPz20waSqPXgWk58X3OhmVUtRIPmz1OBz22TDkkdu.gif",
         "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 Teclast \u043d\u0430 \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0435 Android "
-    },
-    {
-        "id": "1183",
-        "title": "Tecno",
-        "isHasTopics": true,
-        "isHasForums": false,
-        "parentId": "336",
-        "iconUrl": "https:\/\/4pda.to\/s\/3fSVH0yeVLjBO4EdBa2kan7XPV8iz0WyYPvrlz1PjpvjqJWz2U.gif",
-        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 Tecno \u043d\u0430 \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0435 Android"
     },
     {
         "id": "809",
