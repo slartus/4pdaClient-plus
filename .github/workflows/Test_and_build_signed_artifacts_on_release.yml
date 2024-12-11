@@ -49,7 +49,7 @@ jobs:
           echo "ARTIFACT_NAME_APK=${ARTIFACT_NAME_APK}" >> $GITHUB_ENV     
           
       - name: Upload APK
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ env.ARTIFACT_NAME_APK }}
           path: ${{ env.ARTIFACT_PATHNAME_APK }}
