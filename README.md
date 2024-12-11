@@ -1,6 +1,6 @@
 ﻿4pdaClient
 ==========
-Неофициальный android-клиент для сайта 4pda.ru
+Неофициальный android-клиент для сайта 4pda.to
 
 <a href="https://f-droid.org/app/org.softeg.slartus.forpdaplus"><img src="https://f-droid.org/badge/get-it-on-ru.png" alt="Получить его от F-Droid" height="100"></a>
 
