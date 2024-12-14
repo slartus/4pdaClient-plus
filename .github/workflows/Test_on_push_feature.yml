@@ -3,7 +3,7 @@ name: Test_on_push_feature
 on:
   push:
     branches:
-      - '*/*' # matches every branch containing a single '/'
+      - 'rc/*' # matches every branch containing a single '/'
 
 jobs:
 #based on https://gist.github.com/alexanderbazo/227476190ef5ab655795e34ec0d314d6          
