@@ -583,33 +583,6 @@
         "description": "\u041e\u0431\u043e\u0438 \u0434\u043b\u044f \u044d\u043a\u0440\u0430\u043d\u0430 Android"
     },
     {
-        "id": "869",
-        "title": "Honor",
-        "isHasTopics": true,
-        "isHasForums": false,
-        "parentId": "264",
-        "iconUrl": "https:\/\/4pda.to\/s\/PXtiZqE80YFFNicCAhqvFKuNyUdNgz10Rdz1l9XupS2Aj0gflv.gif",
-        "description": "\u0423\u043a\u0440\u0430\u0448\u0430\u0442\u0435\u043b\u044c\u0441\u0442\u0432\u0430 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 Honor"
-    },
-    {
-        "id": "495",
-        "title": "Huawei",
-        "isHasTopics": true,
-        "isHasForums": false,
-        "parentId": "264",
-        "iconUrl": "https:\/\/4pda.to\/s\/PXtioRGJAt09Qhcoj88Adwn3ryQqOKA0LAlZPeoMv0TX4ez1.gif",
-        "description": "\u0423\u043a\u0440\u0430\u0448\u0430\u0442\u0435\u043b\u044c\u0441\u0442\u0432\u0430 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 Huawei"
-    },
-    {
-        "id": "496",
-        "title": "LG",
-        "isHasTopics": true,
-        "isHasForums": false,
-        "parentId": "264",
-        "iconUrl": "https:\/\/4pda.to\/s\/PXtioRGJAFWpAcEemExW6WDfmQpLz1iYGOvJdIoz1OXD.gif",
-        "description": "\u0423\u043a\u0440\u0430\u0448\u0430\u0442\u0435\u043b\u044c\u0441\u0442\u0432\u0430 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 LG"
-    },
-    {
         "id": "492",
         "title": "OnePlus",
         "isHasTopics": true,
