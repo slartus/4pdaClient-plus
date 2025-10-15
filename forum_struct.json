@@ -781,6 +781,15 @@
         "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 Oukitel  \u043d\u0430 \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0435 Android "
     },
     {
+        "id": "1244",
+        "title": "POCO",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "269",
+        "iconUrl": "https:\/\/4pda.to\/s\/PXtioRGJuAfz2LRz0kBUfyUhMCGtNVDVStYz1yaEKz1EH3EA.gif",
+        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 POCO \u043d\u0430 \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0435 Android "
+    },
+    {
         "id": "588",
         "title": "Prestigio",
         "isHasTopics": true,
@@ -788,6 +797,15 @@
         "parentId": "269",
         "iconUrl": "https:\/\/4pda.to\/s\/PXtiZqE8m6NE7MZprHt0ez0vHTJMz2pJoGYz0jSZTBvW7w2xbakSqe.gif",
         "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 Prestigio \u043d\u0430 \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0435 Android "
+    },
+    {
+        "id": "1245",
+        "title": "Readmi",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "269",
+        "iconUrl": "https:\/\/4pda.to\/s\/PXtioRGJuIv4rwLLMmfKsXpKKD0q5BONxbL4QyQmMuFZBC.gif",
+        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 Readmi \u043d\u0430 \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0435 Android "
     },
     {
         "id": "1115",
@@ -1076,6 +1094,24 @@
         "parentId": "268",
         "iconUrl": "https:\/\/4pda.to\/s\/PXtiwlGpz13RPqp2s30yOg7Kww4sQpMF92kLAz1qan56IP8sj.gif",
         "description": "\u041f\u0440\u043e\u0448\u0438\u0432\u043a\u0438 \u0434\u043b\u044f \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432"
+    },
+    {
+        "id": "1246",
+        "title": "POCO",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "268",
+        "iconUrl": "https:\/\/4pda.to\/s\/PXtioRGJuAfz2LRz0kBUfyUhMCGtNVDVStYz1yaEKz1EH3EA.gif",
+        "description": null
+    },
+    {
+        "id": "1247",
+        "title": "Redmi",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "268",
+        "iconUrl": "https:\/\/4pda.to\/s\/PXtioRGJuIv4rwLLMmfKsXpKKD0q5BONxbL4QyQmMuFZBC.gif",
+        "description": null
     },
     {
         "id": "1116",
@@ -2987,7 +3023,7 @@
         "isHasTopics": true,
         "isHasForums": false,
         "parentId": "1120",
-        "iconUrl": "https:\/\/4pda.to\/s\/PXtiwlGph8eyJPkOeoz0lUyxz1K0ggz1CI8aVCNAEutfv.gif",
+        "iconUrl": "https:\/\/4pda.to\/s\/PXtioRGJuk18Cz1z2Ubz2Oafgz0eEJckz18gAUaCrld1t3a0.gif",
         "description": "\u041d\u0430\u0443\u0448\u043d\u0438\u043a\u0438 \u043e\u0442 \u0431\u0440\u0435\u043d\u0434\u0430 CMF"
     },
     {
