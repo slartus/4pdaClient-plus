@@ -4,10 +4,10 @@ name: Test_and_build_signed_artifacts_on_release
 on:
   pull_request:
     branches:
-      - 'master'
+      - 'master_skip'
   push:
     branches:
-      - 'master'
+      - 'master_skip'
       
 
 env:
