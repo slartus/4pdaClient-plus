@@ -1006,15 +1006,6 @@
         "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 \u043f\u043e\u0434 \u0443\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0438\u0435\u043c Android OS "
     },
     {
-        "id": "573",
-        "title": "Asus",
-        "isHasTopics": true,
-        "isHasForums": false,
-        "parentId": "268",
-        "iconUrl": "https:\/\/4pda.to\/s\/as6yxs0BkNrz1bdQz0qjQz2z1xPz2RfGTNIEo0Lq143R9X2poYfs.gif",
-        "description": "\u041f\u0440\u043e\u0448\u0438\u0432\u043a\u0438 \u0434\u043b\u044f \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432"
-    },
-    {
         "id": "864",
         "title": "Google",
         "isHasTopics": true,
@@ -1111,15 +1102,6 @@
         "isHasForums": false,
         "parentId": "268",
         "iconUrl": "https:\/\/4pda.to\/s\/as6yhwuvimFebFFz1z0z0MddFFDV6Ct9Y0pPsgIRB4c0S7.gif",
-        "description": "\u041f\u0440\u043e\u0448\u0438\u0432\u043a\u0438 \u0434\u043b\u044f \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432"
-    },
-    {
-        "id": "326",
-        "title": "Sony",
-        "isHasTopics": true,
-        "isHasForums": false,
-        "parentId": "268",
-        "iconUrl": "https:\/\/4pda.to\/s\/as6ygPUGa2BP3k1mmgGhIhz0MXorIO07rlz0HHNrcAp8Nj.gif",
         "description": "\u041f\u0440\u043e\u0448\u0438\u0432\u043a\u0438 \u0434\u043b\u044f \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432"
     },
     {
