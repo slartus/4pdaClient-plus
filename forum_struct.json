@@ -2775,6 +2775,24 @@
         "description": "\u0423\u043c\u043d\u044b\u0435 \u0447\u0430\u0441\u044b \u043e\u0442 \u0431\u0440\u0435\u043d\u0434\u0430 Apple"
     },
     {
+        "id": "1261",
+        "title": "Blackview",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "659",
+        "iconUrl": "https:\/\/4pda.to\/s\/as6yYjUmKz1ae1d7iTcw1UQZT9VxO2KqUC2a9W1a7KPeL7Droea.gif",
+        "description": "\u0423\u043c\u043d\u044b\u0435 \u0447\u0430\u0441\u044b \u043e\u0442 \u0431\u0440\u0435\u043d\u0434\u0430 Blackview"
+    },
+    {
+        "id": "1262",
+        "title": "COROS",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "659",
+        "iconUrl": "https:\/\/4pda.to\/s\/as6yYjUmGUGabH0JcjSLHjokDyEuP31wtXd6Jz2NHfnOL.gif",
+        "description": "\u0423\u043c\u043d\u044b\u0435 \u0447\u0430\u0441\u044b \u043e\u0442 \u0431\u0440\u0435\u043d\u0434\u0430 COROS"
+    },
+    {
         "id": "1170",
         "title": "Garmin",
         "isHasTopics": true,
@@ -2838,6 +2856,15 @@
         "description": "\u0423\u043c\u043d\u044b\u0435 \u0447\u0430\u0441\u044b \u043e\u0442 \u0431\u0440\u0435\u043d\u0434\u0430 Mobvoi"
     },
     {
+        "id": "1263",
+        "title": "Motorola",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "659",
+        "iconUrl": "https:\/\/4pda.to\/s\/as6yYjUm2s2cz1LY8hogorZdz2GE4v9MlB7GF1T0qeuz0o8s1Wv.gif",
+        "description": "\u0423\u043c\u043d\u044b\u0435 \u0447\u0430\u0441\u044b \u043e\u0442 \u0431\u0440\u0435\u043d\u0434\u0430 Motorola"
+    },
+    {
         "id": "1205",
         "title": "OnePlus",
         "isHasTopics": true,
@@ -2890,6 +2917,15 @@
         "parentId": "659",
         "iconUrl": "https:\/\/4pda.to\/s\/as6yYjz1iKs3jhVMZvFQTg8Em42EfvU55sh3rckCZEW7TJFGhN4.gif",
         "description": "\u0423\u043c\u043d\u044b\u0435 \u0447\u0430\u0441\u044b \u043e\u0442 \u0431\u0440\u0435\u043d\u0434\u0430 Suunto"
+    },
+    {
+        "id": "1264",
+        "title": "Tecno",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "659",
+        "iconUrl": "https:\/\/4pda.to\/s\/as6yYjUmCYawz1oPCMLGhoxLoRxYsY9m1z0miKU2oe6vi7.gif",
+        "description": "\u0423\u043c\u043d\u044b\u0435 \u0447\u0430\u0441\u044b \u043e\u0442 \u0431\u0440\u0435\u043d\u0434\u0430 Tecno"
     },
     {
         "id": "1177",
@@ -2982,6 +3018,15 @@
         "description": "\u041d\u0430\u0443\u0448\u043d\u0438\u043a\u0438 \u043e\u0442 \u0431\u0440\u0435\u043d\u0434\u0430 Apple"
     },
     {
+        "id": "1265",
+        "title": "Bose",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "1120",
+        "iconUrl": "https:\/\/4pda.to\/s\/as6yYjUm62lB3Oh4qA2b2MGz07wAunkU075KHT4yAEdj.gif",
+        "description": "\u041d\u0430\u0443\u0448\u043d\u0438\u043a\u0438 \u043e\u0442 \u0431\u0440\u0435\u043d\u0434\u0430 Bose"
+    },
+    {
         "id": "1224",
         "title": "Edifier",
         "isHasTopics": true,
@@ -2989,6 +3034,15 @@
         "parentId": "1120",
         "iconUrl": "https:\/\/4pda.to\/s\/as6yYjUmHrs5SoIKrivfPdFuNNphW6CNvQiToqFhKpe8hUY.gif",
         "description": "\u041d\u0430\u0443\u0448\u043d\u0438\u043a\u0438 \u043e\u0442 \u0431\u0440\u0435\u043d\u0434\u0430 Edifier"
+    },
+    {
+        "id": "1266",
+        "title": "FiiO",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "1120",
+        "iconUrl": "https:\/\/4pda.to\/s\/as6yYjUmCz1yKtepO2z0M7tdhts1WPY0rYI4tdAW63vJV.gif",
+        "description": "\u041d\u0430\u0443\u0448\u043d\u0438\u043a\u0438 \u043e\u0442 \u0431\u0440\u0435\u043d\u0434\u0430 FiiO"
     },
     {
         "id": "1225",
@@ -3025,6 +3079,15 @@
         "parentId": "1120",
         "iconUrl": "https:\/\/4pda.to\/s\/as6yYjUmFjOCan1lP83rvz0KXZGtdw8SLKz14pW5TlKp9YNoUw.gif",
         "description": "\u041d\u0430\u0443\u0448\u043d\u0438\u043a\u0438 \u043e\u0442 \u0431\u0440\u0435\u043d\u0434\u0430 Marshall"
+    },
+    {
+        "id": "1267",
+        "title": "Noble Audio",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "1120",
+        "iconUrl": "https:\/\/4pda.to\/s\/as6yYjUmCz1itppnO2qNC3Q874ODz1JeRf1YTs2PurFjvLz0qbiCedr.gif",
+        "description": "\u041d\u0430\u0443\u0448\u043d\u0438\u043a\u0438 \u043e\u0442 \u0431\u0440\u0435\u043d\u0434\u0430 Noble Audio"
     },
     {
         "id": "1229",
@@ -3099,6 +3162,15 @@
         "description": "\u041d\u0430\u0443\u0448\u043d\u0438\u043a\u0438 \u043e\u0442 \u0431\u0440\u0435\u043d\u0434\u0430 Technics"
     },
     {
+        "id": "1268",
+        "title": "vivo",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "1120",
+        "iconUrl": "https:\/\/4pda.to\/s\/as6yYjUmC25RVaDxqgIjMq5yaijad92sG1z1Gz1oBUiIy.gif",
+        "description": "\u041d\u0430\u0443\u0448\u043d\u0438\u043a\u0438 \u043e\u0442 \u0431\u0440\u0435\u043d\u0434\u0430 vivo"
+    },
+    {
         "id": "1237",
         "title": "Xiaomi \/ Redmi",
         "isHasTopics": true,
@@ -3126,13 +3198,40 @@
         "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0431\u0435\u0441\u043f\u0440\u043e\u0432\u043e\u0434\u043d\u044b\u0445 \u0438 \u043f\u0440\u043e\u0432\u043e\u0434\u043d\u044b\u0445 \u043d\u0430\u0443\u0448\u043d\u0438\u043a\u043e\u0432 \u0438 \u0433\u0430\u0440\u043d\u0438\u0442\u0443\u0440 "
     },
     {
+        "id": "1269",
+        "title": "Anker",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "1107",
+        "iconUrl": "https:\/\/4pda.to\/s\/as6yYjUmHrM5qI2MlQ8t4CX06kZLKUKR4z2qeuTY0YZL8.gif",
+        "description": "\u041f\u043e\u0440\u0442\u0430\u0442\u0438\u0432\u043d\u044b\u0435 \u043a\u043e\u043b\u043e\u043d\u043a\u0438 \u043e\u0442 \u0431\u0440\u0435\u043d\u0434\u0430 Anker"
+    },
+    {
+        "id": "1270",
+        "title": "JBL",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "1107",
+        "iconUrl": "https:\/\/4pda.to\/s\/as6yYjUmFLOsBRWR6dtcX2pIoXIz1qZn6Nz2NLdTTMoz0.gif",
+        "description": "\u041f\u043e\u0440\u0442\u0430\u0442\u0438\u0432\u043d\u044b\u0435 \u043a\u043e\u043b\u043e\u043d\u043a\u0438 \u043e\u0442 \u0431\u0440\u0435\u043d\u0434\u0430 JBL"
+    },
+    {
+        "id": "1271",
+        "title": "\u0414\u0440\u0443\u0433\u0438\u0435 \u0431\u0440\u0435\u043d\u0434\u044b",
+        "isHasTopics": true,
+        "isHasForums": false,
+        "parentId": "1107",
+        "iconUrl": "https:\/\/4pda.to\/s\/as6yxs0BU3ygKZRd3U4C0uz2WB1q7Ejk2O9YcOrCjRB46Gq3.gif",
+        "description": "\u041f\u043e\u0440\u0442\u0430\u0442\u0438\u0432\u043d\u044b\u0435 \u043a\u043e\u043b\u043e\u043d\u043a\u0438 \u043e\u0442 \u043f\u0440\u043e\u0447\u0438\u0445 \u0431\u0440\u0435\u043d\u0434\u043e\u0432"
+    },
+    {
         "id": "1107",
         "title": "\u041f\u043e\u0440\u0442\u0430\u0442\u0438\u0432\u043d\u044b\u0435 \u043a\u043e\u043b\u043e\u043d\u043a\u0438",
         "isHasTopics": true,
-        "isHasForums": false,
+        "isHasForums": true,
         "parentId": "763",
         "iconUrl": "https:\/\/4pda.to\/s\/as6yYjUmKhAtT3HjJsawoEiRuQQGLKtdxZhnjSWS9B3.gif",
-        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u043f\u0435\u0440\u0435\u043d\u043e\u0441\u043d\u044b\u0445 \u0430\u043a\u0443\u0441\u0442\u0438\u0447\u0435\u0441\u043a\u0438\u0445 \u0441\u0438\u0441\u0442\u0435\u043c"
+        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u043f\u0435\u0440\u0435\u043d\u043e\u0441\u043d\u044b\u0445 \u0430\u043a\u0443\u0441\u0442\u0438\u0447\u0435\u0441\u043a\u0438\u0445 \u0441\u0438\u0441\u0442\u0435\u043c "
     },
     {
         "id": "1219",
