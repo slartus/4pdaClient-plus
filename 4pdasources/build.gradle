@@ -8,8 +8,6 @@ android {
         minSdkVersion rootProject.minSdk
         //noinspection OldTargetApi
         targetSdkVersion rootProject.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
     }
     buildTypes {
         release {
@@ -17,6 +15,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    namespace 'org.softeg.slartus.forpdasources'
 }
 
 dependencies {
