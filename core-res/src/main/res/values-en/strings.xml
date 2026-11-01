@@ -3,7 +3,7 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="app_name">ForPDA</string>
+    <string name="app_name">4PDA</string>
     <string name="app_description">Unofficial client for 4pda.ru</string>
     <string name="ClaimDescription">" You do not need to specify here a subject and message, the moderator will automatically receive this information. \n    Please use this feature only forum for complaints about incorrect report! \n    To contact the moderator, use private messages."</string>
     <string name="Connecting">Connecting</string>
