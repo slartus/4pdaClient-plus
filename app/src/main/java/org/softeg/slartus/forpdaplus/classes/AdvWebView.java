@@ -58,8 +58,12 @@ public class AdvWebView extends WebView {
     private void init() {
         // gd = new GestureDetector(context, sogl);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            // даём разрешение подгружать несекьюрные ресурсы из assets
-            getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+            // даём разрешение подгружать несекьюрные ресурсы из assets.
+            // COMPATIBILITY_MODE keeps passive sub-resources (images,
+            // fonts) loading on https forum pages while blocking active
+            // mixed content like remote scripts. ALWAYS_ALLOW is the
+            // strictly less safe option in the WebSettings javadoc.
+            getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE);
         }
         getSettings().setJavaScriptEnabled(true);
 
@@ -68,8 +72,13 @@ public class AdvWebView extends WebView {
         getSettings().setDomStorageEnabled(true);
         getSettings().setAllowFileAccess(true);
         getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
-        getSettings().setAllowFileAccessFromFileURLs(true); //Maybe you don't need this rule
-        getSettings().setAllowUniversalAccessFromFileURLs(true);
+        // setAllowFileAccessFromFileURLs / setAllowUniversalAccessFromFileURLs
+        // only take effect when the WebView is rendering a file:// document.
+        // AdvWebView loads its HTML with loadDataWithBaseURL on an https
+        // forum base URL and references bundled resources via
+        // file:///android_asset/, which is permitted regardless. The two
+        // flags are not needed for any of the existing WebView paths and
+        // are a known sandbox-escape vector (CWE-200) when left on.
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2)
             getSettings().setPluginState(WebSettings.PluginState.ON);// для воспроизведения видео
